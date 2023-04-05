@@ -1,0 +1,10 @@
+{
+    "Customers": true,
+    "Contacts": true,
+    "Users": true,
+    "Invoices": true,
+    "Quotes": true,
+    "Blog": true,
+    "GuardTour": true,
+    "Srs": true
+}
