@@ -11,6 +11,9 @@ class Company extends Model
 
     protected $fillable = ['company_id', 'comp_name', 'address1', 'comp_phone', 'status', 'created_by', 'created_at', 'others'];
     protected $table = "admisecsgp_mstcmp";
+    protected $primaryKey = 'company_id';
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     protected static function newFactory()
     {

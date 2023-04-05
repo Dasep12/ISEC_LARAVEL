@@ -144,8 +144,12 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
+                        <li class="nav-item 
+                            @if($uri == 'site/master' || $uri == 'site/tambah' )
+                                menu-open 
+                             @endif">
+                            <a href="#" class="nav-link active
+                             ">
                                 <i class="nav-icon fas fa-copy"></i>
                                 <p>
                                     Master
@@ -155,13 +159,16 @@
                             <ul class="nav nav-treeview">
 
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('site.master') }}" class="nav-link 
+                                        @if($uri == 'site/master' || $uri == 'site/tambah' )
+                                            active  
+                                        @endif">
                                         <i class="fas fa-minus-circle nav-icon"></i>
                                         <p>Master Wilayah</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('plant.master') }}" class="nav-link">
                                         <i class="fas fa-minus-circle nav-icon"></i>
                                         <p>Master Plant</p>
                                     </a>

@@ -14,7 +14,7 @@ class CompanyController extends Controller
     {
         $company = Company::all();
         $uri =  \Request::segment(2) . '/' . \Request::segment(3);
-        return view('guardtour::master_cmp', [
+        return view('guardtour::company/master_cmp', [
             'uri'  => $uri,
             'company' => $company
         ]);
@@ -23,7 +23,7 @@ class CompanyController extends Controller
     public function form_add()
     {
         $uri =  \Request::segment(2) . '/' . \Request::segment(3);
-        return view('guardtour::add_master_company', [
+        return view('guardtour::company/add_master_company', [
             'uri'  => $uri,
         ]);
     }
@@ -61,7 +61,25 @@ class CompanyController extends Controller
 
     public function form_edit(Request $req)
     {
-        $id = $req->d;
-        echo $id;
+        $res = $req->d;
+        $id = explode("&", $res);
+        $uri =  \Request::segment(2) . '/' . \Request::segment(3);
+        $company = Company::where('company_id', $id[0])->first();
+        return view('guardtour::company/edit_master_company', [
+            'uri'  => $uri,
+            'data' => $company
+        ]);
+    }
+
+    public function update(Request $req)
+    {
+        $id = $req->comp_id;
+        $company = Company::find($id);
+        $company->comp_name  = $req->comp_name;
+        $company->comp_phone = $req->comp_phone;
+        $company->address1    = $req->address1;
+        $company->status   = $req->status;
+        $company->save();
+        return redirect()->route('company.master')->with(['success' => 'Data Berhasil di Perbarui']);
     }
 }

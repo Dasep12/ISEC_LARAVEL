@@ -5,6 +5,7 @@ namespace Modules\GuardTour\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\GuardTour\Entities\Plants;
 
 class PlantsController extends Controller
 {
@@ -14,7 +15,12 @@ class PlantsController extends Controller
      */
     public function index()
     {
-        return view('guardtour::index');
+        $plant = Plants::all();
+        $uri =  \Request::segment(2) . '/' . \Request::segment(3);
+        return view('guardtour::plant/master_plant', [
+            'uri'  => $uri,
+            'plant' => $plant
+        ]);
     }
 
     /**
