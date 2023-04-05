@@ -1,0 +1,11 @@
+{
+    "name": "GuardTour",
+    "alias": "guardtour",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\GuardTour\\Providers\\GuardTourServiceProvider"
+    ],
+    "files": []
+}

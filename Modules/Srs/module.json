@@ -1,0 +1,11 @@
+{
+    "name": "Srs",
+    "alias": "srs",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Srs\\Providers\\SrsServiceProvider"
+    ],
+    "files": []
+}
