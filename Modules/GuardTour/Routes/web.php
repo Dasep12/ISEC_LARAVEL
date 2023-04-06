@@ -11,7 +11,6 @@
 |
 */
 
-<<<<<<< HEAD
 use Modules\GuardTour\Http\Controllers\CompanyController;
 use Modules\GuardTour\Http\Controllers\PlantsController;
 use Modules\GuardTour\Http\Controllers\SiteController;
@@ -54,8 +53,4 @@ Route::prefix('guardtour')->group(function () {
     Route::get('/zona/form_edit', [ZoneController::class, "form_edit"])->name('zona.form_edit');
     Route::post('/zona/update', [ZoneController::class, "update"])->name('zona.update');
     Route::post('/zona/getPlant', [ZoneController::class, "getPlant"])->name('zona.getPlant');
-=======
-Route::prefix('guardtour')->group(function() {
-    Route::get('/', 'GuardTourController@index');
->>>>>>> ad9ebfa0f56bc63ce53fb64d4baf6e89c240a5ff
 });

@@ -15,9 +15,4 @@ use Illuminate\Http\Request;
 
 Route::middleware('auth:api')->get('/guardtour', function (Request $request) {
     return $request->user();
-<<<<<<< HEAD
 });
-
-=======
-});
->>>>>>> ad9ebfa0f56bc63ce53fb64d4baf6e89c240a5ff
