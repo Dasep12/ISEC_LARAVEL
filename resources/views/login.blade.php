@@ -223,7 +223,11 @@
                             <!-- <span class="signup"><a href="">Don't have account? Signup</a></span> -->
                         </div>
 
+<<<<<<< HEAD
                         <form class="form-horizontal" onsubmit="return cek()" action="/auth/check" method="post">
+=======
+                        <form class="form-horizontal" onsubmit="return cek()" action="{{ URL::route('auth.login') }}" method="post">
+>>>>>>> ad9ebfa0f56bc63ce53fb64d4baf6e89c240a5ff
                             @csrf
                             
                             @if($msg = Session::get('error'))  
