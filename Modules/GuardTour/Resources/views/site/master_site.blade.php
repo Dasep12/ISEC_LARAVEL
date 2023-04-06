@@ -56,8 +56,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($site as $s)
                                 @php($key = 1)
+                                @foreach($site as $s)
                                 <tr>
                                     <td>{{ $key++ }}</td>
                                     <td>{{ $s->company->comp_name }}</td>

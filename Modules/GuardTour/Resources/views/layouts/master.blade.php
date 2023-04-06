@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Security Guard Tour</title>
-    <link rel="shortcut icon" type="image/x-icon" href="assets/dist/img/logo.jpeg">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/dist/img/logo.jpeg') }}">
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -21,7 +21,7 @@
     <script src="{{ asset('assets/dist/js/jquery.min.js') }}"></script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-    <script src="assets/dist/js/sweetalert2.all.min.js"></script>
+    <script src="{{ asset('assets/dist/js/sweetalert2.all.min.js') }}"></script>
 
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
@@ -145,8 +145,8 @@
                             </a>
                         </li>
                         <li class="nav-item 
-                            @if($uri == 'site/master' || $uri == 'site/tambah' )
-                                menu-open 
+                            @if($uri == 'site/master' || $uri == 'site/form_add' || $uri == 'site/form_edit' || $uri == 'plant/master' || $uri == 'plant/form_add' || $uri == 'plant/form_edit'  )
+                                menu-open  
                              @endif">
                             <a href="#" class="nav-link active
                              ">
@@ -160,7 +160,7 @@
 
                                 <li class="nav-item">
                                     <a href="{{ route('site.master') }}" class="nav-link 
-                                        @if($uri == 'site/master' || $uri == 'site/tambah' )
+                                        @if($uri == 'site/master' || $uri == 'site/form_add' || $uri == 'site/form_edit' )
                                             active  
                                         @endif">
                                         <i class="fas fa-minus-circle nav-icon"></i>
@@ -168,7 +168,10 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('plant.master') }}" class="nav-link">
+                                    <a href="{{ route('plant.master') }}" class="nav-link
+                                    @if($uri == 'plant/master' || $uri == 'plant/form_add' || $uri == 'plant/form_edit'  )
+                                            active  
+                                    @endif">
                                         <i class="fas fa-minus-circle nav-icon"></i>
                                         <p>Master Plant</p>
                                     </a>
@@ -349,7 +352,7 @@
     <!-- AdminLTE for demo purposes -->
     <script src="{{ asset('assets/dist/js/demo.js') }}"></script>
     <!-- DataTables  & Plugins -->
-    <script src="{{ asset('assets/dist/js/vendor/jszip/jszip.min.js') }}"></script>
+    <!-- <script src="{{ asset('assets/dist/js/vendor/jszip/jszip.min.js') }}"></script> -->
     <script src="{{ asset('assets/dist/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/dist/js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('assets/dist/js/dataTables.responsive.min.js') }}"></script>

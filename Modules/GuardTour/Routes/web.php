@@ -34,5 +34,11 @@ Route::prefix('guardtour')->group(function () {
     Route::post('/site/update', [SiteController::class, "update"])->name('site.update');
 
     // master plant
-    Route::get('/plant/master', [PlantsController::class, "index"])->name('plant.master');
+    Route::get('/plant/master', [PlantsController::class, "master"])->name('plant.master');
+    Route::get('/plant/form_add', [PlantsController::class, "form_add"])->name('plant.form_add');
+    Route::post('/plant/insert', [PlantsController::class, "insert"])->name('plant.insert');
+    Route::get('/plant/destroy', [PlantsController::class, "destroy"])->name('plant.destroy');
+    Route::get('/plant/form_edit', [PlantsController::class, "form_edit"])->name('plant.form_edit');
+    Route::post('/plant/update', [PlantsController::class, "update"])->name('plant.update');
+    Route::post('/plant/getWilayah', [PlantsController::class, "getWilayah"])->name('plant.getWilayah');
 });
