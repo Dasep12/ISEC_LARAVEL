@@ -14,6 +14,8 @@
 use Modules\GuardTour\Http\Controllers\CompanyController;
 use Modules\GuardTour\Http\Controllers\PlantsController;
 use Modules\GuardTour\Http\Controllers\SiteController;
+use Modules\GuardTour\Http\Controllers\ZoneController;
+
 
 Route::prefix('guardtour')->group(function () {
 
@@ -41,4 +43,14 @@ Route::prefix('guardtour')->group(function () {
     Route::get('/plant/form_edit', [PlantsController::class, "form_edit"])->name('plant.form_edit');
     Route::post('/plant/update', [PlantsController::class, "update"])->name('plant.update');
     Route::post('/plant/getWilayah', [PlantsController::class, "getWilayah"])->name('plant.getWilayah');
+
+
+    // master zone
+    Route::get('/zona/master', [ZoneController::class, "master"])->name('zona.master');
+    Route::get('/zona/form_add', [ZoneController::class, "form_add"])->name('zona.form_add');
+    Route::post('/zona/insert', [ZoneController::class, "insert"])->name('zona.insert');
+    Route::get('/zona/destroy', [ZoneController::class, "destroy"])->name('zona.destroy');
+    Route::get('/zona/form_edit', [ZoneController::class, "form_edit"])->name('zona.form_edit');
+    Route::post('/zona/update', [ZoneController::class, "update"])->name('zona.update');
+    Route::post('/zona/getPlant', [ZoneController::class, "getPlant"])->name('zona.getPlant');
 });
