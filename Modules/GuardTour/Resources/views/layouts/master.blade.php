@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<<<<<<< HEAD
 
 <head>
     <meta charset="utf-8">
@@ -118,7 +117,10 @@
                         <!-- Add icons to the links using the .nav-icon class
 		   with font-awesome or any other icon font library -->
                         <li class="nav-item ">
-                            <a href="#" class="nav-link">
+                            <a href="#" class="nav-link 
+                                @if($uri == 'dashboard' )
+                                active  
+                             @endif">
                                 <i class="nav-icon fas fa-tachometer-alt "></i>
                                 <p>
                                     Dashboard
@@ -135,11 +137,11 @@
                         </li>
 
                         <li class="nav-item 
-                            @if($uri == 'site/master' || $uri == 'site/form_add' || $uri == 'site/form_edit' || $uri == 'plant/master' || $uri == 'plant/form_add' || $uri == 'plant/form_edit' || $uri == 'company/master' || $uri == 'company/form_add' || $uri == 'company/form_edit' || $uri == 'zona/master' || $uri == 'zona/form_add' || $uri == 'zona/form_edit'   )
+                            @if($uri == 'site/master' || $uri == 'site/form_add' || $uri == 'site/form_edit' || $uri == 'plant/master' || $uri == 'plant/form_add' || $uri == 'plant/form_edit' || $uri == 'company/master' || $uri == 'company/form_add' || $uri == 'company/form_edit' || $uri == 'zona/master' || $uri == 'zona/form_add' || $uri == 'zona/form_edit' || $uri == 'checkpoint/master' || $uri == 'checkpoint/form_add' || $uri == 'checkpoint/form_edit'   )
                                 menu-open  
                              @endif">
                             <a href="#" class="nav-link
-                            @if($uri == 'site/master' || $uri == 'site/form_add' || $uri == 'site/form_edit' || $uri == 'plant/master' || $uri == 'plant/form_add' || $uri == 'plant/form_edit' || $uri == 'company/master' || $uri == 'company/form_add' || $uri == 'company/form_edit' || $uri == 'zona/master' || $uri == 'zona/form_add' || $uri == 'zona/form_edit'  )
+                            @if($uri == 'site/master' || $uri == 'site/form_add' || $uri == 'site/form_edit' || $uri == 'plant/master' || $uri == 'plant/form_add' || $uri == 'plant/form_edit' || $uri == 'company/master' || $uri == 'company/form_add' || $uri == 'company/form_edit' || $uri == 'zona/master' || $uri == 'zona/form_add' || $uri == 'zona/form_edit' || $uri == 'checkpoint/master' || $uri == 'checkpoint/form_add' || $uri == 'checkpoint/form_edit'  )
                                 active  
                              @endif
                              ">
@@ -192,7 +194,10 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('checkpoint.master') }}" class="nav-link
+                                    @if($uri == 'checkpoint/master' || $uri == 'checkpoint/form_add' || $uri == 'checkpoint/form_edit'  )
+                                            active  
+                                    @endif">
                                         <i class="fas fa-minus-circle nav-icon"></i>
                                         <p>Master Check Point</p>
                                     </a>
@@ -481,22 +486,3 @@
 </script>
 
 </html>
-=======
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Module GuardTour</title>
-
-       {{-- Laravel Vite - CSS File --}}
-       {{-- {{ module_vite('build-guardtour', 'Resources/assets/sass/app.scss') }} --}}
-
-    </head>
-    <body>
-        @yield('content')
-
-        {{-- Laravel Vite - JS File --}}
-        {{-- {{ module_vite('build-guardtour', 'Resources/assets/js/app.js') }} --}}
-    </body>
-</html>
->>>>>>> ad9ebfa0f56bc63ce53fb64d4baf6e89c240a5ff

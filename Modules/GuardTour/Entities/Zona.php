@@ -26,7 +26,7 @@ class Zona extends Model
         return DB::table('admisecsgp_mstzone')
             ->join('admisecsgp_mstplant', 'admisecsgp_mstzone.admisecsgp_mstplant_plant_id', '=', 'admisecsgp_mstplant.plant_id')
             ->join('admisecsgp_mstsite', 'admisecsgp_mstplant.admisecsgp_mstsite_site_id', '=', 'admisecsgp_mstsite.site_id')
-            ->select('admisecsgp_mstzone.*', 'admisecsgp_mstplant.plant_name', 'admisecsgp_mstsite.site_name')->get();
+            ->select('admisecsgp_mstzone.*', 'admisecsgp_mstplant.plant_name', 'admisecsgp_mstsite.site_name');
     }
 
     public function plantDetails()

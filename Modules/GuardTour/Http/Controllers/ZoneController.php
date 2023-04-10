@@ -24,7 +24,7 @@ class ZoneController extends Controller
         $uri =  \Request::segment(2) . '/' . \Request::segment(3);
         return view('guardtour::zona/master_zona', [
             'uri'    => $uri,
-            'zona' => $zona->details()
+            'zona' => $zona->details()->where('admisecsgp_mstcmp_company_id', Session('comp_id'))->get()
         ]);
     }
 
@@ -34,7 +34,7 @@ class ZoneController extends Controller
 
         return view('guardtour::zona/add_master_zona', [
             'uri'       => $uri,
-            'site'      => Site::all()
+            'site'      => Site::where('admisecsgp_mstcmp_company_id', Session('comp_id'))->get()
         ]);
     }
 

@@ -6,7 +6,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
-class GuardTourController extends Controller
+class DashboardController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,9 @@ class GuardTourController extends Controller
      */
     public function index()
     {
-        return view('guardtour::index');
+        return view('guardtour::dashboard/index', [
+            'uri'  => \Request::segment(2),
+        ]);
     }
 
     /**

@@ -23,7 +23,7 @@ class PlantsController extends Controller
         $uri =  \Request::segment(2) . '/' . \Request::segment(3);
         return view('guardtour::plant/master_plant', [
             'uri'    => $uri,
-            'plant' => $plant->details()
+            'plant' => $plant->details()->where('admisecsgp_mstcmp_company_id', Session('comp_id'))->get()
         ]);
     }
 

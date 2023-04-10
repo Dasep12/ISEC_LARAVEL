@@ -11,14 +11,20 @@
 |
 */
 
-<<<<<<< HEAD
+use Modules\GuardTour\Http\Controllers\CheckpointController;
 use Modules\GuardTour\Http\Controllers\CompanyController;
 use Modules\GuardTour\Http\Controllers\PlantsController;
 use Modules\GuardTour\Http\Controllers\SiteController;
 use Modules\GuardTour\Http\Controllers\ZoneController;
+use Modules\GuardTour\Http\Controllers\DashboardController;
 
 
 Route::prefix('guardtour')->group(function () {
+
+
+    // dashboard
+    Route::get('/dashboard', [DashboardController::class, "index"])->name('dashboard');
+
 
     //master company    
     Route::get('/company/master', [CompanyController::class, "master"])->name('company.master');
@@ -45,7 +51,6 @@ Route::prefix('guardtour')->group(function () {
     Route::post('/plant/update', [PlantsController::class, "update"])->name('plant.update');
     Route::post('/plant/getWilayah', [PlantsController::class, "getWilayah"])->name('plant.getWilayah');
 
-
     // master zone
     Route::get('/zona/master', [ZoneController::class, "master"])->name('zona.master');
     Route::get('/zona/form_add', [ZoneController::class, "form_add"])->name('zona.form_add');
@@ -54,8 +59,13 @@ Route::prefix('guardtour')->group(function () {
     Route::get('/zona/form_edit', [ZoneController::class, "form_edit"])->name('zona.form_edit');
     Route::post('/zona/update', [ZoneController::class, "update"])->name('zona.update');
     Route::post('/zona/getPlant', [ZoneController::class, "getPlant"])->name('zona.getPlant');
-=======
-Route::prefix('guardtour')->group(function() {
-    Route::get('/', 'GuardTourController@index');
->>>>>>> ad9ebfa0f56bc63ce53fb64d4baf6e89c240a5ff
+
+    // master checkpoint
+    Route::get('/checkpoint/master', [CheckpointController::class, "master"])->name('checkpoint.master');
+    Route::get('/checkpoint/form_add', [CheckpointController::class, "form_add"])->name('checkpoint.form_add');
+    Route::post('/checkpoint/insert', [CheckpointController::class, "insert"])->name('checkpoint.insert');
+    Route::get('/checkpoint/destroy', [CheckpointController::class, "destroy"])->name('checkpoint.destroy');
+    Route::get('/checkpoint/form_edit', [CheckpointController::class, "form_edit"])->name('checkpoint.form_edit');
+    Route::post('/checkpoint/update', [CheckpointController::class, "update"])->name('checkpoint.update');
+    Route::post('/checkpoint/getZona', [CheckpointController::class, "getZona"])->name('checkpoint.getZona');
 });

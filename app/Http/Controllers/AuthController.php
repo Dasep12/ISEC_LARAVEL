@@ -26,20 +26,17 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        if ($validator->fails()) 
-        {
+        if ($validator->fails()) {
             return redirect("/")->with(["error" => $validator]);
         }
 
         $res = collect(AuthModel::check($request));
 
-        if($res->isEmpty())
-        {
+        if ($res->isEmpty()) {
             return redirect("/")->with(["error" => $validator]);
         }
 
-        if(md5($request->input('password')) !== $res[0]->password)
-        {
+        if (md5($request->input('password')) !== $res[0]->password) {
             return back()->with(["error" => 'Password tidak sesuai'])->onlyInput('username');
         }
 
@@ -50,14 +47,15 @@ class AuthController extends Controller
             'role' => $res[0]->level,
             'site_id' => $res[0]->admisecsgp_mstsite_site_id,
             'plant_id' => $res[0]->admisecsgp_mstplant_plant_id,
+            'comp_id'   => $res[0]->admisecsgp_mstcmp_company_id,
             'wil_id' => $res[0]->id_wilayah,
             'log_key' => 'isLoginIsec',
         ]);
 
         // dd($res);
-        
+
         // $request->session()->flash('error', 'Password salah');
-        
+
         return redirect('/menu');
     }
 }
