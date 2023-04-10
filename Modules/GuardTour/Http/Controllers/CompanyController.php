@@ -45,7 +45,7 @@ class CompanyController extends Controller
             'comp_phone'      => $telp,
             'address1'        => $address,
             'created_at'      => date('Y-m-d H:i:s'),
-            'created_by'      => 229529,
+            'created_by'      => Session('npk'),
             'status'          => $status
         ]);
         return redirect()->route('company.master')->with(['success' => 'Data Berhasil di Simpan']);
@@ -79,6 +79,8 @@ class CompanyController extends Controller
         $company->comp_phone = $req->comp_phone;
         $company->address1    = $req->address1;
         $company->status   = $req->status;
+        $company->updated_at = date('Y-m-d H:i:s');
+        $company->updated_by = Session('npk');
         $company->save();
         return redirect()->route('company.master')->with(['success' => 'Data Berhasil di Perbarui']);
     }

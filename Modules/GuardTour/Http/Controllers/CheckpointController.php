@@ -94,7 +94,6 @@ class CheckpointController extends Controller
         $check->others                     = $req->others;
         $check->durasi_batas_atas          = $req->durasi_batas_atas;
         $check->durasi_batas_bawah         = $req->durasi_batas_bawah;
-        $check->others                     = $req->others;
         $check->updated_at                 = date('Y-m-d H:i:s');
         $check->updated_by                 = Session('npk');
         $check->save();

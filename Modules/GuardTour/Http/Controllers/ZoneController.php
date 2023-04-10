@@ -53,7 +53,7 @@ class ZoneController extends Controller
             'others'                           => strtoupper($req->others),
             'status'                           => $req->status,
             'created_at'                       => date('Y-m-d H:i:s'),
-            'created_by'                       => 229529,
+            'created_by'                       => Session('npk'),
         ]);
         return redirect()->route('zona.master')->with(['success' => 'Data Berhasil di Simpan']);
     }
@@ -88,7 +88,7 @@ class ZoneController extends Controller
         $zona->status                     = $req->status;
         $zona->others                     = $req->others;
         $zona->updated_at                 = date('Y-m-d H:i:s');
-        $zona->updated_by                 = 229529;
+        $zona->updated_by                 = Session('npk');
         $zona->save();
         return redirect()->route('zona.master')->with(['success' => 'Data Berhasil di Perbarui']);
     }

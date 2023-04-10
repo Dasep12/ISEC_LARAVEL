@@ -17,10 +17,10 @@ use Modules\GuardTour\Http\Controllers\PlantsController;
 use Modules\GuardTour\Http\Controllers\SiteController;
 use Modules\GuardTour\Http\Controllers\ZoneController;
 use Modules\GuardTour\Http\Controllers\DashboardController;
+use Modules\GuardTour\Http\Controllers\KategoriController;
 
 
 Route::prefix('guardtour')->group(function () {
-
 
     // dashboard
     Route::get('/dashboard', [DashboardController::class, "index"])->name('dashboard');
@@ -68,4 +68,14 @@ Route::prefix('guardtour')->group(function () {
     Route::get('/checkpoint/form_edit', [CheckpointController::class, "form_edit"])->name('checkpoint.form_edit');
     Route::post('/checkpoint/update', [CheckpointController::class, "update"])->name('checkpoint.update');
     Route::post('/checkpoint/getZona', [CheckpointController::class, "getZona"])->name('checkpoint.getZona');
+
+
+    // master kategori objek
+    Route::get('/kategori_objek/master', [KategoriController::class, "master"])->name('kategori_objek.master');
+    Route::get('/kategori_objek/form_add', [KategoriController::class, "form_add"])->name('kategori_objek.form_add');
+    Route::post('/kategori_objek/insert', [KategoriController::class, "insert"])->name('kategori_objek.insert');
+    Route::get('/kategori_objek/destroy', [KategoriController::class, "destroy"])->name('kategori_objek.destroy');
+    Route::get('/kategori_objek/form_edit', [KategoriController::class, "form_edit"])->name('kategori_objek.form_edit');
+    Route::post('/kategori_objek/update', [KategoriController::class, "update"])->name('kategori_objek.update');
+    Route::post('/kategori_objek/getZona', [KategoriController::class, "getZona"])->name('kategori_objek.getZona');
 });

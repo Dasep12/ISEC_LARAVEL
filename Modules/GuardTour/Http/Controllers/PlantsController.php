@@ -50,7 +50,7 @@ class PlantsController extends Controller
             'plant_name'                  => strtoupper($req->plant_name),
             'kode_plant'                  => strtoupper($req->kodeplant),
             'created_at'                  => date('Y-m-d H:i:s'),
-            'created_by'                  => 229529,
+            'created_by'                  => Session('npk'),
             'status'                      => $req->status,
             'others'                      => $req->others,
         ]);
@@ -86,6 +86,8 @@ class PlantsController extends Controller
         $plant->admisecsgp_mstsite_site_id = $req->site_id;
         $plant->status                     = $req->status;
         $plant->others                     = $req->others;
+        $plant->updated_at = date('Y-m-d H:i:s');
+        $plant->updated_by = Session('npk');
         $plant->save();
         return redirect()->route('plant.master')->with(['success' => 'Data Berhasil di Perbarui']);
     }
