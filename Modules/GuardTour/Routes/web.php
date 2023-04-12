@@ -18,7 +18,7 @@ use Modules\GuardTour\Http\Controllers\SiteController;
 use Modules\GuardTour\Http\Controllers\ZoneController;
 use Modules\GuardTour\Http\Controllers\DashboardController;
 use Modules\GuardTour\Http\Controllers\KategoriController;
-
+use Modules\GuardTour\Http\Controllers\ObjekController;
 
 Route::prefix('guardtour')->group(function () {
 
@@ -78,4 +78,15 @@ Route::prefix('guardtour')->group(function () {
     Route::get('/kategori_objek/form_edit', [KategoriController::class, "form_edit"])->name('kategori_objek.form_edit');
     Route::post('/kategori_objek/update', [KategoriController::class, "update"])->name('kategori_objek.update');
     Route::post('/kategori_objek/getZona', [KategoriController::class, "getZona"])->name('kategori_objek.getZona');
+
+
+    // master  objek
+    Route::get('/objek/master', [ObjekController::class, "master"])->name('objek.master');
+    Route::get('/objek/form_add', [ObjekController::class, "form_add"])->name('objek.form_add');
+    Route::post('/objek/insert', [ObjekController::class, "insert"])->name('objek.insert');
+    Route::get('/objek/destroy', [ObjekController::class, "destroy"])->name('objek.destroy');
+    Route::get('/objek/form_edit', [ObjekController::class, "form_edit"])->name('objek.form_edit');
+    Route::post('/objek/update', [ObjekController::class, "update"])->name('objek.update');
+    Route::post('/objek/getZona', [ObjekController::class, "getZona"])->name('objek.getZona');
+    Route::post('/objek/getCheckpoint', [ObjekController::class, "getCheckpoint"])->name('objek.getCheckpoint');
 });

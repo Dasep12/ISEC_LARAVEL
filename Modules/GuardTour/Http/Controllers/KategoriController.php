@@ -6,8 +6,6 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\GuardTour\Entities\KategoriObjek;
-use Modules\GuardTour\Entities\Plants;
-use Modules\GuardTour\Entities\Zona;
 
 class KategoriController extends Controller
 {
