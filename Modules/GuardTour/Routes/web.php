@@ -20,7 +20,7 @@ use Modules\GuardTour\Http\Controllers\DashboardController;
 use Modules\GuardTour\Http\Controllers\KategoriController;
 use Modules\GuardTour\Http\Controllers\ObjekController;
 use Modules\GuardTour\Http\Controllers\EventController;
-
+use Modules\GuardTour\Http\Controllers\ShiftController;
 
 Route::prefix('guardtour')->group(function () {
 
@@ -100,4 +100,12 @@ Route::prefix('guardtour')->group(function () {
     Route::get('/event/destroy', [EventController::class, "destroy"])->name('event.destroy');
     Route::get('/event/form_edit', [EventController::class, "form_edit"])->name('event.form_edit');
     Route::post('/event/update', [EventController::class, "update"])->name('event.update');
+
+    // master  shift
+    Route::get('/shift/master', [ShiftController::class, "master"])->name('shift.master');
+    Route::get('/shift/form_add', [ShiftController::class, "form_add"])->name('shift.form_add');
+    Route::post('/shift/insert', [ShiftController::class, "insert"])->name('shift.insert');
+    Route::get('/shift/destroy', [ShiftController::class, "destroy"])->name('shift.destroy');
+    Route::get('/shift/form_edit', [ShiftController::class, "form_edit"])->name('shift.form_edit');
+    Route::post('/shift/update', [ShiftController::class, "update"])->name('shift.update');
 });

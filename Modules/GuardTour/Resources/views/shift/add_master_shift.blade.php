@@ -9,7 +9,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{ route('event.master')}}">Master Event</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('shift.master')}}">Master Shift</a></li>
                     <li class="breadcrumb-item"><a href="">Tambah Data</a></li>
                 </ol>
             </div>
@@ -47,30 +47,30 @@
                             </button> -->
                         </div>
                     </div>
-                    <form onsubmit="return cek()" action="{{ route('event.update') }}" method="POST">
+                    <form onsubmit="return cek()" action="{{ route('shift.insert') }}" method="POST">
                         @csrf
                         <div class="card-body">
                             <div class="row">
-                                <input type="hidden" name="event_id" value="{{ $data->event_id }}" id="">
+
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label for="">KATEGORI OBJEK</label>
-                                        <select class="form-control" name="kategori_id" id="kategori_id">
-                                            <option value="">Pilih Kategori Objek</option>
-                                            @foreach ($kategori as $kt)
-                                            <option {{ $data->admisecsgp_mstkobj_kategori_id == $kt->kategori_id ? 'selected' : '' }} value="{{ $kt->kategori_id }}">{{ $kt->kategori_name }}</option>
-                                            @endforeach
-                                        </select>
+                                        <label for="">NAMA SHIFT</label>
+                                        <input type="text" name="shift" autocomplete="off" id="shift" class="form-control">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="">NAMA EVENT</label>
-                                        <input type="text" value="{{ $data->event_name }}" data-role='tags-input' name="event_name" autocomplete="off" id="event_name" value="" class="form-control">
+                                        <label for="">JAM MASUK</label>
+                                        <input type="text" name="jam_masuk" autocomplete="off" id="jam_masuk" class="form-control">
                                     </div>
-
 
                                 </div>
                                 <div class="col-lg-6">
+
+                                    <div class="form-group">
+                                        <label for="">JAM PULANG</label>
+                                        <input type="text" name="jam_pulang" autocomplete="off" id="jam_pulang" class="form-control">
+                                    </div>
+
 
                                     <div class="form-group">
                                         <label for="">STATUS</label>
@@ -79,9 +79,10 @@
                                             <option value="0">INACTIVE</option>
                                         </select>
                                     </div>
-                                    <a href="{{ route('event.master') }}" class="btn btn-success btn-sm"><i class="fas fa-arrow-left"></i> Kembali</a>
+                                    <a href="{{ route('shift.master') }}" class="btn btn-success btn-sm"><i class="fas fa-arrow-left"></i> Kembali</a>
                                     <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-save"></i> Simpan Data</button>
                                 </div>
+
 
                             </div>
 
@@ -97,16 +98,27 @@
 
 <script>
     function cek() {
-        if (document.getElementById("kategori_id").value == "") {
-            alert('pilih kategori');
-            $("#kategori_id").addClass('is-invalid');
+        if (document.getElementById("shift").value == "") {
+            alert('pilih nama shift');
+            $("#shift").addClass('is-invalid');
             return false
-        } else if (document.getElementById("event_name").value == "") {
-            alert('isi nama event');
-            $("#event_name").addClass('is-invalid');
+        } else if (document.getElementById("jam_masuk").value == "") {
+            alert('isi jam masuk');
+            $("#jam_masuk").addClass('is-invalid');
+            return false
+        } else if (document.getElementById("jam_pulang").value == "") {
+            alert('isi jam pulang');
+            $("#jam_pulang").addClass('is-invalid');
             return false
         }
         return;
     }
+
+    $('#jam_masuk').timepicker({
+        uiLibrary: 'bootstrap4'
+    });
+    $('#jam_pulang').timepicker({
+        uiLibrary: 'bootstrap4'
+    });
 </script>
 @endsection
