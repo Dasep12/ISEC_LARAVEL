@@ -19,6 +19,8 @@ use Modules\GuardTour\Http\Controllers\ZoneController;
 use Modules\GuardTour\Http\Controllers\DashboardController;
 use Modules\GuardTour\Http\Controllers\KategoriController;
 use Modules\GuardTour\Http\Controllers\ObjekController;
+use Modules\GuardTour\Http\Controllers\EventController;
+
 
 Route::prefix('guardtour')->group(function () {
 
@@ -89,4 +91,13 @@ Route::prefix('guardtour')->group(function () {
     Route::post('/objek/update', [ObjekController::class, "update"])->name('objek.update');
     Route::post('/objek/getZona', [ObjekController::class, "getZona"])->name('objek.getZona');
     Route::post('/objek/getCheckpoint', [ObjekController::class, "getCheckpoint"])->name('objek.getCheckpoint');
+
+
+    // master  event
+    Route::get('/event/master', [EventController::class, "master"])->name('event.master');
+    Route::get('/event/form_add', [EventController::class, "form_add"])->name('event.form_add');
+    Route::post('/event/insert', [EventController::class, "insert"])->name('event.insert');
+    Route::get('/event/destroy', [EventController::class, "destroy"])->name('event.destroy');
+    Route::get('/event/form_edit', [EventController::class, "form_edit"])->name('event.form_edit');
+    Route::post('/event/update', [EventController::class, "update"])->name('event.update');
 });
