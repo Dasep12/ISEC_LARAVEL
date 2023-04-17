@@ -20,6 +20,7 @@ use Modules\GuardTour\Http\Controllers\DashboardController;
 use Modules\GuardTour\Http\Controllers\KategoriController;
 use Modules\GuardTour\Http\Controllers\ObjekController;
 use Modules\GuardTour\Http\Controllers\EventController;
+use Modules\GuardTour\Http\Controllers\ProduksiController;
 use Modules\GuardTour\Http\Controllers\ShiftController;
 
 Route::prefix('guardtour')->group(function () {
@@ -108,4 +109,12 @@ Route::prefix('guardtour')->group(function () {
     Route::get('/shift/destroy', [ShiftController::class, "destroy"])->name('shift.destroy');
     Route::get('/shift/form_edit', [ShiftController::class, "form_edit"])->name('shift.form_edit');
     Route::post('/shift/update', [ShiftController::class, "update"])->name('shift.update');
+
+    //master produksi
+    Route::get('/produksi/master', [ProduksiController::class, "master"])->name('produksi.master');
+    Route::get('/produksi/form_add', [ProduksiController::class, "form_add"])->name('produksi.form_add');
+    Route::post('/produksi/insert', [ProduksiController::class, "insert"])->name('produksi.insert');
+    Route::get('/produksi/destroy', [ProduksiController::class, "destroy"])->name('produksi.destroy');
+    Route::get('/produksi/form_edit', [ProduksiController::class, "form_edit"])->name('produksi.form_edit');
+    Route::post('/produksi/update', [ProduksiController::class, "update"])->name('produksi.update');
 });

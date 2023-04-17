@@ -83,16 +83,4 @@ class EventController extends Controller
         $event->save();
         return redirect()->route('event.master')->with(['success' => 'Data Berhasil di Perbarui']);
     }
-
-    public function getZona(Request $req)
-    {
-        $id = $req->id;
-        return response()->json(['zona' => Zona::where('admisecsgp_mstplant_plant_id', $id)->get()]);
-    }
-
-    public function getCheckpoint(Request $req)
-    {
-        $id = $req->id;
-        return response()->json(['check' => Checkpoint::where('admisecsgp_mstzone_zone_id', $id)->get()]);
-    }
 }

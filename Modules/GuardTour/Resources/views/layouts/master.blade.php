@@ -141,11 +141,11 @@
                         </li>
 
                         <li class="nav-item 
-                            @if($uri == 'site/master' || $uri == 'site/form_add' || $uri == 'site/form_edit' || $uri == 'plant/master' || $uri == 'plant/form_add' || $uri == 'plant/form_edit' || $uri == 'company/master' || $uri == 'company/form_add' || $uri == 'company/form_edit' || $uri == 'zona/master' || $uri == 'zona/form_add' || $uri == 'zona/form_edit' || $uri == 'checkpoint/master' || $uri == 'checkpoint/form_add' || $uri == 'checkpoint/form_edit' || $uri == 'kategori_objek/master' || $uri == 'kategori_objek/form_add' || $uri == 'kategori_objek/form_edit' || $uri == 'objek/master' || $uri == 'objek/form_add' || $uri == 'objek/form_edit'  || $uri == 'event/master' || $uri == 'event/form_add' || $uri == 'event/form_edit' || $uri == 'shift/master' || $uri == 'shift/form_add' || $uri == 'shift/form_edit' )
+                            @if($uri == 'site/master' || $uri == 'site/form_add' || $uri == 'site/form_edit' || $uri == 'plant/master' || $uri == 'plant/form_add' || $uri == 'plant/form_edit' || $uri == 'company/master' || $uri == 'company/form_add' || $uri == 'company/form_edit' || $uri == 'zona/master' || $uri == 'zona/form_add' || $uri == 'zona/form_edit' || $uri == 'checkpoint/master' || $uri == 'checkpoint/form_add' || $uri == 'checkpoint/form_edit' || $uri == 'kategori_objek/master' || $uri == 'kategori_objek/form_add' || $uri == 'kategori_objek/form_edit' || $uri == 'objek/master' || $uri == 'objek/form_add' || $uri == 'objek/form_edit'  || $uri == 'event/master' || $uri == 'event/form_add' || $uri == 'event/form_edit' || $uri == 'shift/master' || $uri == 'shift/form_add' || $uri == 'shift/form_edit' || $uri == 'produksi/master' || $uri == 'produksi/form_add' || $uri == 'produksi/form_edit'  )
                                 menu-open  
                              @endif">
                             <a href="#" class="nav-link
-                            @if($uri == 'site/master' || $uri == 'site/form_add' || $uri == 'site/form_edit' || $uri == 'plant/master' || $uri == 'plant/form_add' || $uri == 'plant/form_edit' || $uri == 'company/master' || $uri == 'company/form_add' || $uri == 'company/form_edit' || $uri == 'zona/master' || $uri == 'zona/form_add' || $uri == 'zona/form_edit' || $uri == 'checkpoint/master' || $uri == 'checkpoint/form_add' || $uri == 'checkpoint/form_edit'  || $uri == 'kategori_objek/master' || $uri == 'kategori_objek/form_add' || $uri == 'kategori_objek/form_edit' || $uri == 'objek/master' || $uri == 'objek/form_add' || $uri == 'objek/form_edit'  || $uri == 'event/master' || $uri == 'event/form_add' || $uri == 'event/form_edit' || $uri == 'shift/master' || $uri == 'shift/form_add' || $uri == 'shift/form_edit' )
+                            @if($uri == 'site/master' || $uri == 'site/form_add' || $uri == 'site/form_edit' || $uri == 'plant/master' || $uri == 'plant/form_add' || $uri == 'plant/form_edit' || $uri == 'company/master' || $uri == 'company/form_add' || $uri == 'company/form_edit' || $uri == 'zona/master' || $uri == 'zona/form_add' || $uri == 'zona/form_edit' || $uri == 'checkpoint/master' || $uri == 'checkpoint/form_add' || $uri == 'checkpoint/form_edit'  || $uri == 'kategori_objek/master' || $uri == 'kategori_objek/form_add' || $uri == 'kategori_objek/form_edit' || $uri == 'objek/master' || $uri == 'objek/form_add' || $uri == 'objek/form_edit'  || $uri == 'event/master' || $uri == 'event/form_add' || $uri == 'event/form_edit' || $uri == 'shift/master' || $uri == 'shift/form_add' || $uri == 'shift/form_edit' || $uri == 'produksi/master' || $uri == 'produksi/form_add' || $uri == 'produksi/form_edit'  )
                                 active  
                              @endif
                              ">
@@ -246,7 +246,10 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('produksi.master')  }}" class="nav-link
+                                    @if($uri == 'produksi/master' || $uri == 'produksi/form_add' || $uri == 'produksi/form_edit'  )
+                                        active  
+                                    @endif">
                                         <i class="fas fa-minus-circle nav-icon"></i>
                                         <p>Master Produksi</p>
                                     </a>
