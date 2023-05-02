@@ -22,6 +22,7 @@ use Modules\GuardTour\Http\Controllers\ObjekController;
 use Modules\GuardTour\Http\Controllers\EventController;
 use Modules\GuardTour\Http\Controllers\ProduksiController;
 use Modules\GuardTour\Http\Controllers\RoleController;
+use Modules\GuardTour\Http\Controllers\SettingsController;
 use Modules\GuardTour\Http\Controllers\ShiftController;
 use Modules\GuardTour\Http\Controllers\UsersController;
 use Modules\GuardTour\Http\Controllers\UsersGaController;
@@ -146,4 +147,13 @@ Route::prefix('guardtour')->group(function () {
     Route::get('/produksi/destroy', [ProduksiController::class, "destroy"])->name('produksi.destroy');
     Route::get('/produksi/form_edit', [ProduksiController::class, "form_edit"])->name('produksi.form_edit');
     Route::post('/produksi/update', [ProduksiController::class, "update"])->name('produksi.update');
+
+
+    // master  setting
+    Route::get('/settings/master', [SettingsController::class, "master"])->name('settings.master');
+    Route::get('/settings/form_add', [SettingsController::class, "form_add"])->name('settings.form_add');
+    Route::post('/settings/insert', [SettingsController::class, "insert"])->name('settings.insert');
+    Route::get('/settings/destroy', [SettingsController::class, "destroy"])->name('settings.destroy');
+    Route::get('/settings/form_edit', [SettingsController::class, "form_edit"])->name('settings.form_edit');
+    Route::post('/settings/update', [SettingsController::class, "update"])->name('settings.update');
 });
