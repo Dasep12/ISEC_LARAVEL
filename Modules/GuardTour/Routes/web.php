@@ -21,7 +21,10 @@ use Modules\GuardTour\Http\Controllers\KategoriController;
 use Modules\GuardTour\Http\Controllers\ObjekController;
 use Modules\GuardTour\Http\Controllers\EventController;
 use Modules\GuardTour\Http\Controllers\ProduksiController;
+use Modules\GuardTour\Http\Controllers\RoleController;
 use Modules\GuardTour\Http\Controllers\ShiftController;
+use Modules\GuardTour\Http\Controllers\UsersController;
+use Modules\GuardTour\Http\Controllers\UsersGaController;
 
 Route::prefix('guardtour')->group(function () {
 
@@ -93,6 +96,32 @@ Route::prefix('guardtour')->group(function () {
     Route::post('/objek/getZona', [ObjekController::class, "getZona"])->name('objek.getZona');
     Route::post('/objek/getCheckpoint', [ObjekController::class, "getCheckpoint"])->name('objek.getCheckpoint');
 
+    // master  users
+    Route::get('/users/master', [UsersController::class, "master"])->name('users.master');
+    Route::get('/users/form_add', [UsersController::class, "form_add"])->name('users.form_add');
+    Route::post('/users/insert', [UsersController::class, "insert"])->name('users.insert');
+    Route::get('/users/destroy', [UsersController::class, "destroy"])->name('users.destroy');
+    Route::get('/users/form_edit', [UsersController::class, "form_edit"])->name('users.form_edit');
+    Route::post('/users/update', [UsersController::class, "update"])->name('users.update');
+    Route::post('/users/getPlant', [UsersController::class, "getPlant"])->name('users.getPlant');
+
+
+    // master  users_ga
+    Route::get('/users_ga/master', [UsersGaController::class, "master"])->name('users_ga.master');
+    Route::get('/users_ga/form_add', [UsersGaController::class, "form_add"])->name('users_ga.form_add');
+    Route::post('/users_ga/insert', [UsersGaController::class, "insert"])->name('users_ga.insert');
+    Route::get('/users_ga/destroy', [UsersGaController::class, "destroy"])->name('users_ga.destroy');
+    Route::get('/users_ga/form_edit', [UsersGaController::class, "form_edit"])->name('users_ga.form_edit');
+    Route::post('/users_ga/update', [UsersGaController::class, "update"])->name('users_ga.update');
+    Route::post('/users_ga/getPlant', [UsersGaController::class, "getPlant"])->name('users_ga.getPlant');
+
+    // master  role
+    Route::get('/role/master', [RoleController::class, "master"])->name('role.master');
+    Route::get('/role/form_add', [RoleController::class, "form_add"])->name('role.form_add');
+    Route::post('/role/insert', [RoleController::class, "insert"])->name('role.insert');
+    Route::get('/role/destroy', [RoleController::class, "destroy"])->name('role.destroy');
+    Route::get('/role/form_edit', [RoleController::class, "form_edit"])->name('role.form_edit');
+    Route::post('/role/update', [RoleController::class, "update"])->name('role.update');
 
     // master  event
     Route::get('/event/master', [EventController::class, "master"])->name('event.master');
