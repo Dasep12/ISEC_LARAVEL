@@ -49,6 +49,9 @@
     <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
     <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css" rel="stylesheet">
 </head>
 
 <body class="hold-transition sidebar-mini sidebar-collapse layout-navbar-fixed">
@@ -295,8 +298,14 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
+                        <li class="nav-item
+                        @if($uri == 'jadpatroli/master' || $uri == 'jadpatroli/form_upload')
+                                menu-open  
+                             @endif">
+                            <a href="#" class="nav-link
+                            @if($uri == 'jadpatroli/master' || $uri == 'jadpatroli/form_upload' )
+                                active  
+                             @endif">
                                 <i class="nav-icon fas fa-calendar-alt"></i>
                                 <p>
                                     Jadwal
@@ -305,7 +314,10 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('jadpatroli.master')  }}" class="nav-link
+                                    @if($uri == 'jadpatroli/master' || $uri == 'jadpatroli/form_upload' )
+                                        active  
+                                    @endif">
                                         <i class="fas fa-minus-circle nav-icon"></i>
                                         <p>Jadwal Patroli</p>
                                     </a>

@@ -20,6 +20,7 @@ use Modules\GuardTour\Http\Controllers\DashboardController;
 use Modules\GuardTour\Http\Controllers\KategoriController;
 use Modules\GuardTour\Http\Controllers\ObjekController;
 use Modules\GuardTour\Http\Controllers\EventController;
+use Modules\GuardTour\Http\Controllers\JadPatroliController;
 use Modules\GuardTour\Http\Controllers\ProduksiController;
 use Modules\GuardTour\Http\Controllers\RoleController;
 use Modules\GuardTour\Http\Controllers\SettingsController;
@@ -156,4 +157,10 @@ Route::prefix('guardtour')->group(function () {
     Route::get('/settings/destroy', [SettingsController::class, "destroy"])->name('settings.destroy');
     Route::get('/settings/form_edit', [SettingsController::class, "form_edit"])->name('settings.form_edit');
     Route::post('/settings/update', [SettingsController::class, "update"])->name('settings.update');
+
+
+    // jadwal patroli
+    Route::get('/jadpatroli/master', [JadPatroliController::class, "master"])->name('jadpatroli.master');
+    Route::get('/jadpatroli/form_upload', [JadPatroliController::class, "form_upload"])->name('jadpatroli.form_upload');
+    Route::post('/jadpatroli/upload', [JadPatroliController::class, "uploadJadwal"])->name('jadpatroli.upload');
 });
