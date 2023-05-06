@@ -161,6 +161,10 @@ Route::prefix('guardtour')->group(function () {
 
     // jadwal patroli
     Route::get('/jadpatroli/master', [JadPatroliController::class, "master"])->name('jadpatroli.master');
+    Route::post('/jadpatroli/master', [JadPatroliController::class, "master"])->name('jadpatroli.master');
     Route::get('/jadpatroli/form_upload', [JadPatroliController::class, "form_upload"])->name('jadpatroli.form_upload');
+    Route::get('/jadpatroli/form_edit_jadpatrol', [JadPatroliController::class, "edit_jadwal"])->name('jadpatroli.form_edit_jadpatrol');
+    Route::post('/jadpatroli/form_edit_jadpatrol', [JadPatroliController::class, "edit_jadwal"])->name('jadpatroli.form_edit_jadpatrol');
+    Route::post('/jadpatroli/updateJadwal', [JadPatroliController::class, "updateJadwal"])->name('jadpatroli.updateJadwal');
     Route::post('/jadpatroli/upload', [JadPatroliController::class, "uploadJadwal"])->name('jadpatroli.upload');
 });

@@ -20,18 +20,60 @@ class JadPatroliController extends Controller
      * @return Renderable
      */
 
-    public function master()
+    public function master(Request $req)
     {
+
+        $date = "2023-03";
+        $plant_id = "ADMP5LP";
+        $headerJadwal = "";
+        if (isset($_POST['submit'])) {
+            $date = $req->date;
+            $plant_id = $req->plant;
+            $headerJadwal = JadwalPatroli::headerJadwalPatroli($date, $plant_id);
+        }
+
         $uri =  \Request::segment(2) . '/' . \Request::segment(3);
         return view('guardtour::jadwal_patroli/master_jadwal_patroli', [
             'uri'        => $uri,
-            'plants'     => Plants::all()
+            'plants'     => Plants::all(),
+            'date'       => $date,
+            'plant_id'   => $plant_id,
+            'header'     => $headerJadwal
         ]);
     }
 
-    public function view_jadwal(Type $var = null)
+    public function edit_jadwal(Request $req)
     {
-        # code...
+        $date = date('Y-m-d');
+        $plant_id = "";
+        $headerJadwal = "";
+        if (isset($_POST['submit'])) {
+            $date = $req->date;
+            $plant_id = $req->plant;
+            $headerJadwal = JadwalPatroli::getPatroliPerTanggal($date, $plant_id);
+        }
+        $uri =  \Request::segment(2) . '/' . \Request::segment(3);
+        return view('guardtour::jadwal_patroli/form_edit_jadwal_patroli', [
+            'uri'        => $uri,
+            'plants'     => Plants::all(),
+            'data'       => $headerJadwal,
+            'date'       => $date,
+            'plant_id'   => $plant_id,
+            'shift'      => Shift::all()
+        ]);
+    }
+
+    public function updateJadwal(Request $req)
+    {
+        $id  = $req->id;
+        $shift = $req->shift;
+        $data = JadwalPatroli::find($id);
+        $data->admisecsgp_mstshift_shift_id  = $shift;
+        if ($data->save()) {
+            echo 1;
+        } else {
+            echo 0;
+        }
     }
 
     public function form_upload()

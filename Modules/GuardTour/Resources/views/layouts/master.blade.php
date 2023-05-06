@@ -299,11 +299,11 @@
                             </ul>
                         </li>
                         <li class="nav-item
-                        @if($uri == 'jadpatroli/master' || $uri == 'jadpatroli/form_upload')
+                        @if($uri == 'jadpatroli/master' || $uri == 'jadpatroli/form_upload' || $uri == 'jadpatroli/form_edit_jadpatrol')
                                 menu-open  
                              @endif">
                             <a href="#" class="nav-link
-                            @if($uri == 'jadpatroli/master' || $uri == 'jadpatroli/form_upload' )
+                            @if($uri == 'jadpatroli/master' || $uri == 'jadpatroli/form_upload' || $uri == 'jadpatroli/form_edit_jadpatrol' )
                                 active  
                              @endif">
                                 <i class="nav-icon fas fa-calendar-alt"></i>
@@ -315,7 +315,7 @@
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="{{ route('jadpatroli.master')  }}" class="nav-link
-                                    @if($uri == 'jadpatroli/master' || $uri == 'jadpatroli/form_upload' )
+                                    @if($uri == 'jadpatroli/master' || $uri == 'jadpatroli/form_upload' || $uri == 'jadpatroli/form_edit_jadpatrol' )
                                         active  
                                     @endif">
                                         <i class="fas fa-minus-circle nav-icon"></i>

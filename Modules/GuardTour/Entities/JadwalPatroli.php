@@ -54,4 +54,46 @@ class JadwalPatroli extends Model
             ->select('nama_shift')
             ->first();
     }
+
+    public static function headerJadwalPatroli($date, $plant)
+    {
+        return DB::table('admisecsgp_trans_jadwal_patroli as jp')
+            ->join('admisecsgp_mstusr as u', 'u.npk', 'jp.admisecsgp_mstusr_npk')
+            ->join('admisecsgp_mstplant as p', 'p.plant_id', 'jp.admisecsgp_mstplant_plant_id')
+            ->where([
+                [DB::raw("(FORMAT(jp.date_patroli,'yyyy-MM'))"), '=', $date],
+                ['jp.admisecsgp_mstplant_plant_id', '=', $plant]
+            ])
+            ->select('u.npk', 'u.name', 'p.plant_name')
+            ->groupBy('u.npk', 'u.name', 'p.plant_name')
+            ->get();
+    }
+
+    public static function shiftPatroli($date, $npk)
+    {
+        return DB::table('admisecsgp_trans_jadwal_patroli as jp')
+            ->join('admisecsgp_mstshift as s', 's.shift_id', 'jp.admisecsgp_mstshift_shift_id')
+            ->where([
+                ['jp.date_patroli', '=', $date],
+                ['jp.admisecsgp_mstusr_npk', '=', $npk]
+            ])
+            ->select('s.nama_shift as shift')
+            ->first();
+    }
+
+
+    public  static function getPatroliPerTanggal($date, $plant)
+    {
+        return DB::table('admisecsgp_trans_jadwal_patroli as jp')
+            ->join('admisecsgp_mstusr as u', 'u.npk', 'jp.admisecsgp_mstusr_npk')
+            ->join('admisecsgp_mstplant as p', 'p.plant_id', 'jp.admisecsgp_mstplant_plant_id')
+            ->join('admisecsgp_mstshift as s', 's.shift_id', 'jp.admisecsgp_mstshift_shift_id')
+            ->where([
+                [DB::raw("(FORMAT(jp.date_patroli,'yyyy-MM-dd'))"), '=', $date],
+                ['jp.admisecsgp_mstplant_plant_id', '=', $plant]
+            ])
+            ->select('jp.id_jadwal_patroli as id', 'u.name', 'u.npk', 's.nama_shift', 'p.plant_name', 'jp.date_patroli', 's.shift_id')
+            ->groupBy('jp.id_jadwal_patroli', 'u.name', 'u.npk', 's.nama_shift', 'p.plant_name', 'jp.date_patroli', 's.shift_id')
+            ->get();
+    }
 }
