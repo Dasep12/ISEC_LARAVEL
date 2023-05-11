@@ -21,6 +21,7 @@ use Modules\GuardTour\Http\Controllers\KategoriController;
 use Modules\GuardTour\Http\Controllers\ObjekController;
 use Modules\GuardTour\Http\Controllers\EventController;
 use Modules\GuardTour\Http\Controllers\JadPatroliController;
+use Modules\GuardTour\Http\Controllers\JadProduksiController;
 use Modules\GuardTour\Http\Controllers\ProduksiController;
 use Modules\GuardTour\Http\Controllers\RoleController;
 use Modules\GuardTour\Http\Controllers\SettingsController;
@@ -167,4 +168,13 @@ Route::prefix('guardtour')->group(function () {
     Route::post('/jadpatroli/form_edit_jadpatrol', [JadPatroliController::class, "edit_jadwal"])->name('jadpatroli.form_edit_jadpatrol');
     Route::post('/jadpatroli/updateJadwal', [JadPatroliController::class, "updateJadwal"])->name('jadpatroli.updateJadwal');
     Route::post('/jadpatroli/upload', [JadPatroliController::class, "uploadJadwal"])->name('jadpatroli.upload');
+
+
+
+    // jadwal produksi
+    Route::get('/jadproduksi/master', [JadProduksiController::class, "master"])->name('jadproduksi.master');
+    Route::post('/jadproduksi/master', [JadProduksiController::class, "master"])->name('jadproduksi.master');
+    Route::post('/jadproduksi/updateProduksi', [JadProduksiController::class, "updateProduksi"])->name('jadproduksi.updateProduksi');
+    Route::get('/jadproduksi/form_upload', [JadProduksiController::class, "form_upload"])->name('jadproduksi.form_upload');
+    Route::post('/jadproduksi/upload', [JadProduksiController::class, "uploadJadwal"])->name('jadproduksi.upload');
 });

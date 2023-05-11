@@ -3,9 +3,11 @@
 namespace Modules\GuardTour\Http\Controllers;
 
 use App\Helpers\BulanHelper;
+use Illuminate\Support\Facades\File;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Modules\GuardTour\Entities\JadwalPatroli;
 use Modules\GuardTour\Entities\Plants;
 use Modules\GuardTour\Entities\Shift;
@@ -23,7 +25,7 @@ class JadPatroliController extends Controller
     public function master(Request $req)
     {
 
-        $date = "2023-03";
+        $date = date('Y-m');
         $plant_id = "ADMP5LP";
         $headerJadwal = "";
         if (isset($_POST['submit'])) {
@@ -37,6 +39,7 @@ class JadPatroliController extends Controller
             'uri'        => $uri,
             'plants'     => Plants::all(),
             'date'       => $date,
+            'month'      => BulanHelper::convertMonth(explode('-', $date)[1]),
             'plant_id'   => $plant_id,
             'header'     => $headerJadwal
         ]);
@@ -89,9 +92,9 @@ class JadPatroliController extends Controller
     {
         if ($req->file('file')) {
             $file = $req->file('file');
-            $filename = date('YmdHi') . $file->getClientOriginalName();
+            $filename = 'TMPJDWL' . $file->getClientOriginalName();
             $file->move(public_path('assets/jadwal/'), $filename);
-
+            // $exe = pathinfo(public_path('assets/jadwal/' . $filename), PATHINFO_EXTENSION);
             $path_xlsx        = 'assets/jadwal/' . $filename;
             $reader           = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
             $spreadsheet      = $reader->load($path_xlsx);
@@ -179,8 +182,16 @@ class JadPatroliController extends Controller
                     }
                 }
 
-                JadwalPatroli::insert($data_jadpatroli);
-                return redirect()->route('jadpatroli.master')->with(['success' => 'Data Berhasil di Perbarui']);
+                DB::beginTransaction();
+
+                try {
+                    JadwalPatroli::insert($data_jadpatroli);
+                    DB::commit();
+                } catch (\Exception $e) {
+                    DB::rollBack();
+                }
+                File::delete(public_path() . '/assets/jadwal/' .  $filename);
+                return redirect()->route('jadpatroli.form_upload')->with(['success' => 'Data Berhasil di Upload']);
             } else {
                 return redirect()->route('jadpatroli.form_upload')->with(['failed' => 'Data Plant Tidak Ditemukan']);
             }

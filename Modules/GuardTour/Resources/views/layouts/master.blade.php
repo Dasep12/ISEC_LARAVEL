@@ -52,6 +52,11 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css" rel="stylesheet">
+    <script src="{{ asset('assets/dist/bootstrap-switch/js/bootstrap-switch.min.js') }}"></script>
+
+    <style>
+
+    </style>
 </head>
 
 <body class="hold-transition sidebar-mini sidebar-collapse layout-navbar-fixed">
@@ -299,11 +304,11 @@
                             </ul>
                         </li>
                         <li class="nav-item
-                        @if($uri == 'jadpatroli/master' || $uri == 'jadpatroli/form_upload' || $uri == 'jadpatroli/form_edit_jadpatrol')
+                        @if($uri == 'jadpatroli/master' || $uri == 'jadpatroli/form_upload' || $uri == 'jadpatroli/form_edit_jadpatrol' || $uri == 'jadproduksi/master' || $uri == 'jadproduksi/form_upload')
                                 menu-open  
                              @endif">
                             <a href="#" class="nav-link
-                            @if($uri == 'jadpatroli/master' || $uri == 'jadpatroli/form_upload' || $uri == 'jadpatroli/form_edit_jadpatrol' )
+                            @if($uri == 'jadpatroli/master' || $uri == 'jadpatroli/form_upload' || $uri == 'jadpatroli/form_edit_jadpatrol' || $uri == 'jadproduksi/master' || $uri == 'jadproduksi/form_upload' )
                                 active  
                              @endif">
                                 <i class="nav-icon fas fa-calendar-alt"></i>
@@ -315,7 +320,7 @@
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="{{ route('jadpatroli.master')  }}" class="nav-link
-                                    @if($uri == 'jadpatroli/master' || $uri == 'jadpatroli/form_upload' || $uri == 'jadpatroli/form_edit_jadpatrol' )
+                                    @if($uri == 'jadpatroli/master' || $uri == 'jadpatroli/form_edit_jadpatrol' )
                                         active  
                                     @endif">
                                         <i class="fas fa-minus-circle nav-icon"></i>
@@ -323,19 +328,28 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('jadproduksi.master')  }}" class="nav-link
+                                    @if($uri == 'jadproduksi/master')
+                                        active  
+                                    @endif">
                                         <i class="fas fa-minus-circle nav-icon"></i>
                                         <p>Jadwal Produksi</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="fas fa-minus-circle nav-icon"></i>
+                                    <a href="{{ route('jadpatroli.form_upload') }}" class="nav-link
+                                    @if($uri == 'jadpatroli/form_upload' )
+                                        active  
+                                    @endif">
+                                        <i class=" fas fa-minus-circle nav-icon"></i>
                                         <p>Upload Jadwal Patroli</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('jadproduksi.form_upload') }}" class="nav-link
+                                    @if($uri == 'jadproduksi/form_upload' )
+                                        active  
+                                    @endif">
                                         <i class="fas fa-minus-circle nav-icon"></i>
                                         <p>Upload Jadwal Produksi</p>
                                     </a>

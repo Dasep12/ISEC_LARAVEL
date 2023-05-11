@@ -50,4 +50,31 @@ class BulanHelper
         }
         return $bulan;
     }
+
+
+    public static function convertMonth($bln)
+    {
+        $key = "";
+        if ($bln <= "09") {
+            $key = explode('0', $bln)[1] - 1;
+        } else {
+            $key = $bln - 1;
+        }
+
+        $bulan = array(
+            'Januari',
+            'Februari',
+            'Maret',
+            'April',
+            'Mei',
+            'Juni',
+            'Juli',
+            'Agustus',
+            'September',
+            'Oktober',
+            'November',
+            'Desember'
+        );
+        return $bulan[$key];
+    }
 }
