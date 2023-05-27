@@ -12,11 +12,17 @@ use App\Models\AuthModel;
 
 class AuthController extends Controller
 {
+
     public function index(): View
     {
         // $request->session()->flash('error', 'Password salah');
 
         return view('login');
+
+        // $ip =   "192.168.1.107";
+        // exec("ping -n 3 $ip", $output, $status);
+        // echo "<pre>";
+        // print_r($status);
     }
 
     public function check(Request $request): RedirectResponse
