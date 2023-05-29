@@ -60,4 +60,10 @@ class AuthController extends Controller
         
         return redirect('/menu');
     }
+
+    public function logout(): RedirectResponse
+    {
+        session()->flush();
+        return redirect("/");
+    }
 }

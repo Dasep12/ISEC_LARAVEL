@@ -14,6 +14,7 @@ class MenuController extends Controller
         // $this->middleware('auth');
         // $this->middleware('log')->only('index');
         // $this->middleware('subscribed')->except('store');
+        $this->middleware('is_login_isec');
     }
 
     public function index(): View

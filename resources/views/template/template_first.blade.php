@@ -69,7 +69,7 @@
                     <span class="font-italic font-bold">Welcome {{ session('name') }}</span>
                 </li>
                 <li class="nav-item">
-                    <a class=" btn btn-sm btn-info" href="Logout">
+                    <a class="btn btn-sm btn-info" href="{{ URL::route('auth.logout') }}">
                         <i class="fas fa-user"></i> LOGOUT
                     </a>
                 </li>
@@ -153,7 +153,7 @@
 
                         <?php if (AuthHelper::is_super_admin() || AuthHelper::is_app('SRS')) { ?>
                             <li class="nav-item">
-                                <a href="analitic/srs/dashboard" class="nav-link">
+                                <a href="srs/dashboard" class="nav-link">
                                     <i class="nav-icon fas fa-chart-pie"></i>
                                     <p>
                                         Security Risk Survey
@@ -164,7 +164,7 @@
                         <?php  } ?>
                         <?php if (AuthHelper::is_super_admin() || AuthHelper::is_app('CRI')) { ?>
                             <li class="nav-item">
-                                <a href="analitic/crime/Crime/dashboard" class="nav-link">
+                                <a href="crime/Crime/dashboard" class="nav-link">
                                     <i class="nav-icon fas fa-chart-pie"></i>
                                     <p>
                                         Crime Index
@@ -175,7 +175,7 @@
                         <?php } ?>
                         <?php if (AuthHelper::is_super_admin() || AuthHelper::is_app('ALTA')) { ?>
                             <li class="nav-item">
-                                <a href="analitic/information/Anggota/dashboard" class="nav-link">
+                                <a href="information/Anggota/dashboard" class="nav-link">
                                     <i class="nav-icon fas fa-chart-pie"></i>
                                     <p>
                                         Analytic Anggota

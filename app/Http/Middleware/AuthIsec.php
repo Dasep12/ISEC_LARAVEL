@@ -15,10 +15,12 @@ class AuthIsec
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (session("log_key") !== "isLoginIsec") {
+        if(session("log_key") !== "isLoginIsec") {
             session()->flush();
-            return redirect("/")->with(["error" => 'Sesi berakhir.']);
+            return redirect("/");
+            // ->with(["error" => 'Sesi berakhir.']);
         }
+
         return $next($request);
     }
 }

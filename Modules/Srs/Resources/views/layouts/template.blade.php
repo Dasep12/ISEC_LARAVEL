@@ -32,14 +32,14 @@
         <link rel="stylesheet" href="{{ asset('assets/dist/datetimepicker/jquery.datetimepicker.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/dist/datetimerange/daterangepicker.css') }}">
 
-        <script src="assets{{ asset('assets/dist/js/jquery.dataTables.min.js') }}"></script>
-        <script src="assets{{ asset('assets/dist/js/dataTables.fixedColumns.min.js') }}"></script>
+        <script src="{{ asset('assets/dist/js/jquery.dataTables.min.js') }}"></script>
+        <script src="{{ asset('assets/dist/js/dataTables.fixedColumns.min.js') }}"></script>
         <!-- filtter -->
-        <script src="assets{{ asset('assets/dist/js/dataTables.fixedHeader.min.js') }}"></script>
+        <script src="{{ asset('assets/dist/js/dataTables.fixedHeader.min.js') }}"></script>
 
         <!-- tags input -->
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/dist/css/jquery-tagsinput.min.css') }}" />
-        <script src="assets{{ asset('assets/dist/js/jquery-tagsinput.min.js') }}" defer></script>
+        <script src="{{ asset('assets/dist/js/jquery-tagsinput.min.js') }}" defer></script>
 
         <script src='https://cdn.plot.ly/plotly-2.16.1.min.js'></script>
         <script src='https://cdn.plot.ly/plotly-2.16.1.min.js'></script>
@@ -48,7 +48,7 @@
         <link rel="stylesheet" href="{{ asset('assets/css/srs.css?')}}{{ date('Y-m-d H:i:s') }}">
 
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
-        <script type="text/javascript" src="assets{{ asset('assets/dist/js/kuma-gauge.jquery.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/dist/js/kuma-gauge.jquery.js') }}"></script>
 
     </head>
     
@@ -72,7 +72,7 @@
                     <span class="font-italic font-bold">Welcome {{ session('name') }}</span>
                 </li>
                 <li class="nav-item">
-                    <a class=" btn btn-sm btn-info" href="Logout">
+                    <a class=" btn btn-sm btn-info" href="{{ URL::route('auth.logout') }}">
                         <i class="fas fa-user"></i> LOGOUT
                     </a>
                 </li>
@@ -106,10 +106,8 @@
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
                         <li class="nav-item ">
-                            <a href="srs/dashboard" class="nav-link
+                            <a href="dashboard" class="nav-link
                             <?php if ($link == 'dashboard') {
                                 echo 'active';
                             } ?>">
@@ -119,19 +117,10 @@
                                 </p>
                             </a>
                         </li>
-                        <!--  <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-chart-pie"></i>
-                                <p>
-                                    Form Input
-                                    <i class="right fas fa-angle-right"></i>
-                                </p>
-                            </a>
-                        </li> -->
 
                         <?php if (AuthHelper::is_module('SRSISO')) { ?>
                             <li class="nav-item">
-                                <a href="srs/internal_source" class="nav-link {{ ($link == 'internal_source') ? 'active' : ''; }}">
+                                <a href="internal_source" class="nav-link {{ ($link == 'internal_source') ? 'active' : ''; }}">
                                     <i class="nav-icon fas fa-share-alt-square"></i>
                                     <p>
                                         <!-- Internal Source -->
@@ -141,7 +130,7 @@
                                 </a>
                                 <!-- <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="srs/internal_source/form" class="nav-link {{ ($sub_link !== '' && $sub_link == 'form') ? 'active' : '' }}">
+                                    <a href="internal_source/form" class="nav-link {{ ($sub_link !== '' && $sub_link == 'form') ? 'active' : '' }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Form Input</p>
                                     </a>
@@ -158,7 +147,7 @@
 
                         <?php if (AuthHelper::is_module('SRSSOI')) { ?>
                             <li class="nav-item">
-                                <a href="srs/soi" class="nav-link {{ ($link == 'soi') ? 'active' : '' }}">
+                                <a href="soi" class="nav-link {{ ($link == 'soi') ? 'active' : '' }}">
                                     <i class="nav-icon fas fa-shield-alt"></i>
                                     <p>SOI</p>
                                 </a>
@@ -167,7 +156,7 @@
 
                         <?php if (AuthHelper::is_module('SRSESO') || AuthHelper::is_super_admin()) { ?>
                         <li class="nav-item">
-                            <a href="srs/osint" class="nav-link {{ ($link == 'osint') ? 'active' : ''}}">
+                            <a href="osint" class="nav-link {{ ($link == 'osint') ? 'active' : ''}}">
                                 <i class="nav-icon fas fa-copy"></i>
                                 <p>
                                     <!-- External Source -->
@@ -230,12 +219,43 @@
     <!-- Date Time Picker -->
     <!-- <script type="text/javascript" src="{{ asset('assets/dist/datetimepicker/jquery.js') }}"></script> -->
     <script type="text/javascript" src="{{ asset('assets/dist/datetimepicker/jquery.datetimepicker.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/dist/datetimerange/moment.min.js') }}') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/dist/datetimerange/daterangepicker.min.js') }}') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/dist/datetimerange/jquery.mask.min.js') }}') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/dist/select2/js/select2.min.js') }}') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/dist/datetimerange/moment.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/dist/datetimerange/daterangepicker.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/dist/datetimerange/jquery.mask.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/dist/select2/js/select2.min.js') }}"></script>
 
         {{-- Laravel Vite - JS File --}}
         {{-- {{ module_vite('build-srs', 'Resources/assets/js/app.js') }} --}}
+
+    <script>
+        $(document).ready(function() {
+
+            $('#tgl1,#tgl2').datepicker({
+                dateFormat: 'yy-mm-dd',
+                autoclose: true
+            });
+            $('#tgl13').datepicker({
+                dateFormat: 'yy-mm-dd',
+                autoclose: true
+            });
+            $('#tgl23').datepicker({
+                dateFormat: 'yy-mm-dd',
+                autoclose: true
+            });
+
+            $('#datetimepicker').datetimepicker({
+                defaultDate: true,
+                defaultTime: true,
+            });
+
+            $(".js-select2").select2({
+                closeOnSelect: false,
+                placeholder: "-- Choose --",
+                allowHtml: true,
+                allowClear: true,
+                tags: true
+            });
+        });
+    </script>
     </body>
 </html>

@@ -1,17 +1,9 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-Route::prefix('srs')->group(function() {
-    // Route::get('/', 'SrsController@index');
-    Route::get('/dashboard', 'DashboardController@index');
+Route::prefix('srs')->middleware(['is_login_isec','prevent-back-history'])->group(function() {
+    Route::get('/dashboard', 'DashboardController@index'); //->middleware('is_login_isec');
+    Route::post('/dashboard/grap_srs', 'DashboardController@grap_srs');
+    Route::get('/internal_source', 'InternalsourceController@index');
+    Route::post('/internal_source/listTable', 'InternalsourceController@listTable');
+    Route::get('/internal_source/save', 'InternalsourceController@save');
 });
