@@ -185,4 +185,5 @@ Route::prefix('guardtour')->group(function () {
     // laporan patroli 
     Route::get('/laporan/laporan_patroli', [LaporanController::class, "master"])->name('laporan_patroli.master');
     Route::get('/laporan/list_patroli', [LaporanController::class, "list_patroli"])->name('laporan_patroli.list_patroli');
+    Route::get('/laporan/detail', [LaporanController::class, "detail"])->name('laporan_patroli.detail');
 });

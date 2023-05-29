@@ -407,7 +407,7 @@
                     data: null,
                     render: function(data, type, row) {
                         if (row.chekpoint_patroli !== 0) {
-                            // return '<a href="' + row.id_jadwal_patroli + '&npk=' + row.npk + '&type=0" class="btn btn-sm btn-info">Detail</a>'
+                            return '<a href="{{ route("laporan_patroli.detail") }}?idJadwal=' + row.id_jadwal_patroli + '&npk=' + row.npk + '&type=0" class="btn btn-sm btn-info">Detail</a>'
                         }
                         return ''
                     }
@@ -542,7 +542,7 @@
                         if (data.start_at == null || data.end_at == null) {
                             return ''
                         }
-                        // return '<a href="' + row.id_jadwal_patroli + '&npk=' + row.npk + '&type=1" class="btn btn-sm btn-info">Detail</a>'
+                        return '<a href="{{ route("laporan_patroli.detail") }}?idJadwal=' + row.id_jadwal_patroli + '&npk=' + row.npk + '&type=1" class="btn btn-sm btn-info">Detail</a>'
                     }
                 },
             ],
@@ -565,8 +565,8 @@
                         let type = 0
 
                         window.open(
-                            // 'plantId=' + plantId + '&start=' + start + '&end=' + end + '&type=' + type,
-                            // '_blank'
+                            '{{ route("laporan_patroli.detail") }}?plantId=' + plantId + '&start=' + start + '&end=' + end + '&type=' + type,
+                            '_blank'
                         );
                     }
                 },
