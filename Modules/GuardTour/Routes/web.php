@@ -11,6 +11,7 @@
 |
 */
 
+use Illuminate\Support\Facades\Route;
 use Modules\GuardTour\Http\Controllers\CheckpointController;
 use Modules\GuardTour\Http\Controllers\CompanyController;
 use Modules\GuardTour\Http\Controllers\PlantsController;
@@ -22,6 +23,7 @@ use Modules\GuardTour\Http\Controllers\ObjekController;
 use Modules\GuardTour\Http\Controllers\EventController;
 use Modules\GuardTour\Http\Controllers\JadPatroliController;
 use Modules\GuardTour\Http\Controllers\JadProduksiController;
+use Modules\GuardTour\Http\Controllers\LaporanController;
 use Modules\GuardTour\Http\Controllers\ProduksiController;
 use Modules\GuardTour\Http\Controllers\RoleController;
 use Modules\GuardTour\Http\Controllers\SettingsController;
@@ -177,4 +179,10 @@ Route::prefix('guardtour')->group(function () {
     Route::post('/jadproduksi/updateProduksi', [JadProduksiController::class, "updateProduksi"])->name('jadproduksi.updateProduksi');
     Route::get('/jadproduksi/form_upload', [JadProduksiController::class, "form_upload"])->name('jadproduksi.form_upload');
     Route::post('/jadproduksi/upload', [JadProduksiController::class, "uploadJadwal"])->name('jadproduksi.upload');
+
+
+
+    // laporan patroli 
+    Route::get('/laporan/laporan_patroli', [LaporanController::class, "master"])->name('laporan_patroli.master');
+    Route::get('/laporan/list_patroli', [LaporanController::class, "list_patroli"])->name('laporan_patroli.list_patroli');
 });

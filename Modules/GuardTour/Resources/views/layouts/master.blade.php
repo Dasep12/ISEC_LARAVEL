@@ -53,7 +53,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css" rel="stylesheet">
     <script src="{{ asset('assets/dist/bootstrap-switch/js/bootstrap-switch.min.js') }}"></script>
-
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <style>
 
     </style>
@@ -366,7 +366,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('laporan_patroli.master') }}" class="nav-link">
                                         <i class="fas fa-minus-circle nav-icon"></i>
                                         <p>Laporan Patroli</p>
                                     </a>
