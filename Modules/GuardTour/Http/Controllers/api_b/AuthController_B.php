@@ -52,6 +52,8 @@ class AuthController_B extends Controller
         } else  if ($accessTime < $shiftOne_clock && $accessTime > $shiftThree_clock) {
             $this->shiftCurrent = "3";
         }
+
+        
     }
 
 

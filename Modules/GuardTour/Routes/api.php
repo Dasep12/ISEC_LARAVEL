@@ -44,12 +44,12 @@ Route::controller(PatroliController::class)->group(function () {
 
 
 // API VERSION B
-Route::post('/patroli/login', [AuthController_B::class, 'login']);
-Route::post('/patroli/zonaPatroli', [PatroliController_B::class, 'getZonaPatroli']);
-Route::get('/patroli/checkpoint_', [PatroliController_B::class, 'getCheckpointPatroli']);
-Route::get('/patroli/objek_', [PatroliController_B::class, 'getObjekPatroli']);
-Route::get('/patroli/event_', [PatroliController_B::class, 'getEventPatroli']);
-Route::post('/patroli/timeout', [PatroliController_B::class, 'HitungWaktuPatroli']);
-Route::post('/patroli/temuan', [PatroliController_B::class, 'ShowCheck']);
-Route::post('/patroli/persentasepatroli', [PatroliController_B::class, 'persentasePatroli']);
+Route::post('/patroli/login', [AuthController_B::class, 'login'])->middleware('api_token_b');
+Route::post('/patroli/zonaPatroli', [PatroliController_B::class, 'getZonaPatroli'])->middleware('api_token_b');
+Route::get('/patroli/checkpoint_', [PatroliController_B::class, 'getCheckpointPatroli'])->middleware('api_token_b');
+Route::get('/patroli/objek_', [PatroliController_B::class, 'getObjekPatroli'])->middleware('api_token_b');
+Route::get('/patroli/event_', [PatroliController_B::class, 'getEventPatroli'])->middleware('api_token_b');
+Route::post('/patroli/timeout', [PatroliController_B::class, 'HitungWaktuPatroli'])->middleware('api_token_b');
+Route::post('/patroli/temuan', [PatroliController_B::class, 'ShowCheck'])->middleware('api_token_b');
+Route::post('/patroli/persentasepatroli', [PatroliController_B::class, 'persentasePatroli'])->middleware('api_token_b');
 // END
