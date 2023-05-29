@@ -11,7 +11,7 @@
 |
 */
 
-Route::prefix('srs')->group(function() {
+Route::prefix('srs')->group(function () {
     // Route::get('/', 'SrsController@index');
     Route::get('/dashboard', 'DashboardController@index');
 });

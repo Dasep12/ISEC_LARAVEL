@@ -24,7 +24,7 @@ class ZoneController extends Controller
         $uri =  \Request::segment(2) . '/' . \Request::segment(3);
         return view('guardtour::zona/master_zona', [
             'uri'    => $uri,
-            'zona' => $zona->details()
+            'zona' => $zona->details()->where('admisecsgp_mstcmp_company_id', Session('comp_id'))->get()
         ]);
     }
 
@@ -34,7 +34,7 @@ class ZoneController extends Controller
 
         return view('guardtour::zona/add_master_zona', [
             'uri'       => $uri,
-            'site'      => Site::all()
+            'site'      => Site::where('admisecsgp_mstcmp_company_id', Session('comp_id'))->get()
         ]);
     }
 
@@ -53,7 +53,7 @@ class ZoneController extends Controller
             'others'                           => strtoupper($req->others),
             'status'                           => $req->status,
             'created_at'                       => date('Y-m-d H:i:s'),
-            'created_by'                       => 229529,
+            'created_by'                       => Session('npk'),
         ]);
         return redirect()->route('zona.master')->with(['success' => 'Data Berhasil di Simpan']);
     }
@@ -88,7 +88,7 @@ class ZoneController extends Controller
         $zona->status                     = $req->status;
         $zona->others                     = $req->others;
         $zona->updated_at                 = date('Y-m-d H:i:s');
-        $zona->updated_by                 = 229529;
+        $zona->updated_by                 = Session('npk');
         $zona->save();
         return redirect()->route('zona.master')->with(['success' => 'Data Berhasil di Perbarui']);
     }

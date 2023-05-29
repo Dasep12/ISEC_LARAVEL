@@ -26,8 +26,9 @@ class Plants extends Model
         return DB::table('admisecsgp_mstplant')
             ->join('admisecsgp_mstsite', 'admisecsgp_mstplant.admisecsgp_mstsite_site_id', '=', 'admisecsgp_mstsite.site_id')
             ->join('admisecsgp_mstcmp', 'admisecsgp_mstsite.admisecsgp_mstcmp_company_id', '=', 'admisecsgp_mstcmp.company_id')
-            ->select('admisecsgp_mstplant.*', 'admisecsgp_mstsite.site_name', 'admisecsgp_mstcmp.comp_name')->get();
+            ->select('admisecsgp_mstplant.*', 'admisecsgp_mstsite.site_name', 'admisecsgp_mstcmp.comp_name');
     }
+
 
     public function siteDetails()
     {

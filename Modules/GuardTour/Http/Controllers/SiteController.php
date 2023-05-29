@@ -45,7 +45,7 @@ class SiteController extends Controller
             'site_name'                         => strtoupper($req->site_name),
             'others'                            => $req->others,
             'created_at'                        => date('Y-m-d H:i:s'),
-            'created_by'                        => 229529,
+            'created_by'                        => Session('npk'),
             'status'                            => $req->status
         ]);
         return redirect()->route('site.master')->with(['success' => 'Data Berhasil di Simpan']);
@@ -79,6 +79,8 @@ class SiteController extends Controller
         $site->admisecsgp_mstcmp_company_id = $req->comp_id;
         $site->status   = $req->status;
         $site->others   = $req->others;
+        $site->updated_at = date('Y-m-d H:i:s');
+        $site->updated_by = Session('npk');
         $site->save();
         return redirect()->route('site.master')->with(['success' => 'Data Berhasil di Perbarui']);
     }

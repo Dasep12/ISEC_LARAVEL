@@ -190,7 +190,7 @@
                         <?php if (AuthHelper::is_super_admin() || AuthHelper::is_app('SGT')) { ?>
                             <li class="nav-header">Aplikasi</li>
                             <li class="nav-item">
-                                <a href="Dashboard" class="nav-link">
+                                <a href="guardtour/dashboard" class="nav-link">
                                     <i class="nav-icon fas fa-users"></i>
                                     <p>
                                         Security Guard Tour

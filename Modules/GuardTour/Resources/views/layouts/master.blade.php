@@ -45,6 +45,18 @@
     <script src="{{ asset('assets/dist/js/jquery-tagsinput.min.js ') }}" defer></script>
     <!-- <link rel="stylesheet" type="text/css" href="assets/dist/newStyle.css" /> -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/dist/css/gt.css') }}" />
+
+    <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
+    <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css" rel="stylesheet">
+    <script src="{{ asset('assets/dist/bootstrap-switch/js/bootstrap-switch.min.js') }}"></script>
+
+    <style>
+
+    </style>
 </head>
 
 <body class="hold-transition sidebar-mini sidebar-collapse layout-navbar-fixed">
@@ -117,7 +129,10 @@
                         <!-- Add icons to the links using the .nav-icon class
 		   with font-awesome or any other icon font library -->
                         <li class="nav-item ">
-                            <a href="#" class="nav-link">
+                            <a href="#" class="nav-link 
+                                @if($uri == 'dashboard' )
+                                active  
+                             @endif">
                                 <i class="nav-icon fas fa-tachometer-alt "></i>
                                 <p>
                                     Dashboard
@@ -134,11 +149,11 @@
                         </li>
 
                         <li class="nav-item 
-                            @if($uri == 'site/master' || $uri == 'site/form_add' || $uri == 'site/form_edit' || $uri == 'plant/master' || $uri == 'plant/form_add' || $uri == 'plant/form_edit' || $uri == 'company/master' || $uri == 'company/form_add' || $uri == 'company/form_edit' || $uri == 'zona/master' || $uri == 'zona/form_add' || $uri == 'zona/form_edit'   )
+                            @if($uri == 'site/master' || $uri == 'site/form_add' || $uri == 'site/form_edit' || $uri == 'plant/master' || $uri == 'plant/form_add' || $uri == 'plant/form_edit' || $uri == 'company/master' || $uri == 'company/form_add' || $uri == 'company/form_edit' || $uri == 'zona/master' || $uri == 'zona/form_add' || $uri == 'zona/form_edit' || $uri == 'checkpoint/master' || $uri == 'checkpoint/form_add' || $uri == 'checkpoint/form_edit' || $uri == 'kategori_objek/master' || $uri == 'kategori_objek/form_add' || $uri == 'kategori_objek/form_edit' || $uri == 'objek/master' || $uri == 'objek/form_add' || $uri == 'objek/form_edit'  || $uri == 'event/master' || $uri == 'event/form_add' || $uri == 'event/form_edit' || $uri == 'shift/master' || $uri == 'shift/form_add' || $uri == 'shift/form_edit' || $uri == 'produksi/master' || $uri == 'produksi/form_add' || $uri == 'produksi/form_edit' || $uri == 'users/master' || $uri == 'users/form_add' || $uri == 'users/form_edit' || $uri == 'role/master' || $uri == 'role/form_add' || $uri == 'role/form_edit' || $uri == 'users_ga/master' || $uri == 'users_ga/form_add' || $uri == 'users_ga/form_edit' || $uri == 'settings/master' || $uri == 'settings/form_add' || $uri == 'settings/form_edit')
                                 menu-open  
                              @endif">
                             <a href="#" class="nav-link
-                            @if($uri == 'site/master' || $uri == 'site/form_add' || $uri == 'site/form_edit' || $uri == 'plant/master' || $uri == 'plant/form_add' || $uri == 'plant/form_edit' || $uri == 'company/master' || $uri == 'company/form_add' || $uri == 'company/form_edit' || $uri == 'zona/master' || $uri == 'zona/form_add' || $uri == 'zona/form_edit'  )
+                            @if($uri == 'site/master' || $uri == 'site/form_add' || $uri == 'site/form_edit' || $uri == 'plant/master' || $uri == 'plant/form_add' || $uri == 'plant/form_edit' || $uri == 'company/master' || $uri == 'company/form_add' || $uri == 'company/form_edit' || $uri == 'zona/master' || $uri == 'zona/form_add' || $uri == 'zona/form_edit' || $uri == 'checkpoint/master' || $uri == 'checkpoint/form_add' || $uri == 'checkpoint/form_edit'  || $uri == 'kategori_objek/master' || $uri == 'kategori_objek/form_add' || $uri == 'kategori_objek/form_edit' || $uri == 'objek/master' || $uri == 'objek/form_add' || $uri == 'objek/form_edit'  || $uri == 'event/master' || $uri == 'event/form_add' || $uri == 'event/form_edit' || $uri == 'shift/master' || $uri == 'shift/form_add' || $uri == 'shift/form_edit' || $uri == 'produksi/master' || $uri == 'produksi/form_add' || $uri == 'produksi/form_edit' || $uri == 'users/master' || $uri == 'users/form_add' || $uri == 'users/form_edit' || $uri == 'role/master' || $uri == 'role/form_add' || $uri == 'role/form_edit' || $uri == 'users_ga/master' || $uri == 'users_ga/form_add' || $uri == 'users_ga/form_edit' || $uri == 'settings/master' || $uri == 'settings/form_add' || $uri == 'settings/form_edit')
                                 active  
                              @endif
                              ">
@@ -152,7 +167,7 @@
 
                                 <li class="nav-item">
                                     <a href="{{ route('company.master') }}" class="nav-link 
-                                    @if($uri == 'company/master' || $uri == 'company/form_add' || $uri == 'company/form_edit'  )
+                                    @if($uri == 'company/master' || $uri == 'company/form_add' || $uri == 'company/form_edit')
                                         active
                                     @endif">
                                         <i class="fas fa-minus-circle nav-icon"></i>
@@ -191,75 +206,111 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('checkpoint.master') }}" class="nav-link
+                                    @if($uri == 'checkpoint/master' || $uri == 'checkpoint/form_add' || $uri == 'checkpoint/form_edit'  )
+                                            active  
+                                    @endif">
                                         <i class="fas fa-minus-circle nav-icon"></i>
                                         <p>Master Check Point</p>
                                     </a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('objek.master')  }}" class="nav-link
+                                    @if($uri == 'objek/master' || $uri == 'objek/form_add' || $uri == 'objek/form_edit'  )
+                                            active  
+                                    @endif">
                                         <i class="fas fa-minus-circle nav-icon"></i>
                                         <p>Master Objek</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('kategori_objek.master')  }}" class="nav-link
+                                    @if($uri == 'kategori_objek/master' || $uri == 'kategori_objek/form_add' || $uri == 'kategori_objek/form_edit'  )
+                                            active  
+                                    @endif">
                                         <i class="fas fa-minus-circle nav-icon"></i>
                                         <p>Master Kategori Objek</p>
                                     </a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('event.master')  }}" class="nav-link
+                                    @if($uri == 'event/master' || $uri == 'event/form_add' || $uri == 'event/form_edit'  )
+                                            active  
+                                    @endif">
                                         <i class="fas fa-minus-circle nav-icon"></i>
                                         <p>Master Event</p>
                                     </a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('shift.master')  }}" class="nav-link
+                                    @if($uri == 'shift/master' || $uri == 'shift/form_add' || $uri == 'shift/form_edit'  )
+                                            active  
+                                    @endif">
                                         <i class=" fas fa-minus-circle nav-icon"></i>
                                         <p>Master Shift</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('produksi.master')  }}" class="nav-link
+                                    @if($uri == 'produksi/master' || $uri == 'produksi/form_add' || $uri == 'produksi/form_edit'  )
+                                        active  
+                                    @endif">
                                         <i class="fas fa-minus-circle nav-icon"></i>
                                         <p>Master Produksi</p>
                                     </a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('users.master')  }}" class="nav-link
+                                    @if($uri == 'users/master' || $uri == 'users/form_add' || $uri == 'users/form_edit'  )
+                                        active  
+                                    @endif">
                                         <i class="fas fa-minus-circle nav-icon"></i>
                                         <p>Master User</p>
                                     </a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('users_ga.master')  }}" class="nav-link
+                                    @if($uri == 'users_ga/master' || $uri == 'users_ga/form_add' || $uri == 'users_ga/form_edit'  )
+                                        active  
+                                    @endif">
                                         <i class="fas fa-minus-circle nav-icon"></i>
                                         <p>Master User GA</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('role.master')  }}" class="nav-link
+                                    @if($uri == 'role/master' || $uri == 'role/form_add' || $uri == 'role/form_edit'  )
+                                        active  
+                                    @endif">
                                         <i class="fas fa-minus-circle nav-icon"></i>
                                         <p>Master Role User</p>
                                     </a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('settings.master')  }}" class="nav-link
+                                    @if($uri == 'settings/master' || $uri == 'settings/form_add' || $uri == 'settings/form_edit'  )
+                                        active  
+                                    @endif">
                                         <i class=" fas fa-minus-circle nav-icon"></i>
                                         <p>Master Settings</p>
                                     </a>
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
+                        <li class="nav-item
+                        @if($uri == 'jadpatroli/master' || $uri == 'jadpatroli/form_upload' || $uri == 'jadpatroli/form_edit_jadpatrol' || $uri == 'jadproduksi/master' || $uri == 'jadproduksi/form_upload')
+                                menu-open  
+                             @endif">
+                            <a href="#" class="nav-link
+                            @if($uri == 'jadpatroli/master' || $uri == 'jadpatroli/form_upload' || $uri == 'jadpatroli/form_edit_jadpatrol' || $uri == 'jadproduksi/master' || $uri == 'jadproduksi/form_upload' )
+                                active  
+                             @endif">
                                 <i class="nav-icon fas fa-calendar-alt"></i>
                                 <p>
                                     Jadwal
@@ -268,25 +319,37 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('jadpatroli.master')  }}" class="nav-link
+                                    @if($uri == 'jadpatroli/master' || $uri == 'jadpatroli/form_edit_jadpatrol' )
+                                        active  
+                                    @endif">
                                         <i class="fas fa-minus-circle nav-icon"></i>
                                         <p>Jadwal Patroli</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('jadproduksi.master')  }}" class="nav-link
+                                    @if($uri == 'jadproduksi/master')
+                                        active  
+                                    @endif">
                                         <i class="fas fa-minus-circle nav-icon"></i>
                                         <p>Jadwal Produksi</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="fas fa-minus-circle nav-icon"></i>
+                                    <a href="{{ route('jadpatroli.form_upload') }}" class="nav-link
+                                    @if($uri == 'jadpatroli/form_upload' )
+                                        active  
+                                    @endif">
+                                        <i class=" fas fa-minus-circle nav-icon"></i>
                                         <p>Upload Jadwal Patroli</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('jadproduksi.form_upload') }}" class="nav-link
+                                    @if($uri == 'jadproduksi/form_upload' )
+                                        active  
+                                    @endif">
                                         <i class="fas fa-minus-circle nav-icon"></i>
                                         <p>Upload Jadwal Produksi</p>
                                     </a>
@@ -479,4 +542,8 @@
     });
 </script>
 
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> DASEP
