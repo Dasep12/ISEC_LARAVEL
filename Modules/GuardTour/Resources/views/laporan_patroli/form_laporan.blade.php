@@ -517,8 +517,10 @@
                     }
                 }, {
                     data: null,
+
                     render: function(data, type, row) {
                         let persentage = 0
+                        console.log(row.chekpoint_patroli)
                         if (row.chekpoint_patroli === 0) {
                             persentage = 0
                         } else if (row.total_ckp === 0) {
@@ -533,7 +535,7 @@
                         if (persentage === '-') {
                             return '<span class="bg-info d-block text-center">-</span>'
                         }
-
+                        console.log(row.chekpoint_patroli)
                         return '<span class="bg-danger d-block text-center">' + persentage + '%</span>'
                     }
                 }, {

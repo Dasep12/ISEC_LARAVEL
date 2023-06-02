@@ -35,30 +35,26 @@ class LaporanController extends Controller
         if ($plantId != '') {
             $data = LaporanPatroli::getDataPatroli($plantId, $start, $end, $type);
         }
+        // $data = LaporanPatroli::getDataPatroli('ADMP5LP', '2023-05-04', '2023-05-04', 0);
         return response()->json($data);
     }
 
 
     public function detail(Request $req)
     {
-        $idJadawal = $req->idJadwal;
-        $npk = $req->npk;
-        $type = $req->type;
+        $idJadwal = $req->get('idJadwal');
+        $npk = $req->get('npk');
+        $type = $req->get('type');
 
-        $detail  = LaporanPatroli::getDataDetailPatroli($idJadawal, $npk, $type);
-        // $timeline = LaporanPatroli::timelineDetail($idJadawal, $npk, $type);
+
+        $detail  = LaporanPatroli::getDataDetailPatroli($idJadwal, $npk, $type);
+        $timeline = LaporanPatroli::timelineDetail($idJadwal, $npk, $type);
         $uri =  \Request::segment(2) . '/' . \Request::segment(3);
         return view('guardtour::laporan_patroli/laporan_detail_patroli', [
             'uri'        => $uri,
+            'detail'    => $detail,
+            'timeline' => $timeline,
         ]);
-
-        // $sidebarData = [
-        //     'link' => $this->uri->segment(1),
-        // ];
-        // $data = [
-        //     'detail' => $this->M_LaporanPatroli->getDataDetailPatroli($idJadawal, $npk, $type),
-        //     'timeline' => $this->M_LaporanPatroli->timelineDetail($idJadawal, $npk, $type),
-        // ];
     }
 
     public function downloadLaporanPatroli()

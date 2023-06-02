@@ -140,7 +140,10 @@
                             </a>
                         </li>
                         <li class="nav-item ">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('laporan_temuan.abnormality') }}" class="nav-link
+                            @if($uri == 'laporan/abnormality' )
+                                active  
+                             @endif">
                                 <i class="nav-icon fas fa-exclamation-circle"></i>
                                 <p>
                                     Abnormality <span class="right badge badge-primary" id="badge_total_temuan">0</span>
@@ -356,8 +359,14 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
+                        <li class="nav-item
+                        @if($uri == 'laporan/laporan_patroli' || $uri == 'laporan/laporan_temuan'  )
+                                menu-open  
+                             @endif">
+                            <a href="#" class="nav-link
+                            @if($uri == 'laporan/laporan_patroli' || $uri == 'laporan/laporan_temuan' )
+                                active  
+                             @endif">
                                 <i class="nav-icon fas fa-chart-pie"></i>
                                 <p>
                                     Laporan
@@ -366,13 +375,20 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ route('laporan_patroli.master') }}" class="nav-link">
+                                    <a href="{{ route('laporan_patroli.master') }}" class="nav-link
+                                    @if($uri == 'laporan/laporan_patroli' )
+                                        active  
+                                    @endif">
                                         <i class="fas fa-minus-circle nav-icon"></i>
                                         <p>Laporan Patroli</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('laporan_temuan.master') }}" class="nav-link
+                                    @if($uri == 'laporan/laporan_temuan' )
+                                        active  
+                                    @endif
+                                    ">
                                         <i class="fas fa-minus-circle nav-icon"></i>
                                         <p>Laporan Temuan</p>
                                     </a>
@@ -532,13 +548,14 @@
         });
 
         $.ajax({
-            url: "#",
+            url: "{{ route('laporan_abnormal.total_temuan') }}",
             type: 'GET',
             dataType: 'json', // added data type
             success: function(res) {
                 $('#badge_total_temuan').text(res['total_temuan'])
             }
         });
+
     });
 </script>
 

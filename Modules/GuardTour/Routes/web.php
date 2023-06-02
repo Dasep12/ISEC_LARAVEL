@@ -28,6 +28,7 @@ use Modules\GuardTour\Http\Controllers\ProduksiController;
 use Modules\GuardTour\Http\Controllers\RoleController;
 use Modules\GuardTour\Http\Controllers\SettingsController;
 use Modules\GuardTour\Http\Controllers\ShiftController;
+use Modules\GuardTour\Http\Controllers\TemuanController;
 use Modules\GuardTour\Http\Controllers\UsersController;
 use Modules\GuardTour\Http\Controllers\UsersGaController;
 
@@ -186,4 +187,14 @@ Route::prefix('guardtour')->group(function () {
     Route::get('/laporan/laporan_patroli', [LaporanController::class, "master"])->name('laporan_patroli.master');
     Route::get('/laporan/list_patroli', [LaporanController::class, "list_patroli"])->name('laporan_patroli.list_patroli');
     Route::get('/laporan/detail', [LaporanController::class, "detail"])->name('laporan_patroli.detail');
+
+
+    // // laporan temuan 
+    Route::get('/laporan/laporan_temuan', [TemuanController::class, "master"])->name('laporan_temuan.master');
+    Route::get('/laporan/list_temuan', [TemuanController::class, "list_temuan"])->name('laporan_temuan.list_temuan');
+
+    // laporan abnormality
+    Route::get('/laporan/abnormality', [TemuanController::class, "abnormality"])->name('laporan_temuan.abnormality');
+    Route::get('/laporan/list_temuan_tindakan_cepat', [TemuanController::class, "list_temuan_tindakan_cepat"])->name('laporan_temuan.temuan_tindakan_cepat');
+    Route::get('/laporan/total_temuan', [TemuanController::class, "total_temuan"])->name('laporan_abnormal.total_temuan');
 });

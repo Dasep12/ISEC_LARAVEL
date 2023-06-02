@@ -1,3 +1,6 @@
+@extends('guardtour::layouts.master')
+
+@section('content')
 <style>
     .table td {
         vertical-align: middle !important;
@@ -282,7 +285,46 @@
                     <div class="card-body p-4">
                         <table class="table table-sm table-striped">
                             <tbody>
-
+                                <tr>
+                                    <th scope="row">Tanggal Patroli</th>
+                                    <td><?= $detail[0]->date_patroli ?></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Plant</th>
+                                    <td><?= $detail[0]->plant_name ?></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Shift</th>
+                                    <td><?= $detail[0]->nama_shift ?></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Pelaksana</th>
+                                    <td><?= $detail[0]->name ?></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Target Object</th>
+                                    <td><?= $detail[0]->target_object ?></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Total Object Normal</th>
+                                    <td><?= $detail[0]->total_object_normal ?></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Total Object Temuan</th>
+                                    <td><?= $detail[0]->total_object_temuan ?></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Target Checkpoint</th>
+                                    <td><?= $detail[0]->total_ckp ?></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Checkpoint Dipatroli</th>
+                                    <td><?= $detail[0]->chekpoint_patroli ?></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Persentase</th>
+                                    <td><?= round($detail[0]->chekpoint_patroli / $detail[0]->total_ckp, 2) * 100 ?>%</td>
+                                </tr>
                             </tbody>
                         </table>
                         <!-- /.table-responsive -->
@@ -307,7 +349,69 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body p-4 overflow-auto" style="height: 75vh">
-
+                        <div class="timeline">
+                            <?php foreach ($timeline as $key => $value) {
+                                $key++;
+                                $timelineClass = 'timeline-wrapper-success';
+                                if ($value->total_temuan > 0) {
+                                    $timelineClass = 'timeline-wrapper-danger';
+                                } ?>
+                                <?php if (fmod($key, 2) == 0) {
+                                ?>
+                                    <div class="timeline-wrapper <?= $timelineClass ?>">
+                                    <?php } else { ?>
+                                        <div class="timeline-wrapper timeline-inverted <?= $timelineClass ?>">
+                                        <?php } ?>
+                                        <div class="timeline-badge"><a data-toggle="collapse" href="#collapse_<?= $key ?>" class="text-white" role="button" aria-expanded="false" aria-controls="collapse_<?= $key ?>"><?= $key ?></a></div>
+                                        <div class="timeline-panel collapse" id="collapse_<?= $key ?>">
+                                            <div class="timeline-heading">
+                                                <h6 class="timeline-title text-bold"><?= $value->check_name ?></h6>
+                                            </div>
+                                            <div class="timeline-body">
+                                                <table class="table table-sm mb-0">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th scope="row">Waktu Check In</th>
+                                                            <td>: <?= $value->start_at ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">Waktu Check Out</th>
+                                                            <td>: <?= $value->end_at ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">Durasi</th>
+                                                            <td>: <?= $value->durasi ?> Menit</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">Total Temuan</th>
+                                                            <td>: <?= $value->total_temuan ?></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <?php
+                                        $duration = '0 Menit';
+                                        if ($key < count($timeline) - 1) {
+                                            $next = new DateTime($timeline[$key + 1]->start_at);
+                                            $current = new DateTime($value->end_at);
+                                            $interval = $next->diff($current);
+                                            if ($interval->i != 0) {
+                                                $duration_minute = $interval->format('%i');
+                                                $duration = $interval->format('%i Menit');
+                                            }
+                                            if ($interval->s) {
+                                                $duration_second = $interval->format('%s');
+                                                $duration = $duration . $interval->format(' %s Detik');
+                                            }
+                                        ?>
+                                            <div class="timeline-badge timeline-duration"><?= $duration ?></div>
+                                        <?php } ?>
+                                        </div>
+                                    <?php } ?>
+                                    </div>
+                                    <!-- /.table-responsive -->
+                        </div>
                         <!-- /.card-footer -->
                     </div>
                     <!-- /.card -->
@@ -329,3 +433,5 @@
 
     });
 </script>
+
+@endsection
