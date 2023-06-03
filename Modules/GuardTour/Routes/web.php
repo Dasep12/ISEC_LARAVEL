@@ -197,4 +197,15 @@ Route::prefix('guardtour')->group(function () {
     Route::get('/laporan/abnormality', [TemuanController::class, "abnormality"])->name('laporan_temuan.abnormality');
     Route::get('/laporan/list_temuan_tindakan_cepat', [TemuanController::class, "list_temuan_tindakan_cepat"])->name('laporan_temuan.temuan_tindakan_cepat');
     Route::get('/laporan/total_temuan', [TemuanController::class, "total_temuan"])->name('laporan_abnormal.total_temuan');
+
+
+    Route::get('/dashboard', [DashboardController::class, "index"])->name('dashboard');
+    Route::post('/dashboard/trendPatrolBulananPerPlant', [DashboardController::class, "trendPatrolBulananPerPlant"])->name('Dashboard.trendPatrolBulananPerPlant');
+    Route::post('/dashboard/trendPatrolAllPlant', [DashboardController::class, "trendPatrolAllPlant"])->name('Dashboard.trendPatrolAllPlant');
+    Route::post('/dashboard/trendPatrolHarian', [DashboardController::class, "trendPatrolHarian"])->name('Dashboard.trendPatrolHarian');
+    Route::post('/dashboard/perforamancePatrolBulananPerPlant', [DashboardController::class, "perforamancePatrolBulananPerPlant"])->name('Dashboard.perforamancePatrolBulananPerPlant');
+    Route::post('/dashboard/perforamancePatrolAllPlant', [DashboardController::class, "perforamancePatrolAllPlant"])->name('Dashboard.perforamancePatrolAllPlant');
+    Route::post('/dashboard/perFormancePatrolHarian', [DashboardController::class, "perFormancePatrolHarian"])->name('Dashboard.perFormancePatrolHarian');
+    Route::post('/dashboard/temuanPatrolAllPlant', [DashboardController::class, "temuanPatrolAllPlant"])->name('Dashboard.temuanPatrolAllPlant');
+    Route::post('/dashboard/temuanPerReguPlant', [DashboardController::class, "temuanPerReguPlant"])->name('Dashboard.temuanPerReguPlant');
 });
