@@ -40,11 +40,12 @@ class JadProduksiController extends Controller
             $headerJadwal = JadwalProduksi::headerJadwalProduksi($date, $plant_id);
         }
 
+        $plant =  Session('role') == 'SUPERADMIN' ? Plants::all() : Plants::where('admisecsgp_mstsite_site_id', Session('site_id'))->get();
 
         $uri =  \Request::segment(2) . '/' . \Request::segment(3);
         return view('guardtour::jadwal_produksi/master_jadwal_produksi', [
             'uri'        => $uri,
-            'plants'     => Plants::all(),
+            'plants'     => $plant,
             'date'       => $date,
             'month'      => $month,
             'plant_id'   => $plant_id,
@@ -62,10 +63,11 @@ class JadProduksiController extends Controller
             $plant_id = $req->plant;
             $headerJadwal = JadwalPatroli::getPatroliPerTanggal($date, $plant_id);
         }
+        $plant =  Session('role') == 'SUPERADMIN' ? Plants::all() : Plants::where('admisecsgp_mstsite_site_id', Session('site_id'))->get();
         $uri =  \Request::segment(2) . '/' . \Request::segment(3);
         return view('guardtour::jadwal_patroli/form_edit_jadwal_patroli', [
             'uri'        => $uri,
-            'plants'     => Plants::all(),
+            'plants'     => $plant,
             'data'       => $headerJadwal,
             'date'       => $date,
             'plant_id'   => $plant_id,
@@ -90,10 +92,13 @@ class JadProduksiController extends Controller
 
     public function form_upload()
     {
+
+        $plant =  Session('role') == 'SUPERADMIN' ? Plants::all() : Plants::where('admisecsgp_mstsite_site_id', Session('site_id'))->get();
+
         $uri =  \Request::segment(2) . '/' . \Request::segment(3);
         return view('guardtour::jadwal_produksi/form_upload_jadwal_produksi', [
             'uri'        => $uri,
-            'plants'     => Plants::all()
+            'plants'     => $plant
         ]);
     }
 

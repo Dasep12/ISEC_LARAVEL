@@ -11,7 +11,9 @@
 |
 */
 
+use App\Http\Controllers\DashboardController as ControllersDashboardController;
 use Illuminate\Support\Facades\Route;
+use Modules\GuardTour\Http\Controller\Admin\DashboardController as AdminDashboardController;
 use Modules\GuardTour\Http\Controllers\CheckpointController;
 use Modules\GuardTour\Http\Controllers\CompanyController;
 use Modules\GuardTour\Http\Controllers\PlantsController;
@@ -31,6 +33,7 @@ use Modules\GuardTour\Http\Controllers\ShiftController;
 use Modules\GuardTour\Http\Controllers\TemuanController;
 use Modules\GuardTour\Http\Controllers\UsersController;
 use Modules\GuardTour\Http\Controllers\UsersGaController;
+
 
 Route::prefix('guardtour')->group(function () {
 
@@ -208,4 +211,11 @@ Route::prefix('guardtour')->group(function () {
     Route::post('/dashboard/perFormancePatrolHarian', [DashboardController::class, "perFormancePatrolHarian"])->name('Dashboard.perFormancePatrolHarian');
     Route::post('/dashboard/temuanPatrolAllPlant', [DashboardController::class, "temuanPatrolAllPlant"])->name('Dashboard.temuanPatrolAllPlant');
     Route::post('/dashboard/temuanPerReguPlant', [DashboardController::class, "temuanPerReguPlant"])->name('Dashboard.temuanPerReguPlant');
+
+
+
+
+    // route ADMIN
+    Route::get('/admin/dashboard', [AdminDashboardController::class, "index"])->name('admin.dashboard');
+    // 
 });

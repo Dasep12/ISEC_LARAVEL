@@ -2,6 +2,7 @@
 
 namespace Modules\GuardTour\Entities;
 
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\DB;
@@ -71,7 +72,8 @@ class Dashboard extends Model
 
     public static function performancePatroliAllPlant($year, $plant)
     {
-        $all = count(Self::getPlant());
+        $tl = Plants::where('admisecsgp_mstsite_site_id', Session('site_id'))->count();
+        $all = Session('role') == 'SUPERADMIN' ? count(Self::getPlant()) : $tl;
         $result = array();
         for ($i = 1; $i <= 12; $i++) {
             $hariPembagi = cal_days_in_month(CAL_GREGORIAN, $i, $year);
@@ -106,7 +108,10 @@ class Dashboard extends Model
     public static function trendPatrolSetahun($year, $month, $plant)
     {
         $where = "";
-        if ($plant == "") {
+        if ($plant == "" && Session('role') == 'ADMIN') {
+            $where .=  "a.admisecsgp_mstsite_site_id = '" . Session('site_id') . "' and  month(ath.date_patroli)='" . $month . "'
+            and year(ath.date_patroli )='" . $year . "' ";
+        } else if ($plant == "" && Session('role') == 'SUPERADMIN') {
             $where .= "month(ath.date_patroli)='" . $month . "'
                 and year(ath.date_patroli )='" . $year . "' ";
         } else {
@@ -241,12 +246,18 @@ class Dashboard extends Model
 
     private static function queryTemuanAll($year, $month)
     {
+        $where = "";
+
+        if (Session('role') == 'ADMIN') {
+            $where .= "pl.admisecsgp_mstsite_site_id = '" . Session('site_id') . "' and ";
+        }
         $query =   DB::select("SELECT  ath.date_patroli , pl.plant_name , atd.status_temuan  , atd.description 
         from admisecsgp_trans_details atd 
         inner join admisecsgp_trans_headers ath on ath.trans_header_id  = atd.admisecsgp_trans_headers_trans_headers_id 
         inner join admisecsgp_mstzone zn on ath.admisecsgp_mstzone_zone_id = zn.zone_id 
         inner join admisecsgp_mstplant pl on pl.plant_id  = zn.admisecsgp_mstplant_plant_id 
         where  
+        $where
         MONTH(ath.date_patroli) = $month and YEAR (ath.date_patroli)= $year and atd.status_temuan  = 0 
         group by ath.date_patroli , pl.plant_name  ,  atd.status_temuan , atd.description 
         order by ath.date_patroli");

@@ -607,7 +607,6 @@
                 chartPatrolAll.series[0].update({
                     name: data[0].name,
                     data: data[0].data,
-                    // color: "#" + Math.floor(Math.random() * 16777215).toString(16)
                 });
                 chartPatrolAll.setTitle(null, {
                     text: 'Periode ' + tahun

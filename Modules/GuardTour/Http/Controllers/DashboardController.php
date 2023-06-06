@@ -14,6 +14,9 @@ class DashboardController extends Controller
      * Display a listing of the resource.
      * @return Renderable
      */
+
+
+
     public function index()
     {
         $month = array(["1", "JANUARI"], ["2", "FEBRUARI"], ["3", "MARET"], ["4", "APRIL"], ["5", "MEI"], ["6", "JUNI"], ["7", "JULI"], ["8", "AGUSTUS"], ["9", "SEPTEMBER"], ["10", "OKTOBER"], ["11", "NOVEMBER"], ["12", "DESEMBER"]);
@@ -23,11 +26,13 @@ class DashboardController extends Controller
             $ttlHari[] = $h;
         }
 
-        $pl = Plants::all();
+        $pl = Session('role') == 'SUPERADMIN' ? Plants::all() : Plants::where('admisecsgp_mstsite_site_id', Session('site_id'))->get();
+
         $tar_arr = array();
         foreach ($pl as $key => $tar) {
             $tar_arr[] = $tar->plant_name;
         }
+
 
         $opt_mon = array();
         for ($i = 1; $i <= 12; $i++) {
@@ -36,10 +41,11 @@ class DashboardController extends Controller
 
 
 
+
         return view('guardtour::dashboard/index', [
             'uri'   => \Request::segment(2),
             'bulan' => $month,
-            'plant' => Plants::all(),
+            'plant' => $pl,
             'jmlHari'     => json_encode($ttlHari, true),
             'ttlHari'     => $totalHari,
             'plants'      => json_encode($tar_arr, true),
@@ -57,7 +63,8 @@ class DashboardController extends Controller
         $par = array();
 
         if ($pl == 0) {
-            $plant = Dashboard::getPlant();
+            // $plant = Dashboard::getPlant();
+            $plant =  Session('role') == 'SUPERADMIN' ? Plants::all() : Plants::where('admisecsgp_mstsite_site_id', Session('site_id'))->get();
         } else {
             $plant = Dashboard::getPerPlant($pl);
         }
@@ -89,7 +96,8 @@ class DashboardController extends Controller
         $month = $req->bulan;
         $pl   = $req->plant_id;
         if ($pl == 0) {
-            $plant = Dashboard::getPlant();
+            // $plant = Dashboard::getPlant();
+            $plant =  Session('role') == 'SUPERADMIN' ? Plants::all() : Plants::where('admisecsgp_mstsite_site_id', Session('site_id'))->get();
         } else {
             $plant = Dashboard::getPerPlant($pl);
         }
@@ -114,7 +122,8 @@ class DashboardController extends Controller
         $par = array();
         $pl   = $req->plant_id;
         if ($pl == 0) {
-            $plant = Dashboard::getPlant();
+            // $plant = Dashboard::getPlant();
+            $plant =  Session('role') == 'SUPERADMIN' ? Plants::all() : Plants::where('admisecsgp_mstsite_site_id', Session('site_id'))->get();
         } else {
             $plant = Dashboard::getPerPlant($pl);
         }
@@ -156,7 +165,8 @@ class DashboardController extends Controller
         $par = array();
 
         if ($pl == 0) {
-            $plant = Dashboard::getPlant();
+            // $plant = Dashboard::getPlant();
+            $plant =  Session('role') == 'SUPERADMIN' ? Plants::all() : Plants::where('admisecsgp_mstsite_site_id', Session('site_id'))->get();
         } else {
             $plant = Dashboard::getPerPlant($pl);
         }
