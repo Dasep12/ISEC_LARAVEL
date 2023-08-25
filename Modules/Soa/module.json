@@ -1,0 +1,11 @@
+{
+    "name": "Soa",
+    "alias": "soa",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Soa\\Providers\\SoaServiceProvider"
+    ],
+    "files": []
+}

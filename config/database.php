@@ -93,6 +93,46 @@ return [
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
 
+        'srsbi' => [
+            'driver' => 'sqlsrv',
+            'url' => env('DATABASE_URL_MSSQL_SRSBI'),
+            'host' => env('DB_HOST_MSSQL_SRSBI', 'localhost'),
+            'port' => env('DB_PORT_MSSQL_SRSBI', '1433'),
+            'database' => env('DB_DATABASE_MSSQL_SRSBI', 'forge'),
+            'username' => env('DB_USERNAME_MSSQL_SRSBI', 'forge'),
+            'password' => env('DB_PASSWORD_MSSQL_SRSBI', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            // 'encrypt' => env('DB_ENCRYPT', 'yes'),
+            // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
+        ],
+
+        'soabi' => [
+            'driver' => 'sqlsrv',
+            'url' => env('DATABASE_URL_MSSQL_SOABI'),
+            'host' => env('DB_HOST_MSSQL_SOABI', 'localhost'),
+            'port' => env('DB_PORT_MSSQL_SOABI', '1433'),
+            'database' => env('DB_DATABASE_MSSQL_SOABI', 'forge'),
+            'username' => env('DB_USERNAME_MSSQL_SOABI', 'forge'),
+            'password' => env('DB_PASSWORD_MSSQL_SOABI', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+        ],
+
+        'egate' => [
+            'driver' => 'sqlsrv',
+            'url' => env('DATABASE_URL_MSSQL_EGT'),
+            'host' => env('DB_HOST_MSSQL_EGT', 'localhost'),
+            'port' => env('DB_PORT_MSSQL_EGT', '1433'),
+            'database' => env('DB_DATABASE_MSSQL_EGT', 'forge'),
+            'username' => env('DB_USERNAME_MSSQL_EGT', 'forge'),
+            'password' => env('DB_PASSWORD_MSSQL_EGT', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+        ],
     ],
 
     /*

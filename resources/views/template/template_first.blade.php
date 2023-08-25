@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ISECURITY</title>
+    <title>Security Big Data Analytic</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -90,12 +90,12 @@
             <!-- Sidebar -->
             <div class="sidebar">
                 <!-- Sidebar user (optional) -->
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div class="image">
-                        <img src="{{ asset('assets/dist/img/security.png') }}" class="img-circle elevation-2" alt="User Image">
+                <div style="padding-left:0" class="user-panel mt-3 pb-3 mb-3 d-flex align-items-center justify-content-center">
+                    <div class="image pr-2">
+                        <img style="width: 3.0rem;" src="http://103.189.234.208/isecurity/assets/dist/img/security.png" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block" style="font-size: 14px">ISECURITY</a>
+                        <a href="#" class="d-block font-weight-bold" style="font-size: 18px">Security<br>Big Data Analytic</a>
                     </div>
                 </div>
 
@@ -116,44 +116,11 @@
                             </a>
                         </li>
 
-                        <!-- user_role() == 'ADMIN' -->
-                        <?php if (AuthHelper::is_super_admin() || AuthHelper::is_app('SOP')) { ?>
-                            <li class="nav-header">Security</li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <!-- <i class="nav-icon fas fa-coeg"></i> -->
-                                    <i class="nav-icon fas fa-layer-group"></i>
-                                    <p>
-                                        Security Operation
-                                        <i class="right fas fa-angle-right"></i>
-                                    </p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="" class="nav-link">
-                                    <i class="nav-icon fas fa-columns"></i>
-                                    <p>
-                                        Security Admin
-                                        <i class="right fas fa-angle-right"></i>
-                                    </p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="" class="nav-link">
-                                    <i class="nav-icon fas fa-book"></i>
-                                    <p>
-                                        Security Information
-                                        <i class="right fas fa-angle-right"></i>
-                                    </p>
-                                </a>
-                            </li>
-                        <?php } ?>
-
-                        <li class="nav-header">Data Analytic</li>
+                        <!-- <li class="nav-header">Data Analytic</li> -->
 
                         <?php if (AuthHelper::is_super_admin() || AuthHelper::is_app('SRS')) { ?>
                             <li class="nav-item">
-                                <a href="analitic/srs/dashboard" class="nav-link">
+                                <a href="srs/dashboard" class="nav-link">
                                     <i class="nav-icon fas fa-chart-pie"></i>
                                     <p>
                                         Security Risk Survey
@@ -161,10 +128,30 @@
                                     </p>
                                 </a>
                             </li>
+
+                            <li class="nav-item">
+                                <a href="soa/dashboard" class="nav-link">
+                                    <i class="nav-icon fas fa-chart-pie"></i>
+                                    <p>
+                                        Security Operation
+                                        <i class="right fas fa-angle-right"></i>
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="" class="nav-link">
+                                    <i class="nav-icon fas fa-chart-pie"></i>
+                                    <p>
+                                        Security Information
+                                        <i class="right fas fa-angle-right"></i>
+                                    </p>
+                                </a>
+                            </li>
                         <?php  } ?>
                         <?php if (AuthHelper::is_super_admin() || AuthHelper::is_app('CRI')) { ?>
                             <li class="nav-item">
-                                <a href="analitic/crime/Crime/dashboard" class="nav-link">
+                                <a href="crime/Crime/dashboard" class="nav-link">
                                     <i class="nav-icon fas fa-chart-pie"></i>
                                     <p>
                                         Crime Index
@@ -175,7 +162,7 @@
                         <?php } ?>
                         <?php if (AuthHelper::is_super_admin() || AuthHelper::is_app('ALTA')) { ?>
                             <li class="nav-item">
-                                <a href="analitic/information/Anggota/dashboard" class="nav-link">
+                                <a href="information/Anggota/dashboard" class="nav-link">
                                     <i class="nav-icon fas fa-chart-pie"></i>
                                     <p>
                                         Analytic Anggota

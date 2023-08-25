@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\AuthHelper;
 use Validator;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\AuthModel;
 
@@ -63,5 +65,13 @@ class AuthController extends Controller
         // $request->session()->flash('error', 'Password salah');
 
         return redirect('/menu');
+    }
+
+
+    public function logout(Request $request)
+    {
+        $request->session()->regenerate();
+        $request->session()->invalidate();
+        return redirect('/');
     }
 }

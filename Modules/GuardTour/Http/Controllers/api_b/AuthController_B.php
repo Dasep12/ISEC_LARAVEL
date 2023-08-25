@@ -92,6 +92,7 @@ class AuthController_B extends Controller
         $resJadwalPatroli = AuthPatrolModels::getJadwalPatroli($this->dateNow->format('Y-m-d'), $npk);
         // end
 
+        // dd($shift_tommorow);
 
         if ($foundAkun->count() > 0) {
             return response()->json([
@@ -100,7 +101,7 @@ class AuthController_B extends Controller
                     $currentShift
                 ),
                 "shift_patroli_hari_ini" => $shift_now->shift,
-                "shift_patroli_selanjutnya" => $shift_tommorow->shift,
+                "shift_patroli_selanjutnya" => isset($shift_tommorow) ? $shift_tommorow->shift : '-',
                 "tanggal_patroli_sekarang" => $currentDatePatrol,
                 "tanggal_patroli_selanjutnya" => $nextDatePatroli,
                 'result' => array($resUser),

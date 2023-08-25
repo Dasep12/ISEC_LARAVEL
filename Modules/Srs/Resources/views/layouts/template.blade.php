@@ -1,57 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Security Risk Survey - ISECURITY</title>
 
-        <!-- Google Font: Source Sans Pro -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-        <!-- DataTables -->
-        <link rel="stylesheet" href="{{ asset('assets/dist/css/dataTables.bootstrap4.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/dist/css/responsive.bootstrap4.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/dist/css/buttons.bootstrap4.min.css') }}">
-        <!-- Theme style -->
-        <link rel="stylesheet" href="{{ asset('assets/dist/fontawesome-free/css/all.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/dist/css/adminlte.min.css?') }}{{ date('Y-m-d H:i:s') }}">
-        <link rel="stylesheet" href="{{ asset('assets/dist/css/jquery-ui.css') }}">
-        <!-- jQuery -->
-        <script src="{{ asset('assets/dist/js/jquery.min.js') }}"></script>
-        <script src="{{ asset('assets/dist/js/sweetalert2.all.min.js') }}"></script>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Security Big Data Analytic</title>
 
-        <link rel="stylesheet" href="{{ asset('assets/dist/css/jquery.timepicker.min.css') }}">
-        <script src="{{ asset('assets/dist/js/jquery.timepicker.min.js') }}"></script>
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{{ asset('assets/dist/css/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/dist/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/dist/css/buttons.bootstrap4.min.css') }}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{{ asset('assets/dist/fontawesome-free/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/dist/css/adminlte.min.css?') }}{{ date('Y-m-d H:i:s') }}">
+    <link rel="stylesheet" href="{{ asset('assets/dist/css/jquery-ui.css') }}">
+    <!-- jQuery -->
+    <script src="{{ asset('assets/dist/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/dist/js/sweetalert2.all.min.js') }}"></script>
 
-        <!-- pagination freeze -->
-        <link rel="stylesheet" href="{{ asset('assets/dist/css/fixedColumns.dataTables.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/dist/css/fixedHeader.dataTables.min.css') }}">
-        <!-- Select2 -->
-        <link rel="stylesheet" href="{{ asset('assets/dist/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/dist/css/jquery.timepicker.min.css') }}">
+    <script src="{{ asset('assets/dist/js/jquery.timepicker.min.js') }}"></script>
 
-        <link rel="stylesheet" href="{{ asset('assets/dist/datetimepicker/jquery.datetimepicker.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/dist/datetimerange/daterangepicker.css') }}">
+    <!-- pagination freeze -->
+    <link rel="stylesheet" href="{{ asset('assets/dist/css/fixedColumns.dataTables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/dist/css/fixedHeader.dataTables.min.css') }}">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{{ asset('assets/dist/select2/css/select2.min.css') }}">
 
-        <script src="assets{{ asset('assets/dist/js/jquery.dataTables.min.js') }}"></script>
-        <script src="assets{{ asset('assets/dist/js/dataTables.fixedColumns.min.js') }}"></script>
-        <!-- filtter -->
-        <script src="assets{{ asset('assets/dist/js/dataTables.fixedHeader.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('assets/dist/datetimepicker/jquery.datetimepicker.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/dist/datetimerange/daterangepicker.css') }}">
 
-        <!-- tags input -->
-        <link rel="stylesheet" type="text/css" href="{{ asset('assets/dist/css/jquery-tagsinput.min.css') }}" />
-        <script src="assets{{ asset('assets/dist/js/jquery-tagsinput.min.js') }}" defer></script>
+    <script src="{{ asset('assets/dist/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/dist/js/dataTables.fixedColumns.min.js') }}"></script>
+    <!-- filtter -->
+    <script src="{{ asset('assets/dist/js/dataTables.fixedHeader.min.js') }}"></script>
 
-        <script src='https://cdn.plot.ly/plotly-2.16.1.min.js'></script>
-        <script src='https://cdn.plot.ly/plotly-2.16.1.min.js'></script>
+    <!-- tags input -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/dist/css/jquery-tagsinput.min.css') }}" />
+    <script src="{{ asset('assets/dist/js/jquery-tagsinput.min.js') }}" defer></script>
 
-        <!-- TEMPLATE SRS CUSTOM -->
-        <link rel="stylesheet" href="{{ asset('assets/css/srs.css?')}}{{ date('Y-m-d H:i:s') }}">
+    <script src='https://cdn.plot.ly/plotly-2.16.1.min.js'></script>
+    <script src='https://cdn.plot.ly/plotly-2.16.1.min.js'></script>
 
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
-        <script type="text/javascript" src="assets{{ asset('assets/dist/js/kuma-gauge.jquery.js') }}"></script>
+    <!-- TEMPLATE SRS CUSTOM -->
+    <link rel="stylesheet" href="{{ asset('assets/css/srs.css?')}}{{ date('Y-m-d H:i:s') }}">
 
-    </head>
-    
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+    <script type="text/javascript" src="{{ asset('assets/dist/js/kuma-gauge.jquery.js') }}"></script>
+
+</head>
+
 <body class="hold-transition sidebar-mini sidebar-collapse layout-navbar-fixed">
     <!-- Site wrapper -->
     <div class="wrapper">
@@ -63,7 +64,7 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
             </ul>
-            <a href="Menu" class="btn btn-primary btn-sm"><i class="fas fa-home"></i></a>
+            <a href="/menu" class="btn btn-primary btn-sm"><i class="fas fa-home"></i></a>
 
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto text-white">
@@ -72,7 +73,7 @@
                     <span class="font-italic font-bold">Welcome {{ session('name') }}</span>
                 </li>
                 <li class="nav-item">
-                    <a class=" btn btn-sm btn-info" href="Logout">
+                    <a class=" btn btn-sm btn-info" href="{{ URL::route('auth.logout') }}">
                         <i class="fas fa-user"></i> LOGOUT
                     </a>
                 </li>
@@ -106,10 +107,8 @@
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
                         <li class="nav-item ">
-                            <a href="srs/dashboard" class="nav-link
+                            <a href="dashboard" class="nav-link
                             <?php if ($link == 'dashboard') {
                                 echo 'active';
                             } ?>">
@@ -119,62 +118,79 @@
                                 </p>
                             </a>
                         </li>
-                        <!--  <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-chart-pie"></i>
-                                <p>
-                                    Form Input
-                                    <i class="right fas fa-angle-right"></i>
-                                </p>
-                            </a>
-                        </li> -->
 
                         <?php if (AuthHelper::is_module('SRSISO')) { ?>
-                            <li class="nav-item">
-                                <a href="srs/internal_source" class="nav-link {{ ($link == 'internal_source') ? 'active' : ''; }}">
+                            <li class="nav-item {{ ($link !== '' && $link == 'dashboard_humint' || $link == 'internal_source') ? 'menu-open' : ''; }}">
+                                <a href="#" class="nav-link ">
                                     <i class="nav-icon fas fa-share-alt-square"></i>
+                                    <p>HUMINT Source</p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="dashboard_humint" class="nav-link {{ ($link !== '' && $link == 'dashboard_humint') ? 'active' : '' }}">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Dashboard</p>
+                                        </a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a href="internal_source" class="nav-link {{ ($link == 'internal_source') ? 'active' : ''; }}">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Input & View</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        <?php } ?>
+
+                        <?php if (AuthHelper::is_module('SRSESO') || AuthHelper::is_super_admin()) { ?>
+                            <li class="nav-item">
+                                <a href="osint" class="nav-link {{ ($link == 'osint') ? 'active' : ''}}">
+                                    <i class="nav-icon fas fa-copy"></i>
                                     <p>
-                                        <!-- Internal Source -->
-                                        HUMINT Source
-                                        <!-- <i class="right fas fa-angle-left"></i> -->
+                                        <!-- External Source -->
+                                        OSINT Source
                                     </p>
                                 </a>
-                                <!-- <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="srs/internal_source/form" class="nav-link {{ ($sub_link !== '' && $sub_link == 'form') ? 'active' : '' }}">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Form Input</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Master</p>
-                                    </a>
-                                </li>
-                            </ul> -->
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="dashboard_osint" class="nav-link {{ ($sub_link !== '' && $sub_link == 'dashboardosint') ? 'active' : ''; }}">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Dashboard</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="osint" class="nav-link {{ ($link == 'osint' &&  $sub_link != 'dashboardosint') ? 'active' : ''; }}">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Input & View</p>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                         <?php } ?>
 
                         <?php if (AuthHelper::is_module('SRSSOI')) { ?>
                             <li class="nav-item">
-                                <a href="srs/soi" class="nav-link {{ ($link == 'soi') ? 'active' : '' }}">
+                                <a href="soi" class="nav-link {{ ($link == 'soi') ? 'active' : '' }}">
                                     <i class="nav-icon fas fa-shield-alt"></i>
                                     <p>SOI</p>
                                 </a>
-                            </li>
-                        <?php } ?>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="dashboard_soi" class="nav-link {{ ($link !== '' && $link == 'dashboard_soi') ? 'active' : ''; }}">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Dashboard</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="soi" class="nav-link {{ ($link !== '' && $link == 'soi') ? 'active' : ''; }}">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Input & View</p>
+                                        </a>
+                                    </li>
 
-                        <?php if (AuthHelper::is_module('SRSESO') || AuthHelper::is_super_admin()) { ?>
-                        <li class="nav-item">
-                            <a href="srs/osint" class="nav-link {{ ($link == 'osint') ? 'active' : ''}}">
-                                <i class="nav-icon fas fa-copy"></i>
-                                <p>
-                                    <!-- External Source -->
-                                    OSINT Source
-                                </p>
-                            </a>
-                        </li>
+                                </ul>
+                            </li>
                         <?php } ?>
                     </ul>
                 </nav>
@@ -186,7 +202,7 @@
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
-            
+
             @yield('content')
 
             <!-- Main content -->
@@ -230,12 +246,44 @@
     <!-- Date Time Picker -->
     <!-- <script type="text/javascript" src="{{ asset('assets/dist/datetimepicker/jquery.js') }}"></script> -->
     <script type="text/javascript" src="{{ asset('assets/dist/datetimepicker/jquery.datetimepicker.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/dist/datetimerange/moment.min.js') }}') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/dist/datetimerange/daterangepicker.min.js') }}') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/dist/datetimerange/jquery.mask.min.js') }}') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/dist/select2/js/select2.min.js') }}') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/dist/datetimerange/moment.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/dist/datetimerange/daterangepicker.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/dist/datetimerange/jquery.mask.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/dist/select2/js/select2.min.js') }}"></script>
 
-        {{-- Laravel Vite - JS File --}}
-        {{-- {{ module_vite('build-srs', 'Resources/assets/js/app.js') }} --}}
-    </body>
+    {{-- Laravel Vite - JS File --}}
+    {{-- {{ module_vite('build-srs', 'Resources/assets/js/app.js') }} --}}
+
+    <script>
+        $(document).ready(function() {
+
+            $('#tgl1,#tgl2').datepicker({
+                dateFormat: 'yy-mm-dd',
+                autoclose: true
+            });
+            $('#tgl13').datepicker({
+                dateFormat: 'yy-mm-dd',
+                autoclose: true
+            });
+            $('#tgl23').datepicker({
+                dateFormat: 'yy-mm-dd',
+                autoclose: true
+            });
+
+            $('#datetimepicker').datetimepicker({
+                defaultDate: true,
+                defaultTime: true,
+            });
+
+            $(".js-select2").select2({
+                closeOnSelect: false,
+                placeholder: "-- Choose --",
+                allowHtml: true,
+                allowClear: true,
+                tags: true
+            });
+        });
+    </script>
+</body>
+
 </html>

@@ -20,6 +20,9 @@ Route::prefix("auth")->group(function () {
 });
 
 
+Route::get('/logout', [AuthController::class, "logout"])->name("auth.logout");
+
+
 Route::middleware("is_login_isec")->group(function () {
     Route::get('/menu', [MenuController::class, 'index']);
 });

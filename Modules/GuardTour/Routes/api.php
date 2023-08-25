@@ -22,6 +22,7 @@ use Modules\GuardTour\Http\Controllers\api\PatroliController;
 // API B
 use Modules\GuardTour\Http\Controllers\api_b\PatroliController_B;
 use Modules\GuardTour\Http\Controllers\api_b\AuthController_B;
+use Modules\GuardTour\Http\Controllers\api_b\TransactionControllerB;
 // END
 
 // API VERSION A
@@ -52,4 +53,9 @@ Route::get('/patroli/event_', [PatroliController_B::class, 'getEventPatroli'])->
 Route::post('/patroli/timeout', [PatroliController_B::class, 'HitungWaktuPatroli'])->middleware('api_token_b');
 Route::post('/patroli/temuan', [PatroliController_B::class, 'ShowCheck'])->middleware('api_token_b');
 Route::post('/patroli/persentasepatroli', [PatroliController_B::class, 'persentasePatroli'])->middleware('api_token_b');
+Route::post("/transaksi/checkpoint", [TransactionControllerB::class, "checkpoint"])->middleware('api_token_b');
+Route::post("/transaksi/abnormal", [TransactionControllerB::class, "abnormal"])->middleware('api_token_b');
+Route::post("/transaksi/normal", [TransactionControllerB::class, "normal"])->middleware('api_token_b');
+Route::post("/transaksi/finish_checkpoint", [TransactionControllerB::class, "finishCheckpoint"])->middleware('api_token_b');
+Route::post("/transaksi/kirim_temuan", [TransactionControllerB::class, "sendAbnormal"])->middleware('api_token_b');
 // END

@@ -34,13 +34,13 @@ class JadwalModels extends Model
         			   	p.plant_name,
         			   	p.plant_id                                                                   as plant_id  ,
                         CONVERT(varchar,date_patroli,105) as date 
-        		from admisecsgp_trans_jadwal_patroli,
+        		from admisecsgp_trans_jadwal_patroli jp,
         			 admisecsgp_mstplant p,
         			 admisecsgp_mstshift s
-        		where admisecsgp_mstplant_plant_id = p.plant_id
+        		where jp.admisecsgp_mstplant_plant_id = p.plant_id
         		  	and admisecsgp_mstshift_shift_id = s.shift_id
         			AND date_patroli between  '" . $today . "' AND '" . $tomorrow . "'
-        			AND admisecsgp_mstplant_plant_id = '" . $plant_id . "'
+        			AND jp.admisecsgp_mstplant_plant_id = '" . $plant_id . "'
         			AND admisecsgp_mstusr_npk = '" . $user_id . "'";
 		$res = DB::select($sql);
 		return $res;

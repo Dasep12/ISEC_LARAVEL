@@ -66,5 +66,6 @@ class Kernel extends HttpKernel
         "is_login_isec" => \App\Http\Middleware\AuthIsec::class,
         "api_token" => \App\Http\Middleware\ApiToken::class,
         "api_token_b" => \App\Http\Middleware\ApiTokenB::class,
+        'prevent-back-history' => \App\Http\Middleware\PreventBackHistory::class,
     ];
 }

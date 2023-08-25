@@ -54,7 +54,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost/'),
+    'url' => env('APP_URL', 'http://localhost/isecurity_laravel'),
 
     // 'asset_url' => env('ASSET_URL'),
     // 'asset_url' => ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . str_replace(basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']),
@@ -212,6 +212,7 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
         'AuthHelper' => App\Helpers\AuthHelper::class,
+        'FormHelper' => App\Helpers\FormHelper::class
     ])->toArray(),
 
 ];

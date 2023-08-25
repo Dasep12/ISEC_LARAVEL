@@ -70,7 +70,7 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
             </ul>
-            <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-home"></i></a>
+            <a href="{{ url('/menu') }}" class="btn btn-primary btn-sm"><i class="fas fa-home"></i></a>
 
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto text-white">
@@ -79,7 +79,7 @@
                     <span class="font-italic font-bold">Welcome <?= 'DASEP' ?> </span>
                 </li>
                 <li class="nav-item">
-                    <a class=" btn btn-sm btn-info" href="#">
+                    <a class=" btn btn-sm btn-info" href="{{ route('auth.logout') }}">
                         <i class="fas fa-user"></i> LOGOUT
                     </a>
                 </li>
