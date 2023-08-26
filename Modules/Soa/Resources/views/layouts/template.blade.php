@@ -220,7 +220,7 @@
             <ul class="navbar-nav ml-auto">
                 <!-- Notifications Dropdown Menu -->
                 <li class="nav-item mr-2">
-                    <span class="font-italic font-bold">Welcome </span>
+                    <span class="font-italic font-bold">Welcome {{ session('name') }} </span>
                 </li>
                 <li class="nav-item">
                     <a class=" btn btn-sm btn-info" href="/logout">

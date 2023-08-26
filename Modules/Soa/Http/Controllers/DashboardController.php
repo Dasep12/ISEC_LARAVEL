@@ -9,6 +9,7 @@ use Illuminate\Routing\Controller;
 use Modules\Soa\Entities\DashboardModel as Dashboard;
 use Illuminate\Support\Facades\DB;
 use AuthHelper;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx\Rels;
 
 class DashboardController extends Controller
 {
@@ -129,7 +130,9 @@ class DashboardController extends Controller
     public function documentDays(Request $req)
     {
         $data = Dashboard::documentDays($req);
+        $pkb = Dashboard::pkbDays($req);
         $item = array();
+        $itemPKB = array();
         $num = 1;
 
         $categ = array();
@@ -148,14 +151,25 @@ class DashboardController extends Controller
             foreach ($pcd as $i => $sva) {
                 $item[$i] = (int) $sva['total'];
             }
-            $people[] = array(
+            $document[] = array(
                 'label' => $key,
                 'data' =>  $item,
             );
             $num++;
         }
 
-        return response()->json($people);
+
+        foreach ($pkb as $pk) {
+            $itemPKB[] = (int) $pk->total;
+        }
+        $resultPKB[] = array(
+            'label' => 'PKB',
+            'data'  => $itemPKB
+        );
+
+        $response = array_merge($document, $resultPKB);
+
+        return response()->json($response);
     }
 
     public function vehicleCategory(Request $req)
@@ -194,12 +208,76 @@ class DashboardController extends Controller
     {
         $people = Dashboard::peopleSetahun($req);
         $vehicle = Dashboard::vehicleSetahun($req);
-        $document = Dashboard::pkbSetahun($req);
+        $document = Dashboard::documentSetahun($req);
+        $pkb = Dashboard::pkbSetahun($req);
+        $dataDocument = array();
+        for ($i = 0; $i < count($document); $i++) {
+            $dataDocument[] = $document[$i] + $pkb[$i];
+        }
+
+        // return response()->json([
+        //     'doc' => $document,
+        //     'pkb' => $pkb,
+        //     'res' => $data
+        // ]);
         $result = array(
             array('label' => 'People', 'data' => $people),
             array('label' => 'Vehicle', 'data' => $vehicle),
-            array('label' => 'Document', 'data' => $document),
+            array('label' => 'Document', 'data' => $dataDocument),
         );
         return response()->json($result);
+    }
+
+
+
+    // modal pop up pkb
+    public static function pkbAllPlants(Request $req)
+    {
+        $data = Dashboard::pkbAllPlant($req);
+        return response()->json($data);
+    }
+
+    public static function pkbPlantSetahun(Request $req)
+    {
+        $data = Dashboard::pkbPlantSetahun($req);
+        $item = array();
+        // $num = 1;
+
+        $categ = array();
+        $key = 'plantss';
+        $data = array_map(function ($value) {
+            return (array)$value;
+        }, $data);
+        foreach ($data as $val) {
+            if (array_key_exists($key, $val)) {
+                $categ[$val[$key]][] = $val;
+            } else {
+                $categ[""][] = $val;
+            }
+        }
+        foreach ($categ as $key => $pcd) {
+            foreach ($pcd as $i => $sva) {
+                $item[$i] = (int) $sva['total'];
+            }
+            $document[] = array(
+                'label' => $key,
+                'data' =>  $item,
+            );
+            // $num++;
+        }
+        return response()->json($document);
+    }
+
+    public function pkbByUser(Request $req)
+    {
+        $data = Dashboard::pkbByUser($req, 'top');
+        return response()->json($data);
+    }
+    // 
+
+    public function tester(Request $req)
+    {
+        $data = Dashboard::pkbByUser($req, 'top');
+        return response()->json($data);
     }
 }

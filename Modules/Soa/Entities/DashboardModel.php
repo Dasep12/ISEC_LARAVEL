@@ -84,7 +84,7 @@ class DashboardModel extends Model
     {
         $area = $req->input('area_fil');
         $year = $req->input('year_fil');
-        $year = empty($year) ? date('Y') : $year;
+        // $year = empty($year) ? date('Y') : $year;
         $month = $req->input('month_fil');
         $user_wilayah = AuthHelper::user_wilayah();
 
@@ -92,7 +92,6 @@ class DashboardModel extends Model
         if (AuthHelper::is_author('ALLAREA')) {
             $whereWil .= " AND wil_id='$user_wilayah'";
         }
-        // FORMAT(COALESCE(SUM(atm.document_in),0), 'N0') 
 
 
         $sql  = "SELECT SUM(atm.document_in) AS total
@@ -105,7 +104,7 @@ class DashboardModel extends Model
         // FROM T_PKB trx WHERE NULLIF(PKBNo, '') IS NOT NULL ";
 
         if (!empty($month)) $sql .= " AND MONTH(atr.report_date)='$month'";
-        if (!empty($month)) $sql .= " AND YEAR(atr.report_date) = '$year' ";
+        if (!empty($year)) $sql .= " AND YEAR(atr.report_date) = '$year' ";
         if (!empty($area)) $sql .= " AND atr.area_id='$area'";
 
         $res = DB::connection('soabi')->select($sql);
@@ -116,7 +115,7 @@ class DashboardModel extends Model
     {
         $area = $req->input('area_fil');
         $year = $req->input('year_fil');
-        $year = empty($year) ? date('Y') : $year;
+        // $year = empty($year) ? date('Y') : $year;
         $month = $req->input('month_fil');
         if ($area != "" || $area != null) {
             $plantID = DB::connection('soabi')->select("SELECT code_sub as id FROM admisecdrep_sub WHERE id='$area'  ");
@@ -288,6 +287,43 @@ class DashboardModel extends Model
         $res = DB::connection('soabi')->select($sql);
         return $res;
     }
+
+    public static function pkbDays($req)
+    {
+        $area = $req->input('area_fil');
+        $year = $req->input('year_fil');
+        $year = empty($year) ? date('Y') : $year;
+        $month = $req->input('month_fil');
+        $month = empty($month) ? date('m') : $month;
+        if ($area != "" || $area != null) {
+            $plantID = DB::connection('soabi')->select("SELECT code_sub as id FROM admisecdrep_sub WHERE id='$area'  ");
+            $area =  $plantID[0]->id;
+        }
+        $kalendar = CAL_GREGORIAN;
+        $days = cal_days_in_month($kalendar, $month, $year);
+        $sql = "WITH days(DayNum) AS
+                (
+                    SELECT 1
+                    UNION ALL
+                    SELECT DayNum+1 
+                        FROM days
+                    WHERE DayNum < '$days'
+                )
+        SELECT m.DayNum day_num , SUM(COALESCE(X.total,0)) as total 
+        FROM days m 
+            LEFT OUTER JOIN(
+                SELECT COUNT(*) as total , tp.PKBDate  as tgl FROM T_PKB tp 
+                GROUP BY tp.PKBDate 
+            )X on YEAR(X.tgl) = '$year' and MONTH(X.tgl) = '$month' and DAY(X.tgl) = m.DayNum
+                GROUP BY m.DayNum ";
+
+        if (!empty($area)) $sql .= "WHERE tp.LocationName='$area'";
+        // if (!empty($month)) $sql .= " AND MONTH(tp.PKBDate)='$month'";
+        // if (!empty($year)) $sql .= " AND YEAR(tp.PKBDate)='$year'";
+
+        $res = DB::connection('egate')->select($sql);
+        return $res;
+    }
     // 
 
 
@@ -404,10 +440,16 @@ class DashboardModel extends Model
             $whereWil .= " AND wil_id='$user_wilayah'";
         }
 
+
         $sql = "SELECT  1 as id  ,'PKB' as title  , COUNT(tp.PKBNo) as total  FROM T_PKB tp 
         WHERE  NULLIF(tp.PKBNo, '') IS NOT NULL ";
 
-        if (!empty($area)) $sql .= " AND tp.LocationName='$area'";
+        // if (!empty($area)) $sql .= " AND tp.LocationName='$area'";
+        if ($area != "" || $area != null) {
+            $plantID = DB::connection('soabi')->select("SELECT code_sub as id FROM admisecdrep_sub WHERE id='$area'  ");
+            $sql .= " AND tp.LocationName='" . $plantID[0]->id . " '";
+        }
+
         if (!empty($month)) $sql .= " AND MONTH(tp.PKBDate)='$month'";
         if (!empty($year)) $sql .= " AND YEAR(tp.PKBDate)='$year'";
 
@@ -521,7 +563,7 @@ class DashboardModel extends Model
         return $data;
     }
 
-    public static function pkbSetahun($req)
+    public static function documentSetahun($req)
     {
         $year = $req->input("year") == null ? date('Y') : $req->input("year");
         $area = $req->input("plant");
@@ -559,39 +601,142 @@ class DashboardModel extends Model
         return $data;
     }
 
-    // public static function pkbSetahun($req)
-    // {
-    //     $year = $req->input("year") == null ? date('Y') : $req->input("year");
-    //     $area = $req->input("plant");
-    //     $wherePlant = "";
+    public static function pkbSetahun($req)
+    {
+        $year = $req->input("year") == null ? date('Y') : $req->input("year");
+        $area = $req->input("plant");
+        $wherePlant = "";
 
-    //     if ($area != "" || $area != null) {
-    //         $plantID = DB::connection('soabi')->select("SELECT code_sub as id FROM admisecdrep_sub WHERE id='$area'  ");
-    //         $wherePlant .= " AND tp.LocationName='" . $plantID[0]->id . " '";
-    //     }
-    //     $res = DB::connection('egate')->select("WITH days(DayNum) AS
-    //     (
-    //         SELECT 1
-    //         UNION ALL
-    //         SELECT DayNum+1 
-    //             FROM days
-    //         WHERE DayNum < '12'
-    //     )
-    //     SELECT m.DayNum day_num ,
-    //     (
-    //         select count(*) as total FROM T_PKB tp 
-    //         WHERE 
-    //         YEAR(tp.PKBDate) = '$year' 
-    //         and MONTH(tp.PKBDate) = m.DayNum 
-    //         $wherePlant
-    //     ) total
-    //     FROM days m");
+        if ($area != "" || $area != null) {
+            $plantID = DB::connection('soabi')->select("SELECT code_sub as id FROM admisecdrep_sub WHERE id='$area'  ");
+            $wherePlant .= " AND tp.LocationName='" . $plantID[0]->id . " '";
+        }
+        $res = DB::connection('egate')->select("WITH days(DayNum) AS
+        (
+            SELECT 1
+            UNION ALL
+            SELECT DayNum+1 
+                FROM days
+            WHERE DayNum < '12'
+        )
+        SELECT m.DayNum day_num ,
+        (
+            select count(*) as total FROM T_PKB tp 
+            WHERE 
+            YEAR(tp.PKBDate) = '$year' 
+            and MONTH(tp.PKBDate) = m.DayNum 
+            $wherePlant
+        ) total
+        FROM days m");
 
-    //     $data = array();
+        $data = array();
 
-    //     foreach ($res as $r) {
-    //         $data[] = (int) $r->total;
-    //     }
-    //     return $data;
-    // }
+        foreach ($res as $r) {
+            $data[] = (int) $r->total;
+        }
+        return $data;
+    }
+    //
+
+
+    // PKB modal popup graphic
+    public static function pkbAllPlant($req)
+    {
+        $area = $req->input('area_fil');
+        $year = $req->input('year_fil');
+        $year = empty($year) ? date('Y') : $year;
+        $month = $req->input('month_fil');
+        $user_wilayah = AuthHelper::user_wilayah();
+        $whereWil = "";
+        if (AuthHelper::is_author('ALLAREA')) {
+            $whereWil .= " AND wil_id='$user_wilayah'";
+        }
+
+        if ($area != "" || $area != null) {
+            $plantID = DB::connection('soabi')->select("SELECT code_sub as id FROM admisecdrep_sub WHERE id='$area'  ");
+            $area =  $plantID[0]->id;
+        }
+
+        $sql = "WITH Mplants AS (
+            Select DummiesPlant FROM  (values ('P1'),('P2'),('P3'),('P4'),('P5'),('HO'),('PC')) A(DummiesPlant)
+        )
+        SELECT pl.DummiesPlant as plants , sum(COALESCE(X.total,0)) as total  FROM Mplants pl
+            LEFT OUTER JOIN(
+             SELECT COUNT(tp.PKBNo) as total , tp.PKBDate , tp.LocationName as plt FROM T_PKB tp
+             WHERE YEAR(tp.PKBDate) = '$year'";
+        if (!empty($month))  $sql .= "and MONTH(tp.PKBDate) = '$month'";
+        $sql .= "GROUP BY tp.PKBDate , tp.LocationName
+            )X on X.plt = pl.DummiesPlant
+        ";
+        if (!empty($area)) $sql .= " WHERE pl.DummiesPlant='$area'";
+        $sql .= "GROUP BY pl.DummiesPlant";
+        $res = DB::connection('egate')->select($sql);
+        return $res;
+    }
+
+    public static function pkbPlantSetahun($req)
+    {
+        // $area = $req->input('area_fil');
+        $year = $req->input('year_fil');
+        $year = empty($year) ? date('Y') : $year;
+        // $month = $req->input('month_fil');
+        $user_wilayah = AuthHelper::user_wilayah();
+        $whereWil = "";
+        if (AuthHelper::is_author('ALLAREA')) {
+            $whereWil .= " AND wil_id='$user_wilayah'";
+        }
+        $sql = "WITH days(DayNum) AS
+            (
+                SELECT 1
+                UNION ALL
+                SELECT DayNum+1 
+                    FROM days
+                WHERE DayNum < '12'
+            ),
+        Mplants AS 
+            (
+            Select * FROM  (values ('P1'),('P2'),('P3'),('P4'),('P5'),('HO'),('PC')) A(DummiesPlant)
+            ) 
+        SELECT m.DayNum as months , Mplants.DummiesPlant as plantss, SUM(COALESCE(X.counting,0)) as total
+          FROM days m 
+           LEFT JOIN Mplants on Mplants.DummiesPlant in ('P1','P2','P3','P4','P5','HO','PC')
+            LEFT OUTER JOIN(
+                SELECT count(tp.PKBNo) as counting , tp.LocationName as plants , tp.PKBDate as tgl FROM T_PKB tp 
+                GROUP BY tp.LocationName , tp.PKBDate 
+            )X on MONTH(X.tgl) = m.DayNum  AND YEAR(x.tgl)='$year'  AND  X.plants = Mplants.DummiesPlant 
+        GROUP BY m.DayNum , Mplants.DummiesPlant
+        ORDER BY DummiesPlant  ASC";
+        $res = DB::connection('egate')->select($sql);
+        return $res;
+    }
+
+    public static function pkbByUser($req, $type)
+    {
+        $area = $req->input('area_fil');
+        $year = $req->input('year_fil');
+        $year = empty($year) ? date('Y') : $year;
+        $month = $req->input('month_fil');
+        $user_wilayah = AuthHelper::user_wilayah();
+        $whereWil = "";
+        if (AuthHelper::is_author('ALLAREA')) {
+            $whereWil .= " AND wil_id='$user_wilayah'";
+        }
+        if ($area != "" || $area != null) {
+            $plantID = DB::connection('soabi')->select("SELECT code_sub as id FROM admisecdrep_sub WHERE id='$area'  ");
+            $area =  $plantID[0]->id;
+        }
+        if ($type == 'top') {
+            $sql = "SELECT TOP 5  tp.DeptName , count(tp.DeptName) as total 
+            from T_PKB tp WHERE YEAR(tp.PKBDate)='$year'";
+        } else {
+            $sql = "SELECT  tp.DeptName , count(tp.DeptName) as total 
+        from T_PKB tp WHERE YEAR(tp.PKBDate)='$year'";
+        }
+
+        if (!empty($area)) $sql .= "AND tp.LocationName='$area'";
+        if (!empty($month)) $sql .= "AND MONTH(tp.PKBDate)='$month'";
+        $sql .= "group by tp.DeptName order by total desc ";
+        $res = DB::connection('egate')->select($sql);
+        return $res;
+    }
 }

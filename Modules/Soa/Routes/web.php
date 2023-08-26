@@ -14,6 +14,9 @@
 
 
 Route::prefix('soa')->group(function () {
+
+    Route::get('/tester', 'DashboardController@tester');
+
     Route::get('/dashboard', 'DashboardController@index');
     Route::post('/peopleAll', 'DashboardController@peopleAll');
     Route::post('/vehicleAll', 'DashboardController@vehicleAll');
@@ -25,4 +28,8 @@ Route::prefix('soa')->group(function () {
     Route::post('/peopleCategory', 'DashboardController@peopleCategory');
     Route::post('/documentCategory', 'DashboardController@documentCategory');
     Route::post('/grapichSetahun', 'DashboardController@grapichSetahun');
+
+    Route::post('/pkbAllPlants', 'DashboardController@pkbAllPlants');
+    Route::post('/pkbPlantSetahun', 'DashboardController@pkbPlantSetahun');
+    Route::post('/pkbByUser', 'DashboardController@pkbByUser');
 });

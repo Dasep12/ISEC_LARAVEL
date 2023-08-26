@@ -321,6 +321,11 @@
 
         FtraficAll(field)
 
+        // modal pop up PKB
+        FtraficPKBAll(field)
+        FyearPKBADM(field)
+        FdepartementGraph(field)
+
         $("#areaFilter, #yearFilter, #monthFilter").change(function(e) {
             var field = [
                 area = $("#areaFilter").val(),
@@ -339,7 +344,12 @@
                 FpeopleCategori(field);
             } else if (isTraffic == 'vehicle') {
                 FvehicleCategori(field)
+            } else if (isTraffic == 'document') {
+                FdocumentCategori(field)
             }
+
+            // modal popup
+            FyearPKBADM(field)
         })
 
         // Trafice Days Update
@@ -1023,7 +1033,6 @@
             },
             success: function(res) {
                 let data = res;
-                console.log(data)
                 var seriesLength = pieMaterial.series.length;
                 for (var i = seriesLength - 1; i > -1; i--) {
                     pieMaterial.series[i].remove();
@@ -1046,8 +1055,128 @@
 
 
     // PKB
+    var yearPKBADM = new Highcharts.Chart({
+        chart: {
+            renderTo: 'yearAdmPlant',
+            type: 'pie',
+            height: 320,
+        },
+        plotOptions: {
+            pie: {
+                innerSize: '60%',
+                showInLegend: true,
+                dataLabels: {
+                    enabled: true,
+                    color: "white",
+                    formatter: function() {
+                        return '<b>' + Highcharts.numberFormat(this.point.y, 0, '.', ',') + '<b>';
+                    }
+                },
+            },
+        },
+        title: {
+            verticalAlign: 'middle',
+            // floating: true,
+            text: 'RED',
+            x: -4,
+            y: -15,
+            useHTML: true
+        },
+        credits: {
+            enabled: false
+        },
+        series: [{
+            data: [{
+                    name: 'P1',
+                    y: 10
+                },
+                {
+                    name: 'P2',
+                    y: 10
+                },
+                {
+                    name: 'P3',
+                    y: 10
+                },
+                {
+                    name: 'P4',
+                    y: 10
+                },
+                {
+                    name: 'P4',
+                    y: 10
+                }, {
+                    name: 'P5',
+                    y: 10
+                }, {
+                    name: 'HO',
+                    y: 10
+                },
+            ],
+        }, ],
+    });
 
-    var traficPKB = Highcharts.chart('pkbSetahun', {
+    function FyearPKBADM(field) {
+        $.ajax({
+            url: 'pkbAllPlants',
+            type: 'POST',
+            data: {
+                area_fil: area,
+                year_fil: year,
+                month_fil: month,
+                "_token": "{{ csrf_token() }}",
+            },
+            cache: false,
+            beforeSend: function() {
+                document.getElementById("yearAdmLoader").style.display = "block";
+            },
+            complete: function() {
+                document.getElementById("yearAdmLoader").style.display = "none";
+            },
+            success: function(result) {
+                var seriesLength = yearPKBADM.series.length;
+                for (var i = seriesLength - 1; i > -1; i--) {
+                    yearPKBADM.series[i].remove();
+                }
+                let data = result;
+
+                let datas = [];
+                let summary = 0;
+                let colour = ["#eb3326", "#e8c91c", "#0ee311", "#0eebdc", "#280eed", "#fc17f5", "#3e4a40"];
+                for (let i = 0; i < data.length; i++) {
+                    datas.push({
+                        name: data[i].plants,
+                        y: parseInt(data[i].total),
+                        color: colour[i]
+                    });
+                    summary += parseInt(data[i].total);
+                }
+
+                yearPKBADM.addSeries({
+                    data: datas
+                });
+
+                // yearPKBADM.setTitle(null, {
+                //     verticalAlign: 'middle',
+                //     text: summary,
+                //     x: -4,
+                //     y: -15
+                // }, {
+                //     style: {
+                //         'font-size': '20px'
+                //     }
+                // })
+                yearPKBADM.setTitle({
+                    style: {
+                        color: 'red'
+                    },
+                    text: summary
+                });
+            }
+        });
+    }
+
+    var traficPKBSetahun = Highcharts.chart('pkbSetahun', {
         chart: {
             type: 'line',
             backgroundColor: 'transparent',
@@ -1109,95 +1238,44 @@
         }]
     });
 
-    function FtraficPKB() {
-        var seriesLength = traficPKB.series.length;
-        for (var i = seriesLength - 1; i > -1; i--) {
-            traficPKB.series[i].remove();
-        }
-        let res = [{
-            label: 'P1',
-            data: [1, 2, 3, 4, 5, 7, 25, 3, 21]
-        }, {
-            label: 'P2',
-            data: [3, 6, 3, 9, 15, 7, 15, 23, 24]
-        }]
-        document.getElementById("headerDay").innerHTML = "Traffic People";
-        let data = res;
-        let datas = [];
-        for (let i = 0; i < data.length; i++) {
-            traficPKB.addSeries({
-                name: data[i].label,
-                data: []
-            });
-            traficPKB.series[i].update({
-                data: data[i].data,
-                name: data[i].label,
-                lineWidth: 2.5
-            });
-        }
-    }
-    FtraficPKB()
-
-    var yearPKB = new Highcharts.Chart({
-        chart: {
-            renderTo: 'yearAdmPlant',
-            type: 'pie',
-            height: 320,
-        },
-        plotOptions: {
-            pie: {
-                innerSize: '60%',
-                showInLegend: true,
-                dataLabels: {
-                    enabled: true,
-                    color: "white",
-                    formatter: function() {
-                        return '<b>' + Highcharts.numberFormat(this.point.y, 0, '.', ',') + '<b>';
-                    }
-                },
+    function FtraficPKBAll(field) {
+        $.ajax({
+            url: 'pkbPlantSetahun',
+            type: 'POST',
+            data: {
+                area_fil: area,
+                year_fil: year,
+                month_fil: month,
+                "_token": "{{ csrf_token() }}",
             },
-        },
-        title: {
-            verticalAlign: 'middle',
-            // floating: true,
-            text: '4000',
-            x: -4,
-            y: -15
-        },
-        credits: {
-            enabled: false
-        },
-        series: [{
-            data: [{
-                    name: 'P1',
-                    y: 2262
-                },
-                {
-                    name: 'P2',
-                    y: 3800
-                },
-                {
-                    name: 'P3',
-                    y: 1000
-                },
-                {
-                    name: 'P4',
-                    y: 1986
-                },
-                {
-                    name: 'P4',
-                    y: 1986
-                }, {
-                    name: 'P5',
-                    y: 2006
-                }, {
-                    name: 'HO',
-                    y: 2020
-                },
-            ],
-        }, ],
-    });
-
+            cache: false,
+            beforeSend: function() {
+                document.getElementById("monthlyADMLoader").style.display = "block";
+            },
+            complete: function() {
+                document.getElementById("monthlyADMLoader").style.display = "none";
+            },
+            success: function(result) {
+                var seriesLength = traficPKBSetahun.series.length;
+                for (var i = seriesLength - 1; i > -1; i--) {
+                    traficPKBSetahun.series[i].remove();
+                }
+                let data = result;
+                let datas = [];
+                for (let i = 0; i < data.length; i++) {
+                    traficPKBSetahun.addSeries({
+                        name: data[i].label,
+                        data: []
+                    });
+                    traficPKBSetahun.series[i].update({
+                        data: data[i].data,
+                        name: data[i].label,
+                        lineWidth: 2.5
+                    });
+                }
+            }
+        });
+    }
 
     var departementGraph = new Highcharts.Chart({
         chart: {
@@ -1205,7 +1283,7 @@
             type: 'column',
         },
         xAxis: {
-            categories: ['DPT PE KARAWANG ASSY', 'DPT LOGISTIC ASSY', 'DPT GA Operation 1', 'DPT GA Operation 2', 'DPT WARRANTY & QUALITY SYSTEM']
+            categories: ['DPT PE KARAWANG ASSY', 'DPT LOGISTIC ASSY']
         },
         yAxis: {
             title: {
@@ -1236,10 +1314,46 @@
             }
         },
         series: [{
-            data: [1318, 1073, 1010, 813, 775],
+            data: [1318, 1073],
             colorByPoint: true
         }]
     });
+
+    function FdepartementGraph(field) {
+        $.ajax({
+            url: 'pkbByUser',
+            type: 'POST',
+            data: {
+                area_fil: area,
+                year_fil: year,
+                month_fil: month,
+                "_token": "{{ csrf_token() }}",
+            },
+            cache: false,
+            beforeSend: function() {
+                document.getElementById("monthlyADMLoader").style.display = "block";
+            },
+            complete: function() {
+                document.getElementById("monthlyADMLoader").style.display = "none";
+            },
+            success: function(result) {
+                let res = result;
+                let categories = [];
+                let data = [];
+
+                for (let i = 0; i < res.length; i++) {
+                    categories.push(res[i].DeptName);
+                    data.push(parseInt(res[i].total));
+                }
+                departementGraph.series[0].update({
+                    name: 'Total',
+                    data: data
+                });
+                console.log(data);
+                console.log(categories);
+            }
+        });
+    }
 
     var userGraph = new Highcharts.Chart({
         chart: {
