@@ -2,17 +2,22 @@
 
 @section('content')
 <style>
-    .modal-dialog {
+    .modal-fullscreen-xl .modal-dialog {
         max-width: 100% !important;
         max-height: auto !important;
+        /* margin-right: 80px !important; */
     }
 
-    .modal {
+    .modal-fullscreen-xl .modal .show {
+        padding-right: 0px !important;
+    }
+
+    .modal-fullscreen-xl .modal {
         padding-right: 20px !important;
         padding-left: 20px !important;
     }
 
-    .modal-body {
+    .modal-fullscreen-xl .modal-body {
         position: relative;
         overflow-y: auto;
     }
@@ -20,12 +25,24 @@
     .modal-fullscreen-xl .card-hor {
         height: 350px !important;
     }
+
+    /* .modal:nth-of-type(even) {
+        z-index: 1052 !important;
+    }
+
+    .modal-backdrop.show:nth-of-type(even) {
+        z-index: 1051 !important;
+    } */
 </style>
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/highcharts-3d.js"></script>
+<!-- <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
-<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<script src="https://code.highcharts.com/stock/modules/accessibility.js"></script>
+<script src="https://code.highcharts.com/stock/highstock.js"></script> -->
+
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/stock/modules/accessibility.js"></script>
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
@@ -41,6 +58,7 @@
 
 <section class="content">
     <div class="container-fluid">
+
         <div class="row">
             <div class="col-lg-12">
                 <div class="card cardIn2">
@@ -86,7 +104,9 @@
             </div>
 
             <div class="col-lg-3">
+
                 <div class="row">
+
                     <div class="col-lg-12">
                         <div class="card card-ver">
                             <div class="card-body people" style="cursor:pointer">
@@ -137,7 +157,7 @@
                                     <img src="{{ asset('assets/images/icon/soa/folder.png') }}">
                                 </div>
                                 <div class="text">
-                                    <span class="title">DOCUMENT</span>
+                                    <span class="title">DOCUMENT </span>
                                     <span id="materialTotal" class="value">0</span>
                                     <span>Document</span>
                                 </div>
@@ -267,7 +287,7 @@
                             <div class="card card-hor" style="">
                                 <div class="card-body text-center">
                                     <div style="position: absolute;left:50%;top:30%" class="row justify-content-center loader">
-                                        <div class="overlay" style="display:block" id="yearAdmLoader">
+                                        <div class="overlay" style="display:block" id="bydepartementLoader">
                                             <i class="fas fa-2x fa-sync-alt fa-spin"></i>
                                         </div>
                                     </div>
@@ -279,7 +299,7 @@
                             <div class="card card-hor" style="">
                                 <div class="card-body text-center">
                                     <div style="position: absolute;left:40%;top:40%" class="row justify-content-center loader">
-                                        <div class="overlay" style="display:block" id="monthlyADMLoader">
+                                        <div class="overlay" style="display:block" id="byUserLoader">
                                             <i class="fas fa-2x fa-sync-alt fa-spin"></i>
                                         </div>
                                     </div>
@@ -293,6 +313,65 @@
         </div>
     </div>
 
+
+
+    <!-- modal 2 -->
+    <div class="modal" id="myModal2" data-backdrop="static">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Detail Graphic</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card card-hor" style="box-shadow:none !important">
+                                <div class="card-body text-center">
+                                    <div style="position: absolute;left:50%;top:50%" class="row justify-content-center loader">
+                                        <div class="overlay" style="display:block" id="bydetailDepartementLoader">
+                                            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                                        </div>
+                                    </div>
+                                    <div id="detailDepartement"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--  -->
+
+    <!-- modal 2 -->
+    <div class="modal" id="myModal3" data-backdrop="static">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Detail Graphic</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card card-hor" style="box-shadow:none !important">
+                                <div class="card-body text-center">
+                                    <div style="position: absolute;left:50%;top:50%" class="row justify-content-center loader">
+                                        <div class="overlay" style="display:block" id="bydetailUserLoader">
+                                            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                                        </div>
+                                    </div>
+                                    <div id="BydetailUser"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--  -->
 </section>
 
 <script>
@@ -325,6 +404,10 @@
         FtraficPKBAll(field)
         FyearPKBADM(field)
         FdepartementGraph(field)
+        FuserGraph(field)
+        FdetaildepartementGraph(field)
+        FdetailuserGraph(field)
+
 
         $("#areaFilter, #yearFilter, #monthFilter").change(function(e) {
             var field = [
@@ -349,7 +432,12 @@
             }
 
             // modal popup
+            FtraficPKBAll(field)
             FyearPKBADM(field)
+            FdepartementGraph(field)
+            FuserGraph(field)
+            FdetaildepartementGraph(field)
+            FdetailuserGraph(field)
         })
 
         // Trafice Days Update
@@ -1076,8 +1164,8 @@
         },
         title: {
             verticalAlign: 'middle',
-            // floating: true,
-            text: 'RED',
+            floating: true,
+            text: '',
             x: -4,
             y: -15,
             useHTML: true
@@ -1156,21 +1244,8 @@
                     data: datas
                 });
 
-                // yearPKBADM.setTitle(null, {
-                //     verticalAlign: 'middle',
-                //     text: summary,
-                //     x: -4,
-                //     y: -15
-                // }, {
-                //     style: {
-                //         'font-size': '20px'
-                //     }
-                // })
                 yearPKBADM.setTitle({
-                    style: {
-                        color: 'red'
-                    },
-                    text: summary
+                    text: `${summary}`
                 });
             }
         });
@@ -1313,15 +1388,26 @@
                 depth: 25
             }
         },
+        exporting: {
+            buttons: {
+                customButton: {
+                    text: "»",
+                    x: 10,
+                    onclick: function() {
+                        $('#myModal2').modal();
+                    },
+                },
+            },
+        },
         series: [{
-            data: [1318, 1073],
+            data: [],
             colorByPoint: true
         }]
     });
 
     function FdepartementGraph(field) {
         $.ajax({
-            url: 'pkbByUser',
+            url: 'pkbByDepartement',
             type: 'POST',
             data: {
                 area_fil: area,
@@ -1331,26 +1417,26 @@
             },
             cache: false,
             beforeSend: function() {
-                document.getElementById("monthlyADMLoader").style.display = "block";
+                document.getElementById("bydepartementLoader").style.display = "block";
             },
             complete: function() {
-                document.getElementById("monthlyADMLoader").style.display = "none";
+                document.getElementById("bydepartementLoader").style.display = "none";
             },
             success: function(result) {
                 let res = result;
                 let categories = [];
                 let data = [];
-
                 for (let i = 0; i < res.length; i++) {
-                    categories.push(res[i].DeptName);
+                    categories.push(res[i].DeptName.toUpperCase());
                     data.push(parseInt(res[i].total));
                 }
+
                 departementGraph.series[0].update({
-                    name: 'Total',
-                    data: data
+                    data: data,
                 });
-                console.log(data);
-                console.log(categories);
+                departementGraph.xAxis[0].update({
+                    categories: categories
+                });
             }
         });
     }
@@ -1392,11 +1478,225 @@
                 borderRadius: '25%'
             }
         },
+        exporting: {
+            buttons: {
+                customButton: {
+                    text: "»",
+                    x: 10,
+                    onclick: function() {
+                        $('#myModal3').modal();
+                    },
+                },
+            },
+        },
         series: [{
             data: [1318, 1073, 1010, 813, 775],
             colorByPoint: true
         }]
     });
+
+    function FuserGraph(field) {
+        $.ajax({
+            url: 'pkbByUser',
+            type: 'POST',
+            data: {
+                area_fil: area,
+                year_fil: year,
+                month_fil: month,
+                "_token": "{{ csrf_token() }}",
+            },
+            cache: false,
+            beforeSend: function() {
+                document.getElementById("byUserLoader").style.display = "block";
+            },
+            complete: function() {
+                document.getElementById("byUserLoader").style.display = "none";
+            },
+            success: function(result) {
+                let res = result;
+                let categories = [];
+                let data = [];
+
+                for (let i = 0; i < res.length; i++) {
+                    categories.push(res[i].Creator.toUpperCase());
+                    data.push(parseInt(res[i].total));
+                }
+
+                userGraph.series[0].update({
+                    data: data,
+                });
+                userGraph.xAxis[0].update({
+                    categories: categories
+                });
+            }
+        });
+    }
+
+
+    var detaildepartementGraph = new Highcharts.Chart('detailDepartement', {
+        chart: {
+            type: 'bar',
+            marginLeft: 150,
+        },
+        title: {
+            text: 'All Departement'
+        },
+        subtitle: {
+            text: ''
+        },
+        xAxis: {
+            type: 'category',
+            title: {
+                text: null
+            },
+            scrollbar: {
+                enabled: true
+            },
+        },
+        yAxis: {
+            min: 0,
+            max: 1200,
+            title: {
+                text: 'Votes',
+                align: 'high'
+            },
+
+        },
+        plotOptions: {
+            bar: {
+                dataLabels: {
+                    enabled: true
+                }
+            }
+        },
+        legend: {
+            enabled: false
+        },
+        credits: {
+            enabled: false
+        },
+        series: [{
+            name: 'Total',
+            data: []
+        }]
+    });
+
+    function FdetaildepartementGraph(field) {
+        $.ajax({
+            url: 'pkbByDepartementAll',
+            type: 'POST',
+            data: {
+                area_fil: area,
+                year_fil: year,
+                month_fil: month,
+                "_token": "{{ csrf_token() }}",
+            },
+            cache: false,
+            beforeSend: function() {
+                document.getElementById("bydetailDepartementLoader").style.display = "block";
+            },
+            complete: function() {
+                document.getElementById("bydetailDepartementLoader").style.display = "none";
+            },
+            success: function(result) {
+                let res = result;
+                let categories = [];
+                let data = [];
+                for (let i = 0; i < res.length; i++) {
+                    let opt = [res[i].DeptName, parseInt(res[i].total)]
+                    data.push(opt);
+                }
+
+                detaildepartementGraph.series[0].update({
+                    data: data
+                });
+            }
+        });
+    }
+
+
+    var detailuserGraph = new Highcharts.Chart('BydetailUser', {
+        chart: {
+            type: 'bar',
+            marginLeft: 150,
+        },
+        title: {
+            text: 'All Users'
+        },
+        subtitle: {
+            text: ''
+        },
+        xAxis: {
+            type: 'category',
+            title: {
+                text: null
+            },
+            scrollbar: {
+                enabled: true
+            },
+        },
+        yAxis: {
+            min: 0,
+            max: 1200,
+            title: {
+                text: 'Votes',
+                align: 'high'
+            },
+
+        },
+        plotOptions: {
+            bar: {
+                dataLabels: {
+                    enabled: true
+                }
+            }
+        },
+        legend: {
+            enabled: false
+        },
+        credits: {
+            enabled: false
+        },
+        series: [{
+            name: 'Total',
+            data: []
+        }]
+    });
+
+    function FdetailuserGraph(field) {
+        $.ajax({
+            url: 'pkbByUserAll',
+            type: 'POST',
+            data: {
+                area_fil: area,
+                year_fil: year,
+                month_fil: month,
+                "_token": "{{ csrf_token() }}",
+            },
+            cache: false,
+            beforeSend: function() {
+                document.getElementById("bydetailUserLoader").style.display = "block";
+            },
+            complete: function() {
+                document.getElementById("bydetailUserLoader").style.display = "none";
+            },
+            success: function(result) {
+                let res = result;
+                let categories = [];
+                let data = [];
+                for (let i = 0; i < res.length; i++) {
+                    let opt = [res[i].Creator, parseInt(res[i].total)]
+                    data.push(opt);
+                }
+
+                console.log(data);
+
+                detailuserGraph.series[0].update({
+                    data: data
+                });
+            }
+        });
+    }
     // 
 </script>
 @endsection

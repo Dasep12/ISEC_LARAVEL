@@ -48,6 +48,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/gt.css') }}?') }}{{ date('Y-m-d H:i:s') }}">
     <!-- <link rel="stylesheet" type="text/css" href="{{ asset('assets/dist/newStyle.css') }}" /> -->
 
+    <link rel="stylesheet" href="{{ asset('assets/css/srs.css?') }}<?= date('Y-m-d H:i:s') ?>">
+
 </head>
 
 <body class="hold-transition sidebar-mini sidebar-collapse layout-navbar-fixed">
@@ -95,7 +97,7 @@
                         <img style="width: 3.0rem;" src="http://103.189.234.208/isecurity/assets/dist/img/security.png" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block font-weight-bold" style="font-size: 18px">Security<br>Big Data Analytic</a>
+                        <a href="#" class="d-block font-weight-bold" style="font-size: 18px">Security<br>BigData Analytic</a>
                     </div>
                 </div>
 
@@ -105,8 +107,8 @@
                         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                         <li class="nav-item ">
-                            <a href="Menu" class="nav-link
-                            <?php if ($link == 'Menu' || $link == '') {
+                            <a href="menu" class="nav-link
+                            <?php if ($link == 'menu' || $link == '') {
                                 echo 'active';
                             } ?>">
                                 <i class="nav-icon fas fa-tachometer-alt "></i>
@@ -120,7 +122,7 @@
 
                         <?php if (AuthHelper::is_super_admin() || AuthHelper::is_app('SRS')) { ?>
                             <li class="nav-item">
-                                <a href="srs/dashboard" class="nav-link">
+                                <a href="srs/dashboard_v2" class="nav-link">
                                     <i class="nav-icon fas fa-chart-pie"></i>
                                     <p>
                                         Security Risk Survey

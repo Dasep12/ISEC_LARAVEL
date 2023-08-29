@@ -710,7 +710,7 @@ class DashboardModel extends Model
         return $res;
     }
 
-    public static function pkbByUser($req, $type)
+    public static function pkbByDepartement($req, $type)
     {
         $area = $req->input('area_fil');
         $year = $req->input('year_fil');
@@ -736,6 +736,36 @@ class DashboardModel extends Model
         if (!empty($area)) $sql .= "AND tp.LocationName='$area'";
         if (!empty($month)) $sql .= "AND MONTH(tp.PKBDate)='$month'";
         $sql .= "group by tp.DeptName order by total desc ";
+        $res = DB::connection('egate')->select($sql);
+        return $res;
+    }
+
+    public static function pkbByUser($req, $type)
+    {
+        $area = $req->input('area_fil');
+        $year = $req->input('year_fil');
+        $year = empty($year) ? date('Y') : $year;
+        $month = $req->input('month_fil');
+        $user_wilayah = AuthHelper::user_wilayah();
+        $whereWil = "";
+        if (AuthHelper::is_author('ALLAREA')) {
+            $whereWil .= " AND wil_id='$user_wilayah'";
+        }
+        if ($area != "" || $area != null) {
+            $plantID = DB::connection('soabi')->select("SELECT code_sub as id FROM admisecdrep_sub WHERE id='$area'  ");
+            $area =  $plantID[0]->id;
+        }
+        if ($type == 'top') {
+            $sql = "SELECT TOP 5  tp.Creator , count(tp.EntryUser) as total 
+            from T_PKB tp WHERE YEAR(tp.PKBDate)='$year'";
+        } else {
+            $sql = "SELECT  tp.Creator , count(tp.EntryUser) as total 
+        from T_PKB tp WHERE YEAR(tp.PKBDate)='$year'";
+        }
+
+        if (!empty($area)) $sql .= "AND tp.LocationName='$area'";
+        if (!empty($month)) $sql .= "AND MONTH(tp.PKBDate)='$month'";
+        $sql .= "group by tp.Creator , tp.EntryUser order by total desc ";
         $res = DB::connection('egate')->select($sql);
         return $res;
     }

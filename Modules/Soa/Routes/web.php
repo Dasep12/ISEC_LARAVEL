@@ -31,5 +31,8 @@ Route::prefix('soa')->group(function () {
 
     Route::post('/pkbAllPlants', 'DashboardController@pkbAllPlants');
     Route::post('/pkbPlantSetahun', 'DashboardController@pkbPlantSetahun');
+    Route::post('/pkbByDepartement', 'DashboardController@pkbByDepartement');
+    Route::post('/pkbByDepartementAll', 'DashboardController@pkbByDepartementAll');
     Route::post('/pkbByUser', 'DashboardController@pkbByUser');
+    Route::post('/pkbByUserAll', 'DashboardController@pkbByUserAll');
 });

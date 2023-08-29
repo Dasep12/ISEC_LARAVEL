@@ -268,9 +268,27 @@ class DashboardController extends Controller
         return response()->json($document);
     }
 
+    public function pkbByDepartement(Request $req)
+    {
+        $data = Dashboard::pkbByDepartement($req, 'top');
+        return response()->json($data);
+    }
+
+    public function pkbByDepartementAll(Request $req)
+    {
+        $data = Dashboard::pkbByDepartement($req, 'all');
+        return response()->json($data);
+    }
+
     public function pkbByUser(Request $req)
     {
         $data = Dashboard::pkbByUser($req, 'top');
+        return response()->json($data);
+    }
+
+    public function pkbByUserAll(Request $req)
+    {
+        $data = Dashboard::pkbByUser($req, 'all');
         return response()->json($data);
     }
     // 

@@ -25,4 +25,10 @@ Route::get('/logout', [AuthController::class, "logout"])->name("auth.logout");
 
 Route::middleware("is_login_isec")->group(function () {
     Route::get('/menu', [MenuController::class, 'index']);
+    Route::post('/menu/srsSoi', [MenuController::class, 'srsSoi']);
+    Route::post('/menu/srsMonth', [MenuController::class, 'srsMonth']);
+    Route::post('/menu/srsPerPlant', [MenuController::class, 'srsPerPlant']);
+    Route::post('/menu/srsRiskSource', [MenuController::class, 'srsRiskSource']);
+    Route::post('/menu/srsTargetAssets', [MenuController::class, 'srsTargetAssets']);
+    Route::post('/menu/srsRisk', [MenuController::class, 'srsRisk']);
 });

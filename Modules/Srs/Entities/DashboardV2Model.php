@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 use AuthHelper;
 
-class DashboardModel extends Model
+class DashboardV2Model extends Model
 {
     use HasFactory;
 
@@ -25,7 +25,7 @@ class DashboardModel extends Model
         $user_npk = AuthHelper::user_npk();
         $user_wilayah = AuthHelper::user_wilayah();
 
-        $q = "SELECT id, title ,area_code
+        $q = "SELECT id, title 
                     FROM dbo.admiseciso_area_sub 
                 WHERE area_categ_id=? AND status=?";
 
@@ -133,12 +133,12 @@ class DashboardModel extends Model
     {
         if($req->isMethod('post'))
         {
-            $area = $req->input('area_fil', true);
-            $year = $req->input('year_fil', true);
+            $area = $req->input('area_fil');
+            $year = $req->input('year_fil');
             $year = empty($year) ? date('Y') : $year;
-            $month = $req->input('month_fil', true);
-            // $label = $req->input('label_fil', true);
-            $id = $req->input('id_fil', true);
+            $month = $req->input('month_fil');
+            // $label = $req->input('label_fil');
+            $id = $req->input('id_fil');
 
             $q = "
                 WITH months(MonthNum) AS
@@ -172,11 +172,11 @@ class DashboardModel extends Model
 
     public static function grapDetailRiskSub($req, $sub_name)
     {
-        $area = $req->input('area_fil', true);
-        $year = $req->input('year_fil', true);
+        $area = $req->input('area_fil');
+        $year = $req->input('year_fil');
         $year = empty($year) ? date('Y') : $year;
-        $month = $req->input('month_fil', true);
-        $id = $req->input('id_fil', true);
+        $month = $req->input('month_fil');
+        $id = $req->input('id_fil');
 
         $q = "
             SELECT rsu.id ,rsu.title ,ISNULL(t.total,0) total
@@ -274,17 +274,16 @@ class DashboardModel extends Model
             SELECT m.MonthNum month_num ,count(t.total) total
                 FROM months m
                 LEFT OUTER JOIN (
-                    select count(str.id) total ,str.event_date ,str.area_id
+                    select count(str.id) total ,str.event_date ,str.area_id ,str.disable ,str.status
                         from dbo.admiseciso_transaction str
-                        where str.".$sub_name."=(select id from dbo.admiseciso_risksource_sub where id=$id) and str.disable=0 and str.status=1
-                    group by str.id ,str.event_date ,str.area_id
-                ) AS t ON MONTH(t.event_date)=m.MonthNum ";
+                        where str.".$sub_name."=$id
+                    group by str.id ,str.event_date ,str.area_id ,str.disable ,str.status
+                ) AS t ON MONTH(t.event_date)=m.MonthNum AND t.disable=0 AND t.status=1 ";
                 if(!empty($area) || !empty($year)) $q .= ' AND ';
                 if(!empty($area)) $q .= " t.area_id=$area ";
                 if(!empty($area) && !empty($year)) $q .= ' AND ';
                 if(!empty($year)) $q .= " year(t.event_date)=$year ";
-        $q .= " GROUP BY m.MonthNum, t.total ORDER BY t.total DESC";
-        // lower(title)=lower('".$label."')
+        $q .= " GROUP BY m.MonthNum, t.total ORDER BY m.MonthNum ASC";
 
         $res = DB::connection('srsbi')->select($q);
 
@@ -381,7 +380,7 @@ class DashboardModel extends Model
         {
             $year = $req->input('year_fil');
             $month = $req->input('month_fil');
-            $area = $req->input('area_fil', true);
+            $area = $req->input('area_fil');
 
             $q = "
                 SELECT aar.title, ISNULL(tis.total, 0) total
@@ -395,7 +394,7 @@ class DashboardModel extends Model
                         // if(!empty($month)) $q .= " month(stis.event_date)=$month ";
                     $q .= " group by stis.area_id
                 ) tis on tis.area_id=aar.id 
-            WHERE aar.area_categ_id=1 and aar.status=1";
+            WHERE aar.area_categ_id=1";
                 if(!empty($area)) $q .= ' AND ';
                 if(!empty($area)) $q .= " aar.id=$area ";
             $q .= "ORDER BY aar.title ASC";
@@ -510,11 +509,11 @@ class DashboardModel extends Model
     
     public static function grapDetailAssets($req, $sub_name)
     {
-        $area = $req->input('area_fil', true);
-        $year = $req->input('year_fil', true);
+        $area = $req->input('area_fil');
+        $year = $req->input('year_fil');
         $year = empty($year) ? date('Y') : $year;
-        $month = $req->input('month_fil', true);
-        $id = $req->input('id_fil', true);
+        $month = $req->input('month_fil');
+        $id = $req->input('id_fil');
 
         $q = "
             WITH months(MonthNum) AS
@@ -547,12 +546,12 @@ class DashboardModel extends Model
 
     public static function grapDetailAssetsSub($req, $sub_name)
     {
-        $area = $req->input('area_fil', true);
-        $year = $req->input('year_fil', true);
+        $area = $req->input('area_fil');
+        $year = $req->input('year_fil');
         $year = empty($year) ? date('Y') : $year;
-        $month = $req->input('month_fil', true);
-        $label = $req->input('label_fil', true);
-        $id = $req->input('id_fil', true);
+        $month = $req->input('month_fil');
+        $label = $req->input('label_fil');
+        $id = $req->input('id_fil');
 
         $q = "
             SELECT rsu.id ,rsu.title ,ISNULL(t.total,0) total
@@ -709,7 +708,7 @@ class DashboardModel extends Model
 
     public static function grap_soi_avg_montharea($req)
     {
-        $year = $req->input('year_fil', true);
+        $year = $req->input('year_fil');
         $year = empty($year) ? date('Y') : $year;
 
         $q = "
@@ -744,8 +743,8 @@ class DashboardModel extends Model
 
     public static function grapTrendSoi($req)
     {
-        $area = $req->input('area_fil', true);
-        $year = $req->input('year_fil', true);
+        $area = $req->input('area_fil');
+        $year = $req->input('year_fil');
         $year = empty($year) ? date('Y') : $year;
 
         $q = "
@@ -799,13 +798,110 @@ class DashboardModel extends Model
 
         return $res;
     }
+
+    public static function grapTrendSoiIndex($req)
+    {
+        $area = $req->input('area_fil');
+        $year = $req->input('year_fil');
+        $year = empty($year) ? date('Y') : $year;
+
+        $q = "
+            WITH months(MonthsNum) AS
+            (
+                SELECT 1
+                UNION ALL
+                SELECT MonthsNum+1 
+                    FROM months
+                WHERE MonthsNum < 12
+            )
+            SELECT m.MonthsNum month_num 
+                    ,FORMAT((ISNULL(max(maxlevel),0) * 0.2 + ISNULL(max(maxiso),0) * 0.8),'N2') maxiso
+                    ,FORMAT(COALESCE(( AVG(people) + AVG(device) + AVG([system]) +
+                            + AVG(network) ) / 4 , 0),'N2') avgsoi
+                FROM months m
+                LEFT OUTER JOIN (
+                    SELECT tio.event_date ,arl.[level] maxlevel ,iml.impact_level maxiso
+                    FROM admiseciso_transaction tio
+                        inner join dbo.admiseciso_risk_level arl ON arl.id=tio.risk_level_id 
+                        inner join (
+                            select siml.impact_level ,siml.status ,siml.disable ,siml.event_date
+                                from admiseciso_transaction siml
+                            group by siml.impact_level ,siml.status ,siml.disable ,siml.event_date
+                        ) iml on iml.status=tio.status AND iml.disable=tio.disable 
+                        AND iml.event_date=tio.event_date
+                    WHERE tio.disable=0 AND tio.status=1 ";
+
+                        if(!empty($area) || !empty($year)) $q .= ' AND ';
+                        if(!empty($area)) $q .= " tio.area_id=$area ";
+                        if(!empty($area) && !empty($year)) $q .= ' AND ';
+                        if(!empty($year)) $q .= " year(tio.event_date)=$year ";
+
+                    $q .=" GROUP BY tio.event_date ,arl.[level] ,iml.impact_level
+                ) AS i ON year(i.event_date)=$year and month(i.event_date)=MonthsNum
+                LEFT OUTER JOIN (
+                    select soi.[year] ,soi.[month] ,soi.people ,soi.device ,soi.[system] ,soi.network
+                        from admisecsoi_transaction soi
+                        where soi.disable=0 AND soi.status=1 ";
+
+                        if(!empty($area) || !empty($year)) $q .= ' AND ';
+                        if(!empty($area)) $q .= " soi.area_id=$area ";
+                        if(!empty($area) && !empty($year)) $q .= ' AND ';
+                        if(!empty($year)) $q .= " soi.[year]=$year ";
+
+                    $q .= "group by soi.[year] ,soi.[month] ,soi.people ,soi.device ,soi.[system] ,soi.network
+                ) AS s ON s.[year]=$year and s.[month]=MonthsNum
+            GROUP BY m.MonthsNum 
+            ORDER BY m.MonthsNum
+        ";
+
+        $res = DB::connection('srsbi')->select($q);
+
+        return $res;
+    }
+
+    public static function grapTopIndex($req)
+    {
+        $area = $req->input('area_fil');
+        $year = $req->input('year_fil');
+        $year = empty($year) ? date('Y') : $year;
+        $month = $req->input('month_fil');
+        // $month = date("n", strtotime($month));
+
+        $q = "
+            SELECT rso.id, rso.title, ISNULL(tis.total, 0) total
+                ,case 
+                    when rso.type_source is null 
+                    then (select type_source from dbo.admiseciso_risksource_sub where id=tis.risksource_sub1_id)
+                    else rso.type_source
+                    end as type_source
+                FROM dbo.admiseciso_risksource_sub rso
+                left join ( 
+                    select count(1) total, stis.risk_source_id ,stis.risksource_sub1_id
+                        from dbo.admiseciso_transaction stis WHERE stis.status=1 and stis.disable=0 ";
+                        if(!empty($area) || !empty($year) || !empty($month)) $q .= ' AND ';
+                        if(!empty($area)) $q .= " stis.area_id=$area ";
+                        if(!empty($area) && !empty($year)) $q .= ' AND ';
+                        if(!empty($year)) $q .= " year(stis.event_date)=$year ";
+                        if((!empty($area) || !empty($year)) && !empty($month)) $q .= ' AND ';
+                        if(!empty($month)) $q .= " month(stis.event_date)=$month ";
+                    $q .= " group by stis.risk_source_id ,stis.risksource_sub1_id
+                ) tis on tis.risk_source_id=rso.id 
+            WHERE rso.risksource_categ_id=1
+            GROUP BY rso.id ,rso.title ,tis.risksource_sub1_id ,rso.type_source ,total
+            ORDER BY tis.total DESC
+        ";
+
+        $res = DB::connection('srsbi')->select($q);
+
+        return $res;
+    }
     
     public static function grapRiskSourceSoi($req)
     {
-        $area = $req->input('area_fil', true);
-        $year = $req->input('year_fil', true);
+        $area = $req->input('area_fil');
+        $year = $req->input('year_fil');
         $year = $year ? $year : date('Y');
-        $month = $req->input('month_fil', true);
+        $month = $req->input('month_fil');
 
         $q = "
             SELECT rso.id, rso.type_source, rso.title, ISNULL(tis.total, 0) total
@@ -826,7 +922,60 @@ class DashboardModel extends Model
         ";
 
         $res = DB::connection('srsbi')->select($q);
+        return $res;
+    }
 
+    public static function detailEventList($req)
+    {
+        $area = $req->input('area_fil');
+        $year = $req->input('year_fil');
+        $year = $year ? $year : date('Y');
+        $month = $req->input('month_fil');
+        $asset_id = $req->input('asset_id');
+        $asset_sub1_id = $req->input('asset_sub1_id');
+        $asset_sub2_id = $req->input('asset_sub2_id');
+        $risksource_id = $req->input('risksource_id');
+        $risksource_sub1_id = $req->input('risksource_sub1_id');
+        $risksource_sub2_id = $req->input('risksource_sub2_id');
+        $risk_id = $req->input('risk_id');
+        $risk_sub1_id = $req->input('risk_sub1_id');
+        $risk_sub2_id = $req->input('risk_sub2_id');
+
+        $q = "
+            SELECT trs.id ,trs.event_name ,trs.event_date ,trs.chronology
+                FROM dbo.admiseciso_transaction trs
+            WHERE trs.status=1 and trs.disable=0";
+
+                // TARGET ASSET
+                if(!empty($asset_id) || !empty($asset_sub1_id) || !empty($asset_sub2_id)) $q .= ' AND ';
+                if(!empty($asset_id)) $q .= "trs.assets_id=$asset_id ";
+                if(!empty($asset_sub1_id)) $q .= "trs.assets_sub1_id=$asset_sub1_id ";
+                if(!empty($asset_sub2_id)) $q .= "trs.assets_sub2_id=$asset_sub2_id ";
+                // TARGET ASSET
+
+                // RISK SOURCE
+                if(!empty($risksource_id) || !empty($risksource_sub1_id) || !empty($risksource_sub2_id)) $q .= ' AND ';
+                if(!empty($risksource_id)) $q .= "trs.risk_source_id=$risksource_id ";
+                if(!empty($risksource_sub1_id)) $q .= "trs.risksource_sub1_id=$risksource_sub1_id ";
+                if(!empty($risksource_sub2_id)) $q .= "trs.risksource_sub2_id=$risksource_sub2_id ";
+                // RISK SOURCE
+
+                // RISK
+                if(!empty($risk_id) || !empty($risk_sub1_id) || !empty($risk_sub2_id) || !empty($risk_sub3_id)) $q .= ' AND ';
+                if(!empty($risk_id)) $q .= "trs.risk_id=$risk_id ";
+                if(!empty($risk_sub1_id)) $q .= "trs.risk_sub1_id=$risk_sub1_id ";
+                if(!empty($risk_sub2_id)) $q .= "trs.risk_sub2_id=$risk_sub2_id ";
+                if(!empty($risk_sub3_id)) $q .= "trs.risk_sub3_id=$risk_sub3_id ";
+                // RISK //
+
+                if(!empty($area) || !empty($year) || !empty($month)) $q .= ' AND ';
+                if(!empty($area)) $q .= " trs.area_id=$area ";
+                if(!empty($area) && !empty($year)) $q .= ' AND ';
+                if(!empty($year)) $q .= " year(trs.event_date)=$year ";
+                if((!empty($area) || !empty($year)) && !empty($month)) $q .= ' AND ';
+                if(!empty($month)) $q .= " month(trs.event_date)=$month ";
+
+        $res = DB::connection('srsbi')->select($q);
         return $res;
     }
 }
