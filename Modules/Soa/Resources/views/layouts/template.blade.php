@@ -272,16 +272,28 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="" class="nav-link ">
+                            <a href="forms" class="nav-link 
+                            @if($uri == 'forms')
+                                active  
+                            @endif">
                                 <i class="nav-icon fas fa-share-alt-square"></i>
                                 <p>
-                                    <!-- Internal Source -->
                                     Input Daily Report
-                                    <!-- <i class="right fas fa-angle-left"></i> -->
                                 </p>
                             </a>
                         </li>
 
+                        <li class="nav-item">
+                            <a href="upload" class="nav-link
+                             @if($uri == 'upload')
+                                active  
+                            @endif">
+                                <i class="nav-icon fas fa-file-excel"></i>
+                                <p>
+                                    Upload Report
+                                </p>
+                            </a>
+                        </li>
 
                     </ul>
                 </nav>

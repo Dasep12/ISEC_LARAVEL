@@ -35,4 +35,16 @@ Route::prefix('soa')->group(function () {
     Route::post('/pkbByDepartementAll', 'DashboardController@pkbByDepartementAll');
     Route::post('/pkbByUser', 'DashboardController@pkbByUser');
     Route::post('/pkbByUserAll', 'DashboardController@pkbByUserAll');
+
+
+
+    // uploads
+    Route::get('/upload', 'UploadController@index');
+
+
+    // view & from
+    Route::get('/forms', 'SoaController@index');
+    Route::get('/saveSoa', 'SoaController@saveSoa');
+    Route::post('/dataTables', 'SoaController@dataTables');
+    Route::post('/detailSoa', 'SoaController@detailSoa');
 });
