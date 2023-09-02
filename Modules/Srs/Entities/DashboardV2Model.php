@@ -33,7 +33,7 @@ class DashboardV2Model extends Model
 
         if(AuthHelper::is_author('ALLAREA'))
         {
-            $q .= " AND wil_id='$wil'";
+            $q .= " AND wil_id='$user_wilayah'";
         }
 
         if(AuthHelper::is_section_head())

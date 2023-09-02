@@ -310,7 +310,7 @@
 
     function animateLoading(mode='') {
         return `
-            <div class="loader w-100 justify-content-center py-3 `+mode+`">
+            <div class="loader d-flex w-100 justify-content-center py-3 `+mode+`">
                 <div class="spinner-grow text-primary " role="status">
                     <span class="sr-only">Loading...</span>
                 </div>
@@ -1122,11 +1122,11 @@
                         beforeSend: function() {
                         },
                         complete: function() {
-                            detailGrapBody.find('#loader').remove();
+                            detailGrapBody.find('.loader').remove();
                         },
                         error: function(xhr, textStatus, errorThrown) {
                             if (textStatus == 'timeout') {
-                                detailGrapBody.find('#loader').remove();
+                                detailGrapBody.find('.loader').remove();
                                 detailGrapBody.append("Error : Timeout for this call!");
                             }
                         },
@@ -1425,11 +1425,11 @@
                         beforeSend: function() {
                         },
                         complete: function() {
-                            detailGrapBody.find('#loader').remove();
+                            detailGrapBody.find('.loader').remove();
                         },
                         error: function(xhr, textStatus, errorThrown) {
                             if (textStatus == 'timeout') {
-                                detailGrapBody.find('#loader').remove();
+                                detailGrapBody.find('.loader').remove();
                                 detailGrapBody.append("Error : Timeout for this call!");
                             }
                         },
@@ -1576,11 +1576,11 @@
                                         beforeSend: function() {
                                         },
                                         complete: function() {
-                                            topIndexSmallBody.find('#loader').remove();
+                                            topIndexSmallBody.find('.loader').remove();
                                         },
                                         error: function(xhr, textStatus, errorThrown) {
                                             if (textStatus == 'timeout') {
-                                                topIndexSmallBody.find('#loader').remove();
+                                                topIndexSmallBody.find('.loader').remove();
                                                 topIndexSmallBody.append("Error : Timeout for this call!");
                                             }
                                         },
@@ -1625,11 +1625,11 @@
                                         beforeSend: function() {
                                         },
                                         complete: function() {
-                                            detailGrapBody.find('#loader').remove();
+                                            detailGrapBody.find('.loader').remove();
                                         },
                                         error: function(xhr, textStatus, errorThrown) {
                                             if (textStatus == 'timeout') {
-                                                detailGrapBody.find('#loader').remove();
+                                                detailGrapBody.find('.loader').remove();
                                                 detailGrapBody.append("Error : Timeout for this call!");
                                             }
                                         },
@@ -1885,11 +1885,11 @@
                         beforeSend: function() {
                         },
                         complete: function() {
-                            detailGrapBody.find('#loader').remove();
+                            detailGrapBody.find('.loader').remove();
                         },
                         error: function(xhr, textStatus, errorThrown) {
                             if (textStatus == 'timeout') {
-                                detailGrapBody.find('#loader').remove();
+                                detailGrapBody.find('.loader').remove();
                                 detailGrapBody.append("Error : Timeout for this call!");
                             }
                         },
@@ -2036,11 +2036,11 @@
                                         beforeSend: function() {
                                         },
                                         complete: function() {
-                                            topIndexSmallBody.find('#loader').remove();
+                                            topIndexSmallBody.find('.loader').remove();
                                         },
                                         error: function(xhr, textStatus, errorThrown) {
                                             if (textStatus == 'timeout') {
-                                                topIndexSmallBody.find('#loader').remove();
+                                                topIndexSmallBody.find('.loader').remove();
                                                 topIndexSmallBody.append("Error : Timeout for this call!");
                                             }
                                         },
@@ -2085,11 +2085,11 @@
                                         beforeSend: function() {
                                         },
                                         complete: function() {
-                                            detailGrapBody.find('#loader').remove();
+                                            detailGrapBody.find('.loader').remove();
                                         },
                                         error: function(xhr, textStatus, errorThrown) {
                                             if (textStatus == 'timeout') {
-                                                detailGrapBody.find('#loader').remove();
+                                                detailGrapBody.find('.loader').remove();
                                                 detailGrapBody.append("Error : Timeout for this call!");
                                             }
                                         },
@@ -2331,11 +2331,11 @@
                         beforeSend: function() {
                         },
                         complete: function() {
-                            detailGrapBody.find('#loader').remove();
+                            detailGrapBody.find('.loader').remove();
                         },
                         error: function(xhr, textStatus, errorThrown) {
                             if (textStatus == 'timeout') {
-                                detailGrapBody.find('#loader').remove();
+                                detailGrapBody.find('.loader').remove();
                                 detailGrapBody.append("Error : Timeout for this call!");
                             }
                         },
@@ -2560,11 +2560,11 @@
                                         beforeSend: function() {
                                         },
                                         complete: function() {
-                                            topIndexSmallBody.find('#loader').remove();
+                                            topIndexSmallBody.find('.loader').remove();
                                         },
                                         error: function(xhr, textStatus, errorThrown) {
                                             if (textStatus == 'timeout') {
-                                                topIndexSmallBody.find('#loader').remove();
+                                                topIndexSmallBody.find('.loader').remove();
                                                 topIndexSmallBody.append("Error : Timeout for this call!");
                                             }
                                         },
@@ -2609,11 +2609,11 @@
                                         beforeSend: function() {
                                         },
                                         complete: function() {
-                                            detailGrapBody.find('#loader').remove();
+                                            detailGrapBody.find('.loader').remove();
                                         },
                                         error: function(xhr, textStatus, errorThrown) {
                                             if (textStatus == 'timeout') {
-                                                detailGrapBody.find('#loader').remove();
+                                                detailGrapBody.find('.loader').remove();
                                                 detailGrapBody.append("Error : Timeout for this call!");
                                             }
                                         },
@@ -2666,11 +2666,11 @@
                                                         beforeSend: function() {
                                                         },
                                                         complete: function() {
-                                                            topIndexSmallBody.find('#loader').remove();
+                                                            topIndexSmallBody.find('.loader').remove();
                                                         },
                                                         error: function(xhr, textStatus, errorThrown) {
                                                             if (textStatus == 'timeout') {
-                                                                topIndexSmallBody.find('#loader').remove();
+                                                                topIndexSmallBody.find('.loader').remove();
                                                                 topIndexSmallBody.append("Error : Timeout for this call!");
                                                             }
                                                         },
@@ -2716,11 +2716,11 @@
                                                         beforeSend: function() {
                                                         },
                                                         complete: function() {
-                                                            detailGrapBody.find('#loader').remove();
+                                                            detailGrapBody.find('.loader').remove();
                                                         },
                                                         error: function(xhr, textStatus, errorThrown) {
                                                             if (textStatus == 'timeout') {
-                                                                detailGrapBody.find('#loader').remove();
+                                                                detailGrapBody.find('.loader').remove();
                                                                 detailGrapBody.append("Error : Timeout for this call!");
                                                             }
                                                         },
@@ -2762,11 +2762,11 @@
                                                                         beforeSend: function() {
                                                                         },
                                                                         complete: function() {
-                                                                            topIndexSmallBody.find('#loader').remove();
+                                                                            topIndexSmallBody.find('.loader').remove();
                                                                         },
                                                                         error: function(xhr, textStatus, errorThrown) {
                                                                             if (textStatus == 'timeout') {
-                                                                                topIndexSmallBody.find('#loader').remove();
+                                                                                topIndexSmallBody.find('.loader').remove();
                                                                                 topIndexSmallBody.append("Error : Timeout for this call!");
                                                                             }
                                                                         },
@@ -3034,11 +3034,11 @@
                         beforeSend: function() {
                         },
                         complete: function() {
-                            detailGrapBody.find('#loader').remove();
+                            detailGrapBody.find('.loader').remove();
                         },
                         error: function(xhr, textStatus, errorThrown) {
                             if (textStatus == 'timeout') {
-                                detailGrapBody.find('#loader').remove();
+                                detailGrapBody.find('.loader').remove();
                                 detailGrapBody.append("Error : Timeout for this call!");
                             }
                         },
@@ -3263,11 +3263,11 @@
                                         beforeSend: function() {
                                         },
                                         complete: function() {
-                                            topIndexSmallBody.find('#loader').remove();
+                                            topIndexSmallBody.find('.loader').remove();
                                         },
                                         error: function(xhr, textStatus, errorThrown) {
                                             if (textStatus == 'timeout') {
-                                                topIndexSmallBody.find('#loader').remove();
+                                                topIndexSmallBody.find('.loader').remove();
                                                 topIndexSmallBody.append("Error : Timeout for this call!");
                                             }
                                         },
@@ -3312,11 +3312,11 @@
                                         beforeSend: function() {
                                         },
                                         complete: function() {
-                                            detailGrapBody.find('#loader').remove();
+                                            detailGrapBody.find('.loader').remove();
                                         },
                                         error: function(xhr, textStatus, errorThrown) {
                                             if (textStatus == 'timeout') {
-                                                detailGrapBody.find('#loader').remove();
+                                                detailGrapBody.find('.loader').remove();
                                                 detailGrapBody.append("Error : Timeout for this call!");
                                             }
                                         },
@@ -3369,11 +3369,11 @@
                                                         beforeSend: function() {
                                                         },
                                                         complete: function() {
-                                                            topIndexSmallBody.find('#loader').remove();
+                                                            topIndexSmallBody.find('.loader').remove();
                                                         },
                                                         error: function(xhr, textStatus, errorThrown) {
                                                             if (textStatus == 'timeout') {
-                                                                topIndexSmallBody.find('#loader').remove();
+                                                                topIndexSmallBody.find('.loader').remove();
                                                                 topIndexSmallBody.append("Error : Timeout for this call!");
                                                             }
                                                         },
@@ -3419,11 +3419,11 @@
                                                         beforeSend: function() {
                                                         },
                                                         complete: function() {
-                                                            detailGrapBody.find('#loader').remove();
+                                                            detailGrapBody.find('.loader').remove();
                                                         },
                                                         error: function(xhr, textStatus, errorThrown) {
                                                             if (textStatus == 'timeout') {
-                                                                detailGrapBody.find('#loader').remove();
+                                                                detailGrapBody.find('.loader').remove();
                                                                 detailGrapBody.append("Error : Timeout for this call!");
                                                             }
                                                         },
@@ -3465,11 +3465,11 @@
                                                                         beforeSend: function() {
                                                                         },
                                                                         complete: function() {
-                                                                            topIndexSmallBody.find('#loader').remove();
+                                                                            topIndexSmallBody.find('.loader').remove();
                                                                         },
                                                                         error: function(xhr, textStatus, errorThrown) {
                                                                             if (textStatus == 'timeout') {
-                                                                                topIndexSmallBody.find('#loader').remove();
+                                                                                topIndexSmallBody.find('.loader').remove();
                                                                                 topIndexSmallBody.append("Error : Timeout for this call!");
                                                                             }
                                                                         },
@@ -3733,11 +3733,11 @@
                         beforeSend: function() {
                         },
                         complete: function() {
-                            detailGrapBody.find('#loader').remove();
+                            detailGrapBody.find('.loader').remove();
                         },
                         error: function(xhr, textStatus, errorThrown) {
                             if (textStatus == 'timeout') {
-                                detailGrapBody.find('#loader').remove();
+                                detailGrapBody.find('.loader').remove();
                                 detailGrapBody.append("Error : Timeout for this call!");
                             }
                         },
@@ -3962,11 +3962,11 @@
                                         beforeSend: function() {
                                         },
                                         complete: function() {
-                                            topIndexSmallBody.find('#loader').remove();
+                                            topIndexSmallBody.find('.loader').remove();
                                         },
                                         error: function(xhr, textStatus, errorThrown) {
                                             if (textStatus == 'timeout') {
-                                                topIndexSmallBody.find('#loader').remove();
+                                                topIndexSmallBody.find('.loader').remove();
                                                 topIndexSmallBody.append("Error : Timeout for this call!");
                                             }
                                         },
@@ -4011,11 +4011,11 @@
                                         beforeSend: function() {
                                         },
                                         complete: function() {
-                                            detailGrapBody.find('#loader').remove();
+                                            detailGrapBody.find('.loader').remove();
                                         },
                                         error: function(xhr, textStatus, errorThrown) {
                                             if (textStatus == 'timeout') {
-                                                detailGrapBody.find('#loader').remove();
+                                                detailGrapBody.find('.loader').remove();
                                                 detailGrapBody.append("Error : Timeout for this call!");
                                             }
                                         },
@@ -4068,11 +4068,11 @@
                                                         beforeSend: function() {
                                                         },
                                                         complete: function() {
-                                                            topIndexSmallBody.find('#loader').remove();
+                                                            topIndexSmallBody.find('.loader').remove();
                                                         },
                                                         error: function(xhr, textStatus, errorThrown) {
                                                             if (textStatus == 'timeout') {
-                                                                topIndexSmallBody.find('#loader').remove();
+                                                                topIndexSmallBody.find('.loader').remove();
                                                                 topIndexSmallBody.append("Error : Timeout for this call!");
                                                             }
                                                         },
@@ -4118,11 +4118,11 @@
                                                         beforeSend: function() {
                                                         },
                                                         complete: function() {
-                                                            detailGrapBody.find('#loader').remove();
+                                                            detailGrapBody.find('.loader').remove();
                                                         },
                                                         error: function(xhr, textStatus, errorThrown) {
                                                             if (textStatus == 'timeout') {
-                                                                detailGrapBody.find('#loader').remove();
+                                                                detailGrapBody.find('.loader').remove();
                                                                 detailGrapBody.append("Error : Timeout for this call!");
                                                             }
                                                         },
@@ -4164,11 +4164,11 @@
                                                                         beforeSend: function() {
                                                                         },
                                                                         complete: function() {
-                                                                            topIndexSmallBody.find('#loader').remove();
+                                                                            topIndexSmallBody.find('.loader').remove();
                                                                         },
                                                                         error: function(xhr, textStatus, errorThrown) {
                                                                             if (textStatus == 'timeout') {
-                                                                                topIndexSmallBody.find('#loader').remove();
+                                                                                topIndexSmallBody.find('.loader').remove();
                                                                                 topIndexSmallBody.append("Error : Timeout for this call!");
                                                                             }
                                                                         },
@@ -4431,11 +4431,11 @@
                         beforeSend: function() {
                         },
                         complete: function() {
-                            detailGrapBody.find('#loader').remove();
+                            detailGrapBody.find('.loader').remove();
                         },
                         error: function(xhr, textStatus, errorThrown) {
                             if (textStatus == 'timeout') {
-                                detailGrapBody.find('#loader').remove();
+                                detailGrapBody.find('.loader').remove();
                                 detailGrapBody.append("Error : Timeout for this call!");
                             }
                         },
@@ -4660,11 +4660,11 @@
                                         beforeSend: function() {
                                         },
                                         complete: function() {
-                                            topIndexSmallBody.find('#loader').remove();
+                                            topIndexSmallBody.find('.loader').remove();
                                         },
                                         error: function(xhr, textStatus, errorThrown) {
                                             if (textStatus == 'timeout') {
-                                                topIndexSmallBody.find('#loader').remove();
+                                                topIndexSmallBody.find('.loader').remove();
                                                 topIndexSmallBody.append("Error : Timeout for this call!");
                                             }
                                         },
@@ -4708,11 +4708,11 @@
                                         beforeSend: function() {
                                         },
                                         complete: function() {
-                                            detailGrapBody.find('#loader').remove();
+                                            detailGrapBody.find('.loader').remove();
                                         },
                                         error: function(xhr, textStatus, errorThrown) {
                                             if (textStatus == 'timeout') {
-                                                detailGrapBody.find('#loader').remove();
+                                                detailGrapBody.find('.loader').remove();
                                                 detailGrapBody.append("Error : Timeout for this call!");
                                             }
                                         },
@@ -4765,11 +4765,11 @@
                                                         beforeSend: function() {
                                                         },
                                                         complete: function() {
-                                                            topIndexSmallBody.find('#loader').remove();
+                                                            topIndexSmallBody.find('.loader').remove();
                                                         },
                                                         error: function(xhr, textStatus, errorThrown) {
                                                             if (textStatus == 'timeout') {
-                                                                topIndexSmallBody.find('#loader').remove();
+                                                                topIndexSmallBody.find('.loader').remove();
                                                                 topIndexSmallBody.append("Error : Timeout for this call!");
                                                             }
                                                         },
@@ -4815,11 +4815,11 @@
                                                         beforeSend: function() {
                                                         },
                                                         complete: function() {
-                                                            detailGrapBody.find('#loader').remove();
+                                                            detailGrapBody.find('.loader').remove();
                                                         },
                                                         error: function(xhr, textStatus, errorThrown) {
                                                             if (textStatus == 'timeout') {
-                                                                detailGrapBody.find('#loader').remove();
+                                                                detailGrapBody.find('.loader').remove();
                                                                 detailGrapBody.append("Error : Timeout for this call!");
                                                             }
                                                         },
@@ -4861,11 +4861,11 @@
                                                                         beforeSend: function() {
                                                                         },
                                                                         complete: function() {
-                                                                            topIndexSmallBody.find('#loader').remove();
+                                                                            topIndexSmallBody.find('.loader').remove();
                                                                         },
                                                                         error: function(xhr, textStatus, errorThrown) {
                                                                             if (textStatus == 'timeout') {
-                                                                                topIndexSmallBody.find('#loader').remove();
+                                                                                topIndexSmallBody.find('.loader').remove();
                                                                                 topIndexSmallBody.append("Error : Timeout for this call!");
                                                                             }
                                                                         },
@@ -4919,11 +4919,11 @@
             beforeSend: function() {
             },
             complete: function() {
-                detailGrapSmall2Body.find('#loader').remove();
+                detailGrapSmall2Body.find('.loader').remove();
             },
             error: function(xhr, textStatus, errorThrown) {
                 if (textStatus == 'timeout') {
-                    detailGrapSmall2Body.find('#loader').remove();
+                    detailGrapSmall2Body.find('.loader').remove();
                     detailGrapSmall2Body.append("Error : Timeout for this call!");
                 }
             },

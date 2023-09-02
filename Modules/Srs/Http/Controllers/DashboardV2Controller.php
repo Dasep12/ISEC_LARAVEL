@@ -179,7 +179,7 @@ class DashboardV2Controller extends Controller
             'grap_soi_avg_areamonth' => $sorAvgArea
         ];
 
-        return view('srs::dashboard_v2', $data);
+        return view('srs::dashboardV2', $data);
     }
 
     public function grap_srs(Request $request)

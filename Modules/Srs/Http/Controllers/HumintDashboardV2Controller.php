@@ -447,6 +447,18 @@ class HumintDashboardV2Controller extends Controller
                     'data' => $rse['total']
                 );   
             }
+
+            // EXTERNAL
+            if($rse['type_source'] == '2' && $rse['id'] !== '4' && $rse['id'] !== '7')
+            {
+                $rsoEArr[] = array(
+                    // 'id' => $rse['id'],
+                    // 'type_source' => $rse['type_source'],
+                    'label' => $rse['title'],
+                    'data' => (int) $rse['total']
+                );
+            }
+            // NGO LSM 
             if($rse['id'] == 7)
             {
                 $rsoElArr[] = array(
@@ -454,6 +466,7 @@ class HumintDashboardV2Controller extends Controller
                     'data' => $rse['total']
                 );
             }
+            // COMMUNITY 
             if($rse['id'] == 4)
             {
                 $rsoEcArr[] = array(
@@ -461,19 +474,26 @@ class HumintDashboardV2Controller extends Controller
                     'data' => $rse['total']
                 );
             }
-            if($rse['type_source'] == 2 && $rse['id'] !== 4 && $rse['id'] !== 7)
-            {
-                $rsoEArr[] = array(
-                    'label' => $rse['title'],
-                    'data' => $rse['total']
-                );
-            }
         }
+
+        // dd($grap_risk_source);
+
+        // INTERNAL
+        $grap_internal = array_reduce($rsoIArr, function($carry, $item){ 
+            if(!isset($carry[$item['label']])){ 
+                $carry[$item['label']] = ['id'=>$item['id'],'label'=>$item['label'],'data'=>$item['data']]; 
+            } else { 
+                $carry[$item['label']]['data'] += $item['data']; 
+            } 
+            return $carry; 
+        });
+
+        // JOIN COMUNITY & NGO 
         $joinExt = array(
             'label' => $rsoElArr[0]['label'].', '.$rsoEcArr[0]['label'],
             'data' => ($rsoElArr[0]['data']+$rsoEcArr[0]['data'])
         );
-        $grap_internal = $rsoIArr;
+
         $grap_external = array_merge($rsoEArr, array($joinExt));
         rsort($grap_external);
         $gaExt = array();
@@ -493,6 +513,7 @@ class HumintDashboardV2Controller extends Controller
 
                             <div class="col-md-12">
                                 <div class="row">';
+        $iInt = 1;
         foreach ($grap_internal as $keyInt => $int) {
             $html .= '
                 <div class="col-md-12 border-bottom text-center py-2">
@@ -502,13 +523,15 @@ class HumintDashboardV2Controller extends Controller
                     </div>
                 </div>
             ';
-            if ($keyInt == 2) break;
+            if ($iInt == 3) break;
+            $iInt++;
         }
         $html .= "
                     </div>
                 </div>
             </div>
         </div>";
+
 
         $html .= '
                 <div class="col-md-6 px-3">

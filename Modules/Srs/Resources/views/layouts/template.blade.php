@@ -118,7 +118,7 @@
                         </li>
 
                         <?php if (AuthHelper::is_module('SRSISO')) { ?>
-                            <li class="nav-item {{ ($link !== '' && $link == 'dashboard_humint_v2' || $link == 'internal_source') ? 'menu-open' : ''; }}">
+                            <li class="nav-item {{ ($link !== '' && $link == 'dashboard_humint_v2' || $link == 'humint_source') ? 'menu-open' : ''; }}">
                                 <a href="#" class="nav-link ">
                                     <i class="nav-icon fas fa-share-alt-square"></i>
                                     <p>HUMINT Source</p>
@@ -132,7 +132,7 @@
                                     </li>
 
                                     <li class="nav-item">
-                                        <a href="internal_source" class="nav-link {{ ($link == 'internal_source') ? 'active' : ''; }}">
+                                        <a href="humint_source" class="nav-link {{ ($link == 'humint_source') ? 'active' : ''; }}">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Input & View</p>
                                         </a>
@@ -158,7 +158,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="osint" class="nav-link {{ ($link == 'osint' &&  $sub_link != 'osint') ? 'active' : ''; }}">
+                                    <a href="osint_source" class="nav-link {{ ($link == 'osint_source' &&  $sub_link != 'osint_source') ? 'active' : ''; }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Input & View</p>
                                     </a>
@@ -212,7 +212,7 @@
             <div class="float-right d-none d-sm-block">
                 <b>Version</b> 1.0.0
             </div>
-            <strong>Copyright &copy; 2022 <a href="#">ISECURITY</a></strong>
+            <strong>Copyright &copy; 2023 <a href="#">Security BigData Analytic</a></strong>
         </footer>
 
         <!-- Control Sidebar -->

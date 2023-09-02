@@ -15,9 +15,61 @@ use FormHelper;
 
 class OsintController extends Controller
 {
+    public $module_code = 'SRSOSI';
+    
     public function __construct()
     {
         $this->middleware('is_login_isec');
+    }
+    
+    public function index()
+    {
+        $regional = OsintModel::getCategory(10);
+        $legalitas = OsintModel::getCategory(11);
+        $format = OsintModel::getCategory(12);
+        $hatespeech = OsintModel::getCategory(5);
+
+        $opt_regional = array('' => '-- Select --');
+        foreach ($regional as $key => $reg) {
+            $opt_regional[$reg['sub_id'].':'.$reg['level_id'].':'.$reg['level']] = ucwords($reg['name']);
+        }
+
+        $opt_legalitas = array('' => '-- Select --');
+        foreach ($legalitas as $key => $leg) {
+            $opt_legalitas[$leg['sub_id']] = ucwords($leg['name']);
+        }
+
+        $opt_format = array('' => '-- Select --');
+        foreach ($format as $key => $for) {
+            // $opt_format[$for['sub_id'].':'.$for['level_id'].':'.$for['level']] = ucwords($for['name']);
+            $opt_format[$for['sub_id']] = ucwords($for['name']);
+        }
+
+        $opt_hatespeech = array('' => '-- Select --');
+        foreach ($hatespeech as $key => $hat) {
+            // $opt_hatespeech[$hat['sub_id'].':'.$hat['level_id'].':'.$hat['level']] = ucwords($hat['name']);
+            $opt_hatespeech[$hat['sub_id'].':'.$hat['level_id'].':'.$hat['level']] = ucwords($hat['name']);
+        }
+
+        $data = [
+            'link' => request()->segments()[1],
+            'sub_link' => empty(request()->segments()[2]) ? '' : request()->segments()[2],
+            'plant' => OsintModel::getPlant(),
+            'area' => OsintModel::getDataWhere("admisecosint_sub_header_data", ['header_data_id' => 1]),
+            'targetIssue'      => OsintModel::getDataWhere("admisecosint_sub_header_data", ['header_data_id' => 2]),
+            'riskSource'      => OsintModel::getDataWhere("admisecosint_sub_header_data", ['header_data_id' => 3]),
+            'riskTarget'      => OsintModel::getDataWhere("admisecosint_sub_header_data", ['header_data_id' => 5]),
+            'vulne'      => OsintModel::getDataWhere("admisecosint_sub_header_data", ['header_data_id' => 6]),
+            'sdm' => OsintModel::levelVurne(7),
+            'reput' => OsintModel::levelVurne(8),
+            'media' => OsintModel::getCategory(4),
+            'hatespeech' => FormHelper::formDropdown('hatespeech', $opt_hatespeech, '','id="hatespeech" class="form-control" required'),
+            'regional' => FormHelper::formDropdown('regional', $opt_regional,'','id="regional" class="form-control" required'),
+            'legalitas' => FormHelper::formDropdown('legalitas', $opt_legalitas,'','id="legalitas" class="form-control" required'),
+            'format' => FormHelper::formDropdown('format', $opt_format,'','id="format" class="form-control" required'),
+        ];
+
+        return view('srs::osintForm', $data);
     }
 
     public function detail(Request $req)

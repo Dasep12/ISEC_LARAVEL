@@ -1,6 +1,6 @@
 <?php
 
-Route::prefix('srs')->middleware(['is_login_isec', 'prevent-back-history'])->group(function () {
+Route::prefix('srs')->middleware(['is_login_isec','prevent-back-history'])->group(function() {
     // DASHBOARD SRS
     Route::get('/dashboard', 'DashboardController@index'); //->middleware('is_login_isec');
     Route::post('/dashboard/grap_srs', 'DashboardController@grap_srs');
@@ -10,7 +10,7 @@ Route::prefix('srs')->middleware(['is_login_isec', 'prevent-back-history'])->gro
     Route::post('/dashboard/grap_trend_soi', 'DashboardController@grapTrendSoi');
     Route::post('/dashboard/grap_top_index', 'DashboardController@grapTopIndex');
     Route::post('/dashboard/grap_risksource_soi', 'DashboardController@grapRiskSourceSoi');
-
+    
     Route::get('/dashboard_v2', 'DashboardV2Controller@index');
     Route::post('/dashboard_v2/grap_srs', 'DashboardV2Controller@grap_srs');
     Route::post('/dashboard_v2/grap_detail_risk_source', 'DashboardV2Controller@grapDetailRiskSource');
@@ -21,10 +21,10 @@ Route::prefix('srs')->middleware(['is_login_isec', 'prevent-back-history'])->gro
     Route::post('/dashboard_v2/grap_risksource_soi', 'DashboardV2Controller@grapRiskSourceSoi');
     Route::post('/dashboard_v2/detail_event_list', 'DashboardV2Controller@detailEventList');
     // DASHBOARD SRS //
-
+    
     // HUMINT
     Route::get('/dashboard_humint_v2', 'HumintDashboardV2Controller@index');
-    Route::post('/dashboard_humint_v2/soiIndexResiko', 'HumintDashboardV2Controller@soiIndexResiko');
+    Route::post('/dashboard_humint_v2/soiIndexResiko', 'HumintDashboardV2Controller@soiIndexResiko'); 
     Route::post('/dashboard_humint_v2/humintTransPlant', 'HumintDashboardV2Controller@humintTransPlant');
     Route::post('/dashboard_humint_v2/riskTransSource', 'HumintDashboardV2Controller@riskTransSource');
     Route::post('/dashboard_humint_v2/grap_srs', 'HumintDashboardV2Controller@grapReload');
@@ -34,21 +34,25 @@ Route::prefix('srs')->middleware(['is_login_isec', 'prevent-back-history'])->gro
     Route::post('/dashboard_humint_v2/grap_detail_assets', 'HumintDashboardV2Controller@grapDetailAssets');
     Route::post('/dashboard_humint_v2/grap_detail_risk', 'HumintDashboardV2Controller@grapDetailRisk');
 
-    Route::get('/internal_source', 'InternalsourceController@index');
-    Route::post('/internal_source/list_table', 'InternalsourceController@listTable');
-    Route::post('/internal_source/save', 'InternalsourceController@saveForm');
-    Route::get('/internal_source/edit/{id}', 'InternalsourceController@edit');
-    Route::post('/internal_source/detail', 'InternalsourceController@detail');
-    Route::post('/internal_source/search', 'InternalsourceController@search');
-    Route::post('/internal_source/detail_search', 'InternalsourceController@detailSearch');
-    Route::post('/internal_source/get_sub_area2', 'InternalsourceController@getSubArea2');
-    Route::post('/internal_source/get_sub_area3', 'InternalsourceController@getSubArea3');
-    Route::post('/internal_source/get_sub_assets', 'InternalsourceController@getSubAssets');
-    Route::post('/internal_source/get_sub_assets2', 'InternalsourceController@getSubAssets2');
-    Route::post('/internal_source/get_sub_risksource', 'InternalsourceController@getSubRisksource');
-    Route::post('/internal_source/get_sub_risksource2', 'InternalsourceController@getSubRiskSource2');
-    Route::post('/internal_source/get_sub_risk', 'InternalsourceController@getSubRisk');
-    Route::post('/internal_source/get_sub_risk2', 'InternalsourceController@getSubRisk2');
+    Route::get('/humint_source', 'HumintController@index');
+    Route::post('/humint_source/list_table', 'HumintController@listTable');
+    Route::post('/humint_source/save', 'HumintController@saveData');
+    Route::post('/humint_source/update', 'HumintController@updateData');
+    Route::get('/humint_source/edit/{id}', 'HumintController@edit');
+    Route::post('/humint_source/approve', 'HumintController@approve');
+    Route::post('/humint_source/detail', 'HumintController@detail');
+    Route::post('/humint_source/delete', 'HumintController@delete');
+    Route::post('/humint_source/delete_attached', 'HumintController@deleteAttached');
+    Route::post('/humint_source/search', 'HumintController@search');
+    Route::post('/humint_source/detail_search', 'HumintController@detailSearch');
+    Route::post('/humint_source/get_sub_area2', 'HumintController@getSubArea2');
+    Route::post('/humint_source/get_sub_area3', 'HumintController@getSubArea3');
+    Route::post('/humint_source/get_sub_assets', 'HumintController@getSubAssets');
+    Route::post('/humint_source/get_sub_assets2', 'HumintController@getSubAssets2');
+    Route::post('/humint_source/get_sub_risksource', 'HumintController@getSubRisksource');
+    Route::post('/humint_source/get_sub_risksource2', 'HumintController@getSubRiskSource2');
+    Route::post('/humint_source/get_sub_risk', 'HumintController@getSubRisk');
+    Route::post('/humint_source/get_sub_risk2', 'HumintController@getSubRisk2');
     // HUMINT //
 
     // OSINT
@@ -69,9 +73,10 @@ Route::prefix('srs')->middleware(['is_login_isec', 'prevent-back-history'])->gro
     Route::post('/dashboard_osint/detailFormat', 'OsintDashboardController@detailFormat');
     Route::post('/dashboard_osint/totalLevelAvg', 'OsintDashboardController@totalLevelAvg');
 
+    Route::get('/osint_source', 'OsintController@index');
     Route::post('/osint/detail', 'OsintController@detail');
     // OSINT //
-
+    
     // SOI
     Route::get('/dashboard_soi', 'soiDashboardController@index');
     Route::post('dashboard_soi/soi_avg_pilar', 'soiDashboardController@soiAvgPilar');

@@ -20,6 +20,35 @@ class OsintModel extends Model
         return \Modules\Srs\Database\factories\OsintModelFactory::new();
     }
 
+    public static function getCategory($headerId)
+    {
+        $q = DB::connection('srsbi')->table('admisecosint_sub_header_data as shd')
+            ->select('shd.sub_id', 'shd.name', 'shd.level_id', 'arl.level')
+            ->leftJoin('admisecosint_risk_level as arl','arl.id','=','shd.level_id')
+            ->where(['shd.header_data_id' => $headerId, "shd.status" => 1]);
+
+        $res = $q->get();
+
+        return collect($res)->map(function($x){ return (array) $x; })->toArray(); ;
+    }
+
+    public static function getDataWhere($table, $where)
+    {
+        return DB::connection('srsbi')->table($table)->where($where);
+    }
+
+    public static function getPlant()
+    {
+        return DB::connection('srsbi')->select("SELECT ars.id , ars.title as plant FROM admiseciso_area_sub ars WHERE area_categ_id = 1 AND status=1 ");
+    }
+
+    public static function levelVurne($id)
+    {
+        return DB::connection('srsbi')->select("SELECT ashd.sub_id  , arl.[level] , arl.id level_id , arl.description  , ashd.name  FROM admisecosint_sub_header_data ashd 
+        left join admisecosint_risk_level arl  on arl.id  = ashd.level_id 
+        where ashd.header_data_id  = $id ");
+    }
+
     public static function getDetail($req)
     {
         $id = $req->input("id");

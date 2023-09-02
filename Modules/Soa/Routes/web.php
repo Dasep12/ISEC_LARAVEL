@@ -40,6 +40,7 @@ Route::prefix('soa')->group(function () {
 
     // uploads
     Route::get('/upload', 'UploadController@index');
+    Route::post('/uploadFile', 'UploadController@uploads');
 
 
     // view & from
