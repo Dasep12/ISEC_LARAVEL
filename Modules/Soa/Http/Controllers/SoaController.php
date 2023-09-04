@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use AuthHelper;
+use Exception;
 use Modules\Soa\Entities\SoaModel;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx\Rels;
 
@@ -30,6 +31,13 @@ class SoaController extends Controller
 
     public function saveSoa(Request $req)
     {
+        $save = SoaModel::saveSoa($req);
+        if ($save == 1) {
+            return back()->with('success', 'Insert data successfully!');
+        } else if ($save == 2) {
+            return back()->with('failed', 'Plant ' . $req->input("area") . ' sudah insert tanggal ' . $req->input("report_date") . ' shift ' . $req->input("shift"));
+        }
+        return back()->with('failed', 'Failed insert data !');
     }
 
     public function dataTables(Request $req)

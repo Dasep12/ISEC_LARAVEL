@@ -45,7 +45,7 @@ Route::prefix('soa')->group(function () {
 
     // view & from
     Route::get('/forms', 'SoaController@index');
-    Route::get('/saveSoa', 'SoaController@saveSoa');
+    Route::post('/saveSoa', 'SoaController@saveSoa');
     Route::post('/dataTables', 'SoaController@dataTables');
     Route::post('/detailSoa', 'SoaController@detailSoa');
     Route::post('/deleteData', 'SoaController@deleteData');
