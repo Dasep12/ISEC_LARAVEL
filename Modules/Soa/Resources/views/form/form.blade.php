@@ -584,11 +584,12 @@
             let area = $("#idArea").val();
             let date = $("#idDate").val();
             $.ajax({
-                url: "",
+                url: "deleteData",
                 method: "POST",
                 data: {
                     area: area,
-                    date: date
+                    date: date,
+                    "_token": "{{ csrf_token() }}",
                 },
                 success: function(e) {
                     if (e == 1) {

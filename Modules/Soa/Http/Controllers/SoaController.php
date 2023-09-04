@@ -67,8 +67,28 @@ class SoaController extends Controller
 
         return view('soa::form/detail_soa', [
             'uri'   => \Request::segment(2),
-            'area' => SoaModel::getDataSoa($req),
+            'area'  => SoaModel::listShiftDetail($req),
             'date'  => $req->input("tanggal")
         ]);
+    }
+
+
+    public function deleteData(Request $req)
+    {
+
+        $area  = $req->input("area");
+        $date = $req->input("date");
+        DB::connection('soabi')->beginTransaction();
+        try {
+
+            DB::connection('soabi')->update("UPDATE admisecdrep_transaction set status = 0 , disable = 1  WHERE area_id = " . $area . " and report_date = '" . $date . "'  ");
+
+            DB::connection('soabi')->commit();
+            echo 1;
+        } catch (\Exception $e) {
+            DB::connection('soabi')->rollback();
+            // echo "00";
+            dd($e);
+        }
     }
 }

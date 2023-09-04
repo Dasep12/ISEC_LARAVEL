@@ -214,7 +214,7 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
             </ul>
-            <a href="/menu" class="btn btn-primary btn-sm"><i class="fas fa-home"></i></a>
+            <a href="/isecurity_laravel/menu" class="btn btn-primary btn-sm"><i class="fas fa-home"></i></a>
 
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
@@ -260,7 +260,7 @@
                         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                         <li class="nav-item ">
-                            <a href="" class="nav-link 
+                            <a href="dashboard" class="nav-link 
                             @if($uri == 'dashboard')
                                 active  
                             @endif">
