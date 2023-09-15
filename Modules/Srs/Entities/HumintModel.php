@@ -235,7 +235,7 @@ class HumintModel extends Model
     }
     
     private static $t_trans_iso = 'admiseciso_transaction';
-    private static $column_order = array(null, 'a.event_name', 'a.event_date', 'asu.title', 'ass.title', 'rss.title', 'ris.title', 'a.impact_level', null);
+    private static $columnOrder = array(null, 'a.event_name', 'a.event_date', 'asu.title', 'ass.title', 'rss.title', 'ris.title', 'a.impact_level', null);
     private static $columnSearch = array('a.event_name', 'asu.title', 'ass.title', 'rss.title', 'ris.title');
     private static $order = array('a.event_date' => 'desc');
 
@@ -287,10 +287,10 @@ class HumintModel extends Model
             }
             $q->whereRaw($searchColumn);
             
-            foreach (self::$columnSearch as $key => $val) {
-                // $q1->orderBy($order_val,$dir_val);
-                $q->orderBy($val,$dir_val);
-            }
+            // foreach (self::$columnSearch as $key => $val) {
+            //     // $q1->orderBy($order_val,$dir_val);
+            //     $q->orderBy($val,$dir_val);
+            // }
         }
 
         return $q;
@@ -302,22 +302,11 @@ class HumintModel extends Model
 
         $totalFilteredRecord = $totalDataRecord = $draw_val = "";
 
-        $columns_list = array(
-            0 => 'no',
-            1 => "a.event_name",
-            2 => "a.event_date",
-            3 => "area",
-            4 => "assets",
-            5 => "risk_source",
-            6 => "risk",
-            7 => "impact_level",
-            8 => 'action',
-        );
+        $columnsList = array_values(self::$columnOrder);
 
         $limit_val = $req->input('length');
         $start_val = $req->input('start');
-        $order_val = $columns_list[$req->input('order.0.column')];
-        $dir_val = $req->input('order.0.dir');
+        $dir = $req->input('order.0.dir');
 
         $getData = self::getDataTable($req);
         $totalDataRecord = $getData->count();
@@ -325,7 +314,17 @@ class HumintModel extends Model
         $qd = self::getDataTable($req);
         $qd->offset($start_val);
         $qd->limit($limit_val);
-        $qd->orderBy('a.event_date','desc');
+        if($order = $req->input('order.0.column'))
+        {
+            $order_val = $columnsList[$order];
+            $qd->orderBy($order_val,$dir);
+        }
+        else
+        {
+            foreach(self::$order as $ordKey => $ord) {
+                $qd->orderBy($ordKey, $ord);
+            }
+        }
         $resultData = $qd->get();
 
         $totalFilteredRecord = $totalDataRecord;
@@ -340,15 +339,15 @@ class HumintModel extends Model
             foreach($resultData as $key => $item)
             {
                 $no++;
-                $postnestedData = array();
-                $postnestedData[] = $no;
-                $postnestedData[] = $item->event_name;
-                $postnestedData[] = date('d F Y H:i', strtotime($item->event_date));
-                $postnestedData[] = $item->area;
-                $postnestedData[] = $item->assets;
-                $postnestedData[] = $item->risk_source;
-                $postnestedData[] = $item->risk;
-                $postnestedData[] = $item->impact_level;
+                $row = array();
+                $row[] = $no;
+                $row[] = $item->event_name;
+                $row[] = date('d F Y H:i', strtotime($item->event_date));
+                $row[] = $item->area;
+                $row[] = $item->assets;
+                $row[] = $item->risk_source;
+                $row[] = $item->risk;
+                $row[] = $item->impact_level;
 
                 $edtBtn = AuthHelper::is_super_admin() ? '<a class="btn btn-sm btn-info" href="'.url('srs/humint_source/edit/'.$item->id).'">
                         <i class="fa fa-edit"></i>
@@ -359,10 +358,10 @@ class HumintModel extends Model
                         Approve
                     </button> ' : '';
                 $delBtn = AuthHelper::is_super_admin() || (isset($access_modul->dlt) && $access_modul->dlt == 1) ? '<button data-id="'.$item->id.'" class="btn btn-sm btn-danger " data-toggle="modal" data-target="#deleteModal"> <i class="fa fa-trash"></i></button> ' : '';
-                $postnestedData[] = $apprBtn.$edtBtn.'<button data-id="'.$item->id.'" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#detailModal">
+                $row[] = $apprBtn.$edtBtn.'<button data-id="'.$item->id.'" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#detailModal">
                         Detail
                     </button> '.$delBtn;
-                $data_val[] = $postnestedData;
+                $data_val[] = $row;
             }
         }
 

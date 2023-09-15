@@ -26,10 +26,10 @@
 <section class="content">
     <div class="container-fluid">
         <div class="row">
-            @if($msgSucs = Session::get('success'))
+        @if($msg = Session::get('msgSuccess'))
                 <div class="col-12">
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <strong>Success </strong>{!! $msgSucs !!}
+                        <strong>Success </strong>{{ $msg }}
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -40,7 +40,7 @@
             @if($msgErr = Session::get('error'))
                 <div class="col-12">
                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        <strong>Error </strong>{!! $msgErr !!}
+                        <strong>Error </strong>{{ $msgErr }}
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -52,35 +52,29 @@
                 <nav>
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                         <?php if (AuthHelper::is_access_privilege($isModuleCode, 'crt')) { ?>
-                            <button class="nav-link" id="nav-home-tab" data-toggle="tab" data-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Input Data
-                            </button>
+                            <button class="nav-link active" id="nav-home-tab" data-toggle="tab" data-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Edit Data</button>
                         <?php } ?>
-                        <button class="nav-link active" id="nav-profile-tab" data-toggle="tab" data-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">View Data</button>
-                        <button class="nav-link " id="nav-searchdata-tab" data-toggle="tab" data-target="#nav-searchdata" type="button" role="tab" aria-controls="nav-searchdata" aria-selected="false">Search Data</button>
                     </div>
                 </nav>
 
                 <div class="tab-content" id="nav-tabContent">
                     <?php if (AuthHelper::is_access_privilege($isModuleCode, 'crt')) { ?>
-                        <div class="tab-pane fade" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                             <div class="card">
-                                <!-- <div class="card-header">
-                                <h3 class="card-title">Input Data Internal Source</h3>
-                            </div> -->
-
-                            <form action="osint_source/save" method="post" enctype="multipart/form-data">
+                                <form action="update" method="post" enctype="multipart/form-data">
                                 @csrf
+                                <input type="text" hidden name="id" value="<?= $data->id ?>">
                                 <div class="card-body px-lg-4">
 
                                     <div class="form-row mb-4">
                                         <div class="form-group col-lg-3">
                                             <label for="datetimepicker2">Event Date</label>
-                                            <input type="text" id="datetimepicker2" class="form-control" name="event_date" autocomplete="off" required>
+                                            <input value="<?= date('Y-m-d ', strtotime($data->date)) ?>" type="text" id="datetimepicker2" class="form-control" name="event_date" autocomplete="off" required>
                                         </div>
 
                                         <div class="form-group col-lg-3">
                                             <label for="eventName">Activities Name</label>
-                                            <textarea id="eventName" class="form-control" rows="1" name="activity_name" autocomplete="off" required></textarea>
+                                            <textarea id="eventName" class="form-control" rows="1" name="activity_name" autocomplete="off" required><?= $data->activity_name ?></textarea>
                                         </div>
                                     </div>
 
@@ -91,39 +85,56 @@
                                             <select required class="form-control" name="plant" id="plant">
                                                 <option value="">-- Select --</option>
                                                 <?php foreach ($plant as $pl) : ?>
-                                                    <option value="<?= $pl->id ?>"><?= $pl->plant ?></option>
+                                                    <option <?= $data->plant_id == $pl->id ? "selected" : "" ?> value="<?= $pl->id ?>"><?= $pl->plant ?></option>
                                                 <?php endforeach ?>
                                             </select>
                                             <span id="load1" style="display: none;" class="font-italic text-white">loading data</span>
                                         </div>
 
-                                        <div class="form-group col-3" id="columnFirst" style="display: none;">
+
+                                        <div class="form-group col-3" id="columnFirst" style="display: block;">
                                             <label required for="subArea">Area</label>
                                             <select class="form-control" name="area" id="subArea">
                                                 <option value="">-- Select --</option>
-                                                <?php foreach ($area as $ar) : ?>
-                                                    <option value="<?= $ar->sub_id ?>"><?= $ar->name ?></option>
+                                                <?php foreach ($area as $are) : ?>
+                                                    <option <?= $data->area_id == $are->sub_id ? "selected" : "" ?> value="<?= $are->sub_id ?>"><?= $are->name ?></option>
                                                 <?php endforeach; ?>
                                             </select>
                                             <span id="load2" style="display: none;" class="font-italic text-white">loading data</span>
                                         </div>
 
-                                        <div style="display: none;" id="column3" class="form-group col-3">
-                                            <label for="subArea1" id="column3label">Restirected Area</label>
-                                            <select class="form-control" name="subArea1" id="subArea1">
-                                                <option value="">-- Select --</option>
-                                            </select>
-                                            <span id="load3" style="display: none;" class="font-italic text-white">loading data</span>
-                                        </div>
+                                        <?php
+                                        if ($data->sub_area1_id != null) {
+                                            $subArea1 = DB::connection('srsbi')->select("select * from admisecosint_sub1_header_data where sub_header_data = $data->area_id   ");
+                                        ?>
+                                            <div style="display: block;" id="column3" class="form-group col-3">
+                                                <label for="subArea1" id="column3label">Restirected Area</label>
+                                                <select class="form-control" name="subArea1" id="subArea1">
+                                                    <option value="">-- Select --</option>
+                                                    <?php foreach ($subArea1 as $su) : ?>
+                                                        <option <?= $data->sub_area1_id == $su->id ? "selected" : "" ?> value="<?= $su->id ?>"><?= $su->name ?></option>
+                                                    <?php endforeach ?>
+                                                </select>
+                                                <span id="load3" style="display: none;" class="font-italic text-white">loading data</span>
+                                            </div>
+                                        <?php  } ?>
 
-                                        <div style="display: none;" id="column4" class=" form-group col-3">
-                                            <label for="subArea2" id="column4label">Production</label>
-                                            <select class="form-control" name="subArea2" id="subArea2">
-                                                <option value="">-- Select --</option>
-                                            </select>
-                                            <span id="load4" style="display: none;" class="font-italic text-white">loading data</span>
-                                        </div>
+                                        <?php
 
+                                        if ($data->sub_area2_id != null) {
+                                            $subArea2 = DB::connection('srsbi')->select("select * from admisecosint_sub2_header_data where sub1_header_id = $data->sub_area1_id  and plant_id = $data->plant_id ");
+                                        ?>
+                                            <div style="display: block;" id="column4" class=" form-group col-3">
+                                                <label for="secInfo" id="column4label">Production</label>
+                                                <select class="form-control" name="subArea2" id="subArea2">
+                                                    <option value="">-- Select --</option>
+                                                    <?php foreach ($subArea2 as $su) : ?>
+                                                        <option <?= $data->sub_area2_id == $su->id ? "selected" : "" ?> value="<?= $su->id ?>"><?= $su->name ?></option>
+                                                    <?php endforeach ?>
+                                                </select>
+                                                <span id="load4" style="display: none;" class="font-italic text-white">loading data</span>
+                                            </div>
+                                        <?php  } ?>
                                     </div>
 
                                     <!-- section 2 -->
@@ -133,90 +144,137 @@
                                             <select required class="form-control" name="issueTarget" id="issueTarget">
                                                 <option value="">-- Select --</option>
                                                 <?php foreach ($targetIssue as $ar) : ?>
-                                                    <option value="<?= $ar->sub_id ?>"><?= $ar->name ?></option>
+                                                    <option <?= $data->target_issue_id == $ar->sub_id ? "selected" : "" ?> value="<?= $ar->sub_id ?>"><?= $ar->name ?></option>
                                                 <?php endforeach; ?>
                                             </select>
                                             <span id="load5" style="display: none;" class="font-italic text-white">loading data</span>
                                         </div>
-                                        <div class="form-group col-3" id="column5" style="display: none;">
-                                            <label required id="column5Label" for="area">Employee Issue</label>
-                                            <select class="form-control" name="subIssueTarget" id="subIssueTarget">
-                                                <option value="">-- Select --</option>
-                                            </select>
-                                            <span id="load6" style="display: none;" class="font-italic text-white">loading data</span>
-                                        </div>
-                                        <div class="form-group col-3" id="column6" style="display: none;">
-                                            <label id="column6Label" for="area">Conflict</label>
-                                            <select class="form-control" name="subIssueTarget1" id="subIssueTarget1">
-                                                <option value="">-- Select --</option>
-                                            </select>
-                                            <span id="load7" style="display: none;" class="font-italic text-white">loading data</span>
-                                        </div>
-                                        <div class="form-group col-3" id="column7" style="display: none;">
-                                            <label id="column7Label" for="area">Conflict</label>
-                                            <select class="form-control" name="subIssueTarget2" id="subIssueTarget2">
-                                                <option value="">-- Select --</option>
-                                            </select>
-                                            <span id="load8" style="display: none;" class="font-italic text-white">loading data</span>
-                                        </div>
+                                        <?php
+                                        if ($data->sub_target_issue1_id != null) {
+                                            $subTargetIssue = DB::connection('srsbi')->select("select * from admisecosint_sub1_header_data where sub_header_data = $data->target_issue_id ");
+                                        ?>
+                                            <div class="form-group col-3" id="column5" style="display: block;">
+                                                <label required id="column5Label" for="area">Employee Issue</label>
+                                                <select class="form-control" name="subIssueTarget" id="subIssueTarget">
+                                                    <option value="">-- Select --</option>
+                                                    <?php foreach ($subTargetIssue as $ar) : ?>
+                                                        <option <?= $data->sub_target_issue1_id == $ar->id ? "selected" : "" ?> value="<?= $ar->id ?>"><?= $ar->name ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                                <span id="load6" style="display: none;" class="font-italic text-white">loading data</span>
+                                            </div>
+                                        <?php } ?>
+                                        <?php
+                                        if ($data->sub_target_issue2_id != null) {
+                                            $subTargetIssue2 = DB::connection('srsbi')->select("select * from admisecosint_sub2_header_data where sub1_header_id = $data->sub_target_issue1_id ");
+                                        ?>
+                                            <div class="form-group col-3" id="column6" style="display: block;">
+                                                <label id="column6Label" for="area">Conflict</label>
+                                                <select class="form-control" name="subIssueTarget1" id="subIssueTarget1">
+                                                    <option value="">-- Select --</option>
+                                                    <?php foreach ($subTargetIssue2 as $ar) : ?>
+                                                        <option <?= $data->sub_target_issue2_id == $ar->id ? "selected" : "" ?> value="<?= $ar->id ?>"><?= $ar->name ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                                <span id="load7" style="display: none;" class="font-italic text-white">loading data</span>
+                                            </div>
+                                        <?php } ?>
+
+                                        <?php
+                                        if ($data->sub_target_issue3_id != null) {
+                                            $subTargetIssue3 = DB::connection('srsbi')->select("select * from admisecosint_sub3_header_data where sub2_header_id = '$data->sub_target_issue2_id' ");
+                                        ?>
+                                            <div class="form-group col-3" id="column7" style="display: block;">
+                                                <label id="column7Label" for="area">Conflict</label>
+                                                <select class="form-control" name="subIssueTarget2" id="subIssueTarget2">
+                                                    <option value="">-- Select --</option>
+                                                    <?php foreach ($subTargetIssue3 as $ar) : ?>
+                                                        <option <?= $data->sub_target_issue3_id == $ar->id ? "selected" : "" ?> value="<?= $ar->id ?>"><?= $ar->name ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                                <span id="load8" style="display: none;" class="font-italic text-white">loading data</span>
+                                            </div>
+                                        <?php } ?>
                                     </div>
 
                                     <!-- section 3 -->
                                     <div class="form-row mb-4">
+
                                         <div class="form-group col-3">
                                             <label for="area">Risk Source</label>
                                             <select required class="form-control" name="riskSource" id="riskSource">
                                                 <option selected value="">-- Select --</option>
                                                 <?php foreach ($riskSource as $ar) : ?>
-                                                    <option value="<?= $ar->sub_id ?>"><?= $ar->name ?></option>
+                                                    <option <?= $data->risk_source == $ar->sub_id ? "selected" : "" ?> value="<?= $ar->sub_id ?>"><?= $ar->name ?></option>
                                                 <?php endforeach; ?>
                                             </select>
                                             <span id="load9" style="display: none;" class="font-italic text-white">loading data</span>
                                         </div>
-                                        <div class="form-group col-3" id="column8" style="display: none;">
-                                            <label id="column8Label" for="area">Internal</label>
-                                            <select required class="form-control" name="subriskSource" id="subriskSource">
-                                                <option selected value="">-- Select --</option>
-                                            </select>
-                                            <span id="load10" style="display: none;" class="font-italic text-white">loading data</span>
-                                        </div>
-                                        <div class="form-group col-3" id="column9" style="display: none;">
-                                            <label id="column9Label" for="area">Employee</label>
-                                            <select class="form-control" name="subriskSource1" id="subriskSource1">
-                                                <option selected value="">-- Select --</option>
-                                            </select>
-                                            <span id="load11" style="display: none;" class="font-italic text-white">loading data</span>
-                                        </div>
+                                        <?php
+                                        if ($data->sub_risk_source != null) {
+                                            $subRiskSource = DB::connection('srsbi')->select("select * from admisecosint_sub1_header_data where sub_header_data = $data->risk_source ");
+                                        ?>
+                                            <div class="form-group col-3" id="column8" style="display: block;">
+                                                <label id="column8Label" for="area">Internal</label>
+                                                <select required class="form-control" name="subriskSource" id="subriskSource">
+                                                    <option selected value="">-- Select --</option>
+                                                    <?php foreach ($subRiskSource as $ar) : ?>
+                                                        <option <?= $data->sub_risk_source == $ar->id ? "selected" : "" ?> value="<?= $ar->id ?>"><?= $ar->name ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                                <span id="load10" style="display: none;" class="font-italic text-white">loading data</span>
+                                            </div>
+                                        <?php } ?>
 
-                                        <div class="form-group col-3" id="column09" style="display: none;">
-                                            <label id="column09Label" for="area">Plant</label>
-                                            <select class="form-control" name="employe_plant" id="subriskSource01">
-                                                <option selected value="">-- Select --</option>
-                                            </select>
-                                            <span id="load011" style="display: none;" class="font-italic text-white">loading data</span>
-                                        </div>
+                                        <?php
+                                        if ($data->sub_risk1_source != null) {
+                                            $subRiskSource1 = DB::connection('srsbi')->select("select * from admisecosint_sub2_header_data where sub1_header_id = $data->sub_risk_source ");
+                                        ?>
+                                            <div class="form-group col-3" id="column9" style="display: block;">
+                                                <label id="column9Label" for="area">Employee</label>
+                                                <select class="form-control" name="subriskSource1" id="subriskSource1">
+                                                    <option selected value="">-- Select --</option>
+                                                    <?php foreach ($subRiskSource1 as $ar) : ?>
+                                                        <option <?= $data->sub_risk1_source == $ar->id ? "selected" : "" ?> value="<?= $ar->id ?>"><?= $ar->name ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                                <span id="load11" style="display: none;" class="font-italic text-white">loading data</span>
+                                            </div>
+                                        <?php } ?>
+
+
+                                        <?php
+                                        if ($data->employe_plant != null) {
+                                            $subRiskSource2 = DB::connection('srsbi')->select("select * from admiseciso_area_sub where area_categ_id = 1 ");
+                                        ?>
+                                            <div class="form-group col-3" id="column09" style="display: block;">
+                                                <label id="column09Label" for="area">Plant</label>
+                                                <select class="form-control" name="employe_plant" id="subriskSource01">
+                                                    <option selected value="">-- Select --</option>
+                                                    <?php foreach ($subRiskSource2 as $ar) : ?>
+                                                        <option <?= $data->employe_plant == $ar->id ? "selected" : "" ?> value="<?= $ar->id ?>"><?= $ar->title ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                                <span id="load011" style="display: none;" class="font-italic text-white">loading data</span>
+                                            </div>
+                                        <?php } ?>
                                     </div>
 
                                     <!-- Media -->
                                     <div class="form-row mb-4">
                                         <div class="form-group col-3">
                                             <label for="mediaIssue">Media</label>
-                                            <select required class="form-control" name="mediaIssue" id="mediaIssue">
-                                                <option selected value="">-- Select --</option>
-                                                <?php foreach ($media as $m) : ?>
-                                                    <option value="<?= $m['sub_id']; ?>"><?= $m['name'] ?></option>
-                                                <?php endforeach ?>
-                                            </select>
+                                            <?= $media; ?>
                                             <span id="load12" style="display: none;" class="font-italic text-white">loading data</span>
                                         </div>
 
-                                        <div class="form-group col-3" id="column10"  style="display: none;">
+                                        <?php if ($data->sub_media_id != '') { ?>
+                                        <div class="form-group col-3" id="column10">
                                             <label id="column10Label" for="SubmediaIssue">-</label>
-                                            <select class="form-control" name="SubmediaIssue" id="SubmediaIssue">
-                                                <option selected value="">-- Select --</option>
-                                            </select>
+                                            <?= $mediaSub1; ?>
                                             <span id="load13" style="display: none;" class="font-italic text-white">loading data</span>
-                                        </div>
+                                        </div> 
+                                        <?php } ?>
                                     </div>
 
                                     <!-- Regional -->
@@ -235,6 +293,13 @@
                                             <?= $legalitas; ?>
                                             <span id="load12" style="display: none;" class="font-italic text-white">loading data</span>
                                         </div>
+
+                                        <?php if ($data->legalitas_sub1_id != '') { ?>
+                                        <div class="form-group col-3">
+                                            <label for="legalitasSub1">-</label>
+                                            <?= $legalitasSub1; ?>
+                                        </div>
+                                        <?php } ?>
                                     </div>
 
                                     <!-- Format -->
@@ -246,20 +311,20 @@
                                         </div>
                                     </div>
 
-                                    <!-- Negative Sentiment -->
+                                    <!-- Hatespeech Type -->
                                     <div class="form-row mb-4 ">
                                         <div class="form-group col-3">
-                                            <label for="hatespeech">Negative Sentiment</label>
+                                            <label for="hatespeech">Hatespeech Type</label>
                                             <?= $hatespeech; ?>
                                             <span id="load12" style="display: none;" class="font-italic text-white">loading data</span>
                                         </div>
                                         
                                         <div class="form-group col-3">
                                             <label for="riskLevel">Risk Level</label>
-                                            <input id="riskLevel" class="form-control" type="text" name="risk_level" value="" readonly required>
+                                            <input id="riskLevel" class="form-control" type="text" name="risk_level" value="<?=$data->risk_level;?>" readonly required>
                                         </div>
                                     </div>
-                                    <!-- Negative Sentiment -->
+                                    <!-- Hatespeech Type -->
 
                                     <!-- Vulnerability Lost -->
                                     <fieldset class="border p-4 mt-2 mb-4">
@@ -270,19 +335,18 @@
                                                 <select required class="form-control" name="sdm" id="sdm">
                                                     <option selected value="">-- Select --</option>
                                                     <?php foreach ($sdm as $m) : ?>
-                                                        <option value="<?= $m->sub_id.':'.$m->level_id; ?>"><?= $m->level . '.' . $m->name ?></option>
+                                                        <option <?= $data->sdm_sector_level_id == $m->sub_id ? "selected" : "" ?> value="<?= $m->sub_id.':'.$m->level_id; ?>"><?= $m->level . '.' . $m->name ?></option>
                                                     <?php endforeach ?>
                                                 </select>
                                                 <span id="load17" style="display: none;" class="font-italic text-white">loading data</span>
                                             </div>
-
 
                                             <div class="form-group col-3">
                                                 <label for=" area">Reputation / Brand Image</label>
                                                 <select required class="form-control" name="reput" id="reput">
                                                     <option selected value="">-- Select --</option>
                                                     <?php foreach ($reput as $m) : ?>
-                                                        <option value="<?= $m->sub_id.':'.$m->level_id; ?>"><?= $m->level . '.' . $m->name ?></option>
+                                                        <option <?= $data->reputasi_level_id == $m->sub_id ? "selected" : "" ?> value="<?= $m->sub_id.':'.$m->level_id; ?>"><?= $m->level . '.' . $m->name ?></option>
                                                     <?php endforeach ?>
                                                 </select>
                                                 <span id="load17" style="display: none;" class="font-italic text-white">loading data</span>
@@ -292,7 +356,7 @@
                                         <div class="form-row ml-1">
                                             <div class="form-group">
                                                 <label for="impactLevel">Impact Level</label>
-                                                <input id="impactLevel" class="form-control text-center" type="text" name="impact_level" readonly>
+                                                <input id="impactLevel" class="form-control text-center" type="text" value="<?= $data->impact_level ?>" name="impact_level" readonly required>
                                             </div>
                                         </div>
                                     </fieldset>
@@ -302,7 +366,7 @@
                                         <legend class="w-auto h5">Total Level</legend>
                                         <div class="form-row">
                                             <div class="form-group">
-                                                <input id="totalLevel" class="form-control text-center" type="text" name="total_level" readonly required>
+                                                <input id="totalLevel" class="form-control text-center" type="text" value="<?= $data->total_level ?>" name="total_level" readonly required>
                                             </div>
                                         </div>
                                     </fieldset>
@@ -311,13 +375,13 @@
                                     <div class="form-row mb-4">
                                         <div class="form-group col-7">
                                             <label for="description">Description</label>
-                                            <textarea id="description" class="form-control" name="description" rows="3"></textarea>
+                                            <textarea id="description" class="form-control" name="description" rows="3"><?= $data->description ?></textarea>
                                         </div>
 
                                         <div class="form-group col-md-4">
                                             <div class="form-row">
-                                                <div class="form-group col-12 mb-5">
-                                                    <label for="attach">Attach file photo/video</label>
+                                                <div class="form-group col-md-12">
+                                                    <label for="attach">Attach</label>
                                                     <style type="text/css">
                                                         .field-wrapper input[type=file]::file-selector-button {
                                                             border: 1px solid #bbbebf;
@@ -329,8 +393,18 @@
                                                     </style>
                                                     <div class="field-wrapper">
                                                         <div class="mb-1">
-                                                            <input class="" type="file" accept="image/*,.pdf,.xls,.xlsx,.doc,.docx,.mp4" id="attach" name="attach[]">
-                                                            <!-- <label class="custom-file-label">Choose file</label> -->
+                                                            <ul class="list-group list-group-flush mb-3">
+                                                                <?php
+                                                                foreach ($file_edit as $fle) {
+                                                                    if (!empty($fle->file_name))
+                                                                        echo '<li class="list-group-item attached-files d-flex justify-content-between">
+                                                                    <a class="" href="' . url('uploads/srs_bi/osint/' . $fle->file_name) . '" target="_blank">' . $fle->file_name . '</a>
+                                                                    <input type="text" name="attached[' . $fle->id . ']" value="' . $fle->file_name . '" hidden>
+                                                                    <button type="button" class="btn remove-attached text-danger" data-field-file="' . $fle->id . '" data-toggle="modal" data-target="#deleteModal"><i class="fa fa-trash"></i></button>
+                                                                    </li>';
+                                                                }
+                                                                ?>
+                                                            </ul>
                                                         </div>
                                                     </div>
 
@@ -339,12 +413,12 @@
 
                                                 <div class="form-group col-12">
                                                     <label for="url1">URL 1</label>
-                                                    <input id="url1" class="form-control" type="text" name="url1">
+                                                    <input id="url1" class="form-control" type="text" name="url1" value="<?= $data->url1 ?>">
                                                 </div>
 
                                                 <div class="form-group col-12">
                                                     <label for="url2">URL 2</label>
-                                                    <input id="url1" class="form-control" type="text" name="url2">
+                                                    <input id="url2" class="form-control" type="text" name="url2" value="<?= $data->url2 ?>">
                                                 </div>
                                             </div>
                                         </div>
@@ -361,74 +435,6 @@
                         </div>
                     <?php } ?>
 
-                    <!-- <?= !AuthHelper::is_access_privilege($isModuleCode, 'crt') ? 'show active' : ''; ?> -->
-                    <div class="tab-pane fade  show active" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                        <div class="card">
-                            <div class="card-body px-lg-4">
-                                <div class="row">
-                                    <div class="col-12 mb-2">
-                                        <form id="form-filter" class="form-horizontal">
-                                            <div class="form-row">
-                                                <div class="form-group col-lg-3">
-                                                    <label for="">Date</label>
-                                                    <input type="text" id="datePickerFilter" class="form-control" name="date_filter" autocomplete="off" required>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-row">
-                                                <div class="form-group col-4">
-                                                    <button type="button" id="btn-filter" class="btn btn-primary px-4 mr-2">Filter</button>
-                                                    <button type="button" id="btn-reset" class="btn btn-secondary px-4">Reset</button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-
-                                <div class="table-responsive mt-5">
-                                    <table id="tableOsint" style="width:100%" class="table table-striped table-sm text-center">
-                                        <thead>
-                                            <tr>
-                                                <th>No</th>
-                                                <th>Activities</th>
-                                                <th>Plant</th>
-                                                <th>Media</th>
-                                                <th>Platform</th>
-                                                <th>Negative Sentiment</th>
-                                                <th>Date</th>
-                                                <th>Total Level</th>
-                                                <th style="width:200px">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <!-- <tbody></tbody> -->
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- SEARCH DATA -->
-                    <div class="tab-pane fade" id="nav-searchdata" role="tabpanel" aria-labelledby="nav-profile-tab">
-                       <div class="card">
-                            <div class="card-body px-lg-4 py-5">
-                                <form id="formSearch" method="post" action="#">
-                                    <div class="row">
-                                        <div class="col-12 text-center">
-                                            <h1 class="text-white">SEARCH</h1>
-                                        </div>
-                                        <div class="col-8 mx-auto">
-                                            <!-- <input class="form-control" type="text" name="" placeholder="Type something..."> -->
-                                            <div class="input-group">
-                                                <input type="search" class="form-control rounded" name="keyword" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
-                                                <button type="submit" class="btn btn-primary">search</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- SEARCH DATA -->
                 </div>
             </div>
         </div>
@@ -454,60 +460,33 @@
     </div>
 </div>
 
-<!-- Detail Search Data Modal -->
-<div class="modal fade" id="detailSearchModal" tabindex="-1" aria-labelledby="detailSearchModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" style="max-width: 700px;">
-        <div class="modal-content">
-            <div class="modal-header border-0">
-                <!-- <h5 class="modal-title" id="detailModalLabel"></h5> -->
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body"></div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Approve Modal -->
-<div class="modal fade" id="approveModal" tabindex="-1" aria-labelledby="approveModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <form action="osint_source/approve" method="POST">
-            @csrf
-            <div class="modal-body">
-                <h5>Are you sure to Approve?</h5>
-            </div>
-
-            <div class="modal-footer border-0">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <input id="idApprove" type="text" name="id" hidden>
-                <button type="submit" class="btn btn-danger px-4">Yes</button>
-            </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!-- Approve Modal -->
 
 <!-- Delete Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form action="osint_source/delete" method="POST">
-            @csrf
-            <div class="modal-body">
-                <h5>Are you sure to Delete?</h5>
-            </div>
+            <form id="frm-dlt-attc">
+                <div class="modal-body">
+                    <h5>Are you sure to Delete?</h5>
+                </div>
+                <div id="loadingDelete" style="display: none;" class="row justify-content-center">
 
-            <div class="modal-footer border-0">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <input id="idDelete" type="text" name="id" hidden>
-                <button type="submit" class="btn btn-danger px-4">Yes</button>
-            </div>
+                    <div class="spinner-grow text-primary" role="status">
+                        <span class="visually-hidden"></span>
+                    </div>
+                    <div class="spinner-grow text-secondary" role="status">
+                        <span class="visually-hidden"></span>
+                    </div>
+                    <div class="spinner-grow text-success" role="status">
+                        <span class="visually-hidden"></span>
+                    </div>
+                </div>
+
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <input id="fileId" type="text" name="file_id" hidden>
+                    <button id="btn-dlt-attc" type="button" class="btn btn-danger px-4">Yes</button>
+                </div>
             </form>
         </div>
     </div>
@@ -536,18 +515,24 @@
         toolbar2: "| print preview "
     });
 
-
-    function openImg(image) {
-        alert(image);
-    }
-
     $(document).ready(function() {
+        const mediaIssue = $('#mediaIssue')
+        const submediaIssue = $('#SubmediaIssue')
+        const submediaIssue1 = $('#SubmediaIssue1')
+        const legalitas = $('#legalitas')
 
-        // $('#datetimepicker2').datepicker({
-        //     // defaultDate: true,
-        //     // defaultTime: false,
-        //     // pickTime: false,
-        //     dateFormat: 'yy-mm-dd',
+        // Change label
+        const mediaIssueVal = mediaIssue.find('option:selected').text();
+        $('#column10Label').text(mediaIssueVal)
+        const submediaIssueVal = submediaIssue.find('option:selected').text();
+        $('#column11Label').text(submediaIssueVal)
+        const legalitasVal = legalitas.find('option:selected').text();
+        $('#legalitasSub1').parent().children('label').text(legalitasVal)
+
+        // $('#datetimepicker2').datetimepicker({
+        //     defaultDate: true,
+        //     defaultTime: false,
+        //     format: 'Y-m-d h:i:s',
         // });
 
         var maxField = 5;
@@ -575,109 +560,47 @@
             x--;
         });
         //datatables
-        table = $('#tableOsint').DataTable({
-            "processing": true,
-            "serverSide": true,
-            "ordering": true,
-            // "order": [],
-            "autoWidth": false,
-            "stateSave": true,
-            "ajax": {
-                "url": "<?= url('srs/osint_source/list_table'); ?>",
-                "type": "POST",
-                "data": function(data) {
-                    data._token = "{{ csrf_token() }}";
-                    data.datefilter = $('#datePickerFilter').val();
-                }
-            },
-            "columnDefs": [{
-                "targets": [0],
-                "orderable": false
-            }],
-        });
 
-        $('#btn-filter').click(function() {
-            table.ajax.reload(); //just reload table
-        });
 
-        $('#btn-reset').click(function() {
-            $('#form-filter')[0].reset();
-            table.ajax.reload(); //just reload table
-        });
-
-        $('#detailModal').on('shown.bs.modal', function(e) {
+        $('#deleteModal').on('shown.bs.modal', function(e) {
             const target = $(e.relatedTarget);
             const modal = $(this);
-            const id = target.data('id')
-            const row = $(target).closest("tr");
-            const title = row.find("td:nth-child(2)");
+            const id = target.data('field-file')
+            $('#fileId').val(id)
+            // $('#fileId').val(id)
+        })
 
-            // console.log(title)
-            // modal.find('#detailModalLabel').text(tds.text());
-
+        $('#btn-dlt-attc').click(function(e) {
+            e.preventDefault();
+            const id = $('#fileId').val()
+            const targetParents = $(`[data-field-file='` + id + `']`).parent();
             $.ajax({
-                url: '<?= url('srs/osint_source/detail'); ?>',
-                method: 'POST',
+                url: "<?= url('srs/osint_source/delete_attached'); ?>",
+                method: "POST",
                 data: {
                     _token: "{{ csrf_token() }}",
-                    id: id,
+                    id: <?= $data->id; ?>,
+                    fileId: id,
                 },
-                cache: false,
                 beforeSend: function() {
-                    $('#detailModal .modal-body').html(`
-                        <div id="loadingProgress" class="row justify-content-center">
-                            <div class="spinner-grow text-primary" role="status">
-                                <span class="visually-hidden"></span>
-                            </div>
-                            <div class="spinner-grow text-secondary" role="status">
-                                <span class="visually-hidden"></span>
-                            </div>
-                            <div class="spinner-grow text-success" role="status">
-                                <span class="visually-hidden"></span>
-                            </div>
-                        </div>
-                    `);
+                    document.getElementById("loadingDelete").style.display = "block";
                 },
-                success: function(data) {
-                    // console.log(data)
-                    $(".lds-ring").hide();
-                    $('#detailModal .modal-body').html(data);
-                    //menampilkan data ke dalam modal
+                complete: function() {
+                    document.getElementById("loadingDelete").style.display = "none";
+                },
+                success: function(response) {
+                    // console.log(response)
+                    if (parseInt(response) == '00') {
+                        targetParents.remove();
+                        console.log("terhapus");
+                    }
+                    $("#deleteModal").modal('hide');
+
                 }
             });
         });
 
-        $('#detailModal').on('hide.bs.modal', function(e) {
-            $('#detailModal .modal-body').children().remove();
-        })
 
-        $('#deleteModal').on('shown.bs.modal', function(e) {
-            $('#deleteModal .modal-body .title-approve').remove()
-
-            const target = $(e.relatedTarget);
-            const modal = $(this);
-            const id = target.data('id')
-            const title = target.data('title')
-
-            $('#idDelete').val(id)
-            $('#deleteModal .modal-body h5').after(`
-               <span class="font-weight-bold title-approve">${title}</span> 
-            `)
-        })
-
-        $('#approveModal').on('shown.bs.modal', function(e) {
-            $('#approveModal .modal-body .title-approve').remove()
-
-            const target = $(e.relatedTarget);
-            const modal = $(this);
-            const id = target.data('id')
-            const title = target.data('title')
-
-            $('#idApprove').val(id)
-            $('#approveModal .modal-body h5').after(`
-               <span class="font-weight-bold title-approve">${title}</span> 
-            `)
-        })
 
         $(function() {
             moment.locale('id');
@@ -685,8 +608,8 @@
             var end = moment();
             $('#datePickerFilter').daterangepicker({
                 autoUpdateInput: false,
-                timePicker: false,
-                timePicker24Hour: false,
+                timePicker: true,
+                timePicker24Hour: true,
                 startDate: start,
                 endDate: end,
                 ranges: {
@@ -698,119 +621,19 @@
                     'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
                 },
                 locale: {
-                    "format": "YYYY-MM-DD",
-                    // "format": "LL",
-                    // "separator": " - ",
-                    // "applyLabel": "Apply",
-                    // "cancelLabel": "Cancel",
-                    // "weekLabel": "W",
-                    // "daysOfWeek": [
-                    //     "Min",
-                    //     "Sen",
-                    //     "Sel",
-                    //     "Rab",
-                    //     "Kam",
-                    //     "Jum",
-                    //     "Sab"
-                    // ],
-                    // "monthNames": [
-                    //     "Januari",
-                    //     "Februari",
-                    //     "Maret",
-                    //     "April",
-                    //     "Mei",
-                    //     "Juni",
-                    //     "Juli",
-                    //     "Augustus",
-                    //     "September",
-                    //     "Oktober",
-                    //     "November",
-                    //     "Desember"
-                    // ],
-                    // "firstDay": 1
+                    "format": "YYYY-MM-DD HH:mm",
                 },
             });
         });
 
         $('input[name="date_filter"]').on('apply.daterangepicker', function(ev, picker) {
-            $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
+            $(this).val(picker.startDate.format('YYYY-MM-DD HH:mm') + ' - ' + picker.endDate.format('YYYY-MM-DD HH:mm'));
         });
-
-        $('#formSearch').on('submit', function (e) {
-            e.preventDefault();
-
-            var data = $(this).serialize();
-            var keyword = $("input[name='keyword']").val();
-            
-            if(keyword != '')
-            {
-                $.ajax({
-                    url: '<?= url('srs/osint_source/search'); ?>',
-                    type: 'POST',
-                    data: {
-                        keyword: keyword,
-                        _token: "{{ csrf_token() }}"
-                    },
-                    cache: false,
-                    beforeSend: function() {
-                    $(".lds-ring").show();
-                    },
-                    success : function(data){
-                        $(".lds-ring").hide();
-                        $('#searchResult').remove();
-                        $('#formSearch input').parents('.col-8').after(data);
-                    }
-                });
-            }
-
-        })
-
-        $("#detailSearchModal").on('hidden.bs.modal', function () {
-            $(this).data('bs.modal', null);
-            $('#detailSearchModal .modal-body').html('')
-        });
-
-        $('#detailSearchModal').on('shown.bs.modal', function (e) {
-            const target = $(e.relatedTarget);
-            const modal = $(this);
-            const id = target.data('id')
-            const row = $(target).closest("tr");
-            const title = row.find("td:nth-child(2)");
-
-            // modal.find('#detailModalLabel').text(tds.text());
-
-            $.ajax({
-                url: '<?= url('srs/osint_source/detail'); ?>',
-                type: 'POST',
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    id: id,
-                },
-                cache: false,
-                beforeSend: function() {
-                    $('#detailSearchModal .modal-body').html(`
-                        <div id="loadingProgress" class="row justify-content-center">
-                            <div class="spinner-grow text-primary" role="status">
-                                <span class="visually-hidden"></span>
-                            </div>
-                            <div class="spinner-grow text-secondary" role="status">
-                                <span class="visually-hidden"></span>
-                            </div>
-                            <div class="spinner-grow text-success" role="status">
-                                <span class="visually-hidden"></span>
-                            </div>
-                        </div>
-                    `);
-                },
-                success : function(data){
-                    $(".lds-ring").hide();
-                    $('#detailSearchModal .modal-body').html(data);//menampilkan data ke dalam modal
-                }
-            });
-        })
     });
 
     $(function() {
+
+
         // section 1 
         $("#plant").change(function(e) {
             var id = $(this).val();
@@ -818,8 +641,8 @@
             console.log(text);
             if (id == "" || text == "PLANT UNKNOWN") {
                 document.getElementById("columnFirst").style.display = "none";
-                document.getElementById("column4").style.display = "none";
-                document.getElementById("column3").style.display = "none";
+                // document.getElementById("column4").style.display = "none";
+                // document.getElementById("column3").style.display = "none";
                 // var select = $('#subArea1');
                 const text = '-- Select --';
                 const $select = document.querySelector('#subArea1');
@@ -828,8 +651,8 @@
                 optionToSelect.selected = true;
             } else {
                 document.getElementById("columnFirst").style.display = "block";
-                document.getElementById("column3").style.display = "none";
-                document.getElementById("column4").style.display = "none";
+                // document.getElementById("column3").style.display = "none";
+                // document.getElementById("column4").style.display = "none";
             }
         })
 
@@ -837,16 +660,21 @@
         $("#subArea").change(function(e) {
             var id = $(this).val();
             var label = $('option:selected', this).text();
+            const subArea = $(this)
+            const subArea1 = $("#subArea1")
+
             $.ajax({
                 url: "<?= url('srs/osint_source/get_subArea') ?>",
                 method: "POST",
                 cache: false,
                 beforeSend: function() {
                     document.getElementById("load2").style.display = "block";
-                    document.getElementById("column3").style.display = "none";
+                    // document.getElementById("column3").style.display = "none";
+                    subArea1.parents('.form-group').remove()
+                    subArea.prop('disabled', true);
                 },
                 complete: function() {
-                    document.getElementById("column3").style.display = "block";
+                    // document.getElementById("column3").style.display = "block";
                     document.getElementById("load2").style.display = "none";
                 },
                 data: {
@@ -854,9 +682,19 @@
                     id: id,
                 },
                 success: function(e) {
-                    var select = $('#subArea1');
-                    document.getElementById("column3").style.display = "block";
+                    // document.getElementById("column3").style.display = "block";
+
+                    subArea.parents('.form-group').after(`
+                        <div style="display: block;" id="column3" class="form-group col-3">
+                        <label for="subArea1" id="column3label">Super Restricted Area</label>
+                        <select class="form-control" name="subArea1" id="subArea1">
+                        </select>
+                        <span id="load3" style="display: none;" class="font-italic text-white">loading data</span>
+                    </div>`);
+
                     document.getElementById("column3label").innerHTML = label;
+
+                    var select = $('#subArea1');
                     select.empty();
                     var added = document.createElement('option');
                     added.value = "";
@@ -869,6 +707,8 @@
                         added.innerHTML = result[i].name;
                         select.append(added);
                     }
+
+                    subArea.prop('disabled', false);
                 }
             })
         })
@@ -912,7 +752,8 @@
                             select.append(added);
                         }
                     } else {
-                        document.getElementById("column4").style.display = "none";
+                        var column4 = document.getElementById("column4");
+                        if(column4) column4.style.display = "none";
                     }
                 }
             })
@@ -929,10 +770,10 @@
                 method: "POST",
                 cache: false,
                 beforeSend: function() {
-                    document.getElementById("load5").style.display = "block";
-                    document.getElementById("column5").style.display = "none";
-                    document.getElementById("column6").style.display = "none";
-                    document.getElementById("column7").style.display = "none";
+                    // document.getElementById("load5").style.display = "block";
+                    // document.getElementById("column5").style.display = "none";
+                    // document.getElementById("column6").style.display = "none";
+                    // document.getElementById("column7").style.display = "none";
                 },
                 complete: function() {
                     document.getElementById("load5").style.display = "none";
@@ -976,8 +817,8 @@
                 cache: false,
                 beforeSend: function() {
                     document.getElementById("load6").style.display = "block";
-                    document.getElementById("column6").style.display = "none";
-                    document.getElementById("column7").style.display = "none";
+                    // document.getElementById("column6").style.display = "none";
+                    // document.getElementById("column7").style.display = "none";
                 },
                 complete: function() {
                     document.getElementById("load6").style.display = "none";
@@ -989,7 +830,7 @@
                 },
                 success: function(e) {
                     // console.log(e);
-                    document.getElementById("column7").style.display = "none";
+                    // document.getElementById("column7").style.display = "none";
                     if (parseInt(e) != 0) {
                         var select = $('#subIssueTarget1');
                         document.getElementById("column6").style.display = "block";
@@ -1007,7 +848,7 @@
                             select.append(added);
                         }
                     } else {
-                        document.getElementById("column6").style.display = "none";
+                        // document.getElementById("column6").style.display = "none";
                     }
                 }
             })
@@ -1056,8 +897,7 @@
             })
         })
 
-        // section 3
-        // filter 1 row 3
+        // Risk Source
         $("#riskSource").change(function(e) {
             var id = $(this).val();
             var label = $('option:selected', this).text();
@@ -1187,8 +1027,6 @@
                 beforeSend: function() {
                     mediaIssue.parent().children('span').show();
                     mediaIssue.prop('disabled', true);
-                    // document.getElementById("load12").style.display = "block";
-                    // document.getElementById("column10").style.display = "none";
                 },
                 complete: function() {
                     document.getElementById("load12").style.display = "none";
@@ -1203,8 +1041,8 @@
                         mediaIssue.prop('disabled', false);
 
                         var select = $('#SubmediaIssue');
-                        document.getElementById("column10").style.display = "block";
-                        document.getElementById("column10Label").innerHTML = label;
+                        // document.getElementById("column10").style.display = "block";
+                        // document.getElementById("column10Label").innerHTML = label;
                         select.empty();
                         var added = document.createElement('option');
                         added.value = "";
@@ -1241,11 +1079,12 @@
                 beforeSend: function() {
                     submediaIssue.parent().children('span').show();
                     submediaIssue.prop('disabled', true);
+
                     // document.getElementById("load13").style.display = "block";
                     // document.getElementById("column11").style.display = "none";
                 },
                 complete: function() {
-                    document.getElementById("load13").style.display = "none";
+                    // document.getElementById("load13").style.display = "none";
                 },
                 data: {
                     _token: "{{ csrf_token() }}",
@@ -1254,8 +1093,8 @@
                 success: function(e) {
                     if (parseInt(e) != 0) {
                         var select = $('#SubmediaIssue1');
-                        document.getElementById("column11").style.display = "block";
-                        document.getElementById("column11Label").innerHTML = label;
+                        // document.getElementById("column11").style.display = "block";
+                        // document.getElementById("column11Label").innerHTML = label;
                         select.empty();
                         var added = document.createElement('option');
                         added.value = "";
@@ -1274,13 +1113,55 @@
 
                     submediaIssue.parent().children('span').hide();
                     submediaIssue.prop('disabled', false);
-
                     $('#mediaLevel').val(media)
-
                 }
             })
         })
 
+        $("#SubmediaIssue1").change(function(e) {
+            var id = $(this).val();
+            var label = $('option:selected', this).text();
+
+            $.ajax({
+                url: "<?= url('srs/osint_source/get_SubissuMedia1') ?>",
+                method: "POST",
+                cache: false,
+                beforeSend: function() {
+                    document.getElementById("load14").style.display = "block";
+                    document.getElementById("column12").style.display = "none";
+                },
+                complete: function() {
+                    document.getElementById("load14").style.display = "none";
+                },
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    id: id,
+                },
+                success: function(e) {
+                    if (parseInt(e) != 0) {
+                        var select = $('#SubmediaIssue2');
+                        document.getElementById("column12").style.display = "block";
+                        document.getElementById("column12Label").innerHTML = label;
+                        select.empty();
+                        var added = document.createElement('option');
+                        added.value = "";
+                        added.innerHTML = "-- Select --";
+                        select.append(added);
+                        var result = JSON.parse(e);
+                        for (var i = 0; i < result.length; i++) {
+                            var added = document.createElement('option');
+                            added.value = result[i].id;
+                            added.innerHTML = result[i].name;
+                            select.append(added);
+                        }
+                    } else {
+                        document.getElementById("column12").style.display = "none";
+                    }
+
+                }
+            })
+        });
+        
         // REGIONAL LEVEL
         $("#regional").change(function(e) {
             var id = $(this).val();
@@ -1306,9 +1187,7 @@
                 method: "POST",
                 cache: false,
                 beforeSend: function() {
-                    legalitas.parent().children('span').show();
-                    legalitas.prop('disabled', true);
-                    // document.getElementById("load12").style.display = "block";
+                    document.getElementById("load12").style.display = "block";
                     // document.getElementById("column10").style.display = "none";
                 },
                 complete: function() {
@@ -1330,11 +1209,17 @@
                         legalitasLevel.val('')
                         legalitasLevel.val(legalitasLevelVal)
                     });
-
-                    legalitas.parent().children('span').hide();
-                    legalitas.prop('disabled', false);
                 }
             })
+        });
+
+        // LEGALITAS SUB1
+        $("#legalitasSub1").change(function(e) {
+            var legalitasLevel = $('#legalitasLevel')
+            var legalitasLevelVal = $('option:selected', this).val().split(':')[2];
+
+            legalitasLevel.val('')
+            legalitasLevel.val(legalitasLevelVal)
         });
 
         // REGIONAL LEVEL

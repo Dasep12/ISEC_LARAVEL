@@ -21,6 +21,7 @@
         <script src="{{ asset('assets/dist/js/sweetalert2.all.min.js') }}"></script>
 
         <link rel="stylesheet" href="{{ asset('assets/dist/css/jquery.timepicker.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/dist/css/bootstrap-datepicker.css') }}">
         <script src="{{ asset('assets/dist/js/jquery.timepicker.min.js') }}"></script>
 
         <!-- pagination freeze -->
@@ -82,7 +83,7 @@
 
         <!-- Main Sidebar Container -->
         <!-- <aside class="main-sidebar sidebar-dark-primary elevation-4"> -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <aside class="main-sidebar sidebar-dark-primary elevation-4 position-fixed" style="padding-top: 8vh;">
             <!-- Brand Logo -->
             <a href="" class="brand-link">
                 <img src="{{ asset('assets/dist/img/logo.jpeg') }}" alt="Logo" style='margin-left:2px' class="brand-image img-square elevation-5" style="opacity: .8">
@@ -106,7 +107,7 @@
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <li class="nav-item ">
-                            <a href="dashboard_v2" class="nav-link
+                            <a href="{{ url('srs/dashboard_v2') }}" class="nav-link
                             <?php if ($link == 'dashboard') {
                                 echo 'active';
                             } ?>">
@@ -132,7 +133,7 @@
                                     </li>
 
                                     <li class="nav-item">
-                                        <a href="humint_source" class="nav-link {{ ($link == 'humint_source') ? 'active' : ''; }}">
+                                        <a href="{{ url('srs/humint_source') }}" class="nav-link {{ ($link == 'humint_source') ? 'active' : ''; }}">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Input & View</p>
                                         </a>
@@ -142,7 +143,7 @@
                         <?php } ?>
 
                         <?php if (AuthHelper::is_module('SRSESO') || AuthHelper::is_super_admin()) { ?>
-                        <li class="nav-item {{ ($link == 'dashboard_osint') ? 'menu-open' : '' }}">
+                        <li class="nav-item {{ ($link !== '' && $link == 'dashboard_osint' || $link == 'osint_source') ? 'menu-open' : '' }}">
                             <a href="osint" class="nav-link">
                                 <i class="nav-icon fas fa-copy"></i>
                                 <p>
@@ -152,13 +153,13 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="dashboard_osint" class="nav-link {{ ($link !== '' && $link == 'dashboard_osint') ? 'active' : ''; }}">
+                                    <a href="{{ url('srs/dashboard_osint') }}" class="nav-link {{ ($link !== '' && $link == 'dashboard_osint') ? 'active' : ''; }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Dashboard</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="osint_source" class="nav-link {{ ($link == 'osint_source' &&  $sub_link != 'osint_source') ? 'active' : ''; }}">
+                                    <a href="{{ url('srs/osint_source') }}" class="nav-link {{ ($link == 'osint_source' &&  $sub_link != 'osint_source') ? 'active' : ''; }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Input & View</p>
                                     </a>
@@ -168,8 +169,8 @@
                         <?php } ?>
 
                         <?php if (AuthHelper::is_module('SRSSOI')) { ?>
-                            <li class="nav-item {{ ($link == 'dashboard_soi') ? 'menu-open' : '' }}">
-                                <a href="soi" class="nav-link">
+                            <li class="nav-item {{ ($link == 'dashboard_soi' || $link == 'soi') ? 'menu-open' : '' }}">
+                                <a href="#" class="nav-link">
                                     <i class="nav-icon fas fa-shield-alt"></i>
                                     <p>SOI</p>
                                 </a>
@@ -181,7 +182,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="soi" class="nav-link {{ ($link !== '' && $link == 'soi') ? 'active' : ''; }}">
+                                        <a href="{{ url('srs/soi') }}" class="nav-link {{ ($link !== '' && $link == 'soi') ? 'active' : ''; }}">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Input & View</p>
                                         </a>
@@ -243,6 +244,7 @@
 
     <!-- Date Time Picker -->
     <!-- <script type="text/javascript" src="{{ asset('assets/dist/datetimepicker/jquery.js') }}"></script> -->
+    <script type="text/javascript" src="<?= asset('assets/dist/js/bootstrap-datepicker.min.js') ?>"></script>
     <script type="text/javascript" src="{{ asset('assets/dist/datetimepicker/jquery.datetimepicker.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/dist/datetimerange/moment.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/dist/datetimerange/daterangepicker.min.js') }}"></script>
@@ -255,10 +257,12 @@
     <script>
         $(document).ready(function() {
 
-            $('#tgl1,#tgl2').datepicker({
-                dateFormat: 'yy-mm-dd',
-                autoclose: true
+            $('#datetimepicker2').datepicker({
+                format: 'yyyy-mm-dd',
+                defaultDate: true,
+                autoclose: true,
             });
+
             $('#tgl13').datepicker({
                 dateFormat: 'yy-mm-dd',
                 autoclose: true

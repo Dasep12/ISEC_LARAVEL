@@ -34,6 +34,7 @@ Route::prefix('srs')->middleware(['is_login_isec','prevent-back-history'])->grou
     Route::post('/dashboard_humint_v2/grap_detail_assets', 'HumintDashboardV2Controller@grapDetailAssets');
     Route::post('/dashboard_humint_v2/grap_detail_risk', 'HumintDashboardV2Controller@grapDetailRisk');
 
+    Route::get('/humint_source/srsExportReportPdf', 'HumintController@srsExportReportPdf');
     Route::get('/humint_source', 'HumintController@index');
     Route::post('/humint_source/list_table', 'HumintController@listTable');
     Route::post('/humint_source/save', 'HumintController@saveData');
@@ -74,6 +75,25 @@ Route::prefix('srs')->middleware(['is_login_isec','prevent-back-history'])->grou
     Route::post('/dashboard_osint/totalLevelAvg', 'OsintDashboardController@totalLevelAvg');
 
     Route::get('/osint_source', 'OsintController@index');
+    Route::get('/osint_source/edit/{id?}', 'OsintController@edit');
+    Route::post('/osint_source/list_table', 'OsintController@listTable');
+    Route::post('/osint_source/save', 'OsintController@saveData');
+    Route::post('/osint_source/update', 'OsintController@updateData');
+    Route::post('/osint_source/detail', 'OsintController@detail');
+    Route::post('/osint_source/search', 'OsintController@search');
+    Route::post('/osint_source/delete_attached', 'OsintController@deleteattached');
+    Route::post('/osint_source/delete', 'OsintController@deleteData');
+    Route::post('/osint_source/get_subArea', 'OsintController@getSubArea');
+    Route::post('/osint_source/get_subArea1', 'OsintController@getSubArea1');
+    Route::post('/osint_source/get_Issue', 'OsintController@getIssue');
+    Route::post('/osint_source/get_SubIssue', 'OsintController@getSubIssue');
+    Route::post('/osint_source/get_SubIssue1', 'OsintController@getSubIssue1');
+    Route::post('/osint_source/get_riskSource', 'OsintController@getRiskSource');
+    Route::post('/osint_source/get_riskSource1', 'OsintController@getRiskSource1');
+    Route::post('/osint_source/get_issuMedia', 'OsintController@getIssuMedia');
+    Route::post('/osint_source/get_SubissuMedia', 'OsintController@getSubissuMedia');
+    Route::post('/osint_source/get_SubissuMedia1', 'OsintController@getSubissuMedia1');
+    Route::post('/osint_source/getCategorySub1', 'OsintController@getCategorySub1');
     Route::post('/osint/detail', 'OsintController@detail');
     // OSINT //
     
@@ -84,5 +104,15 @@ Route::prefix('srs')->middleware(['is_login_isec','prevent-back-history'])->grou
     Route::post('dashboard_soi/soi_avg_area_month', 'soiDashboardController@soiAvgAreaMonth');
     Route::post('dashboard_soi/soi_avg_area_pillar', 'soiDashboardController@soiAvgAreaPillar');
     Route::post('dashboard_soi/soi_threat_soi', 'soiDashboardController@soiThreatSoi');
+
+    Route::get('/soi', 'SoiController@index');
+    Route::post('/soi/list_table', 'SoiController@listTable');
+    Route::post('/soi/get_performance_gt ', 'SoiController@getPerformanceGt');
+    Route::post('/soi/detail', 'SoiController@detailData');
+    Route::post('/soi/approve', 'SoiController@approveData');
+    Route::post('/soi/save', 'SoiController@saveData');
+    Route::post('/soi/delete', 'SoiController@deleteData');
+    Route::get('/soi/edit/{id}', 'SoiController@edit');
+    Route::post('/soi/update', 'SoiController@updateData');
     // SOI //
 });
