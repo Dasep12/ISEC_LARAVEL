@@ -290,7 +290,7 @@ class SoaModel extends Model
                         'created_by' => Session('npk')
                     ),
                     array(
-                        'trans_id' => $last_id, 'type_id' => 1037, 'amount' => $bicycle_contractor, 'people_id' => 7, 'created_at' => date("Y-m-d H:i:s"),
+                        'trans_id' => $last_id, 'type_id' => 1037, 'amount' => $bicycle_visitor, 'people_id' => 7, 'created_at' => date("Y-m-d H:i:s"),
                         'created_by' => Session('npk')
                     ),
 
@@ -360,6 +360,207 @@ class SoaModel extends Model
         } else {
             // plant tidak ditemukan
             return 2;
+        }
+    }
+
+    public static function  detailHeaderSoa($req)
+    {
+        $res = DB::connection('soabi')->select("SELECT *  from admisecdrep_transaction at2  where at2.shift  = '" . $req->input('shift') . "' and at2.report_date = '" . $req->input('tanggal') . "' and at2.area_id  = '" . $req->input('area') . "' ");
+        return $res;
+    }
+
+    public static function updateHeaderTrans($req)
+    {
+
+        $last_id = $req->input("idTrans");
+        DB::connection('soabi')->beginTransaction();
+        try {
+
+
+            DB::connection('soabi')->delete("DELETE admisecdrep_transaction_people WHERE trans_id = '$last_id' ");
+            DB::connection('soabi')->delete("DELETE admisecdrep_transaction_vehicle WHERE trans_id = '$last_id' ");
+            DB::connection('soabi')->delete("DELETE admisecdrep_transaction_material WHERE trans_id = '$last_id' ");
+
+            DB::connection('soabi')->commit();
+            return 1;
+        } catch (\Exception $e) {
+            DB::connection('soabi')->rollback();
+            // return 2;
+            return $e;
+        }
+    }
+    public static function updateDetailTransSoa($req)
+    {
+        $last_id = $req->input("idTrans");
+
+        // people
+        $employee = $req->input("employee");
+        $contractor = $req->input("contractor");
+        $visitor = $req->input("visitor");
+        $business_partner = $req->input("business_partner");
+
+        // document
+        $pkb = $req->input("pkb");
+        $pko = $req->input("pko");
+        $surat_jalan = $req->input("surat_jalan");
+
+        // vehicle employee
+        $car_employee = $req->input("car_employee");
+        $motorcycle_employee = $req->input("motorcycle_employee");
+        $bicycle_employee = $req->input("bicycle_employee");
+        // vehicle visitor
+        $car_visitor = $req->input("car_visitor");
+        $motorcycle_visitor = $req->input("motorcycle_visitor");
+        $bicycle_visitor = $req->input("bicycle_visitor");
+        $truck_visitor = $req->input("truck_visitor");
+        // vehicle business partener
+        $car_bp = $req->input("car_bp");
+        $motorcycle_bp = $req->input("motorcycle_bp");
+        $bicycle_bp = $req->input("bicycle_bp");
+        $truck_bp = $req->input("truck_bp");
+        // vehicle contractor
+        $car_contractor = $req->input("car_contractor");
+        $motorcycle_contractor = $req->input("motorcycle_contractor");
+        $bicycle_contractor = $req->input("bicycle_contractor");
+        $truck_contractor = $req->input("truck_contractor");
+        // vehicle pool
+        $car_pool = $req->input("car_pool");
+        $motorcycle_pool = $req->input("motorcycle_pool");
+        $bicycle_pool = $req->input("bicycle_pool");
+        $truck_pool = $req->input("truck_pool");
+
+        DB::connection('soabi')->beginTransaction();
+        try {
+            $data_people = array(
+                array(
+                    'people_id' => 6, 'attendance' => $employee, 'trans_id' => $last_id, 'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => Session('npk')
+                ),
+                array(
+                    'people_id' => 7, 'attendance' => $visitor, 'trans_id' => $last_id,
+                    'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => Session('npk')
+                ),
+                array(
+                    'people_id' => 8, 'attendance' => $business_partner, 'trans_id' => $last_id, 'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => Session('npk')
+                ),
+                array(
+                    'people_id' => 9, 'attendance' => $contractor, 'trans_id' => $last_id, 'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => Session('npk')
+                ),
+            );
+
+            $data_document = array(
+                array(
+                    'category_id' =>  12, 'document_in' => $pkb, 'trans_id' => $last_id, 'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => Session('npk')
+                ),
+                array(
+                    'category_id' =>  1035, 'document_in' => $pko, 'trans_id' => $last_id, 'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => Session('npk')
+                ),
+                array(
+                    'category_id' =>  1036, 'document_in' => $surat_jalan, 'trans_id' => $last_id, 'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => Session('npk')
+                ),
+            );
+
+            $data_vehicle  = array(
+                // vehicle
+                array(
+                    'trans_id' => $last_id, 'type_id' => 1, 'amount' => $car_employee, 'people_id' => 6, 'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => Session('npk')
+                ),
+                array(
+                    'trans_id' => $last_id, 'type_id' => 2, 'amount' => $motorcycle_employee, 'people_id' => 6, 'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => Session('npk')
+                ),
+                array(
+                    'trans_id' => $last_id, 'type_id' => 1037, 'amount' => $bicycle_employee, 'people_id' => 6, 'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => Session('npk')
+                ),
+
+                // visitor 
+                array(
+                    'trans_id' => $last_id, 'type_id' => 1, 'amount' => $car_visitor, 'people_id' => 7, 'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => Session('npk')
+                ),
+                array(
+                    'trans_id' => $last_id, 'type_id' => 2, 'amount' => $motorcycle_visitor, 'people_id' => 7, 'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => Session('npk')
+                ),
+                array(
+                    'trans_id' => $last_id, 'type_id' => 3, 'amount' => $truck_visitor, 'people_id' => 7, 'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => Session('npk')
+                ),
+                array(
+                    'trans_id' => $last_id, 'type_id' => 1037, 'amount' => $bicycle_visitor, 'people_id' => 7, 'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => Session('npk')
+                ),
+
+                // bp 
+                array(
+                    'trans_id' => $last_id, 'type_id' => 1, 'amount' => $car_bp, 'people_id' => 8, 'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => Session('npk')
+                ),
+                array(
+                    'trans_id' => $last_id, 'type_id' => 2, 'amount' => $motorcycle_bp, 'people_id' => 8, 'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => Session('npk')
+                ),
+                array(
+                    'trans_id' => $last_id, 'type_id' => 3, 'amount' => $truck_bp, 'people_id' => 8, 'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => Session('npk')
+                ),
+                array(
+                    'trans_id' => $last_id, 'type_id' => 1037, 'amount' => $bicycle_bp, 'people_id' => 8, 'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => Session('npk')
+                ),
+
+                // contractor
+                array(
+                    'trans_id' => $last_id, 'type_id' => 1, 'amount' => $car_contractor, 'people_id' => 9, 'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => Session('npk')
+                ),
+                array(
+                    'trans_id' => $last_id, 'type_id' => 2, 'amount' => $motorcycle_contractor, 'people_id' => 9, 'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => Session('npk')
+                ),
+                array(
+                    'trans_id' => $last_id, 'type_id' => 3, 'amount' => $truck_contractor, 'people_id' => 9, 'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => Session('npk')
+                ),
+                array(
+                    'trans_id' => $last_id, 'type_id' => 1037, 'amount' => $bicycle_contractor, 'people_id' => 9, 'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => Session('npk')
+                ),
+                // pool
+                array(
+                    'trans_id' => $last_id, 'type_id' => 1, 'amount' => $car_pool, 'people_id' => 32, 'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => Session('npk')
+                ),
+                array(
+                    'trans_id' => $last_id, 'type_id' => 2, 'amount' => $motorcycle_pool, 'people_id' => 32, 'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => Session('npk')
+                ),
+                array(
+                    'trans_id' => $last_id, 'type_id' => 3, 'amount' => $truck_pool, 'people_id' => 32, 'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => Session('npk')
+                ),
+                array(
+                    'trans_id' => $last_id, 'type_id' => 1037, 'amount' => $bicycle_pool, 'people_id' => 32, 'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => Session('npk')
+                ),
+            );
+
+            DB::connection('soabi')->table('admisecdrep_transaction_people')->insert($data_people);
+            DB::connection('soabi')->table('admisecdrep_transaction_material')->insert($data_document);
+            DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($data_vehicle);
+            DB::connection('soabi')->commit();
+            return 1;
+        } catch (\Exception $e) {
+            DB::connection('soabi')->rollback();
+            return $e;
         }
     }
 }

@@ -83,6 +83,46 @@ class UploadController extends Controller
                 $dataDocument = array();
                 $dataPeople   = array();
                 $dataVehicle  = array();
+
+
+                // 
+                $uploadPKO = array();
+                $uploadSj = array();
+                // 
+
+                // 
+                $uploadEmploye = array();
+                $uploadVisitor = array();
+                $uploadbisPartner = array();
+                $uploadcontractorValue = array();
+                // 
+
+                $uploadCaremploye = array();
+                $uploadTruckemploye = array();
+                $uploadMotoremploye = array();
+                $uploadSepedaemploye = array();
+
+
+                $uploadCarVisitor = array();
+                $uploadTruckVisitor = array();
+                $uploadMotorVisitor = array();
+                $uploadSepedaVisitor = array();
+
+                $uploadCarBp = array();
+                $uploadTruckBp = array();
+                $uploadMotorBp = array();
+                $uploadSepedaBp = array();
+
+                $uploadCarContractor = array();
+                $uploadTruckContractor = array();
+                $uploadMotorContractor = array();
+                $uploadSepedaContractor = array();
+
+                $uploadCarPool = array();
+                $uploadTruckPool = array();
+                $uploadMotorPool = array();
+                $uploadSepedaPool = array();
+
                 DB::connection('soabi')->beginTransaction();
                 try {
                     DB::connection('soabi')->table('admisecdrep_transaction')->insert($headerDatas);
@@ -97,26 +137,27 @@ class UploadController extends Controller
                         $pkoValue = $ds[2];
                         $sjValue = $ds[3];
 
-                        $PkoArray =
-                            array(
-                                'category_id'   => '1036',
-                                'document_in'   => $sjValue,
-                                'trans_id'      => $transId,
-                                'created_at'    => date('Y-m-d H:i:s'),
-                                'created_by'    => Session('npk'),
-                                'status'        => 1
-                            );
-                        $sjArray =
-                            array(
-                                'category_id' => '1035',
-                                'document_in' => $pkoValue,
-                                'trans_id'  => $transId,
-                                'created_at'    => date('Y-m-d H:i:s'),
-                                'created_by'    => Session('npk'),
-                                'status'        => 1
-                            );
-                        $dataDocument[] = $PkoArray;
-                        $dataDocument[] = $sjArray;
+                        $PkoArray = array(
+                            'category_id'   => '1036',
+                            'document_in'   => $sjValue,
+                            'trans_id'      => $transId,
+                            'created_at'    => date('Y-m-d H:i:s'),
+                            'created_by'    => Session('npk'),
+                            'status'        => 1
+                        );
+                        $sjArray = array(
+                            'category_id'   => '1035',
+                            'document_in'   => $pkoValue,
+                            'trans_id'      => $transId,
+                            'created_at'    => date('Y-m-d H:i:s'),
+                            'created_by'    => Session('npk'),
+                            'status'        => 1
+                        );
+                        $uploadPKO[] = $PkoArray;
+                        $uploadSj[] = $sjArray;
+
+                        // DB::connection('soabi')->table('admisecdrep_transaction_material')->insert($uploadPKO);
+                        // DB::connection('soabi')->table('admisecdrep_transaction_material')->insert($uploadSj);
                         // 
 
                         // people data 
@@ -133,7 +174,6 @@ class UploadController extends Controller
                             'created_by'    => Session('npk'),
                             'status'        => 1
                         );
-
                         $visitorArray = array(
                             'people_id'     => '7',
                             'attendance'    => $visitorValue,
@@ -150,7 +190,6 @@ class UploadController extends Controller
                             'created_by'    => Session('npk'),
                             'status'        => 1
                         );
-
                         $contractorArray = array(
                             'people_id'     => '9',
                             'attendance'    => $contractorValue,
@@ -160,10 +199,15 @@ class UploadController extends Controller
                             'status'        => 1
                         );
 
-                        $dataPeople[] = $employeArray;
-                        $dataPeople[] = $visitorArray;
-                        $dataPeople[] = $bisPartnerArray;
-                        $dataPeople[] = $contractorArray;
+                        $uploadEmploye[] = $employeArray;
+                        $uploadVisitor[] = $visitorArray;
+                        $uploadbisPartner[] = $bisPartnerArray;
+                        $uploadcontractorValue[] = $contractorArray;
+                        // 1
+                        // DB::connection('soabi')->table('admisecdrep_transaction_people')->insert($uploadEmploye);
+                        // DB::connection('soabi')->table('admisecdrep_transaction_people')->insert($uploadVisitor);
+                        // DB::connection('soabi')->table('admisecdrep_transaction_people')->insert($uploadbisPartner);
+                        // DB::connection('soabi')->table('admisecdrep_transaction_people')->insert($uploadcontractorValue);
                         // 
 
                         // vehicle employee 
@@ -181,7 +225,6 @@ class UploadController extends Controller
                             'created_by'    => Session('npk'),
                             'status'        => 1
                         );
-
                         $TruckemployeArray = array(
                             'trans_id'      => $transId,
                             'type_id'       => '3',
@@ -191,7 +234,6 @@ class UploadController extends Controller
                             'created_by'    => Session('npk'),
                             'status'        => 1
                         );
-
                         $MotoremployeArray = array(
                             'trans_id'      => $transId,
                             'type_id'       => '2',
@@ -201,7 +243,6 @@ class UploadController extends Controller
                             'created_by'    => Session('npk'),
                             'status'        => 1
                         );
-
                         $SepedaemployeArray = array(
                             'trans_id'      => $transId,
                             'type_id'       => '1037',
@@ -211,10 +252,16 @@ class UploadController extends Controller
                             'created_by'    => Session('npk'),
                             'status'        => 1
                         );
-                        $dataVehicle[] = $CaremployeArray;
-                        $dataVehicle[] = $TruckemployeArray;
-                        $dataVehicle[] = $MotoremployeArray;
-                        $dataVehicle[] = $SepedaemployeArray;
+
+                        $uploadCaremploye[] = $CaremployeArray;
+                        $uploadTruckemploye[] = $TruckemployeArray;
+                        $uploadMotoremploye[] = $MotoremployeArray;
+                        $uploadSepedaemploye[] = $SepedaemployeArray;
+                        //  1
+                        // DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadCaremploye);
+                        // DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadTruckemploye);
+                        // DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadMotoremploye);
+                        // DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadSepedaemploye);
                         // 
 
                         // Vehicle Visitor
@@ -262,10 +309,15 @@ class UploadController extends Controller
                             'created_by'    => Session('npk'),
                             'status'        => 1
                         );
-                        $dataVehicle[] = $CarVisitorArray;
-                        $dataVehicle[] = $TruckVisitorArray;
-                        $dataVehicle[] = $MotorVisitorArray;
-                        $dataVehicle[] = $SepedaVisitorArray;
+                        $uploadCarVisitor[] = $CarVisitorArray;
+                        $uploadTruckVisitor[] = $TruckVisitorArray;
+                        $uploadMotorVisitor[] = $MotorVisitorArray;
+                        $uploadSepedaVisitor[] = $SepedaVisitorArray;
+                        // 2
+                        // DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadCarVisitor);
+                        // DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadTruckVisitor);
+                        // DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadMotorVisitor);
+                        // DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadSepedaVisitor);
                         // 
 
                         // Vehicle business partner
@@ -312,10 +364,15 @@ class UploadController extends Controller
                             'created_by'    => Session('npk'),
                             'status'        => 1
                         );
-                        $dataVehicle[] = $CarBpArray;
-                        $dataVehicle[] = $TruckBpArray;
-                        $dataVehicle[] = $MotorBpArray;
-                        $dataVehicle[] = $SepedaBpArray;
+                        $uploadCarBp[] = $CarBpArray;
+                        $uploadTruckBp[] = $TruckBpArray;
+                        $uploadMotorBp[] = $MotorBpArray;
+                        $uploadSepedaBp[] = $SepedaBpArray;
+                        // 3
+                        // DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadCarBp);
+                        // DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadTruckBp);
+                        // DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadMotorBp);
+                        // DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadSepedaBp);
                         // 
 
                         // Vehicle Contractor
@@ -323,6 +380,7 @@ class UploadController extends Controller
                         $TruckContractor = $ds[21];
                         $MotorContractor = $ds[22];
                         $SepedaContractor = $ds[23];
+
                         $CarContractorArray = array(
                             'trans_id'      => $transId,
                             'type_id'       => '1',
@@ -332,7 +390,6 @@ class UploadController extends Controller
                             'created_by'    => Session('npk'),
                             'status'        => 1
                         );
-
                         $TruckContractorArray = array(
                             'trans_id'      => $transId,
                             'type_id'       => '3',
@@ -342,7 +399,6 @@ class UploadController extends Controller
                             'created_by'    => Session('npk'),
                             'status'        => 1
                         );
-
                         $MotorContractorArray = array(
                             'trans_id'      => $transId,
                             'type_id'       => '2',
@@ -352,7 +408,6 @@ class UploadController extends Controller
                             'created_by'    => Session('npk'),
                             'status'        => 1
                         );
-
                         $SepedaContractorArray = array(
                             'trans_id'      => $transId,
                             'type_id'       => '1037',
@@ -362,11 +417,16 @@ class UploadController extends Controller
                             'created_by'    => Session('npk'),
                             'status'        => 1
                         );
-                        $dataVehicle[] = $CarContractorArray;
-                        $dataVehicle[] = $TruckContractorArray;
-                        $dataVehicle[] = $MotorContractorArray;
-                        $dataVehicle[] = $SepedaContractorArray;
+                        $uploadCarContractor[] = $CarContractorArray;
+                        $uploadTruckContractor[] = $TruckContractorArray;
+                        $uploadMotorContractor[] = $MotorContractorArray;
+                        $uploadSepedaContractor[] = $SepedaContractorArray;
                         // 
+                        // 4 
+                        // DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadCarContractor);
+                        // DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadTruckContractor);
+                        // DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadMotorContractor);
+                        // DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadSepedaContractor);
 
                         // Vehicle Pool
                         $CarPool = $ds[24];
@@ -413,26 +473,70 @@ class UploadController extends Controller
                             'created_by'    => Session('npk'),
                             'status'        => 1
                         );
-                        $dataVehicle[] = $CarPoolArray;
-                        $dataVehicle[] = $TruckPoolArray;
-                        $dataVehicle[] = $MotorPoolArray;
-                        $dataVehicle[] = $SepedaPoolArray;
-                        // 
+                        $uploadCarPool[] = $CarPoolArray;
+                        $uploadTruckPool[] = $TruckPoolArray;
+                        $uploadMotorPool[] = $MotorPoolArray;
+                        $uploadSepedaPool[] = $SepedaPoolArray;
+                        // 5
+                        // DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadCarPool);
+                        // DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadTruckPool);
+                        // DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadMotorPool);
+                        // DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadSepedaPool);
                     }
 
-                    DB::connection('soabi')->table('admisecdrep_transaction_material')->insert($dataDocument);
 
-                    DB::connection('soabi')->table('admisecdrep_transaction_people')->insert($dataPeople);
 
-                    DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($dataVehicle);
+
+                    // document uploaded
+                    DB::connection('soabi')->table('admisecdrep_transaction_material')->insert($uploadPKO);
+                    DB::connection('soabi')->table('admisecdrep_transaction_material')->insert($uploadSj);
+                    // 
+
+                    // people uploaded 
+                    DB::connection('soabi')->table('admisecdrep_transaction_people')->insert($uploadEmploye);
+                    DB::connection('soabi')->table('admisecdrep_transaction_people')->insert($uploadVisitor);
+                    DB::connection('soabi')->table('admisecdrep_transaction_people')->insert($uploadbisPartner);
+                    DB::connection('soabi')->table('admisecdrep_transaction_people')->insert($uploadcontractorValue);
+                    //
+
+                    // vehicle uploaded
+                    // 1
+                    DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadCaremploye);
+                    DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadTruckemploye);
+                    DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadMotoremploye);
+                    DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadSepedaemploye);
+                    // 2
+                    DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadCarVisitor);
+                    DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadTruckVisitor);
+                    DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadMotorVisitor);
+                    DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadSepedaVisitor);
+                    // 3
+                    DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadCarBp);
+                    DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadTruckBp);
+                    DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadMotorBp);
+                    DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadSepedaBp);
+                    // 4
+                    DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadCarContractor);
+                    DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadTruckContractor);
+                    DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadMotorContractor);
+                    DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadSepedaContractor);
+                    // 5
+                    DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadCarPool);
+                    DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadTruckPool);
+                    DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadMotorPool);
+                    DB::connection('soabi')->table('admisecdrep_transaction_vehicle')->insert($uploadSepedaPool);
+
 
                     DB::connection('soabi')->commit();
                     return back()->with('success', 'Report upload successfully!');
                 } catch (\Exception $e) {
                     DB::connection('soabi')->rollback();
-                    return back()->with('failed', 'Report upload failed!');
+                    // return back()->with('failed', 'Report upload failed!');
+                    dd($e);
                 }
             }
         }
     }
+
+
 }

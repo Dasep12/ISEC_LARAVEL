@@ -591,8 +591,7 @@
 
                         return '<button data-toggle="modal" data-target="#detailModal" data-date="' + row[2] + '" data-area_id ="' + row[6] + '" class="btn btn-sm btn-primary text-white"><i class="fas fa-eye" "></i></button>' +
                             ' <button data-date="' + row[2] + '" data-area_id ="' + row[6] + '" data-toggle="modal" data-target="#deleteModal" class="btn btn-sm btn-danger text-white"><i class="fas fa-trash text-white"></i></button> ' +
-                            '<button type="button" class="btn btn-info btn-sm dropdown-toggle edit-icon" data-toggle="dropdown"><i class= "fas fa-edit"></i></button><div class ="dropdown-menu" role= "menu" ><a class ="dropdown-item" href ="' + row[2] + '&area=' + row[6] +
-                            '"> Shift 1 </a><a class = "dropdown-item" href =""> Shift 2 </a><a class = "dropdown-item" href =""> Shift 3 </a></div>'
+                            '<button type="button" class="btn btn-info btn-sm dropdown-toggle edit-icon" data-toggle="dropdown"><i class= "fas fa-edit"></i></button><div class ="dropdown-menu" role= "menu" ><a class ="dropdown-item" href ="formEditSoa?tanggal=' + row[2] + '&area=' + row[6] + '&shift=1 "> Shift 1 </a><a class = "dropdown-item" href ="formEditSoa?tanggal=' + row[2] + '&area=' + row[6] + '&shift=2 "> Shift 2 </a><a class = "dropdown-item" href ="formEditSoa?tanggal=' + row[2] + '&area=' + row[6] + '&shift=3 "> Shift 3 </a></div>'
 
                     }
                 },

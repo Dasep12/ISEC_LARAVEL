@@ -99,4 +99,29 @@ class SoaController extends Controller
             dd($e);
         }
     }
+
+    public function  formEdit(Request $req)
+    {
+        $event = new SoaModel();
+        return view('soa::form/form_edit_soa', [
+            'uri'   => \Request::segment(2),
+            'plant' => $event->getPerPlant(),
+            'transHeader' => SoaModel::detailHeaderSoa($req)
+        ]);
+    }
+
+    public function updateSoa(Request $req)
+    {
+        $updateData = SoaModel::updateHeaderTrans($req);
+        if ($updateData == 1) {
+            $replace = SoaModel::updateDetailTransSoa($req);
+            if ($replace == 1) {
+                return back()->with('success', 'Update data successfully!');
+            } else {
+                return back()->with('failed', 'Update data failed !');
+            }
+        } else if ($updateData == 2) {
+            return back()->with('failed', 'Update data failed !');
+        }
+    }
 }
