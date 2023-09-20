@@ -385,13 +385,16 @@
                     data: null,
                     render: function(data, type, row) {
                         let persentage = 0
-                        if (row.chekpoint_patroli === 0) {
+                        if (parseInt(row.chekpoint_patroli) === 0) {
                             persentage = 0
-                        } else if (row.total_ckp === 0) {
+                        } else if (parseInt(row.total_ckp) === 0) {
                             persentage = '-'
                         } else {
                             persentage = Math.round(row.chekpoint_patroli / row.total_ckp * 100)
                         }
+
+
+
 
                         if (persentage >= 100) {
                             return '<span class="bg-success d-block text-center">' + persentage + '%</span>'
@@ -400,6 +403,8 @@
                             return '<span class="bg-info d-block text-center">-</span>'
                         }
 
+
+                        // return '<span class="bg-danger d-block text-center">' + row.chekpoint_patroli + '%</span>'
                         return '<span class="bg-danger d-block text-center">' + persentage + '%</span>'
                     }
                 },

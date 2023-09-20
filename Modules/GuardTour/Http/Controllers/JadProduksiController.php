@@ -30,11 +30,13 @@ class JadProduksiController extends Controller
 
         $date = date('Y-m');
         $plant_id = "";
+        $date2 = date('F,Y');
         $headerJadwal = "";
         $month = "";
 
         if (isset($_POST['submit'])) {
             $date = $req->date;
+            $date2 = $req->date_var;
             $month = BulanHelper::convertMonth(explode('-', $date)[1]);
             $plant_id = $req->plant;
             $headerJadwal = JadwalProduksi::headerJadwalProduksi($date, $plant_id);
@@ -47,6 +49,7 @@ class JadProduksiController extends Controller
             'uri'        => $uri,
             'plants'     => $plant,
             'date'       => $date,
+            'date2'      => $date2,
             'month'      => $month,
             'plant_id'   => $plant_id,
             'header'     => $headerJadwal

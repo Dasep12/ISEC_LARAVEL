@@ -146,7 +146,7 @@
                              @endif">
                                 <i class="nav-icon fas fa-exclamation-circle"></i>
                                 <p>
-                                    Abnormality <span class="right badge badge-primary" id="badge_total_temuan">0</span>
+                                    Abnormality <span class="right badge badge-danger" id="badge_total_temuan">0</span>
                                 </p>
                             </a>
                         </li>

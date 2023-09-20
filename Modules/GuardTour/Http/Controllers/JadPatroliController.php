@@ -26,12 +26,17 @@ class JadPatroliController extends Controller
     {
 
         $date = date('Y-m');
-        $plant_id = "ADMP5LP";
+        $date2 = date('F,Y');
+        $plant_id = "";
         $headerJadwal = "";
         if (isset($_POST['submit'])) {
             $date = $req->date;
+            $date2 = $req->date_var;
             $plant_id = $req->plant;
             $headerJadwal = JadwalPatroli::headerJadwalPatroli($date, $plant_id);
+
+            // echo $date . "<br>" . $plant_id;
+            // dd($headerJadwal);
         }
 
         $pl = Session('role') == 'SUPERADMIN' ? Plants::all() : Plants::where('admisecsgp_mstsite_site_id', Session('site_id'))->get();
@@ -41,6 +46,7 @@ class JadPatroliController extends Controller
             'uri'        => $uri,
             'plants'     => $pl,
             'date'       => $date,
+            'date2'      => $date2,
             'month'      => BulanHelper::convertMonth(explode('-', $date)[1]),
             'plant_id'   => $plant_id,
             'header'     => $headerJadwal

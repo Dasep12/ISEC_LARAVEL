@@ -55,8 +55,11 @@
                         <form method="post" enctype="multipart/form-data" action="{{ route('jadpatroli.master') }}">
                             @csrf
                             <div class="row">
+
                                 <div class="col-lg-4">
                                     <label for="">Plant</label>
+                                    <input type="hidden" value="<?= $date ?>" id="hidden_input" name="date">
+
                                     <select name="plant" id="plant" class="form-control">
                                         @foreach($plants as $p)
                                         <option {{ $p->plant_id  == $plant_id ? 'selected' : '' }} value="{{ $p->plant_id }}">{{ $p->plant_name }}</option>
@@ -65,8 +68,10 @@
                                 </div>
 
                                 <div class="col-lg-4">
-                                    <label for="">Bulan</label>
-                                    <input type="text" value="<?= $date ?>" class="form-control" name="date" id="date">
+                                    <div id="event_period">
+                                        <label for="">Bulan</label>
+                                        <input type="text" name="date_var" value="<?= $date2 ?>" class="form-control" id="date">
+                                    </div>
                                 </div>
 
 
@@ -84,6 +89,8 @@
                 <?php
 
                 if (isset($_POST['submit'])) { ?>
+                    @if(count($header) > 0)
+
                     <div class="card">
                         <div class="card-body">
                             <table class="table table-sm" style="width:30%">
@@ -95,7 +102,7 @@
                                 <tr>
                                     <td>Periode</td>
                                     <td>:</td>
-                                    <td><?= explode('-', $date)[0] . ' ' . $month ?></td>
+                                    <td><?= $date2 ?></td>
                                 </tr>
                             </table>
                             <table id="jadwal_patroli" class="table table-bordered small table-sm">
@@ -129,6 +136,17 @@
                             </table>
                         </div>
                     </div>
+                    @else
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fas fa-close"></i>
+                        Jadwal Tidak Tersedia
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times</span>
+                        </button>
+                    </div>
+
+                    @endif
+
                 <?php } ?>
             </div>
         </div>
@@ -137,12 +155,16 @@
 
 <script>
     $("#date").datepicker({
-        format: "yyyy-mm",
+        format: "MM, yyyy",
         startView: "months",
         minViewMode: "months",
-        autoclose: true
+        autoclose: true,
+    }).on('changeDate', function(ev) {
+        $("#hidden_input").val(ev.format('yyyy-mm'));
     });
+
     $(document).ready(function() {
+
         $('#jadwal_patroli').DataTable({
             fixedHeader: true,
             scrollX: "200px",

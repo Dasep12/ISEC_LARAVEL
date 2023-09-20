@@ -57,6 +57,7 @@
                             <div class="row">
                                 <div class="col-lg-4">
                                     <label for="">Plant</label>
+                                    <input type="hidden" value="<?= $date ?>" id="hidden_input" name="date">
                                     <select name="plant" id="plant" class="form-control">
                                         @foreach($plants as $p)
                                         <option {{ $p->plant_id  == $plant_id ? 'selected' : '' }} value="{{ $p->plant_id }}">{{ $p->plant_name }}</option>
@@ -66,7 +67,7 @@
 
                                 <div class="col-lg-4">
                                     <label for="">Bulan</label>
-                                    <input type="text" value="<?= $date ?>" class="form-control" name="date" id="date">
+                                    <input type="text" value="<?= $date2 ?>" class="form-control" name="date_var" id="date">
                                 </div>
 
 
@@ -84,6 +85,8 @@
                 <?php
 
                 if (isset($_POST['submit'])) { ?>
+
+                    @if(count($header) > 0)
                     <div class="card">
                         <div class="card-body">
                             <table class="table table-sm" style="width:30%">
@@ -95,14 +98,14 @@
                                 <tr>
                                     <td>Periode</td>
                                     <td>:</td>
-                                    <td> <?= $month . ' ' . explode('-', $date)[0] ?></td>
+                                    <td> <?= $date2 ?></td>
                                 </tr>
                             </table>
                             <table id="jadwal_patroli" class="table-wrapped table table-bordered small table-sm">
                                 <thead>
                                     <tr>
                                         <th>ZONA</th>
-                                        <th width="120px">SHIFT</th>
+                                        <th>SHIFT</th>
                                         <?php
 
                                         $kal = CAL_GREGORIAN;
@@ -119,12 +122,19 @@
                                             <td style="z-index:2">{{ $d->zone }}</td>
                                             <td style="z-index:2">{{ $d->shift }}</td>
                                             <?php
-                                            for ($j = 1; $j <= $day; $j++) {
+                                            $days = cal_days_in_month($kal, explode('-', $date)[1], date('Y'));
+                                            for ($j = 1; $j <= $days; $j++) {
                                                 $produksi = \Modules\GuardTour\Entities\JadwalProduksi::jadwalProduksi($date . '-' . $j, $d->plant_id, $d->zona_id, $d->shift_id);
+
+                                                $date_sistem = $date . '-' . $j;
+                                                $today       = date('Y-m-d H:i:s');
+
+                                                $tanggal_terpilih = strtotime($date_sistem . "23:59:59");
+                                                $tanggal_sekarang = strtotime($today);
                                             ?>
                                                 <td>
                                                     <label class="toggle">
-                                                        <input id="{{ $produksi[0]->id }}" value="{{ $produksi[0]->status_zona }}" name="produksi_status" data-id="{{ $produksi[0]->id }}" {{ $produksi[0]->status_zona == 1 ? 'checked' : '' }} name="id_produksi" type="checkbox">
+                                                        <input <?= $tanggal_terpilih > $tanggal_sekarang ? '' : 'disabled' ?> id="{{ $produksi[0]->id }}" value="{{ $produksi[0]->status_zona }}" name="produksi_status" data-id="{{ $produksi[0]->id }}" {{ $produksi[0]->status_zona == 1 ? 'checked' : '' }} name="id_produksi" type="checkbox">
                                                         <span class="slider"></span>
                                                         <span class="labels" data-on="ON" data-off="OFF"></span>
                                                     </label>
@@ -136,6 +146,15 @@
                             </table>
                         </div>
                     </div>
+                    @else
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fas fa-close"></i>
+                        Jadwal Tidak Tersedia
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    @endif
                 <?php } ?>
             </div>
         </div>
@@ -144,10 +163,12 @@
 
 <script>
     $("#date").datepicker({
-        format: "yyyy-mm",
+        format: "MM, yyyy",
         startView: "months",
         minViewMode: "months",
-        autoclose: true
+        autoclose: true,
+    }).on('changeDate', function(ev) {
+        $("#hidden_input").val(ev.format('yyyy-mm'));
     });
 
     $("input[name='produksi_status']").click(function(e) {
@@ -182,7 +203,6 @@
             })
 
         } else {
-
             document.getElementById(id).checked = !status;
         };
     })
