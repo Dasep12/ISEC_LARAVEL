@@ -1,0 +1,11 @@
+{
+    "name": "Crime",
+    "alias": "crime",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Crime\\Providers\\CrimeServiceProvider"
+    ],
+    "files": []
+}

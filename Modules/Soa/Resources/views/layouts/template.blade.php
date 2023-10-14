@@ -295,6 +295,18 @@
                             </a>
                         </li>
 
+                        <li class="nav-item">
+                            <a href="uploadEgate" class="nav-link
+                             @if($uri == 'uploadEgate')
+                                active  
+                            @endif">
+                                <i class="nav-icon fas fa-file-excel"></i>
+                                <p>
+                                    Upload EGate
+                                </p>
+                            </a>
+                        </li>
+
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->

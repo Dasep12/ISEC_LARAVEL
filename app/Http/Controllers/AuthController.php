@@ -41,7 +41,7 @@ class AuthController extends Controller
         $res = collect(AuthModel::check($request));
 
         if ($res->isEmpty()) {
-            return redirect("/")->with(["error" => $validator]);
+            return redirect("/")->with(["error" => "Pengguna tidak ditemukan"]);
         }
 
         if (md5($request->input('password')) !== $res[0]->password) {

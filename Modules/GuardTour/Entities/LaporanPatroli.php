@@ -21,74 +21,74 @@ class LaporanPatroli extends Model
 	}
 
 
-	public static function getDataPatroli($plantId, $start, $end, $type)
-	{
-		$join = '';
-		if ($type == 0) {
-			$join = 'left';
-		}
+	// public static function getDataPatroli($plantId, $start, $end, $type)
+	// {
+	// 	$join = '';
+	// 	if ($type == 0) {
+	// 		$join = 'left';
+	// 	}
 
-		$sql = "select jp.date_patroli,
-       				   jp.id_jadwal_patroli,
-					   sh.nama_shift,
-					   usr.npk,
-					   usr.name,
-					   ISNULL(pl.plant_name, '-')         as plant_name,
-					   s.start_at,
-					   s.end_at,
-					   ISNULL(target_object, '-')         as target_object,
-					   ISNULL(s.total_object_temuan, '-') as total_object_temuan,
-					   ISNULL(s.total_object_normal, '-') as total_object_normal,
-					   ISNULL(s.total_ckp, 0)             as total_ckp,
-					   ISNULL(s.chekpoint_patroli, 0)     as chekpoint_patroli
-				from admisecsgp_trans_jadwal_patroli jp
-						 join admisecsgp_mstshift sh on sh.shift_id = jp.admisecsgp_mstshift_shift_id
-						 join admisecsgp_mstplant pl on jp.admisecsgp_mstplant_plant_id = pl.plant_id
-						 join admisecsgp_mstusr usr on jp.admisecsgp_mstusr_npk = usr.npk
-						 " . $join . " join (select *,
-									  (select count(am.checkpoint_id) as co
-									   from admisecsgp_trans_zona_patroli zp
-												join admisecsgp_mstzone z on z.zone_id = zp.admisecsgp_mstzone_zone_id
-												join admisecsgp_mstplant mp on mp.plant_id = zp.admisecsgp_mstplant_plant_id
-												join admisecsgp_mstckp am on z.zone_id = am.admisecsgp_mstzone_zone_id
-									   where zp.status_zona = 1
-										 and s.date_patroli = zp.date_patroli
-										 and mp.plant_id = s.plant_id
-										 and s.shift_id = zp.admisecsgp_mstshift_shift_id) as total_ckp
-							   from (select ath.admisecsgp_mstusr_npk                           as npk,
-											pl.plant_id,
-											min(ALL ath.checkin_checkpoint)                     as start_at,
-											max(ath.checkout_checkpoint)                        as end_at,
-											sh.shift_id,
-											count(atd.admisecsgp_mstobj_objek_id)               as target_object,
-											SUM(IIF(atd.status = 0, 1, 0))                      as total_object_temuan,
-											SUM(IIF(atd.status = 1, 1, 0))                      as total_object_normal,
-											count(distinct ath.admisecsgp_mstckp_checkpoint_id) as chekpoint_patroli,
-											ath.type_patrol,
-											min(cast(ath.checkin_checkpoint as date))          as date_patroli
-									 from admisecsgp_trans_headers ath
-											  left join admisecsgp_trans_details atd
-														on ath.trans_header_id = atd.admisecsgp_trans_headers_trans_headers_id
-											  left join admisecsgp_mstshift sh on sh.shift_id = ath.admisecsgp_mstshift_shift_id
-											  left join admisecsgp_mstobj am on atd.admisecsgp_mstobj_objek_id = am.objek_id
-											  left join admisecsgp_mstckp ckp on ath.admisecsgp_mstckp_checkpoint_id = ckp.checkpoint_id
-											  left join admisecsgp_mstzone zn on ath.admisecsgp_mstzone_zone_id = zn.zone_id
-											  left join admisecsgp_mstplant pl on zn.admisecsgp_mstplant_plant_id = pl.plant_id
-									 where pl.plant_id = '" . $plantId . "'
-									 AND ath.date_patroli BETWEEN '" . $start . "' AND ' " . $end . " '
-									  AND ath.type_patrol = " . $type . "
-									 group by sh.nama_shift, pl.plant_name, ath.admisecsgp_mstusr_npk, pl.plant_id,
-											  shift_id, ath.type_patrol) as s) as s
-								   on s.date_patroli = jp.date_patroli
-									   and s.shift_id = jp.admisecsgp_mstshift_shift_id
-									   and s.plant_id = jp.admisecsgp_mstplant_plant_id
-									   and s.npk = jp.admisecsgp_mstusr_npk
-				where pl.plant_id = '" . $plantId . "'
-				  AND jp.date_patroli BETWEEN '" . $start . "' AND '" . $end . "'
-				  AND sh.nama_shift != 'LIBUR'
-				order by jp.admisecsgp_mstplant_plant_id, jp.date_patroli, jp.admisecsgp_mstshift_shift_id";
-		return DB::select($sql);
-	}
+	// 	$sql = "select jp.date_patroli,
+	//    				   jp.id_jadwal_patroli,
+	// 				   sh.nama_shift,
+	// 				   usr.npk,
+	// 				   usr.name,
+	// 				   ISNULL(pl.plant_name, '-')         as plant_name,
+	// 				   s.start_at,
+	// 				   s.end_at,
+	// 				   ISNULL(target_object, '-')         as target_object,
+	// 				   ISNULL(s.total_object_temuan, '-') as total_object_temuan,
+	// 				   ISNULL(s.total_object_normal, '-') as total_object_normal,
+	// 				   ISNULL(s.total_ckp, 0)             as total_ckp,
+	// 				   ISNULL(s.chekpoint_patroli, 0)     as chekpoint_patroli
+	// 			from admisecsgp_trans_jadwal_patroli jp
+	// 					 join admisecsgp_mstshift sh on sh.shift_id = jp.admisecsgp_mstshift_shift_id
+	// 					 join admisecsgp_mstplant pl on jp.admisecsgp_mstplant_plant_id = pl.plant_id
+	// 					 join admisecsgp_mstusr usr on jp.admisecsgp_mstusr_npk = usr.npk
+	// 					 " . $join . " join (select *,
+	// 								  (select count(am.checkpoint_id) as co
+	// 								   from admisecsgp_trans_zona_patroli zp
+	// 											join admisecsgp_mstzone z on z.zone_id = zp.admisecsgp_mstzone_zone_id
+	// 											join admisecsgp_mstplant mp on mp.plant_id = zp.admisecsgp_mstplant_plant_id
+	// 											join admisecsgp_mstckp am on z.zone_id = am.admisecsgp_mstzone_zone_id
+	// 								   where zp.status_zona = 1
+	// 									 and s.date_patroli = zp.date_patroli
+	// 									 and mp.plant_id = s.plant_id
+	// 									 and s.shift_id = zp.admisecsgp_mstshift_shift_id) as total_ckp
+	// 						   from (select ath.admisecsgp_mstusr_npk                           as npk,
+	// 										pl.plant_id,
+	// 										min(ALL ath.checkin_checkpoint)                     as start_at,
+	// 										max(ath.checkout_checkpoint)                        as end_at,
+	// 										sh.shift_id,
+	// 										count(atd.admisecsgp_mstobj_objek_id)               as target_object,
+	// 										SUM(IIF(atd.status = 0, 1, 0))                      as total_object_temuan,
+	// 										SUM(IIF(atd.status = 1, 1, 0))                      as total_object_normal,
+	// 										count(distinct ath.admisecsgp_mstckp_checkpoint_id) as chekpoint_patroli,
+	// 										ath.type_patrol,
+	// 										min(cast(ath.checkin_checkpoint as date))          as date_patroli
+	// 								 from admisecsgp_trans_headers ath
+	// 										  left join admisecsgp_trans_details atd
+	// 													on ath.trans_header_id = atd.admisecsgp_trans_headers_trans_headers_id
+	// 										  left join admisecsgp_mstshift sh on sh.shift_id = ath.admisecsgp_mstshift_shift_id
+	// 										  left join admisecsgp_mstobj am on atd.admisecsgp_mstobj_objek_id = am.objek_id
+	// 										  left join admisecsgp_mstckp ckp on ath.admisecsgp_mstckp_checkpoint_id = ckp.checkpoint_id
+	// 										  left join admisecsgp_mstzone zn on ath.admisecsgp_mstzone_zone_id = zn.zone_id
+	// 										  left join admisecsgp_mstplant pl on zn.admisecsgp_mstplant_plant_id = pl.plant_id
+	// 								 where pl.plant_id = '" . $plantId . "'
+	// 								 AND ath.date_patroli BETWEEN '" . $start . "' AND ' " . $end . " '
+	// 								  AND ath.type_patrol = " . $type . "
+	// 								 group by sh.nama_shift, pl.plant_name, ath.admisecsgp_mstusr_npk, pl.plant_id,
+	// 										  shift_id, ath.type_patrol) as s) as s
+	// 							   on s.date_patroli = jp.date_patroli
+	// 								   and s.shift_id = jp.admisecsgp_mstshift_shift_id
+	// 								   and s.plant_id = jp.admisecsgp_mstplant_plant_id
+	// 								   and s.npk = jp.admisecsgp_mstusr_npk
+	// 			where pl.plant_id = '" . $plantId . "'
+	// 			  AND jp.date_patroli BETWEEN '" . $start . "' AND '" . $end . "'
+	// 			  AND sh.nama_shift != 'LIBUR'
+	// 			order by jp.admisecsgp_mstplant_plant_id, jp.date_patroli, jp.admisecsgp_mstshift_shift_id";
+	// 	return DB::select($sql);
+	// }
 
 	public static function getDataDetailPatroli($idJdawal, $npk, $type)
 	{
@@ -152,6 +152,58 @@ class LaporanPatroli extends Model
 				order by jp.admisecsgp_mstplant_plant_id, jp.date_patroli, jp.admisecsgp_mstshift_shift_id";
 		return DB::select($sql);
 	}
+
+	public static function getDataPatroli($plantId, $start, $end, $type)
+	{
+		$whereType = "";
+		if ($type == 1) {
+			$whereType .= "AND trs.type_patrol = 1";
+		}
+		$data  = DB::select("SELECT a.date_patroli ,a.admisecsgp_mstusr_npk npk ,usr.name name ,c.nama_shift ,pln.plant_name 
+        ,tzn.total_ckp as  total_ckp  ,COALESCE(trs.total_trans_ckp,0) as   chekpoint_patroli,
+        COALESCE((trs.total_trans_ckp * 100 / tzn.total_ckp),0) persentase , 
+        COALESCE(sum(trs.objek_totals),0) as total_temuan , trs.start_at , trs.end_at
+        FROM admisecsgp_trans_jadwal_patroli a
+        LEFT JOIN admisecsgp_mstusr usr ON usr.npk=a.admisecsgp_mstusr_npk 
+        LEFT JOIN admisecsgp_mstplant pln ON pln.plant_id=a.admisecsgp_mstplant_plant_id 
+        LEFT JOIN admisecsgp_mstshift c ON c.shift_id=a.admisecsgp_mstshift_shift_id 
+        LEFT OUTER JOIN (
+            select count(1) total_ckp ,znp.date_patroli ,znp.admisecsgp_mstplant_plant_id ,znp.admisecsgp_mstshift_shift_id 
+                from admisecsgp_trans_zona_patroli znp
+                inner join admisecsgp_mstzone zon on zon.zone_id=znp.admisecsgp_mstzone_zone_id 
+                inner join admisecsgp_mstckp ckp ON ckp.admisecsgp_mstzone_zone_id=znp.admisecsgp_mstzone_zone_id
+                 where znp.status=1 and znp.status_zona=1
+            group by znp.date_patroli , znp.admisecsgp_mstplant_plant_id ,znp.admisecsgp_mstshift_shift_id 
+        ) tzn ON tzn.date_patroli=a.date_patroli 
+            and tzn.admisecsgp_mstplant_plant_id=a.admisecsgp_mstplant_plant_id
+            and tzn.admisecsgp_mstshift_shift_id=a.admisecsgp_mstshift_shift_id
+        LEFT OUTER JOIN (
+            select count(1) total_trans_ckp ,ath.date_patroli
+                ,ath.admisecsgp_mstshift_shift_id ,ath.admisecsgp_mstusr_npk , sum(Obj.total_objek) as objek_totals , 
+               min(ALL ath.checkin_checkpoint) as start_at,  max(ALL ath.checkin_checkpoint) as end_at , ath.type_patrol
+                FROM admisecsgp_trans_headers ath 
+                left outer join ( 
+                	select count(*) as total_objek , admisecsgp_trans_headers_trans_headers_id as headers_id
+                	from admisecsgp_trans_details 
+                	where status_temuan = 0
+                	group by admisecsgp_trans_headers_trans_headers_id 
+                ) Obj on Obj.headers_id = ath.trans_header_id
+                WHERE ath.type_patrol = '$type' 
+            group by ath.date_patroli
+                ,ath.admisecsgp_mstshift_shift_id ,ath.admisecsgp_mstusr_npk , ath.type_patrol
+        )trs ON trs.date_patroli=a.date_patroli
+                and trs.admisecsgp_mstshift_shift_id=a.admisecsgp_mstshift_shift_id 
+                and trs.admisecsgp_mstusr_npk=a.admisecsgp_mstusr_npk 
+    WHERE a.date_patroli between '$start' AND  '$end'
+    	AND a.admisecsgp_mstplant_plant_id='$plantId'
+        AND a.admisecsgp_mstshift_shift_id!='ADMSH5652'
+		$whereType
+        GROUP BY a.date_patroli ,a.admisecsgp_mstusr_npk , usr.name  ,c.nama_shift , pln.plant_name 
+        ,tzn.total_ckp ,trs.total_trans_ckp  ,trs.start_at , trs.end_at 
+    ORDER BY a.date_patroli ASC, c.nama_shift ASC ,pln.plant_name ASC");
+		return $data;
+	}
+
 
 	public static function  timelineDetail($idJdawal, $npk, $type)
 	{

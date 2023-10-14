@@ -35,12 +35,19 @@ Route::prefix('soa')->group(function () {
     Route::post('/pkbByDepartementAll', 'DashboardController@pkbByDepartementAll');
     Route::post('/pkbByUser', 'DashboardController@pkbByUser');
     Route::post('/pkbByUserAll', 'DashboardController@pkbByUserAll');
+    Route::post('/pkbByKategoriBarang', 'DashboardController@pkbKategoriBarang');
+    Route::post('/pkbStatus', 'DashboardController@pkbStatus');
 
 
 
     // uploads
     Route::get('/upload', 'UploadController@index');
     Route::post('/uploadFile', 'UploadController@uploads');
+
+
+    // upload egate 
+    Route::get('/uploadEgate', 'UploadEgateController@index');
+    Route::post('/uploadEgate/uploadFile', 'UploadEgateController@uploads')->name('egate.uploaded');
 
 
     // view & from

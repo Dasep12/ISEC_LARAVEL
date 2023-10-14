@@ -394,8 +394,6 @@
                         }
 
 
-
-
                         if (persentage >= 100) {
                             return '<span class="bg-success d-block text-center">' + persentage + '%</span>'
                         }
@@ -404,7 +402,6 @@
                         }
 
 
-                        // return '<span class="bg-danger d-block text-center">' + row.chekpoint_patroli + '%</span>'
                         return '<span class="bg-danger d-block text-center">' + persentage + '%</span>'
                     }
                 },

@@ -291,6 +291,19 @@ class DashboardController extends Controller
         $data = Dashboard::pkbByUser($req, 'all');
         return response()->json($data);
     }
+
+
+    public function pkbKategoriBarang(Request $req)
+    {
+        $data = Dashboard::pkbKategoriBarang($req);
+        return response()->json($data);
+    }
+
+    public function pkbStatus(Request $req)
+    {
+        $data = Dashboard::pkbStatus($req);
+        return response()->json($data);
+    }
     // 
 
     public function tester(Request $req)

@@ -756,16 +756,71 @@ class DashboardModel extends Model
             $area =  $plantID[0]->id;
         }
         if ($type == 'top') {
-            $sql = "SELECT TOP 5  tp.Creator , count(tp.EntryUser) as total 
+            $sql = "SELECT TOP 5  tp.Creator , count(tp.EntryUser) as total , tp.DeptName
             from T_PKB tp WHERE YEAR(tp.PKBDate)='$year'";
         } else {
-            $sql = "SELECT  tp.Creator , count(tp.EntryUser) as total 
+            $sql = "SELECT  tp.Creator , count(tp.EntryUser) as total , tp.DeptName
         from T_PKB tp WHERE YEAR(tp.PKBDate)='$year'";
         }
 
         if (!empty($area)) $sql .= "AND tp.LocationName='$area'";
         if (!empty($month)) $sql .= "AND MONTH(tp.PKBDate)='$month'";
-        $sql .= "group by tp.Creator , tp.EntryUser order by total desc ";
+        $sql .= "group by tp.Creator , tp.EntryUser , tp.DeptName order by total desc ";
+        $res = DB::connection('egate')->select($sql);
+        return $res;
+    }
+
+    public static function pkbKategoriBarang($req)
+    {
+        $area = $req->input('area_fil');
+        $year = $req->input('year_fil');
+        $year = empty($year) ? date('Y') : $year;
+        $month = $req->input('month_fil');
+        $user_wilayah = AuthHelper::user_wilayah();
+        $whereWil = "";
+        if (AuthHelper::is_author('ALLAREA')) {
+            $whereWil .= " AND wil_id='$user_wilayah'";
+        }
+
+        if ($area != "" || $area != null) {
+            $plantID = DB::connection('soabi')->select("SELECT code_sub as id FROM admisecdrep_sub WHERE id='$area'  ");
+            $area =  $plantID[0]->id;
+        }
+
+        $sql = "SELECT  tp.CategoryCode , count(tp.CategoryCode) as total 
+        from T_PKB tp WHERE YEAR(tp.PKBDate)='$year'";
+
+        if (!empty($area)) $sql .= "AND tp.LocationName='$area'";
+        if (!empty($month)) $sql .= "AND MONTH(tp.PKBDate)='$month'";
+        $sql .= "group by tp.CategoryCode order by total desc ";
+        $res = DB::connection('egate')->select($sql);
+        return $res;
+    }
+
+
+    public static function pkbStatus($req)
+    {
+        $area = $req->input('area_fil');
+        $year = $req->input('year_fil');
+        $year = empty($year) ? date('Y') : $year;
+        $month = $req->input('month_fil');
+        $user_wilayah = AuthHelper::user_wilayah();
+        $whereWil = "";
+        if (AuthHelper::is_author('ALLAREA')) {
+            $whereWil .= " AND wil_id='$user_wilayah'";
+        }
+
+        if ($area != "" || $area != null) {
+            $plantID = DB::connection('soabi')->select("SELECT code_sub as id FROM admisecdrep_sub WHERE id='$area'  ");
+            $area =  $plantID[0]->id;
+        }
+
+        $sql = "SELECT  tp.UpdateUser , count(tp.UpdateUser) as total 
+        from T_PKB tp WHERE tp.UpdateUser in ('Scan Out','Deactivated','Cancel by User') AND YEAR(tp.PKBDate)='$year'";
+
+        if (!empty($area)) $sql .= "AND tp.LocationName='$area'";
+        if (!empty($month)) $sql .= "AND MONTH(tp.PKBDate)='$month'";
+        $sql .= "group by tp.UpdateUser order by total desc ";
         $res = DB::connection('egate')->select($sql);
         return $res;
     }

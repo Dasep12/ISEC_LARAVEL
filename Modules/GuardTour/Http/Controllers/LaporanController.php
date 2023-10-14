@@ -6,6 +6,7 @@ use Illuminate\Contracts\Session\Session;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Modules\GuardTour\Entities\LaporanPatroli;
 use Modules\GuardTour\Entities\Plants;
 
@@ -17,6 +18,7 @@ class LaporanController extends Controller
      */
     public function master()
     {
+
         $uri =  \Request::segment(2) . '/' . \Request::segment(3);
         $plant =  Session('role') == 'SUPERADMIN' ? Plants::all() : Plants::where('admisecsgp_mstsite_site_id', Session('site_id'))->get();
         return view('guardtour::laporan_patroli/form_laporan', [
@@ -36,7 +38,8 @@ class LaporanController extends Controller
         if ($plantId != '') {
             $data = LaporanPatroli::getDataPatroli($plantId, $start, $end, $type);
         }
-        // $data = LaporanPatroli::getDataPatroli('ADMP5LP', '2023-05-04', '2023-05-04', 0);
+
+
         return response()->json($data);
     }
 

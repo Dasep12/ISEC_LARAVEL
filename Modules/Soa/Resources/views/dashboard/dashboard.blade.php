@@ -40,7 +40,8 @@
 <script src="https://code.highcharts.com/stock/modules/accessibility.js"></script>
 <script src="https://code.highcharts.com/stock/highstock.js"></script> -->
 
-<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<!-- <script src="https://code.highcharts.com/stock/highstock.js"></script> -->
 <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
 <script src="https://code.highcharts.com/stock/modules/accessibility.js"></script>
 <section class="content-header">
@@ -58,6 +59,7 @@
 
 <section class="content">
     <div class="container-fluid">
+        <!-- <button id="" data-toggle="modal" data-target="#myModal">tes</button> -->
 
         <div class="row">
             <div class="col-lg-12">
@@ -256,6 +258,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
+
                     <div class="row">
                         <div class="col-lg-4">
                             <div class="card card-hor" style="">
@@ -282,6 +285,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="card card-hor" style="">
@@ -308,11 +312,38 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="card card-hor" style="">
+                                <div class="card-body text-center">
+                                    <div style="position: absolute;left:50%;top:50%" class="row justify-content-center loader">
+                                        <div class="overlay" style="display:block" id="bykategoriBarang">
+                                            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                                        </div>
+                                    </div>
+                                    <div id="kategoriBarang"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card card-hor" style="">
+                                <div class="card-body text-center">
+                                    <div style="position: absolute;left:50%;top:50%" class="row justify-content-center loader">
+                                        <div class="overlay" style="display:block" id="byStatus">
+                                            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                                        </div>
+                                    </div>
+                                    <div id="statusPKB"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
-
 
 
     <!-- modal 2 -->
@@ -407,6 +438,9 @@
         FuserGraph(field)
         FdetaildepartementGraph(field)
         FdetailuserGraph(field)
+        FkategoriBarang(field)
+        FstatusPKB(field)
+
 
 
         $("#areaFilter, #yearFilter, #monthFilter").change(function(e) {
@@ -438,6 +472,8 @@
             FuserGraph(field)
             FdetaildepartementGraph(field)
             FdetailuserGraph(field)
+            FkategoriBarang(field)
+            FstatusPKB(field)
         })
 
         // Trafice Days Update
@@ -1358,7 +1394,8 @@
             type: 'column',
         },
         xAxis: {
-            categories: ['DPT PE KARAWANG ASSY', 'DPT LOGISTIC ASSY']
+            categories: ['DPT PE KARAWANG ASSY', 'DPT LOGISTIC ASSY'],
+
         },
         yAxis: {
             title: {
@@ -1435,31 +1472,19 @@
                     data: data,
                 });
                 departementGraph.xAxis[0].update({
-                    categories: categories
+                    categories: categories,
                 });
+
+
             }
         });
     }
+
 
     var userGraph = new Highcharts.Chart({
         chart: {
             renderTo: 'byuserCreate',
             type: 'column',
-        },
-        xAxis: {
-            categories: ['ANGGA ERI MUHARA ', 'MULYADI', 'HARI AKHWANUDIN  ', 'RIDWAN TAUFIK ', 'TRIANDIKA ALVIANTO']
-        },
-        yAxis: {
-            title: {
-                enabled: false
-            }
-        },
-        credits: {
-            enabled: false
-        },
-        tooltip: {
-            headerFormat: '<b>{point.key}</b><br>',
-            pointFormat: '{point.y}'
         },
         title: {
             text: 'By User',
@@ -1469,13 +1494,33 @@
             text: '',
             align: 'left'
         },
+        accessibility: {
+            announceNewData: {
+                enabled: true
+            }
+        },
+        credits: {
+            enabled: false
+        },
+        xAxis: {
+            type: 'category'
+        },
+        yAxis: {
+            title: {
+                text: 'Total percent market share'
+            }
+
+        },
         legend: {
             enabled: false
         },
         plotOptions: {
-            column: {
-                depth: 25,
-                borderRadius: '25%'
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y}'
+                }
             }
         },
         exporting: {
@@ -1489,10 +1534,35 @@
                 },
             },
         },
+        tooltip: {
+            formatter: function() {
+
+                return 'NAMA :' + this.point.name + '<br>DEPARTEMENT :' + this.point.drilldown + '<br>TOTAL :' + this.y
+            }
+        },
+
         series: [{
-            data: [1318, 1073, 1010, 813, 775],
-            colorByPoint: true
-        }]
+            name: 'Browsers',
+            colorByPoint: true,
+            data: [{
+                    name: 'Chrome',
+                    y: 20,
+                    drilldown: 'Chrome'
+                },
+                {
+                    name: 'Safari',
+                    y: 40,
+                    drilldown: 'Safariii'
+                }
+            ]
+        }],
+        drilldown: {
+            breadcrumbs: {
+                position: {
+                    align: 'right'
+                }
+            },
+        }
     });
 
     function FuserGraph(field) {
@@ -1514,23 +1584,30 @@
             },
             success: function(result) {
                 let res = result;
-                let categories = [];
-                let data = [];
+                let datas = [];
 
-                for (let i = 0; i < res.length; i++) {
-                    categories.push(res[i].Creator.toUpperCase());
-                    data.push(parseInt(res[i].total));
+                var seriesLength = userGraph.series.length;
+                for (var i = seriesLength - 1; i > -1; i--) {
+                    userGraph.series[i].remove();
                 }
 
-                userGraph.series[0].update({
-                    data: data,
-                });
-                userGraph.xAxis[0].update({
-                    categories: categories
+                let colour = ["#eb3326", "#e8c91c", "#0ee311", "#0eebdc", "#280eed", "#fc17f5", "#3e4a40"];
+                for (let i = 0; i < res.length; i++) {
+                    datas.push({
+                        name: res[i].Creator.toUpperCase(),
+                        y: parseInt(res[i].total),
+                        drilldown: res[i].DeptName.toUpperCase(),
+                        color: colour[i]
+                    });
+
+                }
+                userGraph.addSeries({
+                    data: datas
                 });
             }
         });
     }
+
 
 
     var detaildepartementGraph = new Highcharts.Chart('detailDepartement', {
@@ -1685,14 +1762,172 @@
                 let categories = [];
                 let data = [];
                 for (let i = 0; i < res.length; i++) {
-                    let opt = [res[i].Creator, parseInt(res[i].total)]
+                    let opt = [
+                        res[i].Creator,
+                        parseInt(res[i].total)
+                    ]
                     data.push(opt);
                 }
 
-                console.log(data);
+                // console.log(data);
 
                 detailuserGraph.series[0].update({
                     data: data
+                });
+            }
+        });
+    }
+
+
+    var kategoriBarang = Highcharts.chart('kategoriBarang', {
+        chart: {
+            type: 'pie',
+        },
+        tooltip: {
+            headerFormat: '<b>{point.key}</b><br>',
+            pointFormat: '{point.y}'
+        },
+        title: {
+            text: 'By Kategori Barang'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: false,
+                }
+            }
+        },
+        credits: {
+            enabled: false
+        },
+        xAxis: {
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        },
+        series: [{
+            // allowPointSelect: true,
+            // keys: ['name', 'y', 'selected', 'sliced'],
+            data: [
+                ['Samsung', 27.79, false, false],
+                ['Apple', 27.34, false],
+            ],
+            // showInLegend: true
+        }]
+    });
+
+    function FkategoriBarang(field) {
+
+        $.ajax({
+            url: 'pkbByKategoriBarang',
+            type: 'POST',
+            data: {
+                area_fil: area,
+                year_fil: year,
+                month_fil: month,
+                "_token": "{{ csrf_token() }}",
+            },
+            cache: false,
+            beforeSend: function() {
+                document.getElementById("bykategoriBarang").style.display = "block";
+            },
+            complete: function() {
+                document.getElementById("bykategoriBarang").style.display = "none";
+            },
+            success: function(result) {
+                console.log(result);
+                let res = result;
+                var seriesLength = kategoriBarang.series.length;
+                for (var i = seriesLength - 1; i > -1; i--) {
+                    kategoriBarang.series[i].remove();
+                }
+                let datas = [];
+                for (let i = 0; i < res.length; i++) {
+                    datas.push({
+                        name: res[i].CategoryCode,
+                        y: parseInt(res[i].total),
+                    });
+                }
+                kategoriBarang.addSeries({
+                    data: datas,
+                    showInLegend: true
+                });
+            }
+        });
+    }
+
+    var statusPKB = Highcharts.chart('statusPKB', {
+        chart: {
+            type: 'pie',
+        },
+        tooltip: {
+            headerFormat: '<b>{point.key}</b><br>',
+            pointFormat: '{point.y}'
+        },
+        title: {
+            text: 'By Status '
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: false,
+                }
+            }
+        },
+        credits: {
+            enabled: false
+        },
+        xAxis: {
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        },
+        series: [{
+            // allowPointSelect: true,
+            // keys: ['name', 'y', 'selected', 'sliced'],
+            data: [
+                ['Samsung', 27.79, false, false],
+                ['Apple', 27.34, false],
+            ],
+            // showInLegend: true
+        }]
+    });
+
+    function FstatusPKB(field) {
+
+        $.ajax({
+            url: 'pkbStatus',
+            type: 'POST',
+            data: {
+                area_fil: area,
+                year_fil: year,
+                month_fil: month,
+                "_token": "{{ csrf_token() }}",
+            },
+            cache: false,
+            beforeSend: function() {
+                document.getElementById("byStatus").style.display = "block";
+            },
+            complete: function() {
+                document.getElementById("byStatus").style.display = "none";
+            },
+            success: function(result) {
+                console.log(result);
+                let res = result;
+                var seriesLength = statusPKB.series.length;
+                for (var i = seriesLength - 1; i > -1; i--) {
+                    statusPKB.series[i].remove();
+                }
+                let datas = [];
+                for (let i = 0; i < res.length; i++) {
+                    datas.push({
+                        name: res[i].UpdateUser,
+                        y: parseInt(res[i].total),
+                    });
+                }
+                statusPKB.addSeries({
+                    data: datas,
+                    showInLegend: true
                 });
             }
         });

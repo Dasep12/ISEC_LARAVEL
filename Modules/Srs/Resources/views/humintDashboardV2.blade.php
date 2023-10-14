@@ -954,8 +954,10 @@
 
     // SOI DETAIL //
     document.getElementById("grapSoi").onclick = function(evt) {
+        var grapSoiId = document.querySelector('#grapSoi');
         var activePoints = soiChart.getElementsAtEventForMode(evt, 'point', soiChart.options);
         var firstPoint = activePoints[0];
+
         if(firstPoint)
         {
             var label = soiChart.data.labels[firstPoint.index];
@@ -978,161 +980,165 @@
                     month_fil: month,
                 },
                 cache: false,
+                timeout: 10000,
                 beforeSend: function() {
-                    document.querySelector("#detailGrapSmall #loader").style.display = "flex";
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    if (textStatus == 'timeout') {
+                        grapSoiId.parentElement.innerHTML = "Error : Timeout for this call!";
+                    }
                 },
                 complete: function() {
-                    document.querySelector("#detailGrapSmall #loader").style.display = "none";
+                    grapSoiId.parentElement.querySelector('.loader').remove();
+                    grapSoiId.style.display = 'block';
                 },
                 success: function(res) {
                     var dataJson = JSON.parse(res)
                     
-                    $('#detailGrapSmallLabel').text('Trend Index Resiko')
+                    $("#detailGrapSmall .modal-body").html("");
+                        $("#detailGrapSmall").modal();
+                        $('#detailGrapSmallLabel').text('Trend Index Resiko')
 
-                    $("#detailGrapSmall .modal-body").append(`
-                        <div class="row">
-                            <!--<div class="col-md-6 text-center px-3">
-                                <div id="detailIndex" role-off="button" class="d-flex flex-column">
-                                    <span class="text-bold h3">${data.y.toFixed(2)}</span>
-                                    <span>INDEX</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6 text-center px-3">
-                                <div id="detailSoi" role-off="button" class="d-flex flex-column">
-                                    <span class="text-bold h3">${data.x.toFixed(2)}</span>
-                                    <span>SOI</span>
-                                </div>
-                            </div>-->
-
-                            <div class="col-12 pb-3 mt-4">
-                                <div class="row">
-                                    <!--<div class="col-md-12 pb-3 mb-3 border-bottom">
-                                        <span class="h5">Trend Index Resiko</span>
-                                    </div>-->
-                                    <div class="col-md-12" style="height:250px;">
-                                        <canvas id="trendGrapSoi"></canvas>
+                        $("#detailGrapSmall .modal-body").append(`
+                            <div class="row">
+                                <div class="col-12 pb-3 mt-4">
+                                    <div class="row">
+                                        <!--<div class="col-md-12 pb-3 mb-3 border-bottom">
+                                            <span class="h5">Trend Index Resiko</span>
+                                        </div>-->
+                                        <div class="col-md-12" style="height:250px;">
+                                            <canvas id="trendGrapSoi"></canvas>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    `);
+                        `);
 
-                    // TREND SOI YEAR //
-                    var trendSoi = document.getElementById("trendGrapSoi").getContext('2d');
-                    var monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des']
-                    var trendSoiChart = new Chart(trendSoi, {
-                        type: 'line',
-                        data: {
-                            labels: monthList,
-                            datasets: [
-                                {
-                                    pointStyle: 'circle',
-                                    pointRadius: 4,
-                                    label: 'SOI',
-                                    data: dataJson.data_soi,
-                                    // fill: true,
-                                    // tension: 0.1,
-                                    // segment: {
+                        // TREND SOI YEAR //
+                        var trendSoi = document.getElementById("trendGrapSoi").getContext('2d');
+                        var monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des']
+                        var trendSoiChart = new Chart(trendSoi, {
+                            type: 'line',
+                            data: {
+                                labels: monthList,
+                                datasets: [{
+                                        pointStyle: 'circle',
+                                        pointRadius: 4,
+                                        label: 'SOI',
+                                        data: dataJson.data_soi,
+                                        // fill: true,
+                                        // tension: 0.1,
+                                        // segment: {
                                         borderColor: 'rgba(99, 131, 255, 1)',
                                         backgroundColor: 'rgba(99, 131, 255, 0.8)',
-                                    // },
-                                    borderWidth: 1,
-                                },
-                                {
-                                    pointStyle: 'circle',
-                                    pointRadius: 4,
-                                    label: 'Index',
-                                    data: dataJson.data_index,
-                                    // fill: true,
-                                    // tension: 0.1,
-                                    // segment: {
+                                        // },
+                                        borderWidth: 1,
+                                    },
+                                    {
+                                        pointStyle: 'circle',
+                                        pointRadius: 4,
+                                        label: 'Threat',
+                                        data: dataJson.data_index,
+                                        // fill: true,
+                                        // tension: 0.1,
+                                        // segment: {
                                         borderColor: 'rgba(255, 165, 0, 1)',
                                         backgroundColor: 'rgb(255 165 0)',
-                                    // },
-                                    borderWidth: 1,
-                                }
-                            ]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            scales: {
-                                x: {
-                                    ticks: {
-                                        font: {
-                                            size: 13,
+                                        // },
+                                        borderWidth: 1,
+                                    }
+                                ]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                scales: {
+                                    x: {
+                                        ticks: {
+                                            font: {
+                                                size: 13,
+                                            },
+                                            color: '#FFF'
                                         },
-                                        color: '#FFF'
                                     },
+                                    y: {
+                                        grid: {
+                                            display: true
+                                        },
+                                        ticks: {
+                                            precision: 0,
+                                            color: '#FFF'
+                                        },
+                                        min: 0,
+                                    }
                                 },
-                                y: {
-                                    grid: {
+                                plugins: {
+                                    legend: {
                                         display: true
                                     },
-                                    ticks: {
-                                        precision: 0,
+                                    datalabels: {
                                         color: '#FFF'
                                     },
-                                    min: 0,
-                                }
-                            },
-                            plugins: {
-                                legend: {
-                                    display: true
-                                },
-                                datalabels: {
-                                    color: '#FFF'
-                                }
-                            },
-                        }
-                    });
-                    // TREND SOI YEAR //
-
-                    document.getElementById("trendGrapSoi").onclick = function(evt) {
-                        var activePoints = trendSoiChart.getElementsAtEventForMode(evt, 'point', trendSoiChart.options);
-                        var firstPoint = activePoints[0];
-
-                        if(firstPoint)
-                        {
-                            var label = trendSoiChart.data.labels[firstPoint.index];
-                            var data = trendSoiChart.data.datasets[0].data[0];
-
-                            if(firstPoint.datasetIndex == 1)
-                            {
-                                $("#topIndexSmall .modal-body").html(animateLoading);
-                                $("#topIndexSmall").modal();
-
-                                $.ajax({
-                                    url: '{{ url('srs/dashboard_humint_v2/grap_top_index') }}',
-                                    type: 'POST',
-                                    data: {
-                                        _token: "{{ csrf_token() }}",
-                                        area_fil: area,
-                                        year_fil: year,
-                                        month_fil: label,
-                                    },
-                                    cache: false,
-                                    beforeSend: function() {
-                                        document.querySelector("#topIndexSmall #loader").style.display = "flex";
-                                    },
-                                    complete: function() {
-                                        document.querySelector("#topIndexSmall #loader").style.display = "none";
-                                    },
-                                    success: function(res) {
-                                        $('#topIndexSmallLabel').text('Top Index');
-
-                                        $("#topIndexSmall .modal-body").append(res);
+                                    annotation: {
+                                        annotations: {
+                                            line1: {
+                                              type: 'line',
+                                              yMin: 2.00,
+                                              yMax: 2.00,
+                                              borderColor: 'rgb(255 202 104)',
+                                              borderWidth: 2,
+                                            },
+                                            line2: {
+                                              type: 'line',
+                                              yMin: 4.00,
+                                              yMax: 4.00,
+                                              borderColor: 'rgb(145 162 227)',
+                                              borderWidth: 2,
+                                            }
+                                        }
                                     }
-                                });
+                                },
+                            }
+                        });
+                        // TREND SOI YEAR //
+
+                        document.getElementById("trendGrapSoi").onclick = function(evt) {
+                            var activePoints = trendSoiChart.getElementsAtEventForMode(evt, 'point', trendSoiChart.options);
+                            var firstPoint = activePoints[0];
+
+                            if (firstPoint) {
+                                var label = trendSoiChart.data.labels[firstPoint.index];
+                                var data = trendSoiChart.data.datasets[0].data[0];
+                                
+                                topIndexSmallBody.html("");
+                                $("#topIndexSmall").modal();
+                                $('#topIndexSmallLabel').text('Top Index');
+
+                                if (firstPoint.datasetIndex == 1) {
+                                    $.ajax({
+                                        url: '{{ url('srs/dashboard_humint/grap_top_index') }}',
+                                        type: 'POST',
+                                        data: {
+                                            _token: "{{ csrf_token() }}",
+                                            area_fil: areas,
+                                            year_fil: years,
+                                            month_fil: label,
+                                        },
+                                        cache: false,
+                                        beforeSend: function() {
+                                            // document.getElementById("loader").style.display = "block";
+                                        },
+                                        complete: function() {
+                                            // document.getElementById("loader").style.display = "none";
+                                        },
+                                        success: function(res) {
+
+                                            $("#topIndexSmall .modal-body").append(res);
+                                        }
+                                    });
+                                }
                             }
                         }
-                    }
-
-                    // document.getElementById("detailSoi").onclick = function(evt) {
-                    //     $("#detailGrapSmall .modal-body").html("");
-                    //     $("#detailGrapSmall").modal();
-                    //     $('#detailGrapSmallLabel').text('Detail SOI');
-                    // }
                 }
             });
         }
@@ -3261,7 +3267,7 @@
         detailGrapSmall2Label.text('Detail Event');
 
         $.ajax({
-            url: '{{ url('srs/internal_source/detail') }}',
+            url: '{{ url('srs/humint_source/detail') }}',
             type: 'POST',
             data: {
                 _token: "{{ csrf_token() }}",

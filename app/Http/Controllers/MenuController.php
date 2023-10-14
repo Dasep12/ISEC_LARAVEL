@@ -30,7 +30,7 @@ class MenuController extends Controller
         // FILTER AREA
         $opt_are_fil = array('' => '-- Choose --');
         foreach ($data_area as $key => $are) {
-            $opt_are_fil[$are->area_code] = $are->title;
+            $opt_are_fil[$are->id] = $are->title;
         }
 
         // FILTER BULAN

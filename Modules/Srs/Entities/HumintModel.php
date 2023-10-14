@@ -256,13 +256,13 @@ class HumintModel extends Model
         $q->where('a.disable','=',0);
         if(AuthHelper::is_section_head())
         {
-            $q->where(raw('a.area_id IN (SELECT aas.id
+            $q->whereRaw('a.area_id IN (SELECT aas.id
                 FROM isecurity.dbo.admisec_area_users aau 
                 INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
                 INNER JOIN dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-            WHERE aau.npk='.$npk.')'));
+            WHERE aau.npk='.$npk.')');
         }
-        if(AuthHelper::is_author())
+        if(AuthHelper::is_author('ALLAREA'))
         {
             $q->where('a.created_by', $npk);
         }
@@ -349,7 +349,7 @@ class HumintModel extends Model
                 $row[] = $item->risk;
                 $row[] = $item->impact_level;
 
-                $edtBtn = AuthHelper::is_super_admin() ? '<a class="btn btn-sm btn-info" href="'.url('srs/humint_source/edit/'.$item->id).'">
+                $edtBtn = AuthHelper::is_super_admin()  || (isset($access_modul->edt) && $access_modul->edt == 1) ? '<a class="btn btn-sm btn-info" href="'.url('srs/humint_source/edit/'.$item->id).'">
                         <i class="fa fa-edit"></i>
                 </a> ' : '';
                 $apprBtn = AuthHelper::is_super_admin() || (isset($access_modul->apr) && $access_modul->apr == 1) ? $item->status == 1 ? '<button class="btn btn-sm btn-success" title="Approved">

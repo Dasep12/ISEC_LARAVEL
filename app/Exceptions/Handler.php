@@ -45,4 +45,14 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof \Illuminate\Session\TokenMismatchException) 
+        {
+            return redirect('/')->with('error','Sesi token berakhir, silahkan login kembali.');
+        }
+
+        return parent::render($request, $exception);
+    }
 }

@@ -20,7 +20,7 @@ class AuthModel extends Model
 
         $res = DB::connection('sqlsrv')->select("SELECT usr.npk , usr.name , usr.password , ru.level  , usr.admisecsgp_mstsite_site_id , usr.admisecsgp_mstplant_plant_id  , st.id_wilayah, st.admisecsgp_mstcmp_company_id
         FROM admisecsgp_mstusr usr , admisecsgp_mstroleusr  ru , admisecsgp_mstsite st 
-        WHERE ru.role_id = usr.admisecsgp_mstroleusr_role_id and usr.admisecsgp_mstsite_site_id = st.site_id and usr.name=?", [$username]);
+        WHERE ru.role_id = usr.admisecsgp_mstroleusr_role_id and usr.admisecsgp_mstsite_site_id = st.site_id and usr.user_name=?", [$username]);
 
         return $res;
     }

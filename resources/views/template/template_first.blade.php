@@ -71,7 +71,7 @@
                     <span class="font-italic font-bold">Welcome {{ session('name') }}</span>
                 </li>
                 <li class="nav-item">
-                    <a class=" btn btn-sm btn-info" href="Logout">
+                    <a class=" btn btn-sm btn-info" href="logout">
                         <i class="fas fa-user"></i> LOGOUT
                     </a>
                 </li>
@@ -94,7 +94,7 @@
                 <!-- Sidebar user (optional) -->
                 <div style="padding-left:0" class="user-panel mt-3 pb-3 mb-3 d-flex align-items-center justify-content-center">
                     <div class="image pr-2">
-                        <img style="width: 3.0rem;" src="http://103.189.234.208/isecurity/assets/dist/img/security.png" class="img-circle elevation-2" alt="User Image">
+                        <img style="width: 3.0rem;" src="{{ asset('assets/dist/img/security.png') }}" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
                         <a href="#" class="d-block font-weight-bold" style="font-size: 18px">Security<br>BigData Analytic</a>
@@ -302,7 +302,7 @@
             <div class="float-right d-none d-sm-block">
                 <b>Version</b> 1.0.0
             </div>
-            <strong>Copyright &copy; 2022 <a href="#">ISECURITY</a></strong>
+            <strong>Copyright &copy; 2023 <a href="#">Security BigData Analytic</a></strong>
         </footer>
 
         <!-- Control Sidebar -->

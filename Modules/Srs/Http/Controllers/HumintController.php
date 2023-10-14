@@ -52,6 +52,9 @@ class HumintController extends Controller
             $opt_year[$i] = $i;
         }
 
+        // STATUS
+        $opt_status = array(''=>'All','0'=>'Not Approve','1'=>'Approved');
+
         $opt_subarea = array('' => '-- Choose --');
         foreach ($data_subarea as $key => $sare) {
             $opt_subarea[$sare->id] = $sare->title;
@@ -110,6 +113,7 @@ class HumintController extends Controller
             'select_area' => FormHelper::formDropdown('area[]',$opt_are,'','id="area" class="form-control area js-select2" multiple required'),
             'select_area_filter' => FormHelper::formDropdown('area_fil',$opt_are_fil,'','id="areaFilter" class="form-control" required'),
             'select_year_filter' => FormHelper::formDropdown('year_filter', $opt_year, '','id="yearFilter" class="form-control" required'),
+            'select_status_filter' => FormHelper::formDropdown('status_filter', $opt_status, '','id="statusFilter" class="form-control" required'),
             'select_subarea1' => FormHelper::formDropdown('sub_area1',$opt_subarea,'','id="subArea1" class="form-control subArea1" required'),
             'select_ass' => FormHelper::formDropdown('assets', $opt_ass,'','id="assets" class="form-control assets" required'),
             'select_rso' => FormHelper::formDropdown('risk_source', $opt_rso,'','id="riskSource" class="form-control" required'),
@@ -477,7 +481,11 @@ class HumintController extends Controller
  
         if ($validator->fails())
         {
-            return redirect('srs/humint_source')->with('error', '<i class="icon fas fa-exclamation-triangle"></i> Data yang diisi tidak lengkap');
+            // return redirect('srs/humint_source')->with('error', '<i class="icon fas fa-exclamation-triangle"></i> Data yang diisi tidak lengkap');
+            $result = array(
+                'code' => '01',
+                'msg' => 'Data yang diisi tidak lengkap.'
+            );
         }
         else
         {
@@ -485,15 +493,24 @@ class HumintController extends Controller
 
             if($res == '00')
             {
-                return redirect('srs/humint_source')->with('success', '<i class="icon fas fa-check"></i> Berhasil menyetujui data');
+                // return redirect('srs/humint_source')->with('success', '<i class="icon fas fa-check"></i> Berhasil menyetujui data');
+                $result = array(
+                    'code' => '00',
+                    'msg' => 'Berhasil menyetujui data.'
+                );
             }
             else
             {
-                return redirect('srs/humint_source')->with('error', '<i class="icon fas fa-exclamation-triangle"></i> Gagal menyetujui data');
+                // return redirect('srs/humint_source')->with('error', '<i class="icon fas fa-exclamation-triangle"></i> Gagal menyetujui data');
+                $result = array(
+                    'code' => '01',
+                    'msg' => 'Gagal menyetujui data.'
+                );
             }
         }
         
-        redirect('analitic/srs/internal_source');
+        // redirect('analitic/srs/internal_source');
+        return json_encode($result, true);
     }
 
     public function edit($id, Request $request)
@@ -796,7 +813,7 @@ class HumintController extends Controller
                                                 if(!empty($fla->file_name))
                                                 {
                                                     $opt .= '<tr><th>'.$fla->file_name.'</th>
-                                                    <td><a href="'.url('uploads/srs_bi/internal_source/'.$fla->file_name).'" target="_blank">View</a></td></tr>';
+                                                    <td><a href="'.url('uploads/srsbi/humint/'.$fla->file_name).'" target="_blank">View</a></td></tr>';
                                                 }
                                             }
                                             
@@ -993,7 +1010,7 @@ class HumintController extends Controller
                                                     if(!empty($fla->file_name))
                                                     {
                                                         $opt .= '<tr><th>'.$fla->file_name.'</th>
-                                                        <td><a href="'.url('uploads/srs_bi/internal_source/'.$fla->file_name).'" target="_blank">View</a></td></tr>';
+                                                        <td><a href="'.url('uploads/srsbi/humint/'.$fla->file_name).'" target="_blank">View</a></td></tr>';
                                                     }
                                                 }
 

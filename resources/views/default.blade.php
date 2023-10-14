@@ -79,8 +79,8 @@
 										<canvas id="grapSoi" style="width:350px; height:350px"></canvas>
 									</div>
 
-									<div class="col-sm-4 col-md-4 px-3 mt-1 mt-md-0 mx-auto-OFF py-4-OFF px-5-OFF text-center" style="min-height: 350px;">
-										<h5>Index Resiko ADM</h5>
+									<div class="col-sm-4 col-md-4 px-3 mt-1 mt-md-0 mx-auto-OFF py-4-OFF px-5-OFF" style="min-height: 350px;">
+										<h5 class="text-center">Index Resiko ADM</h5>
 										<input id="indexSoi" class="form-control form-control-lg text-center" type="text" placeholder="" disabled>
 
 										<div id="isoDesc" class="card mt-3" style="display: none;">
@@ -98,6 +98,7 @@
 													<dt class="col-sm-1">-</dt>
 													<dd class="col-sm-11">Serangan Ransomware - Internal</dd>
 												</dl>
+                                                <a class="btn bg-white float-right" target="_blank" href="{{ url('srs/humint_source/srsExportReportPdf') }}">Export</a>
 											</div>
 										</div>
 									</div>
@@ -269,6 +270,44 @@
 				</div>
 			</div>
 		</div>
+
+        <div class="row">
+            <div class="col-sm-9 col-lg-9">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="col-lg-12">
+                            <div style="height: 362px;">
+                                <div id="soa_allMonth"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3 col-lg-3">
+                <div class="card flex-row justify-content-center box-soa">
+                    <img style="height: 70px;width:70px" class="card-img-left example-card-img-responsive mt-3 ml-2" src="{{ url('/assets/images/icon/soa/ancestors.png') }}" />
+                    <div class="card-body text-white">
+                        <h4 class="h4">Vehicle</h4>
+                        <p class="card-text" id="countVehicle">0</p>
+                    </div>
+                </div>
+                <div class="card flex-row box-soa">
+                    <img style="height: 70px;width:70px" class="card-img-left example-card-img-responsive mt-3 ml-2" src="{{ url('assets/images/icon/soa/pollution.png') }}" />
+                    <div class="card-body text-white">
+                        <h4 class="h4">People</h4>
+                        <p class="card-text" id="countPeople">0</p>
+                    </div>
+                </div>
+                <div class="card flex-row box-soa">
+                    <img style="height: 70px;width:70px" class="card-img-left example-card-img-responsive mt-3 ml-2" src="{{ url('assets/images/icon/soa/folder.png') }}" />
+                    <div class="card-body text-white">
+                        <h4 class="h4">Document</h4>
+                        <p class="card-text" id="countDocument">0</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 	</div>
 </section>
 
@@ -386,7 +425,7 @@
 	// LOADING
 	loadingAllBox();
     function loadingAllBox() {
-        var allBoxChart = document.querySelectorAll('#grapSoi, #indexSoi, #barDonatAll, #srsPerMonthLine, #lineSoiAvgMonth, #srsPerPlantDough, #rsoChart, #assetChart, #lineSoiAvgAreaMonth, #lineSoiAvgAreaPillar, #riskChart, #osintLinePlantChart, #pie3dOsint, #osintDoughnutMonth');
+        var allBoxChart = document.querySelectorAll('#grapSoi, #indexSoi, #barDonatAll, #srsPerMonthLine, #lineSoiAvgMonth, #srsPerPlantDough, #rsoChart, #assetChart, #lineSoiAvgAreaMonth, #lineSoiAvgAreaPillar, #riskChart, #osintLinePlantChart, #pie3dOsint, #osintDoughnutMonth, #soa_allMonth');
         allBoxChart.forEach(function (el)
         {
             el.style.display = 'none';
@@ -443,10 +482,12 @@
         updatePlantMonthCtx(osintLinePlantChart)
         // OSINT //
 
-		// SoaFtraficAll(field)
-		// vehicle(field);
-		// material(field);
-		// people(field);
+        // SOA
+		SoaFtraficAll(field)
+		people(field);
+		vehicle(field);
+		material(field);
+        // SOA //
 	});
 
     function getColorRand(length) {
@@ -2099,8 +2140,8 @@
                                 method: "POST",
                                 data: {
                                     _token: "{{ csrf_token() }}",
-                                    area: area,
-                                    year: year,
+                                    area: areas,
+                                    year: years,
                                     month: (context.tooltip.dataPoints[0].dataIndex+1)
                                 },
                                 cache: false,
@@ -2207,7 +2248,77 @@
     });
     // OSINT PLANT PIE 3D //
 
-    // FUNCTION INDEX RESIKO
+    // SOA MONTHLY
+    var SoatraficAll = Highcharts.chart('soa_allMonth', {
+        chart: {
+            type: 'spline',
+            backgroundColor: 'transparent',
+            height: 320,
+        },
+        title: {
+            text: 'Security Operational Analytic',
+            style: {
+                color: '#FFF',
+            }
+        },
+        subtitle: {
+            text: ''
+        },
+        xAxis: {
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            labels: {
+                style: {
+                    color: '#FFF'
+                }
+            }
+        },
+        yAxis: {
+            title: {
+                text: '',
+            },
+            labels: {
+                style: {
+                    color: '#FFF'
+                }
+            },
+            gridLineColor: 'rgba(10, 10, 10, 0.2)'
+        },
+        legend: {
+            itemStyle: {
+                color: '#FFF',
+                fontWeight: 'bold'
+            }
+        },
+        plotOptions: {
+            series: {
+                label: {
+                    connectorAllowed: false
+                },
+                marker: {
+                    fillColor: '#FFFFFF',
+                    lineWidth: 4,
+                    lineColor: null // inherit from series
+                }
+            }
+        },
+        exporting: {
+            enabled: false
+        },
+        series: [{
+            name: 'People',
+            // data: [12, 12, 31, 4, 26, 72, 82, 51, 8, 4, 22, 23],
+            data: [],
+        }, {
+            name: 'Vehicle',
+            data: [],
+        }, {
+            name: 'Document',
+            data: [],
+        }]
+    });
+    // SOA MONTHLY //
+
+    // FUNCTION SOI MONTH
     function srsPerMonthDoughs(srsPerMonthDoughChart, srsPerMonthLineChart) {
 		var barDonatAllId = document.querySelector('#barDonatAll')
 		var srsPerMonthLineId = document.querySelector('#srsPerMonthLine')
@@ -2248,7 +2359,7 @@
             }
         });
     }
-    // FUNCTION INDEX RESIKO //
+    // FUNCTION SOI MONTH //
 
     // FUNCTION PLANT DOUGHNUT
     function srsPerPlantDoughs(srsPerPlantDoughChart) {
@@ -2351,6 +2462,14 @@
                     $('#indexSoi').val('High')
                 }
                 // INDEX BG SOI //
+                
+                // SOI Deskripsi
+                if (years == '2022' && months.length == 0) {
+                    $('#isoDesc').show()
+                } else {
+                    $('#isoDesc').hide()
+                }
+                // SOI Deskripsi //
             }
         });
 
@@ -2368,7 +2487,7 @@
                 var month = $("#monthFilter").val();
 
                 $.ajax({
-                    url: '{{ url('srs/dashboard_humint/grap_trend_soi') }}',
+                    url: '{{ url('srs/dashboard_humint_v2/grap_trend_soi') }}',
                     type: 'POST',
                     data: {
                         _token: "{{ csrf_token() }}",
@@ -2508,7 +2627,7 @@
 
                                 if (firstPoint.datasetIndex == 1) {
                                     $.ajax({
-                                        url: '{{ url('srs/dashboard_humint/grap_top_index') }}',
+                                        url: '{{ url('srs/dashboard_humint_v2/grap_top_index') }}',
                                         type: 'POST',
                                         data: {
                                             _token: "{{ csrf_token() }}",
@@ -4120,6 +4239,131 @@
     }
     // FUNCTION OSINT PLANT //
 
+    // FUNCTION SOA MONTHLY
+    function SoaFtraficAll(field) {
+        var soaAllMonthId = document.querySelector('#soa_allMonth')
+
+        $.ajax({
+            url: "{{ url('soa/grapichSetahun') }}",
+            method: "POST",
+            data: {
+                _token: "{{ csrf_token() }}",
+                year: years,
+                area_fill: areas
+            },
+            cache: false,
+            timeout: 10000,
+            beforeSend: function() {
+            },
+            error: function(xhr, textStatus, errorThrown) {
+                if (textStatus == 'timeout') {
+                    soaAllMonthId.parentElement.innerHTML = "Error : Timeout for this call!";
+                }
+            },
+            complete: function() {
+                soaAllMonthId.parentElement.querySelector('.loader').remove();
+                soaAllMonthId.style.display = 'block';
+            },
+            success: function(e) {
+                let data = e
+                let color = ["#b8e30e", "#e3129d", "#eb5342"];
+                for (let i = 0; i < data.length; i++) {
+                    SoatraficAll.series[i].update({
+                        name: data[i].label,
+                        data: data[i].data,
+                        color: color[i],
+                        lineWidth: 2.5
+                    });
+                }
+                SoatraficAll.redraw();
+
+            }
+        })
+    }
+    // FUNCTION SOA MONTHLY //
+    
+    // FUNCTION SOA PEOPLE //
+    function people(field) {
+        $.ajax({
+            url: '{{ url('soa/peopleAll') }}',
+            type: 'POST',
+            data: {
+                _token: "{{ csrf_token() }}",
+                area_fills: areas,
+                year_fil: years,
+                month_fil: months,
+            },
+            cache: false,
+            beforeSend: function() {
+                // $(".lds-ring").show();
+                // document.getElementById("totalPeople").style.display = "block";
+            },
+            complete: function() {
+                // document.getElementById("totalPeople").style.display = "none";
+            },
+            success: function(res) {
+                // var json = JSON.parse(res)
+                
+                peopleTotal.text(res[0].total_people)
+            }
+        });
+    }
+    // FUNCTION SOA PEOPLE //
+
+    // FUNCTION SOA VEHICLE
+    function vehicle(field) {
+        $.ajax({
+            url: '{{ url('soa/vehicleAll') }}',
+            type: 'POST',
+            data: {
+                _token: "{{ csrf_token() }}",
+                area_fills: areas,
+                year_fil: years,
+                month_fil: months,
+            },
+            cache: false,
+            beforeSend: function() {
+                // document.getElementById("totalVehicle").style.display = "block";
+            },
+            complete: function() {
+                // document.getElementById("totalVehicle").style.display = "none";
+            },
+            success: function(res) {
+                // var json = JSON.parse(res)
+
+                vehicleTotal.text(res[0].total)
+            }
+        });
+    }
+    // FUNCTION SOA VEHICLE //
+
+    // FUNCTION SOA MATERIAL
+    function material(field) {
+        $.ajax({
+            url: '{{ url('soa/documentAll') }}',
+            type: 'POST',
+            data: {
+                _token: "{{ csrf_token() }}",
+                area_fills: areas,
+                year_fil: years,
+                month_fil: months,
+            },
+            cache: false,
+            beforeSend: function() {
+                // document.getElementById("totalDocument").style.display = "block";
+            },
+            complete: function() {
+                // document.getElementById("totalDocument").style.display = "none";
+            },
+            success: function(res) {
+                // var json = JSON.parse(res)
+
+                materialTotal.text(res[0].total)
+            }
+        });
+    }
+    // FUNCTION SOA MATERIAL //
+
     // DETAIL EVENT
     $(document).on('click', '.detail-list-event', function (e){
         var detailGrapSmall2 = $('#detailGrapSmall2');
@@ -4132,7 +4376,7 @@
         detailGrapSmall2Label.text('Detail Event');
 
         $.ajax({
-            url: '{{ url('srs/internal_source/detail') }}',
+            url: '{{ url('srs/humint_source/detail') }}',
             type: 'POST',
             data: {
                 _token: "{{ csrf_token() }}",
@@ -4232,18 +4476,10 @@
         // OSINT //
 
         // SOA
-        // SoaFtraficAll(field)
-        // people(field)
-        // vehicle(field)
-        // material(field)
+        SoaFtraficAll(field)
+        people(field)
+        vehicle(field)
+        material(field)
         // SOA //
-
-        // SOI Deskripsi
-        if (year == '2022' && month.length == 0) {
-            $('#isoDesc').show()
-        } else {
-            $('#isoDesc').hide()
-        }
-        // SOI Deskripsi
     });
 </script>
