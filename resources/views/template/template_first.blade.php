@@ -153,7 +153,7 @@
                         <?php  } ?>
                         <?php if (AuthHelper::is_super_admin() || AuthHelper::is_app('CRI')) { ?>
                             <li class="nav-item">
-                                <a href="crime/Crime/dashboard" class="nav-link">
+                                <a href="crime/dashboard" class="nav-link">
                                     <i class="nav-icon fas fa-chart-pie"></i>
                                     <p>
                                         Crime Index

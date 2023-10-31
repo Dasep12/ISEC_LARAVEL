@@ -8,10 +8,7 @@
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <!-- DataTables -->
-    <link rel="stylesheet" href="{{ asset('assets/dist/css/dataTables.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/dist/css/responsive.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/dist/css/buttons.bootstrap4.min.css') }}">
+
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('assets/dist/fontawesome-free/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/dist/css/adminlte.min.css') }}">
@@ -23,8 +20,13 @@
 			integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script> -->
     <script src="{{ asset('assets/dist/js/sweetalert2.all.min.js') }}"></script>
 
-    <link rel="stylesheet" href="{{ asset('assets/dist/css/jquery.timepicker.min.css') }}">
-    <script src="{{ asset('assets/dist/js/jquery.timepicker.min.js') }}"></script>
+
+    <!-- DataTables -->
+
+    <link rel="stylesheet" href="{{ asset('assets/dist/css/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/dist/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/dist/css/buttons.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
 
     <!-- pagination freeze -->
     <link rel="stylesheet" href="{{ asset('assets/dist/css/fixedColumns.dataTables.min.css') }}">
@@ -34,8 +36,8 @@
     <!-- Select2 -->
     <link rel="stylesheet" href="{{ asset('assets/dist/select2/css/select2.min.css') }}">
 
-    <link rel="stylesheet" href="{{ asset('assets/dist/datetimepicker/jquery.datetimepicker.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/dist/datetimerange/daterangepicker.css') }}">
+    <!-- <link rel="stylesheet" href="{{ asset('assets/dist/datetimepicker/jquery.datetimepicker.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/dist/datetimerange/daterangepicker.css') }}"> -->
 
     <!--  -->
     <script src="{{ asset('assets/dist/js/jquery.dataTables.min.js') }} "></script>
@@ -199,6 +201,139 @@
             height: 100% !important;
             width: 100% !important;
         }
+
+        #map2 {
+            height: 400px;
+        }
+
+        #map {
+            height: 400px;
+        }
+
+        #map_karawang {
+            height: 400px;
+        }
+
+        .row>* {
+            padding: 10px 0;
+        }
+
+        .cardIn {
+            border: none;
+            border-width: 1px 1px 1px 1px;
+            border-color: #ccc;
+            border-style: solid;
+            border-radius: 0
+        }
+
+        .cardIn2 {
+            border: none;
+            border-width: 1px 0px 1px 1px;
+            border-color: #ccc;
+            border-style: solid;
+            border-radius: 0
+        }
+
+        ul .first {
+            margin-right: 10px;
+        }
+
+        ul .five,
+        .third {
+            margin-left: 14px;
+        }
+
+        .first::marker {
+            content: url('https://www.securityadm.my.id/isec/assets/img/info/list_icon.png');
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .second::marker {
+            content: url('https://www.securityadm.my.id/isec/assets/img/info/list_icon_2.png');
+        }
+
+        .third::marker {
+            content: url('https://www.securityadm.my.id/isec/assets/img/info/list_icon_3.png');
+        }
+
+        .four::marker {
+            content: url('https://www.securityadm.my.id/isec/assets/img/info/list_icon_4.png');
+        }
+
+        .five::marker {
+            content: url('https://www.securityadm.my.id/isec/assets/img/info/list_icon_5.png');
+        }
+
+        .dropbtn {
+            background-color: #04AA6D;
+            color: white;
+            padding: 16px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .dropbtn:hover,
+        .dropbtn:focus {
+            background-color: #3e8e41;
+        }
+
+        #myDropdown2 a:hover,
+        #myDropdown a:hover {
+            background-color: #3e8e41;
+            cursor: pointer;
+
+        }
+
+        #myInput {
+            box-sizing: border-box;
+            background-image: url('searchicon.png');
+            background-position: 14px 12px;
+            background-repeat: no-repeat;
+            font-size: 16px;
+            padding: 14px 20px 12px 45px;
+            border: none;
+            border-bottom: 1px solid #ddd;
+        }
+
+        #myInput:focus {
+            outline: 3px solid #ddd;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f6f6f6;
+            min-width: 230px;
+            overflow: auto;
+            border: 1px solid #ddd;
+            z-index: 999;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        /* .dropdown a:hover {
+      background-color: #ddd;
+    } */
+
+        .show {
+            display: block;
+        }
+
+        .show_hide {
+            display: none;
+        }
     </style>
 </head>
 <!-- <div style="display:none;" id="loader" class="loading">Loading&#8230;</div> -->
@@ -271,6 +406,18 @@
                             </a>
                         </li>
 
+                        <li class="nav-item ">
+                            <a href="upload" class="nav-link 
+                            @if($uri == 'upload')
+                                active  
+                            @endif">
+                                <i class="nav-icon fas fa-file-excel "></i>
+                                <p>
+                                    Upload
+                                </p>
+                            </a>
+                        </li>
+
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
@@ -325,40 +472,14 @@
     <script type="text/javascript" src="{{ asset('assets/dist/js/jquery-ui.js') }}"></script>
 
     <!-- Date Time Picker -->
-    <script type="text/javascript" src="{{ asset('assets/dist/datetimepicker/jquery.datetimepicker.js') }}"></script>
+    <!-- <script type="text/javascript" src="{{ asset('assets/dist/datetimepicker/jquery.datetimepicker.js') }}"></script> -->
     <script type="text/javascript" src="{{ asset('assets/dist/datetimerange/moment.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/dist/datetimerange/daterangepicker.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/dist/datetimerange/jquery.mask.min.js') }}"></script>
+    <!-- <script type="text/javascript" src="{{ asset('assets/dist/datetimerange/daterangepicker.min.js') }}"></script> -->
     <script type="text/javascript" src="{{ asset('assets/dist/select2/js/select2.min.js') }}"></script>
 </body>
 <script>
     $(document).ready(function() {
 
-        $('#tgl1,#tgl2').datepicker({
-            dateFormat: 'yy-mm-dd',
-            autoclose: true
-        });
-        $('#tgl13').datepicker({
-            dateFormat: 'yy-mm-dd',
-            autoclose: true
-        });
-        $('#tgl23').datepicker({
-            dateFormat: 'yy-mm-dd',
-            autoclose: true
-        });
-
-        $('#datetimepicker').datetimepicker({
-            defaultDate: true,
-            defaultTime: true,
-        });
-
-        $(".js-select2").select2({
-            closeOnSelect: false,
-            placeholder: "-- Choose --",
-            allowHtml: true,
-            allowClear: true,
-            tags: true
-        });
     });
 </script>
 

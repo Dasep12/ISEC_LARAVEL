@@ -1128,7 +1128,7 @@
             point: {
                 events: {
                     click: function(event) {
-                        console.log(this.id)
+                        // console.log(this.id)
                         // if (this.id == 'pkb') {
                         //     $('#myModal').modal('show');
                         // }
@@ -1367,6 +1367,7 @@
                 document.getElementById("monthlyADMLoader").style.display = "none";
             },
             success: function(result) {
+                console.log(result)
                 var seriesLength = traficPKBSetahun.series.length;
                 for (var i = seriesLength - 1; i > -1; i--) {
                     traficPKBSetahun.series[i].remove();
@@ -1835,7 +1836,7 @@
                 document.getElementById("bykategoriBarang").style.display = "none";
             },
             success: function(result) {
-                console.log(result);
+                // console.log(result);
                 let res = result;
                 var seriesLength = kategoriBarang.series.length;
                 for (var i = seriesLength - 1; i > -1; i--) {
@@ -1912,7 +1913,7 @@
                 document.getElementById("byStatus").style.display = "none";
             },
             success: function(result) {
-                console.log(result);
+                // console.log(result);
                 let res = result;
                 var seriesLength = statusPKB.series.length;
                 for (var i = seriesLength - 1; i > -1; i--) {

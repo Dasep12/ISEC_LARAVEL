@@ -16,8 +16,8 @@
 
     #preloader2 .loading {
         position: absolute;
-        left: 40%;
-        top: 50%;
+        /* left: 40%; */
+        /* top: 50%; */
         /* transform: translate(-50%, -50%); */
         font: 14px arial;
     }
@@ -295,39 +295,17 @@
         }
     }
 </style>
-<div id="preloader2">
-    <div class="loading">
-        <div style="z-index:9999;" class="row justify-content-center">
-            <div class="spinner-grow text-primary " role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
-            <div class="spinner-grow text-secondary ml-1" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
-            <div class="spinner-grow text-success ml-1 " role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
-            <div class="spinner-grow text-danger ml-1" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
-            <div class="spinner-grow text-warning ml-1" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
-            <div class="spinner-grow text-info ml-1" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
-            <div class="spinner-grow text-dark ml-1" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
-        </div>
-    </div>
-</div>
 
 <section class="content-header">
     <div class="container-fluid">
 
     </div>
 </section>
+<div id="preloader2">
+    <div class="loading">
+
+    </div>
+</div>
 
 <section class="content" style="margin-top:-60px">
     <div class="container-fluid">
@@ -825,7 +803,7 @@
                             </div>
 
 
-                            <img height="600px" id="map_karawang_img" style="margin-top: -80px;margin-left:-40px" width="110%" src="{{ asset('assets/img/info/map_karawang.png') }}" alt="">
+                            <img height="600px" id="map_karawang_img" style="margin-top: -80px;margin-left:-40px" width="100%" src="{{ asset('assets/img/info/map_karawang.png') }}" alt="">
                         </div>
                     </div>
                 </div>
@@ -857,23 +835,24 @@
 
     function loadMapJakut(thn, blan) {
         $.ajax({
-            url: "analitic/crime/Crime/mapJakut",
+            url: "mapJakut",
             method: "POST",
             data: {
                 tahun: thn,
-                bulan: blan
+                bulan: blan,
+                "_token": "{{ csrf_token() }}",
             },
             success: function(e) {
-                let data = JSON.parse(e);
+                let data = e;
                 var pademangan = data[0].total;
                 var cilincing = data[1].total;
                 var penjaringan = data[2].total;
                 var priok = data[3].total;
                 var koja = data[4].total;
                 var gading = data[5].total;
-                var dangerIcon = "assets/img/info/marker5.png";
-                var mediumIcon = "assets/img/info/marker3.png";
-                var veryDangerIcon = "assets/img/info/marker2.png";
+                var dangerIcon = "{{ asset('assets/img/info/marker5.png') }}";
+                var mediumIcon = "{{ asset('assets/img/info/marker3.png') }}";
+                var veryDangerIcon = "{{ asset('assets/img/info/marker2.png') }}";
                 document.getElementById("total_penjaringan").innerHTML = '(' + penjaringan + ')';
                 document.getElementById("total_pademangan").innerHTML = '(' + pademangan + ')';
                 document.getElementById("total_priok").innerHTML = '(' + priok + ')';
@@ -902,15 +881,16 @@
 
     function loadMapKarawang(thn, bln) {
         $.ajax({
-            url: "",
+            url: "mapKarawang",
             method: "POST",
             data: {
                 tahun: thn,
-                bulan: bln
+                bulan: bln,
+                "_token": "{{ csrf_token() }}",
             },
             success: function(e) {
                 let data = e
-                console.log(e);
+                // console.log(e);
                 var teljambar = data[0].total;
                 var teljamtim = data[1].total;
                 var klari = data[2].total;
@@ -918,9 +898,9 @@
                 var majalaya = data[4].total;
                 var karaba = data[5].total;
                 var karatim = data[6].total;
-                var dangerIcon = "assets/img/info/marker5.png";
-                var mediumIcon = "assets/img/info/marker3.png";
-                var veryDangerIcon = "'assets/img/info/marker2.png";
+                var dangerIcon = "{{ asset('assets/img/info/marker5.png') }}";
+                var mediumIcon = "{{ asset('assets/img/info/marker3.png') }}";
+                var veryDangerIcon = "{{ asset('assets/img/info/marker2.png') }}";
                 document.getElementById("total_teljamba").innerHTML = '(' + teljambar + ')';
                 document.getElementById("total_teljamti").innerHTML = '(' + teljamtim + ')';
                 document.getElementById("total_klari").innerHTML = '(' + klari + ')';
@@ -1088,15 +1068,16 @@
 
         function FkarawangSetahun(year, month) {
             $.ajax({
-                url: "",
+                url: "graphicKarawangSetahun",
                 method: "POST",
                 data: {
                     year: year,
-                    month: month
+                    month: month,
+                    "_token": "{{ csrf_token() }}",
                 },
                 success: function(e) {
                     var karawang = $('#karawangSetahun').highcharts();
-                    let data = JSON.parse(e);
+                    let data = e;
 
                     karawang.subtitle.update({
                         text: 'Periode Tahun ' + year
@@ -1114,7 +1095,7 @@
         FkarawangSetahun(thn, blan)
         // 
 
-        // jakut setahun
+        // jakut setahun kategori
         var jak
         var jakartaSetahuan = {
             chart: {
@@ -1202,15 +1183,16 @@
 
         function FjakartaSetahuan(year, month) {
             $.ajax({
-                url: "",
+                url: "graphicJakartaSetahun",
                 method: "POST",
                 data: {
                     year: year,
-                    month: month
+                    month: month,
+                    "_token": "{{ csrf_token() }}",
                 },
                 success: function(e) {
                     var jakut = $('#jakartaUtaraSetahun').highcharts();
-                    let data = JSON.parse(e);
+                    let data = e;
 
                     jakut.subtitle.update({
                         text: 'Periode Tahun ' + year
@@ -1319,15 +1301,17 @@
 
         function FcrimeAreaJakut(year, month) {
             $.ajax({
-                url: "",
+                url: "graphicKecJakartaSetahun",
                 method: "POST",
                 data: {
                     year: year,
-                    month: month
+                    month: month,
+                    "_token": "{{ csrf_token() }}",
                 },
                 success: function(e) {
+                    // console.log(e)
                     var kecJakut = $('#CrimeperAreaJakut').highcharts();
-                    let data = JSON.parse(e);
+                    let data = e;
                     kecJakut.subtitle.update({
                         text: 'Periode Tahun ' + year
                     });
@@ -1435,15 +1419,16 @@
 
         function FcrimeAreaKarawang(year, month) {
             $.ajax({
-                url: "",
+                url: "graphicKecKarawangSetahun",
                 method: "POST",
                 data: {
                     year: year,
-                    month: month
+                    month: month,
+                    "_token": "{{ csrf_token() }}",
                 },
                 success: function(e) {
                     var kecKarawang = $('#CrimeperAreaKarawang').highcharts();
-                    let data = JSON.parse(e);
+                    let data = e;
                     // console.log(data);
                     kecKarawang.subtitle.update({
                         text: 'Periode Tahun ' + year
@@ -1464,11 +1449,12 @@
 
         function updateGraphic(tahun, bulan) {
             $.ajax({
-                url: "",
+                url: "graphicJakartaSetahun",
                 type: 'post',
                 data: {
                     tahun: tahun,
-                    bulan: bulan
+                    bulan: bulan,
+                    "_token": "{{ csrf_token() }}",
                 },
                 beforeSend: function() {
                     document.getElementById("preloader2").style.display = "block";
@@ -1477,9 +1463,9 @@
                     document.getElementById("preloader2").style.display = "none";
                 },
                 success: function(e) {
-                    const data = JSON.parse(e);
-                    document.getElementById("monthly_jakut").innerHTML = bulanConvert(bulan);
-                    document.getElementById("year_jakut").innerHTML = tahun;
+                    // const data = JSON.parse(e);
+                    // document.getElementById("monthly_jakut").innerHTML = bulanConvert(bulan);
+                    // document.getElementById("year_jakut").innerHTML = tahun;
                 }
             })
         }
@@ -1490,11 +1476,12 @@
         // update kategori mapping jakarta utara
         function FmapingKategoriJakut(year, month) {
             $.ajax({
-                url: "",
+                url: "mapingKategoriJakut",
                 method: "POST",
                 data: {
                     tahun: year,
-                    bulan: month
+                    bulan: month,
+                    "_token": "{{ csrf_token() }}",
                 },
                 success: function(e) {
                     let data = e;
@@ -1522,14 +1509,16 @@
         // update kategori mapping karawang
         function FmapingKategoriKarawang(year, month) {
             $.ajax({
-                url: "",
+                url: "mapingKategoriKarawang",
                 method: "POST",
                 data: {
                     tahun: year,
-                    bulan: month
+                    bulan: month,
+                    "_token": "{{ csrf_token() }}",
                 },
                 success: function(e) {
                     let data = e;
+                    // console.log(data);
                     const kecamatan = ['teluk_jambe_barat', 'teluk_jambe_timur', 'klari', 'ciampel', 'majalaya', 'karawang_barat', 'karawang_timur'];
 
                     for (let i = 0; i < data.length; i++) {

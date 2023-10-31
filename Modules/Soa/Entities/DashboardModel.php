@@ -705,7 +705,7 @@ class DashboardModel extends Model
                 GROUP BY tp.LocationName , tp.PKBDate 
             )X on MONTH(X.tgl) = m.DayNum  AND YEAR(x.tgl)='$year'  AND  X.plants = Mplants.DummiesPlant 
         GROUP BY m.DayNum , Mplants.DummiesPlant
-        ORDER BY DummiesPlant  ASC";
+        ORDER BY m.DayNum   ASC";
         $res = DB::connection('egate')->select($sql);
         return $res;
     }

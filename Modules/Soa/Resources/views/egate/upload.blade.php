@@ -40,7 +40,7 @@
                             <div class="form-group">
                                 <label for="">Upload File Egate</label>
                                 <input type="file" onchange="return cekFile()" class="form-control" id="file" name="file">
-                                <span class="small font-italic"> <a class="text-danger" target="_blank" href="{{ asset('assets/upload_soa/FORMAT_UPLOAD_SOA.xlsx') }}">* download format upload egate</a></span>
+                                <span class="small font-italic"> <a class="text-danger" target="_blank" href="{{ asset('assets/upload_egate/FORMAT_UPLOAD_EGATE.xlsx') }}">* download format upload egate</a></span>
                             </div>
                             <button type="submit" class="btn btn-sm btn-info"> Upload File</button>
                         </div>

@@ -133,6 +133,19 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
         ],
+
+        'crime' => [
+            'driver' => 'sqlsrv',
+            'url' => env('DATABASE_URL_MSSQL_CRI'),
+            'host' => env('DB_HOST_MSSQL_CRI', 'localhost'),
+            'port' => env('DB_PORT_MSSQL_CRI', '1433'),
+            'database' => env('DB_DATABASE_MSSQL_CRI', 'forge'),
+            'username' => env('DB_USERNAME_MSSQL_CRI', 'forge'),
+            'password' => env('DB_PASSWORD_MSSQL_CRI', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+        ],
     ],
 
     /*

@@ -308,7 +308,32 @@ class DashboardController extends Controller
 
     public function tester(Request $req)
     {
-        $data = Dashboard::pkbByUser($req, 'top');
-        return response()->json($data);
+        $data = Dashboard::pkbPlantSetahun($req);
+        $item = array();
+        // $num = 1;
+
+        $categ = array();
+        $key = 'plantss';
+        $data = array_map(function ($value) {
+            return (array)$value;
+        }, $data);
+        foreach ($data as $val) {
+            if (array_key_exists($key, $val)) {
+                $categ[$val[$key]][] = $val;
+            } else {
+                $categ[""][] = $val;
+            }
+        }
+        foreach ($categ as $key => $pcd) {
+            foreach ($pcd as $i => $sva) {
+                $item[$i] = (int) $sva['total'];
+            }
+            $document[] = array(
+                'label' => $key,
+                'data' =>  $item,
+            );
+            // $num++;
+        }
+        return response()->json($document);
     }
 }

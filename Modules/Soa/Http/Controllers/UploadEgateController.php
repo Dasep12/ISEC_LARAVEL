@@ -96,18 +96,18 @@ class UploadEgateController extends Controller
                     }
 
                     DB::connection('egate')->table('T_PKB')->insert($data);
-                    DB::connection('egate')->commit();
                     // dd((int)$cariData[0]->hasil);
                 }
 
+                DB::connection('egate')->commit();
                 return back()->with('success', 'Upload data successfully!');
             } catch (\Exception $e) {
                 DB::connection('egate')->rollback();
-                // return back()->with('failed', 'Update data failed !');
-                dd($e);
+                return back()->with('failed', 'Update data failed !');
+                // dd($e);
             }
-
-            dd($eGate);
+            return back()->with('success', 'Update data success !');
+            // dd($eGate);
         }
     }
 }
