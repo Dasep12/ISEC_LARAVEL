@@ -35,6 +35,7 @@
         @endif
         <div class="row">
             <div class="col-lg-12">
+                <a href="form_upload_visitor" class="btn btn-success text-white btn-sm text-white mb-2">Upload Visitor</a>
                 <form action="uploadFile" method="post" enctype="multipart/form-data">
                     <div class="card">
                         @csrf

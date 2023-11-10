@@ -105,10 +105,21 @@
                 </div>
             </div>
 
+            <!-- <div class="col-lg-12">
+                <div class="card " style="">
+                    <div class="card-body">
+                        <div style="position: absolute;left:50%;top:50%" class="row justify-content-center loader">
+                            <div class="overlay" style="display:block" id="ScaterLoader">
+                                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                            </div>
+                        </div>
+                        <div id="bykategoriBarangScatter"></div>
+                    </div>
+                </div>
+            </div> -->
+
             <div class="col-lg-3">
-
                 <div class="row">
-
                     <div class="col-lg-12">
                         <div class="card card-ver">
                             <div class="card-body people" style="cursor:pointer">
@@ -314,8 +325,8 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-lg-6">
-                            <div class="card card-hor" style="">
+                        <div class="col-lg-8">
+                            <!-- <div class="card card-hor" style="">
                                 <div class="card-body text-center">
                                     <div style="position: absolute;left:50%;top:50%" class="row justify-content-center loader">
                                         <div class="overlay" style="display:block" id="bykategoriBarang">
@@ -324,10 +335,20 @@
                                     </div>
                                     <div id="kategoriBarang"></div>
                                 </div>
+                            </div> -->
+                            <div class="card " style="height:350px">
+                                <div class="card-body">
+                                    <div style="position: absolute;left:50%;top:50%" class="row justify-content-center loader">
+                                        <div class="overlay" style="display:block" id="ScaterLoader">
+                                            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                                        </div>
+                                    </div>
+                                    <div id="bykategoriBarangScatter"></div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-lg-6">
-                            <div class="card card-hor" style="">
+                        <div class="col-lg-4">
+                            <div class="card card-hor" style="height:300px">
                                 <div class="card-body text-center">
                                     <div style="position: absolute;left:50%;top:50%" class="row justify-content-center loader">
                                         <div class="overlay" style="display:block" id="byStatus">
@@ -421,6 +442,7 @@
             contractorTotal = $("#contractorTotal"),
             peoplePerDay = $("#peoplePerDay"),
         ];
+
         people(field)
         vehicle(field)
         material(field)
@@ -431,6 +453,8 @@
 
         FtraficAll(field)
 
+
+
         // modal pop up PKB
         FtraficPKBAll(field)
         FyearPKBADM(field)
@@ -438,8 +462,10 @@
         FuserGraph(field)
         FdetaildepartementGraph(field)
         FdetailuserGraph(field)
-        FkategoriBarang(field)
+        // FkategoriBarang(field)
         FstatusPKB(field)
+        FkategoriBarang2(field)
+
 
 
 
@@ -472,8 +498,9 @@
             FuserGraph(field)
             FdetaildepartementGraph(field)
             FdetailuserGraph(field)
-            FkategoriBarang(field)
+            // FkategoriBarang(field)
             FstatusPKB(field)
+            FkategoriBarang2(field)
         })
 
         // Trafice Days Update
@@ -1367,7 +1394,6 @@
                 document.getElementById("monthlyADMLoader").style.display = "none";
             },
             success: function(result) {
-                console.log(result)
                 var seriesLength = traficPKBSetahun.series.length;
                 for (var i = seriesLength - 1; i > -1; i--) {
                     traficPKBSetahun.series[i].remove();
@@ -1780,47 +1806,101 @@
     }
 
 
-    var kategoriBarang = Highcharts.chart('kategoriBarang', {
+    const getTestData = x => {
+        const off = 0.2 + 0.2 * Math.random();
+        return new Array(200).fill(1).map(() => [
+            x,
+            off + (Math.random() - 0.5) * (Math.random() - 0.5)
+        ]);
+    };
+
+    const colors = Highcharts.getOptions().colors.map(color =>
+        Highcharts.color(color).setOpacity(0.5).get()
+    );
+    // bykategoriBarangScatter
+    var kategoriBarang2 = Highcharts.chart('bykategoriBarangScatter', {
         chart: {
-            type: 'pie',
+            type: 'scatter',
+            height: 300,
         },
-        tooltip: {
-            headerFormat: '<b>{point.key}</b><br>',
-            pointFormat: '{point.y}'
-        },
+
+        colors,
+
         title: {
-            text: 'By Kategori Barang'
+            text: ''
         },
+
+        xAxis: {
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Oct', 'Nov', 'Des']
+        },
+
+        yAxis: {
+            title: {
+                text: ''
+            }
+        },
+
         plotOptions: {
-            pie: {
-                allowPointSelect: true,
-                cursor: 'pointer',
-                dataLabels: {
-                    enabled: false,
+            scatter: {
+                showInLegend: false,
+                jitter: {
+                    x: 0.24,
+                    y: 0
+                },
+                marker: {
+                    radius: 5,
+                    symbol: 'circle'
+                },
+                tooltip: {
+                    pointFormat: '{point.z}: {point.y}'
                 }
             }
         },
         credits: {
             enabled: false
         },
-        xAxis: {
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-        },
         series: [{
-            // allowPointSelect: true,
-            // keys: ['name', 'y', 'selected', 'sliced'],
-            data: [
-                ['Samsung', 27.79, false, false],
-                ['Apple', 27.34, false],
-            ],
-            // showInLegend: true
+            name: 'Jan',
+            data: []
+        }, {
+            name: 'Feb',
+            data: []
+        }, {
+            name: 'Mar',
+            data: []
+        }, {
+            name: 'Apr',
+            data: []
+        }, {
+            name: 'Mei',
+            data: []
+        }, {
+            name: 'Jun',
+            data: []
+        }, {
+            name: 'Jul',
+            data: []
+        }, {
+            name: 'Agu',
+            data: []
+        }, {
+            name: 'Sep',
+            data: []
+        }, {
+            name: 'Okt',
+            data: []
+        }, {
+            name: 'Nov',
+            data: []
+        }, {
+            name: 'Des',
+            data: []
         }]
     });
 
-    function FkategoriBarang(field) {
-
+    function FkategoriBarang2(field) {
         $.ajax({
-            url: 'pkbByKategoriBarang',
+            url: 'scaterBarang',
             type: 'POST',
             data: {
                 area_fil: area,
@@ -1830,32 +1910,97 @@
             },
             cache: false,
             beforeSend: function() {
-                document.getElementById("bykategoriBarang").style.display = "block";
+                document.getElementById("ScaterLoader").style.display = "block";
             },
             complete: function() {
-                document.getElementById("bykategoriBarang").style.display = "none";
+                document.getElementById("ScaterLoader").style.display = "none";
             },
             success: function(result) {
-                // console.log(result);
                 let res = result;
-                var seriesLength = kategoriBarang.series.length;
-                for (var i = seriesLength - 1; i > -1; i--) {
-                    kategoriBarang.series[i].remove();
+                let datas = JSON.stringify(result)
+                console.log(res);
+                for (let i = 0; i < 12; i++) {
+                    kategoriBarang2.series[i].setData(res[i])
                 }
-                let datas = [];
-                for (let i = 0; i < res.length; i++) {
-                    datas.push({
-                        name: res[i].CategoryCode,
-                        y: parseInt(res[i].total),
-                    });
-                }
-                kategoriBarang.addSeries({
-                    data: datas,
-                    showInLegend: true
-                });
             }
         });
     }
+
+    // var kategoriBarang = Highcharts.chart('kategoriBarang', {
+    //     chart: {
+    //         type: 'pie',
+    //     },
+    //     tooltip: {
+    //         headerFormat: '<b>{point.key}</b><br>',
+    //         pointFormat: '{point.y}'
+    //     },
+    //     title: {
+    //         text: 'By Kategori Barang'
+    //     },
+    //     plotOptions: {
+    //         pie: {
+    //             allowPointSelect: true,
+    //             cursor: 'pointer',
+    //             dataLabels: {
+    //                 enabled: false,
+    //             }
+    //         }
+    //     },
+    //     credits: {
+    //         enabled: false
+    //     },
+    //     xAxis: {
+    //         categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    //     },
+    //     series: [{
+    //         // allowPointSelect: true,
+    //         // keys: ['name', 'y', 'selected', 'sliced'],
+    //         data: [
+    //             ['Samsung', 27.79, false, false],
+    //             ['Apple', 27.34, false],
+    //         ],
+    //         // showInLegend: true
+    //     }]
+    // });
+
+    // function FkategoriBarang(field) {
+    //     $.ajax({
+    //         url: 'pkbByKategoriBarang',
+    //         type: 'POST',
+    //         data: {
+    //             area_fil: area,
+    //             year_fil: year,
+    //             month_fil: month,
+    //             "_token": "{{ csrf_token() }}",
+    //         },
+    //         cache: false,
+    //         beforeSend: function() {
+    //             document.getElementById("bykategoriBarang").style.display = "block";
+    //         },
+    //         complete: function() {
+    //             document.getElementById("bykategoriBarang").style.display = "none";
+    //         },
+    //         success: function(result) {
+    //             // console.log(result);
+    //             let res = result;
+    //             var seriesLength = kategoriBarang.series.length;
+    //             for (var i = seriesLength - 1; i > -1; i--) {
+    //                 kategoriBarang.series[i].remove();
+    //             }
+    //             let datas = [];
+    //             for (let i = 0; i < res.length; i++) {
+    //                 datas.push({
+    //                     name: res[i].CategoryCode,
+    //                     y: parseInt(res[i].total),
+    //                 });
+    //             }
+    //             kategoriBarang.addSeries({
+    //                 data: datas,
+    //                 showInLegend: true
+    //             });
+    //         }
+    //     });
+    // }
 
     var statusPKB = Highcharts.chart('statusPKB', {
         chart: {
@@ -1895,7 +2040,6 @@
     });
 
     function FstatusPKB(field) {
-
         $.ajax({
             url: 'pkbStatus',
             type: 'POST',

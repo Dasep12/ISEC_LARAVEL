@@ -25,9 +25,9 @@ class DashboardModel extends Model
 
         $kec = "";
         if ($kota == "Jakarta Utara") {
-            $kec .= "AND kec in ('Penjaringan', 'Tanjung Priok', 'Cilincing', 'Kelapa Gading', 'Pademangan', 'Koja') ";
+            $kec .= "AND CONVERT(VARCHAR,kec) in ('Penjaringan', 'Tanjung Priok', 'Cilincing', 'Kelapa Gading', 'Pademangan', 'Koja') ";
         } else {
-            $kec .= "AND kec in ('Teluk Jambe Barat', 'Teluk Jambe Timur', 'Klari', 'Ciampel', 'Majalaya', 'Karawang Barat', 'Karawang Timur') ";
+            $kec .= "AND CONVERT(VARCHAR,kec) in ('Teluk Jambe Barat', 'Teluk Jambe Timur', 'Klari', 'Ciampel', 'Majalaya', 'Karawang Barat', 'Karawang Timur') ";
         }
         $q = " WITH months(MonthNum) AS
         (
@@ -37,7 +37,7 @@ class DashboardModel extends Model
                 FROM months
             WHERE MonthNum < 12
         )
-        SELECT m.MonthNum month_num, (select count(c.id) from  dbo.admisec_Tcrime c where c.kategori = '" . $kat . "' and c.kota ='" . $kota . "' 
+        SELECT m.MonthNum month_num, (select count(c.id) from  dbo.admisec_Tcrime c where c.kategori = '" . $kat . "' and CONVERT(VARCHAR,c.kota) ='" . $kota . "' 
         " . $kec . "
         and month(c.tanggal) = m.MonthNum and YEAR(c.tanggal)='" . $year . "' ) as total
         FROM months m
@@ -53,9 +53,9 @@ class DashboardModel extends Model
         $kat = "";
 
         if ($kota == "Jakarta Utara") {
-            $kat .= "kategori in ( 'perjudian' , 'narkoba' , 'penggelapan','pencurian' ,'kekerasan') AND kec in ('penjaringan' , 'koja' , 'tanjung priok' , 'pademangan', 'cilincing' , 'kelapa gading')";
+            $kat .= "CONVERT(VARCHAR,kategori) in ( 'perjudian' , 'narkoba' , 'penggelapan','pencurian' ,'kekerasan') AND kec in ('penjaringan' , 'koja' , 'tanjung priok' , 'pademangan', 'cilincing' , 'kelapa gading')";
         } else {
-            $kat .= "kategori in ( 'perjudian' , 'narkoba' , 'penggelapan','pencurian' ,'kekerasan') AND kec in ('Teluk Jambe Barat', 'Teluk Jambe Timur' , 'Klari' , 'Ciampel' , 'Majalaya' , 'Karawang Barat' , 'Karawang Timur')";
+            $kat .= "CONVERT(VARCHAR,kategori) in ( 'perjudian' , 'narkoba' , 'penggelapan','pencurian' ,'kekerasan') AND kec in ('Teluk Jambe Barat', 'Teluk Jambe Timur' , 'Klari' , 'Ciampel' , 'Majalaya' , 'Karawang Barat' , 'Karawang Timur')";
         }
         $res = " WITH months(MonthNum) AS
         (
@@ -67,9 +67,9 @@ class DashboardModel extends Model
         )
         SELECT m.MonthNum month_num, count(t.kec) total
             FROM months m
-        LEFT OUTER JOIN dbo.admisec_Tcrime AS t ON MONTH(t.tanggal)=m.MonthNum AND 
+        LEFT OUTER JOIN dbo.admisec_Tcrime AS t ON CAST(MONTH(t.tanggal) as int )=m.MonthNum AND 
         YEAR(t.tanggal)='" . $year . "'
-        where t.kota = '" . $kota . "' 
+        where CONVERt(VARCHAR,t.kota) = '" . $kota . "' 
         and $kat
         GROUP BY m.MonthNum";
         return DB::connection('crime')->select($res);
@@ -86,11 +86,15 @@ class DashboardModel extends Model
                 FROM months
             WHERE MonthNum < 12
         )
-        SELECT m.MonthNum month_num, (select count(c.id) from  dbo.admisec_Tcrime c where c.kec = '" . $area . "' and c.kota ='" . $kota . "' and month(c.tanggal) = m.MonthNum and   YEAR(c.tanggal)='" . $year . "'  ) as total 
+        SELECT m.MonthNum month_num, (select count(c.id) from  dbo.admisec_Tcrime c 
+        where 
+        CONVERT(VARCHAR,c.kec) = '" . $area . "' 
+        and CONVERT(VARCHAR,c.kota) ='" . $kota . "' 
+        and month(c.tanggal) = m.MonthNum and   YEAR(c.tanggal)='" . $year . "'  ) as total 
             FROM months m
         LEFT OUTER JOIN dbo.admisec_Tcrime AS t ON MONTH(t.tanggal)=m.MonthNum AND 
         YEAR(t.tanggal)='" . $year . "'
-        and kategori in('perjudian' ,'narkoba' , 'penggelapan' , 'pencurian' , 'kekerasan' )
+        and CONVERT(VARCHAR,kategori) in ('perjudian' ,'narkoba' , 'penggelapan' , 'pencurian' , 'kekerasan' )
         GROUP BY m.MonthNum";
         return DB::connection('crime')->select($q);
     }
@@ -103,9 +107,9 @@ class DashboardModel extends Model
             $month .= "AND MONTH(tanggal) = '$bulan' ";
         }
         $query = DB::connection('crime')->select("SELECT COUNT(kategori) AS total FROM admisec_Tcrime WHERE 
-        kota = '" . $kota . "' 
-        AND kec='" . $kec . "' 
-        AND kategori = '" . $kat . "'
+        CONVERT(VARCHAR,kota) = '" . $kota . "' 
+        AND CONVERT(VARCHAR,kec)='" . $kec . "' 
+        AND CONVERT(VARCHAR,kategori) = '" . $kat . "'
         $month
         AND YEAR(tanggal) = '$year' ");
         if (count($query) > 0) {
@@ -126,7 +130,7 @@ class DashboardModel extends Model
         WHERE kec='$kec'
                 $month
                 AND YEAR(tanggal) = '$tahun'
-                AND kategori in ('perjudian','narkoba','penggelapan','pencurian','kekerasan') ");
+                AND CONVERT(VARCHAR,kategori) in ('perjudian','narkoba','penggelapan','pencurian','kekerasan') ");
         return $query[0]->total;
     }
 }

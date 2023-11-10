@@ -4376,7 +4376,7 @@
         detailGrapSmall2Label.text('Detail Event');
 
         $.ajax({
-            url: '{{ url('srs/internal_source/detail') }}',
+            url: '{{ url('srs/humint_source/detail') }}',
             type: 'POST',
             data: {
                 _token: "{{ csrf_token() }}",

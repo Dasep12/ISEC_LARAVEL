@@ -142,7 +142,7 @@
                             </li>
 
                             <li class="nav-item">
-                                <a href="" class="nav-link">
+                                <a href="{{ url('securityinfo/dashboard') }}" class="nav-link">
                                     <i class="nav-icon fas fa-chart-pie"></i>
                                     <p>
                                         Security Information

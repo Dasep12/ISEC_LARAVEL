@@ -9,7 +9,9 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use AuthHelper;
 use Exception;
+use Illuminate\Contracts\View\View;
 use Modules\Soa\Entities\SoaModel;
+use Modules\Soa\Entities\UploadModel;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx\Rels;
 
 
@@ -122,6 +124,89 @@ class SoaController extends Controller
             }
         } else if ($updateData == 2) {
             return back()->with('failed', 'Update data failed !');
+        }
+    }
+
+    public function form_upload_visitor(): View
+    {
+        return view('soa::form/upload_visitor', [
+            'uri'   => \Request::segment(2),
+            'plant' => UploadModel::getPerPlant(),
+        ]);
+    }
+
+    public function uploads_visitor(Request $req)
+    {
+        DB::connection('soabi')->beginTransaction();
+        try {
+            if ($req->file('file')) {
+                $file             = $req->file('file');
+                $filename         = time() . $file->getClientOriginalName();
+                $file->move(public_path('assets/upload_soa/'), $filename);
+                $path_xlsx        = "assets/upload_soa/" . $filename;
+                $reader           = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+                $spreadsheet      = $reader->load($path_xlsx);
+                $dataSoa          = $spreadsheet->getSheet(0)->toArray();
+                $sheet            = $spreadsheet->getSheet(0);
+
+                for ($r = 0; $r < 5; $r++) {
+                    unset($dataSoa[$r]);
+                }
+
+                $plant  = $sheet->getCell('B1');
+                $SearchPlant = UploadModel::getPerPlantId($plant);
+                $transId = "";
+                $uploadVisitor = array();
+
+                if (count($SearchPlant) <= 0) {
+                    return back()->with('failed', 'Plant not found');
+                } else {
+                    $plantId = $SearchPlant[0]->id;
+                    $headerDatas = array();
+                    foreach ($dataSoa as $dv) {
+                        $date = $dv[0];
+                        // $shift = $dv[1];
+
+                        $cariTanggal = DB::connection('soabi')->select("SELECT * FROM admisecdrep_transaction WHERE area_id = '$plantId' AND shift in (1,2,3) AND report_date ='$date' ");
+                        if (count($cariTanggal) > 0) {
+                            $transId = $cariTanggal[0]->id;
+                        } else {
+                            $headerDatas = array(
+                                'created_on'        => date('Y-m-d H:i:s'),
+                                'created_by'        => Session('npk'),
+                                'status'            => 1,
+                                'disable'           => 0,
+                                'report_date'       => $date,
+                                'shift'             => 1,
+                                'chronology'        => '',
+                                'area_id'           => $plantId
+                            );
+                            DB::connection('soabi')->table('admisecdrep_transaction')->insert($headerDatas);
+                            $transId = DB::connection('soabi')->getPdo()->lastInsertId();
+                        }
+
+                        $visitorValue = $dv[1];
+                        $visitorArray = array(
+                            'people_id'     => '7',
+                            'attendance'    => $visitorValue,
+                            'trans_id'      => $transId,
+                            'created_at'    => date('Y-m-d H:i:s'),
+                            'created_by'    => Session('npk'),
+                            'status'        => 1
+                        );
+                        $uploadVisitor[] = $visitorArray;
+                    }
+                    DB::connection('soabi')->table('admisecdrep_transaction_people')->insert($uploadVisitor);
+
+                    DB::connection('soabi')->commit();
+                    // echo "sukses";
+                    return back()->with('success', 'Upload data successfully!');
+                }
+            }
+        } catch (\Exception $e) {
+            DB::connection('soabi')->rollback();
+            // dd($e);
+            return back()->with('failed', 'Upload data failed !');
         }
     }
 }

@@ -29,6 +29,9 @@ Route::prefix('soa')->group(function () {
     Route::post('/documentCategory', 'DashboardController@documentCategory');
     Route::post('/grapichSetahun', 'DashboardController@grapichSetahun');
 
+    Route::post('/scaterBarang', 'DashboardController@scaterBarang');
+    Route::get('/scaterBarang', 'DashboardController@scaterBarang');
+
     Route::post('/pkbAllPlants', 'DashboardController@pkbAllPlants');
     Route::post('/pkbPlantSetahun', 'DashboardController@pkbPlantSetahun');
     Route::post('/pkbByDepartement', 'DashboardController@pkbByDepartement');
@@ -50,6 +53,7 @@ Route::prefix('soa')->group(function () {
     Route::post('/uploadEgate/uploadFile', 'UploadEgateController@uploads')->name('egate.uploaded');
 
 
+
     // view & from
     Route::get('/forms', 'SoaController@index');
     Route::post('/saveSoa', 'SoaController@saveSoa');
@@ -58,4 +62,6 @@ Route::prefix('soa')->group(function () {
     Route::post('/dataTables', 'SoaController@dataTables');
     Route::post('/detailSoa', 'SoaController@detailSoa');
     Route::post('/deleteData', 'SoaController@deleteData');
+    Route::get('/form_upload_visitor', 'SoaController@form_upload_visitor');
+    Route::post('/uploads_visitor', 'SoaController@uploads_visitor')->name('egate.uploadedVisitor');
 });

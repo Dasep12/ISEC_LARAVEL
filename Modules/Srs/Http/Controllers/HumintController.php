@@ -1091,6 +1091,50 @@ class HumintController extends Controller
             }
         }
     }
+
+    public function exportExcel(Request $req)
+    {
+        $resExport = HumintModel::export($req);
+        // echo '<pre>';print_r($resExport);die();
+
+        header("Content-type: application/vnd-ms-excel");
+        header("Content-Disposition: attachment; filename=internal_source_".date('d_m_Y_H_i_s').".xls");
+        
+        // echo "<h2>Daftar</h2>";
+
+            echo "<table border='1'>";
+            echo "<tr>";
+            echo "<th>No</th>";
+            echo "<th>Event Name</th>";
+            echo "<th>Event Date</th>";
+            echo "<th>No Urut</th>";
+            echo "<th>Area</th>";
+            echo "<th>Target Assets</th>";
+            echo "<th>Risk Source</th>";
+            echo "<th>Risk</th>";
+            echo "<th>Impact Level</th>";
+            echo "</tr>";
+            $no = 1;
+            foreach ($resExport as $key => $row) {
+                echo "<tr>";
+                echo "<td>" . $no . "</td>";
+                echo "<td>" . $row->event_name . "</td>";
+                echo "<td>" . date('d F Y h:i', strtotime($row->event_date)) . "</td>";
+                echo "<td>" . $row->no_urut . "</td>";
+                echo "<td>" . $row->area . "</td>";
+                echo "<td>" . $row->assets . "</td>";
+                echo "<td>" . $row->risksource . "</td>";
+                echo "<td>" . $row->risk . "</td>";
+                echo "<td>" . $row->impact_level . "</td>";
+                echo "</tr>";
+                $no++;
+            }
+            echo '
+            </table>';
+                
+        echo "</body>
+        </html>";
+    }
     
     public function srsExportReportPdf() {
         require_once(public_path().'/assets/vendor/tcpdf/tcpdf.php');

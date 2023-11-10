@@ -33,6 +33,7 @@
         @endif
         <div class="row">
             <div class="col-lg-12">
+
                 <form action="{{ route('egate.uploaded') }}" method="post" enctype="multipart/form-data">
                     <div class="card">
                         @csrf

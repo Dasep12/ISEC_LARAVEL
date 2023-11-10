@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use AuthHelper;
+use Illuminate\Contracts\View\View;
 use Modules\Soa\Entities\UploadModel;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx\Rels;
 
@@ -50,7 +51,6 @@ class UploadEgateController extends Controller
             DB::connection('egate')->beginTransaction();
             try {
                 foreach ($dataEgate as $s) {
-
                     $data = array(
                         'PKBNo'          => $s[0],
                         'PKBCode '       => $s[1],
@@ -110,4 +110,7 @@ class UploadEgateController extends Controller
             // dd($eGate);
         }
     }
+
+
+    
 }

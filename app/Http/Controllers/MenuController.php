@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Session;
 
-use AuthHelper,FormHelper;
+use AuthHelper, FormHelper;
 
 use Modules\Srs\Entities\DashboardModel;
 
@@ -34,8 +34,8 @@ class MenuController extends Controller
         }
 
         // FILTER BULAN
-        $opt_mon= array('' => '-- Choose --');
-        for($i = 1; $i <= 12; $i++) {
+        $opt_mon = array('' => '-- Choose --');
+        for ($i = 1; $i <= 12; $i++) {
             $opt_mon[$i] = date("F", mktime(0, 0, 0, $i, 10));
         }
 
@@ -44,24 +44,23 @@ class MenuController extends Controller
         $firstYear = 2022;
         $lastYear = $firstYear + 5; // + 2
         $opt_yea = array('' => '-- Choose --');
-        for($i=$firstYear;$i<=$lastYear;$i++)
-        {
+        for ($i = $firstYear; $i <= $lastYear; $i++) {
             $opt_yea[$i] = $i;
         }
-        
+
         $data = [
             'link' => '',
             'contents' => 'default',
-            'select_area_filter' => FormHelper::formDropdown('area_fil', $opt_are_fil, '','id="areaFilter" class="form-control" required'),
-            'select_year_filter' => FormHelper::formDropdown('year_filter', $opt_yea, $current_year,'id="yearFilter" class="form-control" required'),
-            'select_month_filter' => FormHelper::formDropdown('month_filter', $opt_mon,'','id="monthFilter" class="form-control" required'),
+            'select_area_filter' => FormHelper::formDropdown('area_fil', $opt_are_fil, '', 'id="areaFilter" class="form-control" required'),
+            'select_year_filter' => FormHelper::formDropdown('year_filter', $opt_yea, $current_year, 'id="yearFilter" class="form-control" required'),
+            'select_month_filter' => FormHelper::formDropdown('month_filter', $opt_mon, '', 'id="monthFilter" class="form-control" required'),
         ];
-        
+
         return view('template/template_first', $data);
     }
 
-	public function srsSoi(Request $req)
-	{
+    public function srsSoi(Request $req)
+    {
         $res_iso = DashboardModel::grap_srs($req);
         $res_iso = json_decode(json_encode($res_iso), true);
         $res_soi = DashboardModel::grap_soi($req);
@@ -73,10 +72,10 @@ class MenuController extends Controller
         );
 
         echo json_encode($arr, true);
-	}
+    }
 
-	public function srsMonth(Request $req)
-	{
+    public function srsMonth(Request $req)
+    {
         $res_trans_month = DashboardModel::grap_trans_month($req);
 
         $gtm_arr = array();
@@ -85,10 +84,10 @@ class MenuController extends Controller
         }
 
         echo json_encode($gtm_arr, true);
-	}
-    
-	public function srsPerPlant(Request $req)
-	{
+    }
+
+    public function srsPerPlant(Request $req)
+    {
         $res = DashboardModel::grap_trans_area($req);
         $res = json_decode(json_encode($res), true);
 
@@ -100,15 +99,15 @@ class MenuController extends Controller
         }
 
         $arr = array(
-    		'plant' => $plantArr,
-    		'total' => $totalArr,
-    	);
+            'plant' => $plantArr,
+            'total' => $totalArr,
+        );
 
         echo json_encode($arr, true);
-	}
+    }
 
-	public function srsRiskSource(Request $req)
-	{
+    public function srsRiskSource(Request $req)
+    {
         $res = DashboardModel::grap_risk_source($req);
         $res = json_decode(json_encode($res), true);
 
@@ -122,10 +121,10 @@ class MenuController extends Controller
         }
 
         echo json_encode($rsouArr, true);
-	}
+    }
 
-	public function srsTargetAssets(Request $req)
-	{
+    public function srsTargetAssets(Request $req)
+    {
         $res = DashboardModel::grap_target_assets($req);
         $res = json_decode(json_encode($res), true);
 
@@ -139,10 +138,10 @@ class MenuController extends Controller
         }
 
         echo json_encode($assArr, true);
-	}
+    }
 
-	public function srsRisk(Request $req)
-	{
+    public function srsRisk(Request $req)
+    {
         $res = DashboardModel::grap_risk($req);
         $res = json_decode(json_encode($res), true);
 
@@ -156,5 +155,10 @@ class MenuController extends Controller
         }
 
         echo json_encode($risArr, true);
-	}
+    }
+
+
+    public function test(Request $req)
+    {
+    }
 }

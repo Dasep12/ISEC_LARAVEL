@@ -12,7 +12,11 @@
 */
 
 Route::prefix('crime')->group(function () {
-    Route::get('/dashboard', 'CrimeController@index');
+    Route::get('/tester', 'CrimeController@tester');
+
+
+    Route::get('/dashboard', 'CrimeController@index_v2');
+    Route::get('/dashboard_v2', 'CrimeController@index_v2');
 
     Route::post('/graphicJakartaSetahun', 'CrimeController@graphicJakartaSetahun');
     Route::post('/graphicKarawangSetahun', 'CrimeController@graphicKarawangSetahun');

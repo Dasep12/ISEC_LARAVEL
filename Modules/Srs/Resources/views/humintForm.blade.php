@@ -214,6 +214,11 @@
                                                     <label for="">Date Range</label>
                                                     <input type="text" id="datePickerFilter" class="form-control" name="date_filter" autocomplete="off" required>
                                                 </div>
+                                                
+                                                <div class="form-group col-md-2">
+                                                    <label for="statusFilter">Status</label>
+                                                    <?= $select_status_filter; ?>
+                                                </div>
                                             </div>
 
                                             <div class="form-row">
@@ -322,11 +327,35 @@
     </div>
 </div>
 
+<!-- Notif Modal -->
+<div class="modal fade" id="notifModal" tabindex="-1" aria-labelledby="notifModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <!-- <h5 id="notifMsg" class="modal-title"></h5> -->
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body border-0 text-center">
+                <div class="bg-white d-inline-block mb-3 p-2 rounded-circle">
+                    <i class="icon fas fa-check px-1 text-success" style="font-size: 2.5rem;"></i>
+                </div>
+                <h5 id="notifMsg">Berhasil menyetujui data.</h5>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Notif Modal -->
+
 <!-- Approve Modal -->
 <div class="modal fade" id="approveModal" tabindex="-1" aria-labelledby="approveModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form action="humint_source/approve" method="POST">
+            <form id="frm-approve">
                 @csrf
                 <div class="modal-body">
                     <h5>Are you sure to Approve?</h5>
@@ -335,7 +364,7 @@
                 <div class="modal-footer border-0">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     <input id="idApprove" type="text" name="id" hidden>
-                    <button type="submit" class="btn btn-danger px-4">Yes</button>
+                    <button type="button" id="btn-approve" class="btn btn-success px-4">Yes</button>
                 </div>
             </form>
         </div>
@@ -415,6 +444,7 @@
                     data.areafilter = $('#areaFilter').val();
                     data.yearfilter = $('#yearFilter').val();
                     data.datefilter = $('#datePickerFilter').val();
+                    data.statusfilter = $('#statusFilter').val();
                 }
             },
             "columnDefs": [
@@ -511,6 +541,38 @@
             var fileName = $(this).val().match(/[^\\/]*$/)[0];
             $('#attach').parent().children('label').text(fileName);
             // $('#attach').after('<span class="d-block w-100 mt-2">'+fileName+'</span>');
+        });
+
+        $('#btn-approve').click(function() {
+            var id = $('#idApprove').val()
+            
+            $.ajax({
+                url: '{{ url("srs/humint_source/approve") }}',
+                type: 'POST',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    id: id,
+                },
+                cache: false,
+                beforeSend: function() {
+                    
+                },
+                success : function(data){
+                    var res = JSON.parse(data);
+                    
+                    if(res.code == '00')
+                    {
+                        $('#approveModal').modal('hide');
+                        table.ajax.reload()
+                        $('#notifModal').modal('show');
+                        $('#notifMsg').text(res.msg)
+                    }
+                    else
+                    {
+                        alert('Terjadi kesalahan')
+                    }
+                }
+            });
         });
 
         $('#detailModal').on('shown.bs.modal', function (e) {
@@ -888,10 +950,11 @@
 
         $('#exportExcel').click(function(e) {
             var area = $('#areaFilter').val();
+            var year = $('#yearFilter').val();
             var datefilter = $('#datePickerFilter').val();
-            var param = "area="+area+"&daterange="+datefilter;
+            var param = "area="+area+"&year="+year+"&daterange="+datefilter;
             var link = '{{ url("srs/humint_source/export_excel?") }}'+param;
-            console.log(area)
+            // console.log(area)
             window.open(link, '_blank');
             // fetch('analitic/srs/humint_source/export_excel')
             // .then(resp => resp.blob())

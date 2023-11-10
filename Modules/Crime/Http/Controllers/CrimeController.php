@@ -5,6 +5,7 @@ namespace Modules\Crime\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Modules\Crime\Entities\DashboardModel;
 
 
@@ -15,6 +16,13 @@ class CrimeController extends Controller
      * @return Renderable
      */
     public function index()
+    {
+        return view('crime::dashboard/dashboard', [
+            'uri'   => \Request::segment(2),
+        ]);
+    }
+
+    public function index_v2()
     {
         return view('crime::dashboard/index', [
             'uri'   => \Request::segment(2),
@@ -111,7 +119,6 @@ class CrimeController extends Controller
         // echo json_encode($datas);
         return response()->json($datas);
     }
-
 
     public function mapingKategoriJakut(Request $req)
     {
@@ -228,37 +235,48 @@ class CrimeController extends Controller
         return response()->json($data);
     }
 
+
     public function mapJakut(Request $req)
     {
         $bulan = $req->input("bulan");
+        // $tahun = 2023;
         $tahun = $req->input("tahun");
-        $data = array(
-            ['name' => 'Pademangan', 'total' => DashboardModel::totalCrimePerKecamatan("Pademangan", $bulan, $tahun)],
-            ['name' => 'Cilincing', 'total' => DashboardModel::totalCrimePerKecamatan("Cilincing", $bulan, $tahun)],
-            ['name' => 'Penjaringan', 'total' => DashboardModel::totalCrimePerKecamatan("Penjaringan", $bulan, $tahun)],
-            ['name' => 'Tanjung Priok', 'total' => DashboardModel::totalCrimePerKecamatan("Tanjung Priok", $bulan, $tahun)],
-            ['name' => 'Koja', 'total' => DashboardModel::totalCrimePerKecamatan("Koja", $bulan, $tahun)],
-            ['name' => 'Kelapa Gading', 'total' => DashboardModel::totalCrimePerKecamatan("Kelapa Gading", $bulan, $tahun)],
-        );
-        // echo json_encode($data);
-        return response()->json($data);
+        $criteria = ['Cilincing', 'Kelapa Gading', 'Koja', 'Pademangan', 'Penjaringan', 'Tanjung Priok',];
+        $res = array();
+        for ($i = 0; $i < count($criteria); $i++) {
+            $data = array('label' => $criteria[$i], 'data' => DashboardModel::totalCrimePerKecamatan($criteria[$i], $bulan, $tahun));
+            $res[] = $data;
+        }
+        return response()->json($res);
     }
+
 
     public function mapKarawang(Request $req)
     {
-        $bulan = $req->post("bulan");
-        $tahun = $req->post("tahun");
-        $data = array(
-            ['name' => 'Teluk Jambe Barat', 'total' => DashboardModel::totalCrimePerKecamatan("teluk jambe barat", $bulan, $tahun)],
-            ['name' => 'Teluk Jambe Timur', 'total' => DashboardModel::totalCrimePerKecamatan("Teluk Jambe Timur", $bulan, $tahun)],
-            ['name' => 'Klari', 'total' => DashboardModel::totalCrimePerKecamatan("Klari", $bulan, $tahun)],
-            ['name' => 'Ciampel', 'total' => DashboardModel::totalCrimePerKecamatan("Ciampel", $bulan, $tahun)],
-            ['name' => 'Majalaya', 'total' => DashboardModel::totalCrimePerKecamatan("majalaya", $bulan, $tahun)],
-            ['name' => 'Karawang Barat', 'total' => DashboardModel::totalCrimePerKecamatan("karawang barat", $bulan, $tahun)],
-            ['name' => 'Karawang Timur', 'total' => DashboardModel::totalCrimePerKecamatan("karawang timur", $bulan, $tahun)],
-        );
-        // header('Content-Type: application/json; charset=utf-8');
-        // echo json_encode($data);
-        return response()->json($data);
+        $bulan = $req->input("bulan");
+        // $tahun = 2023;
+        $tahun = $req->input("tahun");
+        $criteria = ['Karawang Barat', 'Karawang Timur', 'Teluk Jambe Barat', 'Teluk Jambe Timur', 'Ciampel', 'Klari', 'Majalaya'];
+        $res = array();
+        for ($i = 0; $i < count($criteria); $i++) {
+            $data = array('label' => $criteria[$i], 'data' => DashboardModel::totalCrimePerKecamatan($criteria[$i], $bulan, $tahun));
+            $res[] = $data;
+        }
+        return response()->json($res);
+    }
+
+
+    public function tester(Request $req)
+    {
+        $year = $req->input("year");
+        $year = 2023;
+        $kota = "Karawang";
+        $area = "Ciampel";
+
+
+        $res = DashboardModel::crimePerKecamatanSetahun($area, $kota, $year);
+
+
+        return response()->json($res);
     }
 }

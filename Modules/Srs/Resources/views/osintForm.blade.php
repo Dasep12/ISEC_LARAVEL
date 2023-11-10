@@ -57,6 +57,7 @@
                         <?php } ?>
                         <button class="nav-link active" id="nav-profile-tab" data-toggle="tab" data-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">View Data</button>
                         <button class="nav-link " id="nav-searchdata-tab" data-toggle="tab" data-target="#nav-searchdata" type="button" role="tab" aria-controls="nav-searchdata" aria-selected="false">Search Data</button>
+                        <button class="nav-link" id="nav-searchprofile-tab" data-toggle="tab" data-target="#nav-searchprofile" type="button" role="tab" aria-controls="nav-searchprofile" aria-selected="false">Search Profile</button>
                     </div>
                 </nav>
 
@@ -429,6 +430,41 @@
                         </div>
                     </div>
                     <!-- SEARCH DATA -->
+
+                    <!-- SEARCH PROFILE -->
+                    <div class="tab-pane fade" id="nav-searchprofile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                       <div class="card">
+                            <div class="card-body px-lg-4 py-5">
+                                <form id="formSearchProfile" method="post" action="#">
+                                    <div class="row">
+                                        <div class="col-12 text-center">
+                                            <h1 class="text-white">SEARCH PROFILE</h1>
+                                        </div>
+                                        <div class="col-8 mx-auto">
+                                            <div class="dropdown mb-2">
+                                                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><span class="dropdown-text"> Select Target</span>
+                                                <span class="caret"></span></button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="#"><label><input type="checkbox" class="selectall" /><span class="select-text"> Select</span> All</label></a></li>
+                                                    <li class="divider"></li>
+                                                    <li><a class="option-link" href="#"><label><input name='options[]' type="checkbox" class="option justone" value='Option 1 '/> Instagram</label></a></li>
+                                                    <li><a href="#"><label><input name='options[]' type="checkbox" class="option justone" value='Option 2 '/> Facebook</label></a></li>
+                                                    <li><a href="#"><label><input name='options[]' type="checkbox" class="option justone" value='Option 3 '/> Tiktok</label></a></li>
+                                                </ul>
+                                            </div>
+
+                                            <!-- <input class="form-control" type="text" name="" placeholder="Type something..."> -->
+                                            <div class="input-group">
+                                                <input type="search" class="form-control rounded" name="keyword_profile" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+                                                <button type="submit" class="btn btn-primary">search</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- SEARCH PROFILE -->
                 </div>
             </div>
         </div>
@@ -514,6 +550,7 @@
 </div>
 
 <script type="text/javascript" src="{{ url('assets/vendor/tinymce/tinymce.min.js') }}"></script>
+<script type="text/javascript" src="{{ url('assets/dist/js/popper.min.js') }}"></script>
 
 <script type="text/javascript">
     // TinyMCE //
@@ -541,7 +578,61 @@
         alert(image);
     }
 
+    function animateLoading(mode='') {
+        return `
+            <div id="loadingProgress" class="loader d-flex w-100 justify-content-center py-3 `+mode+`">
+                <div class="spinner-grow text-primary " role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="spinner-grow text-secondary ml-1" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="spinner-grow text-success ml-1 " role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="spinner-grow text-danger ml-1" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="spinner-grow text-warning ml-1" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="spinner-grow text-info ml-1" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="spinner-grow text-dark ml-1" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        `;
+    }
+
     $(document).ready(function() {
+        $('.selectall').click(function() {
+            if ($(this).is(':checked')) {
+                $('.option').prop('checked', true);
+                var total = $('input[name="options[]"]:checked').length;
+                $(".dropdown-text").html('Selected target (' + total + ')');
+                $(".select-text").html(' Deselect');
+            } else {
+                $('.option').prop('checked', false);
+                $(".dropdown-text").html('Selected target (0)');
+                $(".select-text").html(' Select');
+            }
+        });
+
+        $("input[type='checkbox'].justone").change(function(){
+            var a = $("input[type='checkbox'].justone");
+                if(a.length == a.filter(":checked").length){
+                    $('.selectall').prop('checked', true);
+                    $(".select-text").html(' Deselect');
+                }
+                else {
+                    $('.selectall').prop('checked', false);
+                    $(".select-text").html(' Select');
+                }
+            var total = $('input[name="options[]"]:checked').length;
+            $(".dropdown-text").html('Selected target (' + total + ')');
+        });
 
         // $('#datetimepicker2').datepicker({
         //     // defaultDate: true,
@@ -574,6 +665,7 @@
             $(this).parent('div').remove();
             x--;
         });
+        
         //datatables
         table = $('#tableOsint').DataTable({
             "processing": true,
@@ -762,7 +854,42 @@
                     }
                 });
             }
+        })
 
+        $('#formSearchProfile').on('submit', function (e) {
+            e.preventDefault();
+
+            var data = $(this).serialize();
+            var keyword = $("input[name='keyword_profile']").val();
+            
+            if(keyword != '')
+            {
+                $.ajax({
+                    url: '<?= url('srs/osint_profile/search'); ?>',
+                    type: 'POST',
+                    data: {
+                        keyword_profile: keyword,
+                        _token: "{{ csrf_token() }}"
+                    },
+                    cache: false,
+                    
+                    beforeSend: function() {
+                        $('.search-result-profile').remove();
+                        $('#searchResultProfile').remove();
+                        $('#formSearchProfile input').parents('.col-8').after(animateLoading(''));
+                    },
+                    success : function(data){
+                        $('#loadingProgress').remove();
+                        $('#formSearchProfile input').parents('#formSearchProfile').append(data);
+                    },
+                    error: function(){
+                        $('#loadingProgress').remove();
+                        $('#formSearchProfile input').parents('#formSearchProfile').append(`
+                            <span class="search-result-profile d-flex justify-content-center text-white mt-4">Oops! Something went wrong.</span>
+                        `);
+                    }
+                });
+            }
         })
 
         $("#detailSearchModal").on('hidden.bs.modal', function () {

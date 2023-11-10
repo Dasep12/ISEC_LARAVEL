@@ -244,9 +244,12 @@ class HumintModel extends Model
         $areaFilter = $req->input('areafilter');
         $yearFilter = $req->input('yearfilter');
         $datefilter = $req->input('datefilter');
+        $statusfilter = $req->input('statusfilter');
         $searchFilter = $req->input('search.value');
         $dir_val = $req->input('order.0.dir');
         $npk = AuthHelper::user_npk();
+
+        // dd($statusfilter);
 
         $q = DB::connection('srsbi')->table('dbo.admiseciso_transaction AS a')->select('a.id', 'a.event_name','a.event_date','a.impact_level','a.status','asu.title AS area','rss.title AS risk_source','ass.title AS assets','ris.title AS risk');
         $q->join('dbo.admiseciso_area_sub AS asu', 'asu.id', '=', 'a.area_id');
@@ -254,6 +257,7 @@ class HumintModel extends Model
         $q->join('dbo.admiseciso_assets_sub AS ass', 'ass.id', '=', 'a.assets_id');
         $q->join('dbo.admiseciso_risk_sub AS ris', 'ris.id', '=', 'a.risk_id');
         $q->where('a.disable','=',0);
+        
         if(AuthHelper::is_section_head())
         {
             $q->whereRaw('a.area_id IN (SELECT aas.id
@@ -262,7 +266,7 @@ class HumintModel extends Model
                 INNER JOIN dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
             WHERE aau.npk='.$npk.')');
         }
-        if(AuthHelper::is_author('ALLAREA'))
+        if(AuthHelper::is_author())
         {
             $q->where('a.created_by', $npk);
         }
@@ -277,6 +281,8 @@ class HumintModel extends Model
             $end_date = date('Y-m-d H:i', strtotime(explode(';', $date_filter)[1]));
             $q->whereRaw("a.event_date BETWEEN '".$start_date."' AND '".$end_date."'");
         }
+        // STATUS
+        if($statusfilter !== '' && ($statusfilter == '0' || $statusfilter == '1')) $q->where('a.status','=',$statusfilter);
 
         if($searchFilter)
         {
@@ -349,7 +355,7 @@ class HumintModel extends Model
                 $row[] = $item->risk;
                 $row[] = $item->impact_level;
 
-                $edtBtn = AuthHelper::is_super_admin()  || (isset($access_modul->edt) && $access_modul->edt == 1) ? '<a class="btn btn-sm btn-info" href="'.url('srs/humint_source/edit/'.$item->id).'">
+                $edtBtn = AuthHelper::is_super_admin() ? '<a class="btn btn-sm btn-info" href="'.url('srs/humint_source/edit/'.$item->id).'">
                         <i class="fa fa-edit"></i>
                 </a> ' : '';
                 $apprBtn = AuthHelper::is_super_admin() || (isset($access_modul->apr) && $access_modul->apr == 1) ? $item->status == 1 ? '<button class="btn btn-sm btn-success" title="Approved">
@@ -663,6 +669,53 @@ class HumintModel extends Model
             DB::connection('srsbi')->rollback();
             return '01';
         }
+    }
+
+    public static function export($req) 
+    {
+        $area = $req->input('area');
+        $year = $req->input('year');
+
+        $q = "
+            SELECT a.id, a.event_name, a.event_date, a.no_urut, a.reporter, a.chronology, vfi.level financial_level, vop.level operational_level, vre.level reputation_level, sdm.level sdm_level, a.impact_level, a.attach_file_1, asu.title area, asu1.title area_sub1, asu2.title area_sub2, asu3.title area_sub3, ass.title assets, ass1.title assets_sub1, ass2.title assets_sub2, rss.title risksource, rss1.title risksource1, rss2.title risksource2, ris.title risk, ris1.title risk1, ris2.title risk2
+            FROM admiseciso_transaction a
+            INNER JOIN admiseciso_area_sub asu ON asu.id=a.area_id
+            INNER JOIN admiseciso_risk_level rle ON rle.id=a.risk_level_id
+            INNER JOIN admiseciso_vurnability_level vfi ON vfi.id=a.financial_level
+            INNER JOIN admiseciso_vurnability_level vop ON vop.id=a.operational_level
+            INNER JOIN admiseciso_vurnability_level vre ON vre.id=a.reputation_level
+            INNER JOIN admiseciso_vurnability_level sdm ON sdm.id=a.sdm_level
+            INNER JOIN admiseciso_area_sub asu1 ON asu1.id=a.area_sub1_id
+            INNER JOIN admiseciso_area_sub asu2 ON asu2.id=a.area_sub2_id
+            LEFT JOIN admiseciso_area_sub asu3 ON asu3.id=a.area_sub3_id
+            INNER JOIN admiseciso_assets_sub ass ON ass.id=a.assets_id
+            LEFT JOIN admiseciso_assets_sub ass1 ON ass1.id=a.assets_sub1_id
+            LEFT JOIN admiseciso_assets_sub ass2 ON ass2.id=a.assets_sub2_id
+            INNER JOIN admiseciso_risksource_sub rss ON rss.id=a.risk_source_id
+            LEFT JOIN admiseciso_risksource_sub rss1 ON rss1.id=a.risksource_sub1_id
+            LEFT JOIN admiseciso_risksource_sub rss2 ON rss2.id=a.risksource_sub2_id
+            INNER JOIN admiseciso_risk_sub ris ON ris.id=a.risk_id
+            LEFT JOIN admiseciso_risk_sub ris1 ON ris1.id=a.risk_sub1_id
+            LEFT JOIN admiseciso_risk_sub ris2 ON ris2.id=a.risk_sub2_id
+        ";
+
+        $q .= "WHERE a.disable=0";
+        
+        // AREA
+        if(isset($area) && ($area !== 'undefined' || $area !== ''))  $q .= " AND a.area_id='$area'";
+        // YEAR
+        if(isset($year) && ($year !== 'undefined' || $year !== '')) $q .= " AND year(a.event_date) = {$year}";
+        // DATE RANGE
+        if($date_filter = str_replace(' - ', ';', $req->input('daterange')))
+        {
+            // var_dump($this->input->get('daterange'));die();
+            $start_date = date('Y-m-d H:i', strtotime(explode(';', $date_filter)[0]));
+            $end_date = date('Y-m-d H:i', strtotime(explode(';', $date_filter)[1]));
+            $q .= " AND a.event_date BETWEEN '".$start_date."' AND '".$end_date."'";
+        }
+        
+        $res = DB::connection('srsbi')->select($q);
+        return $res;
     }
 
     public static function detail($req) 

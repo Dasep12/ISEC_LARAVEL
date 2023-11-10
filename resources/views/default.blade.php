@@ -21,8 +21,8 @@
 </style>
 
 <section class="content-header">
-	<div class="container-fluid">
-		<!-- <div class="row mb-2">
+    <div class="container-fluid">
+        <!-- <div class="row mb-2">
 			<div class="col-sm-6">
 				<h1>Dashboard</h1>
 			</div>
@@ -32,13 +32,13 @@
 				</ol>
 			</div>
 		</div> -->
-	</div><!-- /.container-fluid -->
+    </div><!-- /.container-fluid -->
 </section>
 
 <section class="content">
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-lg-12 filter sticky-top-OFF">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 filter sticky-top-OFF">
                 <div class="card cardIn2">
                     <div class="card-body">
                         <form id="form-filter" class="form-horizontal">
@@ -66,97 +66,105 @@
                     </div>
                 </div>
             </div>
-		</div>
+        </div>
 
-		<div class="row">
-			<div class="col-lg-12">
-				<div class="card">
-					<div class="card-body">
-						<div class="row">
-							<div class="col-lg-12">
-								<div class="row">
-									<div class="col-sm-4 col-md-4 mb-5 mb-md-0" style="min-height: 350px;">
-										<canvas id="grapSoi" style="width:350px; height:350px"></canvas>
-									</div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="col-sm-4 col-md-4 mb-5 mb-md-0" style="min-height: 350px;">
+                                        <canvas id="grapSoi" style="width:350px; height:350px"></canvas>
+                                    </div>
 
-									<div class="col-sm-4 col-md-4 px-3 mt-1 mt-md-0 mx-auto-OFF py-4-OFF px-5-OFF" style="min-height: 350px;">
-										<h5 class="text-center">Index Resiko ADM</h5>
-										<input id="indexSoi" class="form-control form-control-lg text-center" type="text" placeholder="" disabled>
+                                    <canvas id="trendGrapSoiHelper" class="d-none" style="width:350px; height:350px"></canvas>
 
-										<div id="isoDesc" class="card mt-3" style="display: none;">
-											<div class="card-body">
-												<dl class="row text-white text-left">
-													<dt class="col-sm-1">-</dt>
-													<dd class="col-sm-11">Masyarakat Sunter tidak kondusif (pandemic ke endemic) dan program CSR - External</dd>
+                                    <div class="col-sm-4 col-md-4 px-3 mt-1 mt-md-0 mx-auto-OFF py-4-OFF px-5-OFF" style="min-height: 350px;">
+                                        <div id="containerIndexSoi" style="display: none;">
+                                            <h5 class="text-center">Index Resiko ADM</h5>
+                                            <input id="indexSoi" class="form-control form-control-lg text-center" type="text" placeholder="" disabled>
 
-													<dt class="col-sm-1">-</dt>
-													<dd class="col-sm-11">Narkoba (Pembubaran kampung Bahari) - External</dd>
-													
-													<dt class="col-sm-1">-</dt>
-													<dd class="col-sm-11">Pembangunan KAP 2 - Internal</dd>
-													
-													<dt class="col-sm-1">-</dt>
-													<dd class="col-sm-11">Serangan Ransomware - Internal</dd>
-												</dl>
-                                                <a class="btn bg-white float-right" target="_blank" href="{{ url('srs/humint_source/srsExportReportPdf') }}">Export</a>
-											</div>
-										</div>
-									</div>
+                                            <div id="isoDesc" class="card mt-3" style="display: none;">
+                                                <div class="card-body">
+                                                    <dl class="row text-white text-left">
+                                                        <dt class="col-sm-1">-</dt>
+                                                        <dd class="col-sm-11">Masyarakat Sunter tidak kondusif (pandemic ke endemic) dan program CSR - External</dd>
 
-									<div class="col-sm-4 col-lg-4" style="min-height: 350px;">
-										<canvas id="barDonatAll"></canvas>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+                                                        <dt class="col-sm-1">-</dt>
+                                                        <dd class="col-sm-11">Narkoba (Pembubaran kampung Bahari) - External</dd>
 
-		<div class="row">
-			<div class="col-sm-8 col-lg-8">
-				<div class="card" style="height: 330px;">
-					<div class="card-body">
-						<canvas id="srsPerMonthLine"></canvas>
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-4 col-lg-4">
-				<div class="card" style="height: 330px;">
-					<div class="card-body">
-						<canvas id="srsPerPlantDough"></canvas>
-					</div>
-				</div>
-			</div>
-		</div>
+                                                        <dt class="col-sm-1">-</dt>
+                                                        <dd class="col-sm-11">Pembangunan KAP 2 - Internal</dd>
 
-		<div class="row">
-			<div class="col-sm-4 col-lg-4">
-				<div class="card" style="height: 390px;">
-					<div class="card-body text-center">
-						<h5>Risk Source</h5>
-						<canvas id="rsoChart"></canvas>
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-4 col-lg-4">
-				<div class="card" style="height: 390px;">
-					<div class="card-body text-center">
-						<h5>Target Assets</h5>
-						<canvas id="assetChart"></canvas>
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-4 col-lg-4">
-				<div class="card" style="height: 390px;">
-					<div class="card-body text-center">
-						<h5>Risk</h5>
-						<canvas id="riskChart"></canvas>
-					</div>
-				</div>
-			</div>
-		</div>
+                                                        <dt class="col-sm-1">-</dt>
+                                                        <dd class="col-sm-11">Serangan Ransomware - Internal</dd>
+                                                    </dl>
+                                                    <!-- <a class="btn bg-white float-right" target="_blank" href="{{ url('srs/humint_source/srsExportReportPdf') }}">Export</a> -->
+                                                </div>
+                                            </div>
+
+                                            <div class="mt-2">
+                                                <button id="exportJs" class="btn px-4 bg-white float-right">Export</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-4 col-lg-4" style="min-height: 350px;">
+                                        <canvas id="barDonatAll"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-8 col-lg-8">
+                <div class="card" style="height: 330px;">
+                    <div class="card-body">
+                        <canvas id="srsPerMonthLine"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4 col-lg-4">
+                <div class="card" style="height: 330px;">
+                    <div class="card-body">
+                        <canvas id="srsPerPlantDough"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4 col-lg-4">
+                <div class="card" style="height: 390px;">
+                    <div class="card-body text-center">
+                        <h5>Risk Source</h5>
+                        <canvas id="rsoChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4 col-lg-4">
+                <div class="card" style="height: 390px;">
+                    <div class="card-body text-center">
+                        <h5>Target Assets</h5>
+                        <canvas id="assetChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4 col-lg-4">
+                <div class="card" style="height: 390px;">
+                    <div class="card-body text-center">
+                        <h5>Risk</h5>
+                        <canvas id="riskChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="row">
             <div class="col-lg-12">
@@ -185,99 +193,125 @@
                 </div>
             </div>
         </div>
-		
-		<div class="row">
-			<div class="col-12">
-				<div class="card cardIn2">
-					<div class="card-body">
-						<div class="row">
-							<div class="col-sm-5 col-lg-5 pt-md-4 text-center">
-								<div class="row">
-									<div class="col-12 mb-3">
-										<h2 class="text-white title-dashboard">Security Operational Index</h2>
-									</div>
-									<div class="col-10 col-sm-6 mx-auto mx-md-0 col-lg-6">
-										<div class="info-box" style="background:rgb(255 255 255 / 13%)">
-											<span style="background:rgba(0, 176, 80, 1)" class="info-box-icon elevation-1">
-												<img style="height:60%" src="./assets/images/icon/people-white.png">
-											</span>
-											<div class="info-box-content  text-white">
-												<span class="info-box-text">
-													PEOPLE
-												</span>
-												<span id="avgPeople" class="info-box-number">
-													0.00
-												</span>
-											</div>
-										</div>
-									</div>
 
-									<div class="col-10 col-sm-6 mx-auto mx-md-0 col-lg-6">
-										<div class="info-box" style="background:rgb(255 255 255 / 13%)">
-											<span style="background:rgba(0, 176, 240, 1)" class="info-box-icon elevation-1">
-												<img style="height:60%" src="./assets/images/icon/system-white.png">
-											</span>
-											<div class="info-box-content text-white">
-												<span class="info-box-text">
-													SYSTEM
-												</span>
-												<span id="avgSystem" class="info-box-number">
-													0.00
-												</span>
-											</div>
-										</div>
-									</div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card cardIn2">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-5 col-lg-5 pt-md-4 text-center">
+                                <div class="row">
+                                    <div class="col-12 mb-3">
+                                        <h2 class="text-white title-dashboard">Security Operational Index</h2>
+                                    </div>
+                                    <div class="col-10 col-sm-6 mx-auto mx-md-0 col-lg-6">
+                                        <div class="info-box" style="background:rgb(255 255 255 / 13%)">
+                                            <span style="background:rgba(0, 176, 80, 1)" class="info-box-icon elevation-1">
+                                                <img style="height:60%" src="./assets/images/icon/people-white.png">
+                                            </span>
+                                            <div class="info-box-content  text-white">
+                                                <span class="info-box-text">
+                                                    PEOPLE
+                                                </span>
+                                                <span id="avgPeople" class="info-box-number">
+                                                    0.00
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
 
-									<div class="col-10 col-sm-6 mx-auto mx-md-0 col-lg-6">
-										<div class="info-box" style="background:rgb(255 255 255 / 13%)">
-											<span style="background:rgba(255, 0, 0, 1)" class="info-box-icon elevation-1">
-												<img style="height:60%" src="./assets/images/icon/device-white.png">
-											</span>
-											<div class="info-box-content  text-white">
-												<span class="info-box-text">
-													DEVICE
-												</span>
-												<span id="avgDevice" class="info-box-number">
-													0.00
-												</span>
-											</div>
-										</div>
-									</div>
+                                    <div class="col-10 col-sm-6 mx-auto mx-md-0 col-lg-6">
+                                        <div class="info-box" style="background:rgb(255 255 255 / 13%)">
+                                            <span style="background:rgba(0, 176, 240, 1)" class="info-box-icon elevation-1">
+                                                <img style="height:60%" src="./assets/images/icon/system-white.png">
+                                            </span>
+                                            <div class="info-box-content text-white">
+                                                <span class="info-box-text">
+                                                    SYSTEM
+                                                </span>
+                                                <span id="avgSystem" class="info-box-number">
+                                                    0.00
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
 
-									<div class="col-10 col-sm-6 mx-auto mx-md-0 col-lg-6">
-										<div class="info-box" style="background:rgb(255 255 255 / 13%)">
-											<span style="background:rgba(112, 48, 160, 1)" class="info-box-icon elevation-1">
-												<img style="height:60%" src="./assets/images/icon/network-white.png">
-											</span>
-											<div class="info-box-content  text-white">
-												<span class="info-box-text">
-													NETWORKING
-												</span>
-												<span id="avgNetwork" class="info-box-number">
-													0.00
-												</span>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
+                                    <div class="col-10 col-sm-6 mx-auto mx-md-0 col-lg-6">
+                                        <div class="info-box" style="background:rgb(255 255 255 / 13%)">
+                                            <span style="background:rgba(255, 0, 0, 1)" class="info-box-icon elevation-1">
+                                                <img style="height:60%" src="./assets/images/icon/device-white.png">
+                                            </span>
+                                            <div class="info-box-content  text-white">
+                                                <span class="info-box-text">
+                                                    DEVICE
+                                                </span>
+                                                <span id="avgDevice" class="info-box-number">
+                                                    0.00
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
 
-							<div class="col-sm-7 col-lg-7 text-white">
-								<canvas id="lineSoiAvgMonth"></canvas>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+                                    <div class="col-10 col-sm-6 mx-auto mx-md-0 col-lg-6">
+                                        <div class="info-box" style="background:rgb(255 255 255 / 13%)">
+                                            <span style="background:rgba(112, 48, 160, 1)" class="info-box-icon elevation-1">
+                                                <img style="height:60%" src="./assets/images/icon/network-white.png">
+                                            </span>
+                                            <div class="info-box-content  text-white">
+                                                <span class="info-box-text">
+                                                    NETWORKING
+                                                </span>
+                                                <span id="avgNetwork" class="info-box-number">
+                                                    0.00
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-7 col-lg-7 text-white">
+                                <canvas id="lineSoiAvgMonth"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="row">
             <div class="col-sm-9 col-lg-9">
                 <div class="card">
                     <div class="card-body">
                         <div class="col-lg-12">
+
                             <div style="height: 362px;">
-                                <div id="soa_allMonth"></div>
+                                <div id="loaderSoa" style="display: none;">
+                                    <div class="loader d-flex w-100 justify-content-center py-3 ` + mode + `">
+                                        <div class="spinner-grow text-primary " role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                        <div class="spinner-grow text-secondary ml-1" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                        <div class="spinner-grow text-success ml-1 " role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                        <div class="spinner-grow text-danger ml-1" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                        <div class="spinner-grow text-warning ml-1" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                        <div class="spinner-grow text-info ml-1" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                        <div class="spinner-grow text-dark ml-1" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="soa_Setahun"></div>
                             </div>
                         </div>
                     </div>
@@ -308,7 +342,7 @@
             </div>
         </div>
 
-	</div>
+    </div>
 </section>
 
 <div class="modal fade" id="detailGrap" tabindex="-1" role="dialog" aria-labelledby="detailGrapLabel" aria-hidden="true">
@@ -395,6 +429,8 @@
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
+<script src="{{ asset('assets/vendor/jspdf/dist/jspdf.umd.min.js') }}"></script>
+
 <script type="text/javascript">
     var field = [
         topIndexSmallBody = $("#topIndexSmall .modal-body"),
@@ -408,12 +444,12 @@
         peopleTotal = $("#countPeople"),
         vehicleTotal = $("#countVehicle"),
         materialTotal = $("#countDocument"),
-        currYear = '{!! date('Y') !!}',
-        currMonth = '{!! date('m') !!}',
+        currYear = "{!! date(' Y ') !!} ",
+        currMonth = "{!! date(' m ') !!}",
     ]
 
     // Fungsi multiple modal untuk scrollable
-    $('.modal').on("hidden.bs.modal", function (e) {
+    $('.modal').on("hidden.bs.modal", function(e) {
         if ($('.modal:visible').length) {
             $('body').addClass('modal-open');
         }
@@ -422,20 +458,20 @@
     // COLOR PALETTES
     var colorPalette = ["#0074D9", "#FF4136", "#2ECC40", "#FF851B", "#7FDBFF", "#B10DC9", "#FFDC00", "#3D9970", "#001f3f", "#39CCCC", "#85144b", "#F012BE", "#111111", "#AAAAAA", "#01FF70"];
 
-	// LOADING
-	loadingAllBox();
+    // LOADING
+    loadingAllBox();
+
     function loadingAllBox() {
-        var allBoxChart = document.querySelectorAll('#grapSoi, #indexSoi, #barDonatAll, #srsPerMonthLine, #lineSoiAvgMonth, #srsPerPlantDough, #rsoChart, #assetChart, #lineSoiAvgAreaMonth, #lineSoiAvgAreaPillar, #riskChart, #osintLinePlantChart, #pie3dOsint, #osintDoughnutMonth, #soa_allMonth');
-        allBoxChart.forEach(function (el)
-        {
+        var allBoxChart = document.querySelectorAll('#grapSoi, #containerIndexSoi, #barDonatAll, #srsPerMonthLine, #lineSoiAvgMonth, #srsPerPlantDough, #rsoChart, #assetChart, #lineSoiAvgAreaMonth, #lineSoiAvgAreaPillar, #riskChart, #osintLinePlantChart, #pie3dOsint, #osintDoughnutMonth, #soa_allMonth');
+        allBoxChart.forEach(function(el) {
             el.style.display = 'none';
             el.parentElement.insertAdjacentHTML('beforeend', animateLoading('loader-full'))
         });
     }
-    
-    function animateLoading(mode='') {
+
+    function animateLoading(mode = '') {
         return `
-            <div class="loader d-flex w-100 justify-content-center py-3 `+mode+`">
+            <div class="loader d-flex w-100 justify-content-center py-3 ` + mode + `">
                 <div class="spinner-grow text-primary " role="status">
                     <span class="sr-only">Loading...</span>
                 </div>
@@ -461,21 +497,22 @@
         `;
     }
     // LOADING //
-	
+
     $(document).ready(function() {
         // SOI
-		srsSoi(soiChart);
-		lineSoiAvgMonth(soiAvgMonthChart);
+        srsSoi(soiChart);
+        trendSoiHelper(field)
+        lineSoiAvgMonth(soiAvgMonthChart);
         soiAvgPillar(field)
         // SOI
 
-		srsPerMonthDoughs(srsPerMonthDoughChart, srsPerMonthLineChart)
-		srsPerPlantDoughs(srsPerPlantDoughChart)
+        srsPerMonthDoughs(srsPerMonthDoughChart, srsPerMonthLineChart)
+        srsPerPlantDoughs(srsPerPlantDoughChart)
 
         // HUMINT
-		srsRiskSource(rsoChart)
-		srsTargetAssets(assetChart)
-		srsRisks(riskChart)
+        srsRiskSource(rsoChart)
+        srsTargetAssets(assetChart)
+        srsRisks(riskChart)
         // HUMINT //
 
         // OSINT
@@ -483,12 +520,123 @@
         // OSINT //
 
         // SOA
-		SoaFtraficAll(field)
-		people(field);
-		vehicle(field);
-		material(field);
+        SoaFtraficAll(field)
+        people(field);
+        vehicle(field);
+        material(field);
         // SOA //
-	});
+    });
+
+    function trendSoiHelper(field) {
+        // TREND SOI YEAR HELPER //
+        $.ajax({
+            url: "{{ url('srs/dashboard_humint_v2/grap_trend_soi') }}",
+            type: 'POST',
+            data: {
+                _token: "{{ csrf_token() }}",
+                area_fil: areas,
+                year_fil: years,
+                month_fil: months,
+            },
+            cache: false,
+            beforeSend: function() {
+                // document.getElementById("loader").style.display = "block";
+            },
+            complete: function() {
+                // document.getElementById("loader").style.display = "none";
+            },
+            success: function(res) {
+                var dataJson = JSON.parse(res)
+
+                var trendSoi = document.getElementById("trendGrapSoiHelper").getContext('2d');
+                var monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des']
+                var trendSoiChart = new Chart(trendSoi, {
+                    type: 'line',
+                    data: {
+                        labels: monthList,
+                        datasets: [{
+                                pointStyle: 'circle',
+                                pointRadius: 4,
+                                label: 'SOI',
+                                data: dataJson.data_soi,
+                                // fill: true,
+                                // tension: 0.1,
+                                // segment: {
+                                borderColor: 'rgba(99, 131, 255, 1)',
+                                backgroundColor: 'rgba(99, 131, 255, 0.8)',
+                                // },
+                                borderWidth: 1,
+                            },
+                            {
+                                pointStyle: 'circle',
+                                pointRadius: 4,
+                                label: 'Threat',
+                                data: dataJson.data_index,
+                                // fill: true,
+                                // tension: 0.1,
+                                // segment: {
+                                borderColor: 'rgba(255, 165, 0, 1)',
+                                backgroundColor: 'rgb(255 165 0)',
+                                // },
+                                borderWidth: 1,
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                ticks: {
+                                    font: {
+                                        size: 13,
+                                    },
+                                    color: '#FFF'
+                                },
+                            },
+                            y: {
+                                grid: {
+                                    display: true
+                                },
+                                ticks: {
+                                    precision: 0,
+                                    color: '#FFF'
+                                },
+                                min: 0,
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: true
+                            },
+                            datalabels: {
+                                color: '#FFF'
+                            },
+                            annotation: {
+                                annotations: {
+                                    line1: {
+                                        type: 'line',
+                                        yMin: 2.00,
+                                        yMax: 2.00,
+                                        borderColor: 'rgb(255 202 104)',
+                                        borderWidth: 2,
+                                    },
+                                    line2: {
+                                        type: 'line',
+                                        yMin: 4.00,
+                                        yMax: 4.00,
+                                        borderColor: 'rgb(145 162 227)',
+                                        borderWidth: 2,
+                                    }
+                                }
+                            }
+                        },
+                    }
+                })
+            }
+        });
+        // TREND SOI YEAR //
+    }
 
     function getColorRand(length) {
         let randomColors = [];
@@ -497,12 +645,12 @@
             var r = num >> 16;
             var g = num >> 8 & 255;
             var b = num & 255;
-            randomColors.push('rgb(' + (r + i) + ', ' + g + ', ' + b + ',' +  '0.5)');
+            randomColors.push('rgb(' + (r + i) + ', ' + g + ', ' + b + ',' + '0.5)');
         }
         return randomColors;
     }
 
-	// SOI //
+    // SOI //
     const ctxSoi = document.getElementById("grapSoi");
     const soiChart = new Chart(ctxSoi, {
         type: 'bubble',
@@ -624,81 +772,81 @@
             }
         }
     });
-	
-	// SOI AVERAGE MONTH LINE
-	var lineSoiAvgMonthCtx = document.getElementById("lineSoiAvgMonth").getContext('2d');
-	var soiAvgMonthChart = new Chart(lineSoiAvgMonthCtx, {
-		type: 'line',
-		data: {
-			labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
-			datasets: [{
-					label: 'PEOPLE',
-					data: [],
-					borderColor: "rgba(0, 176, 80, 1)",
-					backgroundColor: "rgba(0, 176, 80, 1)",
-				},
-				{
-					label: 'SYSTEM',
-					data: [],
-					borderColor: "rgba(0, 176, 240, 1)",
-					backgroundColor: "rgba(0, 176, 240, 1)",
-				},
-				{
-					label: 'DEVICE',
-					data: [],
-					borderColor: "rgba(255, 0, 0, 1)",
-					backgroundColor: "rgba(255, 0, 0, 1)",
-				},
-				{
-					label: 'NETWORKING',
-					data: [],
-					borderColor: "rgba(112, 48, 160, 1)",
-					backgroundColor: "rgba(112, 48, 160, 1)",
-				},
-			],
-		},
-		options: {
-			responsive: true,
-			maintainAspectRatio: false,
-			scales: {
-				y: {
-					min: 0,
-					max: 5,
-					ticks: {
-						precision: 0,
-						callback: (yValue) => {
-							return Number(yValue).toFixed(2); // format to your liking
-						},
-						color: '#FFF',
-					},
-				},
-				x: {
-					ticks: {
-						color: '#FFF'
-					},
-				}
-			},
-			plugins: {
-				legend: {
-					labels: {
-						color: "#FFF"
-					},
-				},
-				filler: {
-					propagate: false
-				},
-				'samples-filler-analyser': {
-					target: 'chart-analyser'
-				}
-			},
-			interaction: {
-				intersect: false,
-			},
-		},
-	});
-	// SOI AVERAGE MONTH LINE //
 
-	// DOUGHNAT PERMONTH TOTAL //
+    // SOI AVERAGE MONTH LINE
+    var lineSoiAvgMonthCtx = document.getElementById("lineSoiAvgMonth").getContext('2d');
+    var soiAvgMonthChart = new Chart(lineSoiAvgMonthCtx, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
+            datasets: [{
+                    label: 'PEOPLE',
+                    data: [],
+                    borderColor: "rgba(0, 176, 80, 1)",
+                    backgroundColor: "rgba(0, 176, 80, 1)",
+                },
+                {
+                    label: 'SYSTEM',
+                    data: [],
+                    borderColor: "rgba(0, 176, 240, 1)",
+                    backgroundColor: "rgba(0, 176, 240, 1)",
+                },
+                {
+                    label: 'DEVICE',
+                    data: [],
+                    borderColor: "rgba(255, 0, 0, 1)",
+                    backgroundColor: "rgba(255, 0, 0, 1)",
+                },
+                {
+                    label: 'NETWORKING',
+                    data: [],
+                    borderColor: "rgba(112, 48, 160, 1)",
+                    backgroundColor: "rgba(112, 48, 160, 1)",
+                },
+            ],
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    min: 0,
+                    max: 5,
+                    ticks: {
+                        precision: 0,
+                        callback: (yValue) => {
+                            return Number(yValue).toFixed(2); // format to your liking
+                        },
+                        color: '#FFF',
+                    },
+                },
+                x: {
+                    ticks: {
+                        color: '#FFF'
+                    },
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        color: "#FFF"
+                    },
+                },
+                filler: {
+                    propagate: false
+                },
+                'samples-filler-analyser': {
+                    target: 'chart-analyser'
+                }
+            },
+            interaction: {
+                intersect: false,
+            },
+        },
+    });
+    // SOI AVERAGE MONTH LINE //
+
+    // DOUGHNAT PERMONTH TOTAL //
     var srsPerMonthDoughId = document.getElementById("barDonatAll").getContext('2d');
     const centerText = {
         afterDatasetsDraw(chart, args, pluginOptions) {
@@ -711,7 +859,7 @@
             var total = 0;
             for (var t in count) {
                 if (count.hasOwnProperty(t)) {
-                   total += parseFloat( count[t] );
+                    total += parseFloat(count[t]);
                 }
             }
             ctx.save();
@@ -842,8 +990,8 @@
         srsPerMonthDoughChart.update();
     })
     Chart.defaults.color = '#FFF';
-	// DOUGHNAT PERMONTH TOTAL //
-	
+    // DOUGHNAT PERMONTH TOTAL //
+
     // LINE PERMONTH TOTAL 
     var srsPerMonthLine = document.getElementById("srsPerMonthLine").getContext('2d');
     const bgGradient = srsPerMonthLine.createLinearGradient(0, 0, 0, 400);
@@ -913,7 +1061,7 @@
     })
     // LINE PERMONTH TOTAL //
 
-	// DOUGHNUT PER PLANT
+    // DOUGHNUT PER PLANT
     var srsPerPlantDough = document.getElementById("srsPerPlantDough").getContext('2d');
     var srsPerPlantDoughChart = new Chart(srsPerPlantDough, {
         type: 'polarArea',
@@ -962,8 +1110,8 @@
         plugins: [ChartDataLabels]
     })
     // DOUGHNUT PER PLANT //
-	
-	// RISK SOURCE
+
+    // RISK SOURCE
     var ctxRso = document.getElementById("rsoChart");
     ctxRso.height = 250;
     var ict_unit = [];
@@ -1023,7 +1171,7 @@
         var activePoints = rsoChart.getElementsAtEventForMode(evt, 'point', rsoChart.options);
         var firstPoint = activePoints[0];
 
-        if(firstPoint) {
+        if (firstPoint) {
             var label = rsoChart.data.labels[firstPoint.index];
             var id = dataRiskSource[firstPoint.index].id;
             var category = dataRiskSource[firstPoint.index].label;
@@ -1050,8 +1198,7 @@
                 },
                 cache: false,
                 timeout: 10000,
-                beforeSend: function() {
-                },
+                beforeSend: function() {},
                 error: function(xhr, textStatus, errorThrown) {
                     if (textStatus == 'timeout') {
                         detailGrapBodyModal.innerHTML = "Error : Timeout for this call!";
@@ -1061,7 +1208,6 @@
                     detailGrapId.querySelector('.loader').remove();
                 },
                 success: function(res) {
-
                     var dataJson = JSON.parse(res)
 
                     detailGrapBody.append(`
@@ -1101,7 +1247,7 @@
                     bgGradient.addColorStop(0.6, 'rgba(20, 180, 60, 1)');
                     bgGradient.addColorStop(0.4, 'rgba(90, 160, 90, 0.2)');
                     bgGradient.addColorStop(0.1, 'blue');
-                    
+
                     var riSoMthChart = new Chart(riskSoSub1Month, {
                         type: 'line',
                         data: {
@@ -1170,29 +1316,27 @@
                         var activePoints = riSoMthChart.getElementsAtEventForMode(evt, 'point', riSoMthChart.options);
                         var firstPoint = activePoints[0];
 
-                        if(firstPoint)
-                        {
+                        if (firstPoint) {
                             var data = riSoMthChart.data.datasets[0].data[0];
                             var label = riSoMthChart.data.labels[firstPoint.index];
 
                             topIndexSmallBody.html(animateLoading());
                             $("#topIndexSmall").modal();
-                            $('#topIndexSmallLabel').text(category+' - '+label);
+                            $('#topIndexSmallLabel').text(category + ' - ' + label);
 
                             $.ajax({
-                                url: '{{ url('srs/dashboard_v2/detail_event_list') }}',
-                                type: 'POST',
+                                url: "{{ url('srs / dashboard_v2 / detail_event_list ') }}",
+                                type: "POST",
                                 data: {
                                     _token: "{{ csrf_token() }}",
                                     area_fil: area,
                                     year_fil: year,
-                                    month_fil: (firstPoint.index+1), // label
+                                    month_fil: (firstPoint.index + 1), // label
                                     risksource_id: id,
                                 },
                                 cache: false,
                                 timeout: 10000,
-                                beforeSend: function() {
-                                },
+                                beforeSend: function() {},
                                 complete: function() {
                                     topIndexSmallBody.find('.loader').remove();
                                 },
@@ -1213,8 +1357,12 @@
                     // RISK SOURCE SUB 1 //
                     var dataRiSoSub1 = dataJson.data_riso_sub1
                     var setRiSoSub1 = [{
-                        label: dataRiSoSub1.map(function(v){return v.label}),
-                        data: dataRiSoSub1.map(function(v){return v.data})
+                        label: dataRiSoSub1.map(function(v) {
+                            return v.label
+                        }),
+                        data: dataRiSoSub1.map(function(v) {
+                            return v.data
+                        })
                     }];
                     var riSoSub1 = document.getElementById("detailRiSoSub1");
                     riSoSub1.height = 300;
@@ -1237,29 +1385,27 @@
                         type: 'bar',
                         data: {
                             labels: setRiSoSub1[0].label,
-                            datasets: [
-                                {
-                                    axis: 'y',
-                                    label: '',
-                                    data: setRiSoSub1[0].data,
-                                    fill: false,
-                                    minBarLength: 2,
-                                    barThickness: 20,
-                                    maxBarThickness: 20,
-                                    // backgroundColor: coloR,
-                                    backgroundColor: [
-                                        'rgba(255, 99, 132, 1)',
-                                        'rgba(255, 159, 64, 1)',
-                                        'rgba(255, 205, 86, 1)',
-                                        'rgba(75, 192, 192, 1)',
-                                        'rgba(54, 162, 235, 1)',
-                                        'rgba(153, 102, 255, 1)',
-                                        'rgba(153, 102, 255, 1)',
-                                        'rgba(201, 203, 207, 1)'
-                                    ],
-                                    borderWidth: 1
-                                },
-                            ]
+                            datasets: [{
+                                axis: 'y',
+                                label: '',
+                                data: setRiSoSub1[0].data,
+                                fill: false,
+                                minBarLength: 2,
+                                barThickness: 20,
+                                maxBarThickness: 20,
+                                // backgroundColor: coloR,
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(255, 159, 64, 1)',
+                                    'rgba(255, 205, 86, 1)',
+                                    'rgba(75, 192, 192, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(153, 102, 255, 1)',
+                                    'rgba(153, 102, 255, 1)',
+                                    'rgba(201, 203, 207, 1)'
+                                ],
+                                borderWidth: 1
+                            }, ]
                         },
                         options: {
                             responsive: true,
@@ -1298,7 +1444,7 @@
                         var activePoints = riSoMntChart.getElementsAtEventForMode(evt, 'point', riSoMntChart.options);
                         var firstPoint = activePoints[0];
 
-                        if(firstPoint) {
+                        if (firstPoint) {
                             var label = riSoMntChart.data.labels[firstPoint.index];
                             var id = dataRiSoSub1[firstPoint.index].id;
                             var category = dataRiSoSub1[firstPoint.index].label;
@@ -1312,7 +1458,7 @@
                             $('#riskSourceSub1Month').parent().append(animateLoading('loader-full'))
 
                             $.ajax({
-                                url: '{{ url('srs/dashboard_v2/grap_detail_risk_source') }}',
+                                url: "{{ url('srs/dashboard_v2/grap_detail_risk_source') }}",
                                 type: 'POST',
                                 data: {
                                     _token: "{{ csrf_token() }}",
@@ -1322,7 +1468,8 @@
                                     id_fil: id,
                                 },
                                 cache: false,
-                                beforeSend: function() {;
+                                beforeSend: function() {
+                                    ;
                                 },
                                 complete: function() {
                                     detailGrapBody.find('.loader').remove();
@@ -1338,8 +1485,12 @@
                                     // RISK SOURCE PIE SUB 2 //
                                     dataRiSoSub2 = dataJson.data_riso_sub2
                                     setRiSoSub2 = [{
-                                        label: dataRiSoSub2.map(function(v){return v.label}),
-                                        data: dataRiSoSub2.map(function(v){return v.data})
+                                        label: dataRiSoSub2.map(function(v) {
+                                            return v.label
+                                        }),
+                                        data: dataRiSoSub2.map(function(v) {
+                                            return v.data
+                                        })
                                     }];
                                     riSoSub2Chart.data.labels = setRiSoSub2[0].label;
                                     riSoSub2Chart.data.datasets[0].data = setRiSoSub2[0].data;
@@ -1356,29 +1507,27 @@
                                         var firstPoint = activePoints[0];
                                         var topIndexSmallBody = $("#topIndexSmall .modal-body")
 
-                                        if(firstPoint)
-                                        {
+                                        if (firstPoint) {
                                             var data = riSoMthChart.data.datasets[0].data[0];
                                             var label = riSoMthChart.data.labels[firstPoint.index];
 
                                             topIndexSmallBody.html(animateLoading());
                                             $("#topIndexSmall").modal();
-                                            $('#topIndexSmallLabel').text(category+' - '+label);
+                                            $('#topIndexSmallLabel').text(category + ' - ' + label);
 
                                             $.ajax({
-                                                url: '{{ url('srs/dashboard_v2/detail_event_list') }}',
+                                                url: "{{ url('srs/dashboard_v2/ detail_event_list') }}",
                                                 type: 'POST',
                                                 data: {
                                                     _token: "{{ csrf_token() }}",
                                                     area_fil: area,
                                                     year_fil: year,
-                                                    month_fil: (firstPoint.index+1), // label
+                                                    month_fil: (firstPoint.index + 1), // label
                                                     risksource_sub1_id: id,
                                                 },
                                                 cache: false,
                                                 timeout: 10000,
-                                                beforeSend: function() {
-                                                },
+                                                beforeSend: function() {},
                                                 complete: function() {
                                                     topIndexSmallBody.find('.loader').remove();
                                                 },
@@ -1413,7 +1562,7 @@
                                         $('#riSoSub2Month').parent().append(animateLoading('loader-full'))
 
                                         $.ajax({
-                                            url: '{{ url('srs/dashboard_v2/grap_detail_risk_source') }}',
+                                            url: "{{ url('srs/dashboard_v2/ grap_detail_risk_source') }}",
                                             type: 'POST',
                                             data: {
                                                 _token: "{{ csrf_token() }}",
@@ -1423,8 +1572,7 @@
                                                 id_fil: id,
                                             },
                                             cache: false,
-                                            beforeSend: function() {
-                                            },
+                                            beforeSend: function() {},
                                             complete: function() {
                                                 detailGrapBody.find('.loader').remove();
                                             },
@@ -1441,29 +1589,27 @@
                                                     var activePoints = riSoSub2MonthChart.getElementsAtEventForMode(evt, 'point', riSoSub2MonthChart.options);
                                                     var firstPoint = activePoints[0];
 
-                                                    if(firstPoint)
-                                                    {
+                                                    if (firstPoint) {
                                                         var data = riSoSub2MonthChart.data.datasets[0].data[0];
                                                         var label = riSoSub2MonthChart.data.labels[firstPoint.index];
 
                                                         topIndexSmallBody.html(animateLoading());
                                                         $("#topIndexSmall").modal();
-                                                        $('#topIndexSmallLabel').text(category+' - '+label);
+                                                        $('#topIndexSmallLabel').text(category + ' - ' + label);
 
                                                         $.ajax({
-                                                            url: '{{ url('srs/dashboard_v2/detail_event_list') }}',
+                                                            url: "{{ url('srs/dashboard_v2 / detail_event_list') }}",
                                                             type: 'POST',
                                                             data: {
                                                                 _token: "{{ csrf_token() }}",
                                                                 area_fil: area,
                                                                 year_fil: year,
-                                                                month_fil: (firstPoint.index+1), // label
+                                                                month_fil: (firstPoint.index + 1), // label
                                                                 risksource_sub2_id: id,
                                                             },
                                                             cache: false,
                                                             timeout: 10000,
-                                                            beforeSend: function() {
-                                                            },
+                                                            beforeSend: function() {},
                                                             complete: function() {
                                                                 topIndexSmallBody.find('.loader').remove();
                                                             },
@@ -1493,8 +1639,12 @@
                     // RISK SOURCE PIE SUB 2 //
                     dataRiSoSub2 = dataJson.data_riso_sub2
                     setRiSoSub2 = [{
-                        label: dataRiSoSub2.map(function(v){return v.label}),
-                        data: dataRiSoSub2.map(function(v){return v.data})
+                        label: dataRiSoSub2.map(function(v) {
+                            return v.label
+                        }),
+                        data: dataRiSoSub2.map(function(v) {
+                            return v.data
+                        })
                     }];
                     var colorRand = getColorRand(setRiSoSub2[0].label.length);
                     var riSoSub2 = document.getElementById("riskSourceSub2").getContext('2d');
@@ -1502,13 +1652,11 @@
                         type: 'pie',
                         data: {
                             labels: [],
-                            datasets: [
-                                {
-                                    data: [],
-                                    hoverOffset: 10,
-                                    backgroundColor: colorRand,
-                                }
-                            ]
+                            datasets: [{
+                                data: [],
+                                hoverOffset: 10,
+                                backgroundColor: colorRand,
+                            }]
                         },
                         options: {
                             responsive: true,
@@ -1533,14 +1681,12 @@
                                     display: false,
                                     text: 'Chart.js Pie Chart'
                                 },
-                                labels: [
-                                    {
-                                        render: (args) => {
-                                            return `${args.value}`
-                                        },
-                                        fontColor: '#fff',
+                                labels: [{
+                                    render: (args) => {
+                                        return `${args.value}`
                                     },
-                                ],
+                                    fontColor: '#fff',
+                                }, ],
                             },
                         },
                     })
@@ -1620,7 +1766,7 @@
     }
     // DETAIL RISK SOURCE //
 
-	// TARGET ASSETS //
+    // TARGET ASSETS //
     var ctxAsset = document.getElementById("assetChart");
     ctxAsset.height = 250;
     var assetChart = new Chart(ctxAsset, {
@@ -1758,7 +1904,7 @@
             var total = 0;
             for (var t in count) {
                 if (count.hasOwnProperty(t)) {
-                   total += parseFloat( count[t] );
+                    total += parseFloat(count[t]);
                 }
             }
             ctx.save();
@@ -1935,108 +2081,114 @@
 
     // OSINT PLANT LINE //
     const getOrCreateTooltip = (chart) => {
-    let tooltipEl = chart.canvas.parentNode.querySelector('div');
+        let tooltipEl = chart.canvas.parentNode.querySelector('div');
 
-    if (!tooltipEl) {
-    tooltipEl = document.createElement('div');
-    tooltipEl.style.background = 'rgba(0, 0, 0, 0.7)';
-    tooltipEl.style.borderRadius = '3px';
-    tooltipEl.style.color = 'white';
-    tooltipEl.style.opacity = 1;
-    tooltipEl.style.pointerEvents = 'none';
-    tooltipEl.style.position = 'absolute';
-    tooltipEl.style.transform = 'translate(-50%, 0)';
-    tooltipEl.style.transition = 'all .1s ease';
+        if (!tooltipEl) {
+            tooltipEl = document.createElement('div');
+            tooltipEl.style.background = 'rgba(0, 0, 0, 0.7)';
+            tooltipEl.style.borderRadius = '3px';
+            tooltipEl.style.color = 'white';
+            tooltipEl.style.opacity = 1;
+            tooltipEl.style.pointerEvents = 'none';
+            tooltipEl.style.position = 'absolute';
+            tooltipEl.style.transform = 'translate(-50%, 0)';
+            tooltipEl.style.transition = 'all .1s ease';
 
-    const table = document.createElement('table');
-    table.style.margin = '0px';
+            const table = document.createElement('table');
+            table.style.margin = '0px';
 
-    tooltipEl.appendChild(table);
-    chart.canvas.parentNode.appendChild(tooltipEl);
-    }
+            tooltipEl.appendChild(table);
+            chart.canvas.parentNode.appendChild(tooltipEl);
+        }
 
-    return tooltipEl;
+        return tooltipEl;
     };
 
     const externalTooltipHandler = (context) => {
-    // Tooltip Element
-    const {chart, tooltip} = context;
-    const tooltipEl = getOrCreateTooltip(chart);
+        // Tooltip Element
+        const {
+            chart,
+            tooltip
+        } = context;
+        const tooltipEl = getOrCreateTooltip(chart);
 
-    // Hide if no tooltip
-    if (tooltip.opacity === 0) {
-    tooltipEl.style.opacity = 0;
-    return;
-    }
+        // Hide if no tooltip
+        if (tooltip.opacity === 0) {
+            tooltipEl.style.opacity = 0;
+            return;
+        }
 
-    // Set Text
-    if (tooltip.body) {
-    const titleLines = tooltip.title || [];
-    const bodyLines = tooltip.body.map(b => b.lines);
+        // Set Text
+        if (tooltip.body) {
+            const titleLines = tooltip.title || [];
+            const bodyLines = tooltip.body.map(b => b.lines);
 
-    const tableHead = document.createElement('thead');
+            const tableHead = document.createElement('thead');
 
-    titleLines.forEach(title => {
-      const tr = document.createElement('tr');
-      tr.style.borderWidth = 0;
+            titleLines.forEach(title => {
+                const tr = document.createElement('tr');
+                tr.style.borderWidth = 0;
 
-      const th = document.createElement('th');
-      th.style.borderWidth = 0;
-      const text = document.createTextNode(title);
+                const th = document.createElement('th');
+                th.style.borderWidth = 0;
+                const text = document.createTextNode(title);
 
-      th.appendChild(text);
-      tr.appendChild(th);
-      tableHead.appendChild(tr);
-    });
+                th.appendChild(text);
+                tr.appendChild(th);
+                tableHead.appendChild(tr);
+            });
 
-    const tableBody = document.createElement('tbody');
-    bodyLines.forEach((body, i) => {
-      const colors = tooltip.labelColors[i];
+            const tableBody = document.createElement('tbody');
+            bodyLines.forEach((body, i) => {
+                const colors = tooltip.labelColors[i];
 
-      const span = document.createElement('span');
-      span.style.background = colors.backgroundColor;
-      span.style.borderColor = colors.borderColor;
-      span.style.borderWidth = '2px';
-      span.style.marginRight = '10px';
-      span.style.height = '10px';
-      span.style.width = '10px';
-      span.style.display = 'inline-block';
+                const span = document.createElement('span');
+                span.style.background = colors.backgroundColor;
+                span.style.borderColor = colors.borderColor;
+                span.style.borderWidth = '2px';
+                span.style.marginRight = '10px';
+                span.style.height = '10px';
+                span.style.width = '10px';
+                span.style.display = 'inline-block';
 
-      const tr = document.createElement('tr');
-      tr.style.backgroundColor = 'inherit';
-      tr.style.borderWidth = 0;
+                const tr = document.createElement('tr');
+                tr.style.backgroundColor = 'inherit';
+                tr.style.borderWidth = 0;
 
-      const td = document.createElement('td');
-      td.style.borderWidth = 0;
+                const td = document.createElement('td');
+                td.style.borderWidth = 0;
 
-      const text = document.createTextNode(body);
+                const text = document.createTextNode(body);
 
-      td.appendChild(span);
-      td.appendChild(text);
-      tr.appendChild(td);
-      tableBody.appendChild(tr);
-    });
+                td.appendChild(span);
+                td.appendChild(text);
+                tr.appendChild(td);
+                tableBody.appendChild(tr);
+            });
 
-    const tableRoot = tooltipEl.querySelector('table');
+            const tableRoot = tooltipEl.querySelector('table');
 
-    // Remove old children
-    while (tableRoot.firstChild) {
-      tableRoot.firstChild.remove();
-    }
+            // Remove old children
+            while (tableRoot.firstChild) {
+                tableRoot.firstChild.remove();
+            }
 
-    // Add new children
-    tableRoot.appendChild(tableHead);
-    tableRoot.appendChild(tableBody);
-    }
+            // Add new children
+            tableRoot.appendChild(tableHead);
+            tableRoot.appendChild(tableBody);
+        }
 
-    const {offsetLeft: positionX, offsetTop: positionY} = chart.canvas;
+        const {
+            offsetLeft: positionX,
+            offsetTop: positionY
+        } = chart.canvas;
 
-    // Display, position, and set styles for font
-    tooltipEl.style.opacity = 1;
-    tooltipEl.style.left = positionX + tooltip.caretX + 'px';
-    tooltipEl.style.top = positionY + tooltip.caretY + 'px';
-    tooltipEl.style.font = tooltip.options.bodyFont.string;
-    tooltipEl.style.padding = tooltip.options.padding + 'px ' + tooltip.options.padding + 'px';
+        // Display, position, and set styles for font
+        tooltipEl.style.opacity = 1;
+        tooltipEl.style.left = positionX + tooltip.caretX + 'px';
+        tooltipEl.style.top = positionY + tooltip.caretY + 'px';
+        tooltipEl.style.font = tooltip.options.bodyFont.string;
+        tooltipEl.style.padding = tooltip.options.padding + 'px ' + tooltip.options.padding + 'px';
     };
 
     var linePlantOsintCtx = document.getElementById("osintLinePlantChart");
@@ -2046,7 +2198,7 @@
             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
             datasets: [{
                 label: '',
-                data: [0,0,0,0,0,0,0,0,0,0,0,0],
+                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 fill: true,
                 cubicInterpolationMode: 'monotone',
                 tension: 0.4
@@ -2103,7 +2255,10 @@
                     usePointStyle: true,
                     external: (context) => {
                         // Tooltip Element
-                        const {chart, tooltip} = context;
+                        const {
+                            chart,
+                            tooltip
+                        } = context;
                         const tooltipEl = getOrCreateTooltip(chart);
                         // console.log(context.tooltip.dataPoints[0].dataIndex+1)
 
@@ -2121,16 +2276,16 @@
                             const tableHead = document.createElement('thead');
 
                             titleLines.forEach(title => {
-                              const tr = document.createElement('tr');
-                              tr.style.borderWidth = 0;
+                                const tr = document.createElement('tr');
+                                tr.style.borderWidth = 0;
 
-                              const th = document.createElement('th');
-                              th.style.borderWidth = 0;
-                              const text = document.createTextNode('A');
+                                const th = document.createElement('th');
+                                th.style.borderWidth = 0;
+                                const text = document.createTextNode('A');
 
-                              th.appendChild(text);
-                              tr.appendChild(th);
-                              tableHead.appendChild(tr);
+                                th.appendChild(text);
+                                tr.appendChild(th);
+                                tableHead.appendChild(tr);
                             });
 
                             const tableBody = document.createElement('tbody');
@@ -2142,7 +2297,7 @@
                                     _token: "{{ csrf_token() }}",
                                     area: areas,
                                     year: years,
-                                    month: (context.tooltip.dataPoints[0].dataIndex+1)
+                                    month: (context.tooltip.dataPoints[0].dataIndex + 1)
                                 },
                                 cache: false,
                                 success: function(e) {
@@ -2185,7 +2340,7 @@
 
                             // Remove old children
                             while (tableRoot.firstChild) {
-                              tableRoot.firstChild.remove();
+                                tableRoot.firstChild.remove();
                             }
 
                             // Add new children
@@ -2193,7 +2348,10 @@
                             tableRoot.appendChild(tableBody);
                         }
 
-                        const {offsetLeft: positionX, offsetTop: positionY} = chart.canvas;
+                        const {
+                            offsetLeft: positionX,
+                            offsetTop: positionY
+                        } = chart.canvas;
 
                         // Display, position, and set styles for font
                         tooltipEl.style.opacity = 1;
@@ -2206,7 +2364,7 @@
                 }
             },
             interaction: {
-              intersect: false,
+                intersect: false,
             },
         },
         plugins: [ChartDataLabels],
@@ -2214,15 +2372,15 @@
     // OSINT PLANT LINE //
 
     // OSINT PLANT PIE 3D
-    anychart.onDocumentReady(function () {
+    anychart.onDocumentReady(function() {
         // create data
         var data = [];
         // create a 3d pie chart and set the data
         pie3dOsintChart = anychart.pie3d(data);
-        
+
         pie3dOsintChart.legend().useHtml(true);
         pie3dOsintChart.legend().itemsFormat(
-          "<span style='color:#ffffff; font-size:8px'>{%x}</span>"
+            "<span style='color:#ffffff; font-size:8px'>{%x}</span>"
         );
         // "<span style='color:#ffffff;font-size:10px'>{%x}: {%value}</span>"
 
@@ -2248,94 +2406,25 @@
     });
     // OSINT PLANT PIE 3D //
 
-    // SOA MONTHLY
-    var SoatraficAll = Highcharts.chart('soa_allMonth', {
-        chart: {
-            type: 'spline',
-            backgroundColor: 'transparent',
-            height: 320,
-        },
-        title: {
-            text: 'Security Operational Analytic',
-            style: {
-                color: '#FFF',
-            }
-        },
-        subtitle: {
-            text: ''
-        },
-        xAxis: {
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            labels: {
-                style: {
-                    color: '#FFF'
-                }
-            }
-        },
-        yAxis: {
-            title: {
-                text: '',
-            },
-            labels: {
-                style: {
-                    color: '#FFF'
-                }
-            },
-            gridLineColor: 'rgba(10, 10, 10, 0.2)'
-        },
-        legend: {
-            itemStyle: {
-                color: '#FFF',
-                fontWeight: 'bold'
-            }
-        },
-        plotOptions: {
-            series: {
-                label: {
-                    connectorAllowed: false
-                },
-                marker: {
-                    fillColor: '#FFFFFF',
-                    lineWidth: 4,
-                    lineColor: null // inherit from series
-                }
-            }
-        },
-        exporting: {
-            enabled: false
-        },
-        series: [{
-            name: 'People',
-            // data: [12, 12, 31, 4, 26, 72, 82, 51, 8, 4, 22, 23],
-            data: [],
-        }, {
-            name: 'Vehicle',
-            data: [],
-        }, {
-            name: 'Document',
-            data: [],
-        }]
-    });
-    // SOA MONTHLY //
+
 
     // FUNCTION SOI MONTH
     function srsPerMonthDoughs(srsPerMonthDoughChart, srsPerMonthLineChart) {
-		var barDonatAllId = document.querySelector('#barDonatAll')
-		var srsPerMonthLineId = document.querySelector('#srsPerMonthLine')
+        var barDonatAllId = document.querySelector('#barDonatAll')
+        var srsPerMonthLineId = document.querySelector('#srsPerMonthLine')
 
         $.ajax({
-            url: '{{ url('menu/srsMonth') }}',
+            url: "{{ url('menu/srsMonth') }}",
             type: 'POST',
             data: {
-				_token: "{{ csrf_token() }}",
+                _token: "{{ csrf_token() }}",
                 area_fil: areas,
                 year_fil: years,
                 month_fil: months,
             },
             cache: false,
             timeout: 10000,
-            beforeSend: function() {
-            },
+            beforeSend: function() {},
             error: function(xhr, textStatus, errorThrown) {
                 if (textStatus == 'timeout') {
                     barDonatAllId.parentElement.innerHTML = "Error : Timeout for this call!";
@@ -2363,21 +2452,20 @@
 
     // FUNCTION PLANT DOUGHNUT
     function srsPerPlantDoughs(srsPerPlantDoughChart) {
-		var srsPerPlantDoughId = document.querySelector('#srsPerPlantDough')
+        var srsPerPlantDoughId = document.querySelector('#srsPerPlantDough')
 
         $.ajax({
-            url: '{{ url('menu/srsPerPlant') }}',
+            url: "{{ url('menu/srsPerPlant') }}",
             type: 'POST',
             data: {
-				_token: "{{ csrf_token() }}",
+                _token: "{{ csrf_token() }}",
                 area_fil: areas,
                 year_fil: years,
                 month_fil: months,
             },
             cache: false,
-			timeout: 10000,
-            beforeSend: function() {
-            },
+            timeout: 10000,
+            beforeSend: function() {},
             error: function(xhr, textStatus, errorThrown) {
                 if (textStatus == 'timeout') {
                     srsPerPlantDoughId.parentElement.innerHTML = "Error : Timeout for this call!";
@@ -2400,11 +2488,11 @@
 
     // FUNCTION SOI
     function srsSoi(soiChart) {
-		var grapSoiId = document.querySelector('#grapSoi')
-		var indexSoiId = document.querySelector('#indexSoi')
+        var grapSoiId = document.querySelector('#grapSoi')
+        var indexSoiId = document.querySelector('#containerIndexSoi')
 
         $.ajax({
-            url: '{{ url('menu/srsSoi') }}',
+            url: "{{ url('menu/srsSoi') }}",
             type: 'POST',
             data: {
                 _token: "{{ csrf_token() }}",
@@ -2414,8 +2502,7 @@
             },
             cache: false,
             timeout: 10000,
-            beforeSend: function() {
-            },
+            beforeSend: function() {},
             error: function(xhr, textStatus, errorThrown) {
                 if (textStatus == 'timeout') {
                     grapSoiId.parentElement.innerHTML = "Error : Timeout for this call!";
@@ -2439,30 +2526,27 @@
                     x: dataX,
                     y: dataY
                 }];
-				
+
                 soiChart.data.datasets[0].data = dataSrs;
                 soiChart.update();
 
                 // INDEX BG SOI
-                if((dataX <= 4 && dataY <= 2) || (dataX >= 4 && dataY >= 2))
-                {
-                    $('#indexSoi').attr('style','background-color: rgb(233 233 9 / 69%);color:#ffffff') // yellow
+                if ((dataX <= 4 && dataY <= 2) || (dataX >= 4 && dataY >= 2)) {
+                    $('#indexSoi').attr('style', 'background-color: rgb(233 233 9 / 69%);color:#ffffff') // yellow
                     $('#indexSoi').val('Medium')
                 }
-                
-                if(dataX >= 4 && dataY <= 2)
-                {
-                    $('#indexSoi').attr('style','background-color: rgb(0 128 9 / 69%);color:#ffffff') // green
+
+                if (dataX >= 4 && dataY <= 2) {
+                    $('#indexSoi').attr('style', 'background-color: rgb(0 128 9 / 69%);color:#ffffff') // green
                     $('#indexSoi').val('Low')
                 }
-                
-                if(dataX <= 4 && dataY >= 2)
-                {
-                    $('#indexSoi').attr('style','background-color: rgb(255 0 9 / 69%);color:#ffffff') // red
+
+                if (dataX <= 4 && dataY >= 2) {
+                    $('#indexSoi').attr('style', 'background-color: rgb(255 0 9 / 69%);color:#ffffff') // red
                     $('#indexSoi').val('High')
                 }
                 // INDEX BG SOI //
-                
+
                 // SOI Deskripsi
                 if (years == '2022' && months.length == 0) {
                     $('#isoDesc').show()
@@ -2487,7 +2571,7 @@
                 var month = $("#monthFilter").val();
 
                 $.ajax({
-                    url: '{{ url('srs/dashboard_humint_v2/grap_trend_soi') }}',
+                    url: "{{ url('srs/dashboard_humint_v2/grap_trend_soi') }}",
                     type: 'POST',
                     data: {
                         _token: "{{ csrf_token() }}",
@@ -2593,18 +2677,18 @@
                                     annotation: {
                                         annotations: {
                                             line1: {
-                                              type: 'line',
-                                              yMin: 2.00,
-                                              yMax: 2.00,
-                                              borderColor: 'rgb(255 202 104)',
-                                              borderWidth: 2,
+                                                type: 'line',
+                                                yMin: 2.00,
+                                                yMax: 2.00,
+                                                borderColor: 'rgb(255 202 104)',
+                                                borderWidth: 2,
                                             },
                                             line2: {
-                                              type: 'line',
-                                              yMin: 4.00,
-                                              yMax: 4.00,
-                                              borderColor: 'rgb(145 162 227)',
-                                              borderWidth: 2,
+                                                type: 'line',
+                                                yMin: 4.00,
+                                                yMax: 4.00,
+                                                borderColor: 'rgb(145 162 227)',
+                                                borderWidth: 2,
                                             }
                                         }
                                     }
@@ -2620,14 +2704,14 @@
                             if (firstPoint) {
                                 var label = trendSoiChart.data.labels[firstPoint.index];
                                 var data = trendSoiChart.data.datasets[0].data[0];
-                                
+
                                 topIndexSmallBody.html("");
                                 $("#topIndexSmall").modal();
                                 $('#topIndexSmallLabel').text('Top Index');
 
                                 if (firstPoint.datasetIndex == 1) {
                                     $.ajax({
-                                        url: '{{ url('srs/dashboard_humint_v2/grap_top_index') }}',
+                                        url: "{{ url('srs/dashboard_humint_v2/grap_top_index ') }}",
                                         type: 'POST',
                                         data: {
                                             _token: "{{ csrf_token() }}",
@@ -2657,23 +2741,22 @@
         // SOI DETAIL //
     }
     // FUNCTION SOI //
-	
-	function lineSoiAvgMonth(soiAvgMonthChart) {
-		var lineSoiAvgMonthId = document.querySelector('#lineSoiAvgMonth')
 
-		$.ajax({
-			url: "{{ url('srs/dashboard_soi/soi_avg_month') }}",
-			type: 'POST',
-			data: {
-				_token: "{{ csrf_token() }}",
-				area_filter: areas,
-				year_filter: years,
-				month_filter: months,
-			},
-			cache: false,
-			timeout: 10000,
-            beforeSend: function() {
+    function lineSoiAvgMonth(soiAvgMonthChart) {
+        var lineSoiAvgMonthId = document.querySelector('#lineSoiAvgMonth')
+
+        $.ajax({
+            url: "{{ url('srs/dashboard_soi/soi_avg_month') }}",
+            type: 'POST',
+            data: {
+                _token: "{{ csrf_token() }}",
+                area_filter: areas,
+                year_filter: years,
+                month_filter: months,
             },
+            cache: false,
+            timeout: 10000,
+            beforeSend: function() {},
             error: function(xhr, textStatus, errorThrown) {
                 if (textStatus == 'timeout') {
                     lineSoiAvgMonthId.parentElement.innerHTML = "Error : Timeout for this call!";
@@ -2683,31 +2766,30 @@
                 lineSoiAvgMonthId.parentElement.querySelector('.loader').remove();
                 lineSoiAvgMonthId.style.display = 'block';
             },
-			success: function(res) {
-				var json = JSON.parse(res)
+            success: function(res) {
+                var json = JSON.parse(res)
 
-				soiAvgMonthChart.data.datasets = json;
-				soiAvgMonthChart.update()
-			}
-		});
-	}
+                soiAvgMonthChart.data.datasets = json;
+                soiAvgMonthChart.update()
+            }
+        });
+    }
 
-	function soiAvgPillar(field) {
-		// var grapSoiId = document.querySelector('#grapSoi')
+    function soiAvgPillar(field) {
+        // var grapSoiId = document.querySelector('#grapSoi')
 
-		$.ajax({
-			url: '{{ url('srs/dashboard_soi/soi_avg_pilar') }}',
-			type: 'POST',
-			data: {
-				_token: "{{ csrf_token() }}",
-				area_filter: areas,
-				year_filter: years,
-				month_filter: months,
-			},
-			cache: false,
-			timeout: 10000,
-            beforeSend: function() {
+        $.ajax({
+            url: "{{ url('srs/dashboard_soi/soi_avg_pilar') }}",
+            type: 'POST',
+            data: {
+                _token: "{{ csrf_token() }}",
+                area_filter: areas,
+                year_filter: years,
+                month_filter: months,
             },
+            cache: false,
+            timeout: 10000,
+            beforeSend: function() {},
             error: function(xhr, textStatus, errorThrown) {
                 if (textStatus == 'timeout') {
                     // grapSoiId.parentElement.innerHTML = "Error : Timeout for this call!";
@@ -2717,38 +2799,37 @@
                 // grapSoiId.parentElement.querySelector('.loader').remove();
                 // grapSoiId.style.display = 'block';
             },
-			success: function(res) {
-				var json = JSON.parse(res)
+            success: function(res) {
+                var json = JSON.parse(res)
 
-				// SOI AVG PILAR //
-				$('#avgPeople, #avgSystem, #avgDevice, #avgNetwork').text('')
-				$('#avgPeople').text(json[0].avg_people)
-				$('#avgSystem').text(json[0].avg_system)
-				$('#avgDevice').text(json[0].avg_device)
-				$('#avgNetwork').text(json[0].avg_network)
-				// SOI AVG PILAR //
-			}
-		});
-	}
-	// SOI //
-	
-	// FUNCTION RISK SORUCE
+                // SOI AVG PILAR //
+                $('#avgPeople, #avgSystem, #avgDevice, #avgNetwork').text('')
+                $('#avgPeople').text(json[0].avg_people)
+                $('#avgSystem').text(json[0].avg_system)
+                $('#avgDevice').text(json[0].avg_device)
+                $('#avgNetwork').text(json[0].avg_network)
+                // SOI AVG PILAR //
+            }
+        });
+    }
+    // SOI //
+
+    // FUNCTION RISK SORUCE
     function srsRiskSource(rsoChart) {
-		var rsoChartId = document.querySelector('#rsoChart')
+        var rsoChartId = document.querySelector('#rsoChart')
 
         $.ajax({
-            url: '{{ url('menu/srsRiskSource') }}',
+            url: "{{ url('menu/srsRiskSource') }}",
             type: 'POST',
             data: {
-				_token: "{{ csrf_token() }}",
+                _token: "{{ csrf_token() }}",
                 area_fil: areas,
                 year_fil: years,
                 month_fil: months,
             },
             cache: false,
             timeout: 10000,
-            beforeSend: function() {
-            },
+            beforeSend: function() {},
             error: function(xhr, textStatus, errorThrown) {
                 if (textStatus == 'timeout') {
                     rsoChartId.parentElement.innerHTML = "Error : Timeout for this call!";
@@ -2784,25 +2865,24 @@
             }
         });
     }
-	// FUNCTION RISK SORUCE //
-	
-	// FUNCTION TARGET ASSETS
+    // FUNCTION RISK SORUCE //
+
+    // FUNCTION TARGET ASSETS
     function srsTargetAssets(assetChart) {
-		var assetChartId = document.querySelector('#assetChart');
+        var assetChartId = document.querySelector('#assetChart');
 
         $.ajax({
-            url: '{{ url('menu/srsTargetAssets') }}',
+            url: "{{ url('menu/srsTargetAssets') }}",
             type: 'POST',
             data: {
-				_token: "{{ csrf_token() }}",
+                _token: "{{ csrf_token() }}",
                 area_fil: areas,
                 year_fil: years,
                 month_fil: months,
             },
             cache: false,
             timeout: 10000,
-            beforeSend: function() {
-            },
+            beforeSend: function() {},
             error: function(xhr, textStatus, errorThrown) {
                 if (textStatus == 'timeout') {
                     assetChartId.parentElement.innerHTML = "Error : Timeout for this call!";
@@ -2835,7 +2915,7 @@
                     var activePoints = assetChart.getElementsAtEventForMode(evt, 'point', assetChart.options);
                     var firstPoint = activePoints[0];
 
-                    if(firstPoint) {
+                    if (firstPoint) {
                         var label = assetChart.data.labels[firstPoint.index];
                         var id = dataAssets[firstPoint.index].id;
                         var value = assetChart.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
@@ -2851,7 +2931,7 @@
                         $('#detailGrapLabel').text(labelTitle)
 
                         $.ajax({
-                            url: '{{ url('srs/dashboard_v2/grap_detail_assets') }}',
+                            url: "{{ url('srs/dashboard_v2/grap_detail_assets') }}",
                             type: 'POST',
                             data: {
                                 _token: "{{ csrf_token() }}",
@@ -2862,8 +2942,7 @@
                                 id_fil: id,
                             },
                             cache: false,
-                            beforeSend: function() {
-                            },
+                            beforeSend: function() {},
                             complete: function() {
                                 detailGrapBody.find('.loader').remove();
                             },
@@ -2906,7 +2985,7 @@
                                 bgGradient.addColorStop(0.6, 'rgba(20, 180, 60, 1)');
                                 bgGradient.addColorStop(0.4, 'rgba(90, 160, 90, 0.2)');
                                 bgGradient.addColorStop(0.1, 'blue');
-                                
+
                                 var assetsMonthChart = new Chart(detailAssets, {
                                     type: 'line',
                                     data: {
@@ -2973,8 +3052,12 @@
                                 // DETAIL TARGET ASSSES SUB 1 //
                                 var assetsSub1 = dataJson.data_detail_assetssub
                                 var setAssetsSub1 = [{
-                                    label: assetsSub1.map(function(v){return v.label}),
-                                    data: assetsSub1.map(function(v){return v.data})
+                                    label: assetsSub1.map(function(v) {
+                                        return v.label
+                                    }),
+                                    data: assetsSub1.map(function(v) {
+                                        return v.data
+                                    })
                                 }];
                                 var ctxAssetsSub1 = document.getElementById("detailAssetsSub1");
                                 ctxAssetsSub1.height = 300;
@@ -3059,29 +3142,27 @@
                                     var firstPoint = activePoints[0];
                                     var topIndexSmallBody = $("#topIndexSmall .modal-body")
 
-                                    if(firstPoint)
-                                    {
+                                    if (firstPoint) {
                                         var label = assetsMonthChart.data.labels[firstPoint.index];
                                         var data = assetsMonthChart.data.datasets[0].data[0];
 
                                         topIndexSmallBody.html(animateLoading());
                                         $("#topIndexSmall").modal();
-                                        $('#topIndexSmallLabel').text(category+' - '+label);
+                                        $('#topIndexSmallLabel').text(category + ' - ' + label);
 
                                         $.ajax({
-                                            url: '{{ url('srs/dashboard_v2/detail_event_list') }}',
+                                            url: "{{ url('srs/dashboard_v2/detail_event_list ') }}",
                                             type: 'POST',
                                             data: {
                                                 _token: "{{ csrf_token() }}",
                                                 area_fil: areas,
                                                 year_fil: years,
-                                                month_fil: (firstPoint.index+1), // label
+                                                month_fil: (firstPoint.index + 1), // label
                                                 asset_id: id,
                                             },
                                             cache: false,
                                             timeout: 10000,
-                                            beforeSend: function() {
-                                            },
+                                            beforeSend: function() {},
                                             complete: function() {
                                                 topIndexSmallBody.find('.loader').remove();
                                             },
@@ -3117,7 +3198,7 @@
                                     $('#detailAssets').parent().append(animateLoading('loader-full'))
 
                                     $.ajax({
-                                        url: '{{ url('srs/dashboard_v2/grap_detail_assets') }}',
+                                        url: "{{ url('srs/dashboard_v2/grap_detail_assets') }}",
                                         type: 'POST',
                                         data: {
                                             _token: "{{ csrf_token() }}",
@@ -3128,8 +3209,7 @@
                                             id_fil: id,
                                         },
                                         cache: false,
-                                        beforeSend: function() {
-                                        },
+                                        beforeSend: function() {},
                                         complete: function() {
                                             detailGrapBody.find('.loader').remove();
                                         },
@@ -3144,8 +3224,12 @@
                                             // ASSETS DETAIL SUB 2 //
                                             var dataAssetsSub2 = dataJson.data_detail_assetssub2
                                             var setAssetsSub2 = [{
-                                                label: dataAssetsSub2.map(function(v){return v.label}),
-                                                data: dataAssetsSub2.map(function(v){return v.data})
+                                                label: dataAssetsSub2.map(function(v) {
+                                                    return v.label
+                                                }),
+                                                data: dataAssetsSub2.map(function(v) {
+                                                    return v.data
+                                                })
                                             }];
                                             assetsSub2Chart.data.labels = setAssetsSub2[0].label;
                                             assetsSub2Chart.data.datasets[0].data = setAssetsSub2[0].data;
@@ -3157,29 +3241,27 @@
                                                 var activePoints = assetsMonthChart.getElementsAtEventForMode(evt, 'point', assetsMonthChart.options);
                                                 var firstPoint = activePoints[0];
 
-                                                if(firstPoint)
-                                                {
+                                                if (firstPoint) {
                                                     var label = assetsMonthChart.data.labels[firstPoint.index];
                                                     var data = assetsMonthChart.data.datasets[0].data[0];
 
                                                     topIndexSmallBody.html(animateLoading());
                                                     $("#topIndexSmall").modal();
-                                                    $('#topIndexSmallLabel').text(category+' - '+label);
+                                                    $('#topIndexSmallLabel').text(category + ' - ' + label);
 
                                                     $.ajax({
-                                                        url: '{{ url('srs/dashboard_v2/detail_event_list') }}',
+                                                        url: "{{ url('srs/dashboard_v2/ detail_event_list') }}",
                                                         type: 'POST',
                                                         data: {
                                                             _token: "{{ csrf_token() }}",
                                                             area_fil: areas,
                                                             year_fil: years,
-                                                            month_fil: (firstPoint.index+1), // label
+                                                            month_fil: (firstPoint.index + 1), // label
                                                             asset_sub1_id: id,
                                                         },
                                                         cache: false,
                                                         timeout: 10000,
-                                                        beforeSend: function() {
-                                                        },
+                                                        beforeSend: function() {},
                                                         complete: function() {
                                                             topIndexSmallBody.find('.loader').remove();
                                                         },
@@ -3217,7 +3299,7 @@
                                                 $('#assetsSub2Month').parent().append(animateLoading('loader-full'))
 
                                                 $.ajax({
-                                                    url: '{{ url('srs/dashboard_v2/grap_detail_assets') }}',
+                                                    url: "{{ url('srs/dashboard_v2/ grap_detail_assets ') }}",
                                                     type: 'POST',
                                                     data: {
                                                         _token: "{{ csrf_token() }}",
@@ -3227,8 +3309,7 @@
                                                         id_fil: id,
                                                     },
                                                     cache: false,
-                                                    beforeSend: function() {
-                                                    },
+                                                    beforeSend: function() {},
                                                     complete: function() {
                                                         detailGrapBody.find('.loader').remove();
                                                     },
@@ -3245,29 +3326,27 @@
                                                             var activePoints = assetsSub2MonthChart.getElementsAtEventForMode(evt, 'point', assetsSub2MonthChart.options);
                                                             var firstPoint = activePoints[0];
 
-                                                            if(firstPoint)
-                                                            {
+                                                            if (firstPoint) {
                                                                 var label = assetsSub2MonthChart.data.labels[firstPoint.index];
                                                                 var data = assetsSub2MonthChart.data.datasets[0].data[0];
 
                                                                 topIndexSmallBody.html(animateLoading());
                                                                 $("#topIndexSmall").modal();
-                                                                $('#topIndexSmallLabel').text(category+' - '+label);
+                                                                $('#topIndexSmallLabel').text(category + ' - ' + label);
 
                                                                 $.ajax({
-                                                                    url: '{{ url('srs/dashboard_v2/detail_event_list') }}',
+                                                                    url: "{{ url('srs/dashboard_v2/detail_event_list') }}",
                                                                     type: 'POST',
                                                                     data: {
                                                                         _token: "{{ csrf_token() }}",
                                                                         area_fil: areas,
                                                                         year_fil: years,
-                                                                        month_fil: (firstPoint.index+1), // label
+                                                                        month_fil: (firstPoint.index + 1), // label
                                                                         asset_sub2_id: id,
                                                                     },
                                                                     cache: false,
                                                                     timeout: 10000,
-                                                                    beforeSend: function() {
-                                                                    },
+                                                                    beforeSend: function() {},
                                                                     complete: function() {
                                                                         topIndexSmallBody.find('.loader').remove();
                                                                     },
@@ -3296,8 +3375,12 @@
                                 // ASSETS DETAIL SUB 2 //
                                 var dataAssetsSub2 = dataJson.data_detail_assetssub2
                                 var setAssetsSub2 = [{
-                                    label: dataAssetsSub2.map(function(v){return v.label}),
-                                    data: dataAssetsSub2.map(function(v){return v.data})
+                                    label: dataAssetsSub2.map(function(v) {
+                                        return v.label
+                                    }),
+                                    data: dataAssetsSub2.map(function(v) {
+                                        return v.data
+                                    })
                                 }];
                                 var colorRand = getColorRand(setAssetsSub2[0].label.length);
                                 var assetsSub2 = document.getElementById("detailAssetsSub2").getContext('2d');
@@ -3305,16 +3388,14 @@
                                     type: 'pie',
                                     data: {
                                         labels: [],
-                                        datasets: [
-                                            {
-                                                data: [],
-                                                hoverOffset: 10,
-                                                backgroundColor: colorRand,
-                                                // spacing: 0,
-                                                // borderAlign: 'center',
-                                                // offset: 3,
-                                            }
-                                        ]
+                                        datasets: [{
+                                            data: [],
+                                            hoverOffset: 10,
+                                            backgroundColor: colorRand,
+                                            // spacing: 0,
+                                            // borderAlign: 'center',
+                                            // offset: 3,
+                                        }]
                                     },
                                     options: {
                                         responsive: true,
@@ -3443,25 +3524,24 @@
             }
         });
     }
-	// FUNCTION TARGET ASSETS //
+    // FUNCTION TARGET ASSETS //
 
-	// FUNCTION RISK //
+    // FUNCTION RISK //
     function srsRisks(riskChart) {
-		var riskChartId = document.querySelector('#riskChart')
+        var riskChartId = document.querySelector('#riskChart')
 
         $.ajax({
-            url: '{{ url('menu/srsRisk') }}',
+            url: "{{ url('menu/srsRisk') }}",
             type: 'POST',
             data: {
-				_token: "{{ csrf_token() }}",
+                _token: "{{ csrf_token() }}",
                 area_fil: areas,
                 year_fil: years,
                 month_fil: months,
             },
             cache: false,
-			timeout: 10000,
-            beforeSend: function() {
-            },
+            timeout: 10000,
+            beforeSend: function() {},
             error: function(xhr, textStatus, errorThrown) {
                 if (textStatus == 'timeout') {
                     riskChartId.parentElement.innerHTML = "Error : Timeout for this call!";
@@ -3493,7 +3573,7 @@
                     var activePoints = riskChart.getElementsAtEventForMode(evt, 'point', riskChart.options);
                     var firstPoint = activePoints[0];
 
-                    if(firstPoint) {
+                    if (firstPoint) {
                         var label = riskChart.data.labels[firstPoint.index];
                         var id = dataRisk[firstPoint.index].id;
                         var category = label;
@@ -3508,7 +3588,7 @@
                         $("#detailGrap").modal();
 
                         $.ajax({
-                            url: '{{ url('srs/dashboard_v2/grap_detail_risk') }}',
+                            url: "{{ url('srs/dashboard_v2/grap_detail_risk') }}",
                             type: 'POST',
                             data: {
                                 _token: "{{ csrf_token() }}",
@@ -3518,8 +3598,7 @@
                                 id_fil: id,
                             },
                             cache: false,
-                            beforeSend: function() {
-                            },
+                            beforeSend: function() {},
                             complete: function() {
                                 detailGrapBody.find('.loader').remove();
                             },
@@ -3562,7 +3641,7 @@
                                 bgGradient.addColorStop(0.6, 'rgba(20, 180, 60, 1)');
                                 bgGradient.addColorStop(0.4, 'rgba(90, 160, 90, 0.2)');
                                 bgGradient.addColorStop(0.1, 'blue');
-                                
+
                                 var riskMonthChart = new Chart(detailRisk, {
                                     type: 'line',
                                     data: {
@@ -3629,8 +3708,12 @@
                                 // RISK SUB 1 //
                                 var dataRiSub1 = dataJson.data_risk_sub1
                                 var setRiSub1 = [{
-                                    label: dataRiSub1.map(function(v){return v.label}),
-                                    data: dataRiSub1.map(function(v){return v.data})
+                                    label: dataRiSub1.map(function(v) {
+                                        return v.label
+                                    }),
+                                    data: dataRiSub1.map(function(v) {
+                                        return v.data
+                                    })
                                 }];
 
                                 var ctxRisSub = document.getElementById("detailRiskSub1");
@@ -3711,29 +3794,27 @@
                                     var activePoints = riskMonthChart.getElementsAtEventForMode(evt, 'point', riskMonthChart.options);
                                     var firstPoint = activePoints[0];
 
-                                    if(firstPoint)
-                                    {
+                                    if (firstPoint) {
                                         var data = riskMonthChart.data.datasets[0].data[0];
                                         var label = riskMonthChart.data.labels[firstPoint.index];
 
                                         topIndexSmallBody.html(animateLoading());
                                         $("#topIndexSmall").modal();
-                                        $('#topIndexSmallLabel').text(category+' - '+label);
+                                        $('#topIndexSmallLabel').text(category + ' - ' + label);
 
                                         $.ajax({
-                                            url: '{{ url('srs/dashboard_v2/detail_event_list') }}',
+                                            url: "{{ url('srs/dashboard_v2/detail_event_list ') }}",
                                             type: 'POST',
                                             data: {
                                                 _token: "{{ csrf_token() }}",
                                                 area_fil: areas,
                                                 year_fil: years,
-                                                month_fil: (firstPoint.index+1), // label
+                                                month_fil: (firstPoint.index + 1), // label
                                                 risk_id: id,
                                             },
                                             cache: false,
                                             timeout: 10000,
-                                            beforeSend: function() {
-                                            },
+                                            beforeSend: function() {},
                                             complete: function() {
                                                 topIndexSmallBody.find('.loader').remove();
                                             },
@@ -3756,7 +3837,7 @@
                                     var activePoints = risMntChart.getElementsAtEventForMode(evt, 'point', risMntChart.options);
                                     var firstPoint = activePoints[0];
 
-                                    if(firstPoint) {
+                                    if (firstPoint) {
                                         var label = risMntChart.data.labels[firstPoint.index];
                                         var id = dataRiSub1[firstPoint.index].id;
                                         var category = label;
@@ -3770,7 +3851,7 @@
                                         $('#detailRisk').parent().append(animateLoading('loader-full'))
 
                                         $.ajax({
-                                            url: '{{ url('srs/dashboard_v2/grap_detail_risk') }}',
+                                            url: "{{ url('srs/dashboard_v2/grap_detail_risk ') }}",
                                             type: 'POST',
                                             data: {
                                                 _token: "{{ csrf_token() }}",
@@ -3780,8 +3861,7 @@
                                                 id_fil: id,
                                             },
                                             cache: false,
-                                            beforeSend: function() {
-                                            },
+                                            beforeSend: function() {},
                                             complete: function() {
                                                 detailGrapBody.find('.loader').remove();
                                             },
@@ -3796,8 +3876,12 @@
                                                 // RISK SUB 2 PIE //
                                                 dataRiSub2 = dataJson.data_risk_sub2
                                                 setRisSub2 = [{
-                                                    label: dataRiSub2.map(function(v){return v.label}),
-                                                    data: dataRiSub2.map(function(v){return v.data})
+                                                    label: dataRiSub2.map(function(v) {
+                                                        return v.label
+                                                    }),
+                                                    data: dataRiSub2.map(function(v) {
+                                                        return v.data
+                                                    })
                                                 }];
                                                 risSub2Chart.data.labels = setRisSub2[0].label;
                                                 risSub2Chart.data.datasets[0].data = setRisSub2[0].data;
@@ -3814,29 +3898,27 @@
                                                     var activePoints = riskMonthChart.getElementsAtEventForMode(evt, 'point', riskMonthChart.options);
                                                     var firstPoint = activePoints[0];
 
-                                                    if(firstPoint)
-                                                    {
+                                                    if (firstPoint) {
                                                         var data = riskMonthChart.data.datasets[0].data[0];
                                                         var label = riskMonthChart.data.labels[firstPoint.index];
 
                                                         topIndexSmallBody.html(animateLoading());
                                                         $("#topIndexSmall").modal();
-                                                        $('#topIndexSmallLabel').text(category+' - '+label);
+                                                        $('#topIndexSmallLabel').text(category + ' - ' + label);
 
                                                         $.ajax({
-                                                            url: '{{ url('srs/dashboard_v2/detail_event_list') }}',
+                                                            url: "{{ url('srs/dashboard_v2/ detail_event_list') }}",
                                                             type: 'POST',
                                                             data: {
                                                                 _token: "{{ csrf_token() }}",
                                                                 area_fil: area,
                                                                 year_fil: year,
-                                                                month_fil: (firstPoint.index+1), // label
+                                                                month_fil: (firstPoint.index + 1), // label
                                                                 risk_sub1_id: id,
                                                             },
                                                             cache: false,
                                                             timeout: 10000,
-                                                            beforeSend: function() {
-                                                            },
+                                                            beforeSend: function() {},
                                                             complete: function() {
                                                                 topIndexSmallBody.find('.loader').remove();
                                                             },
@@ -3858,7 +3940,7 @@
                                                     var activePoints = risSub2Chart.getElementsAtEventForMode(evt, 'point', risSub2Chart.options);
                                                     var firstPoint = activePoints[0];
 
-                                                    if(firstPoint) {
+                                                    if (firstPoint) {
                                                         var label = risSub2Chart.data.labels[firstPoint.index];
                                                         var value = risSub2Chart.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
                                                         var labelTitle = label;
@@ -3873,7 +3955,7 @@
                                                         $('#riskSub2Month').parent().append(animateLoading('loader-full'))
 
                                                         $.ajax({
-                                                            url: '{{ url('srs/dashboard_v2/grap_detail_risk') }}',
+                                                            url: "{{ url('srs/dashboard_v2/ grap_detail_risk') }}",
                                                             type: 'POST',
                                                             data: {
                                                                 _token: "{{ csrf_token() }}",
@@ -3883,8 +3965,7 @@
                                                                 id_fil: id,
                                                             },
                                                             cache: false,
-                                                            beforeSend: function() {
-                                                            },
+                                                            beforeSend: function() {},
                                                             complete: function() {
                                                                 detailGrapBody.find('.loader').remove();
                                                             },
@@ -3901,29 +3982,27 @@
                                                                     var activePoints = risSub2MonthChart.getElementsAtEventForMode(evt, 'point', risSub2MonthChart.options);
                                                                     var firstPoint = activePoints[0];
 
-                                                                    if(firstPoint)
-                                                                    {
+                                                                    if (firstPoint) {
                                                                         var data = risSub2MonthChart.data.datasets[0].data[0];
                                                                         var label = risSub2MonthChart.data.labels[firstPoint.index];
 
                                                                         topIndexSmallBody.html(animateLoading());
                                                                         $("#topIndexSmall").modal();
-                                                                        $('#topIndexSmallLabel').text(category+' - '+label);
+                                                                        $('#topIndexSmallLabel').text(category + ' - ' + label);
 
                                                                         $.ajax({
-                                                                            url: '{{ url('srs/dashboard_v2/detail_event_list') }}',
+                                                                            url: "{{ url('srs/dashboard_v2/detail_event_list ') }}",
                                                                             type: 'POST',
                                                                             data: {
                                                                                 _token: "{{ csrf_token() }}",
                                                                                 area_fil: area,
                                                                                 year_fil: year,
-                                                                                month_fil: (firstPoint.index+1), // label
+                                                                                month_fil: (firstPoint.index + 1), // label
                                                                                 risk_sub2_id: id,
                                                                             },
                                                                             cache: false,
                                                                             timeout: 10000,
-                                                                            beforeSend: function() {
-                                                                            },
+                                                                            beforeSend: function() {},
                                                                             complete: function() {
                                                                                 topIndexSmallBody.find('.loader').remove();
                                                                             },
@@ -3950,12 +4029,16 @@
                                     }
                                 }
                                 // RISK SUB 1 MONTH //
-                                
+
                                 // RISK PIE SUB 2 //
                                 var dataRiSub2 = dataJson.data_risk_sub2
                                 var setRisSub2 = [{
-                                    label: dataRiSub2.map(function(v){return v.label}),
-                                    data: dataRiSub2.map(function(v){return v.data})
+                                    label: dataRiSub2.map(function(v) {
+                                        return v.label
+                                    }),
+                                    data: dataRiSub2.map(function(v) {
+                                        return v.data
+                                    })
                                 }];
                                 var colorRand = getColorRand(setRisSub2[0].label.length);
                                 var risSub2 = document.getElementById("riskSub2").getContext('2d');
@@ -3963,13 +4046,11 @@
                                     type: 'pie',
                                     data: {
                                         labels: [],
-                                        datasets: [
-                                            {
-                                                data: [],
-                                                hoverOffset: 10,
-                                                backgroundColor: colorRand,
-                                            }
-                                        ]
+                                        datasets: [{
+                                            data: [],
+                                            hoverOffset: 10,
+                                            backgroundColor: colorRand,
+                                        }]
                                     },
                                     options: {
                                         responsive: true,
@@ -3994,14 +4075,12 @@
                                                 display: false,
                                                 text: 'Chart.js Pie Chart'
                                             },
-                                            labels: [
-                                                {
-                                                    render: (args) => {
-                                                        return `${args.value}`
-                                                    },
-                                                    fontColor: '#fff',
+                                            labels: [{
+                                                render: (args) => {
+                                                    return `${args.value}`
                                                 },
-                                            ],
+                                                fontColor: '#fff',
+                                            }, ],
                                         },
                                     },
                                 })
@@ -4102,9 +4181,8 @@
                 month: months
             },
             cache: false,
-		    timeout: 10000,
-            beforeSend: function() {
-            },
+            timeout: 10000,
+            beforeSend: function() {},
             error: function(xhr, textStatus, errorThrown) {
                 if (textStatus == 'timeout') {
                     osintLinePlantChartId.parentElement.innerHTML = "Error : Timeout for this call!";
@@ -4137,7 +4215,7 @@
                         value: res[d]
                     });
                 }
-                
+
                 // GRAFIS LINE PER MONTH //
                 osintLinePlantChart.data.datasets[0].data = res;
                 osintLinePlantChart.update();
@@ -4162,8 +4240,7 @@
             },
             cache: false,
             timeout: 10000,
-            beforeSend: function() {
-            },
+            beforeSend: function() {},
             error: function(xhr, textStatus, errorThrown) {
                 if (textStatus == 'timeout') {
                     pie3dOsintId.parentElement.innerHTML = "Error : Timeout for this call!";
@@ -4199,7 +4276,7 @@
                     const label = attribute.f.x;
                     const category = label;
                     const id = data3d[index].id
-                            console.log(index[0])
+                    console.log(index[0])
 
                     detailGrapBody.html('');
                     $("#detailGrap").modal();
@@ -4207,7 +4284,7 @@
                     document.getElementById("detailGrapLabel").innerHTML = label;
 
                     $.ajax({
-                        url: '{{ url('srs/dashboard_osint/detail_event_list') }}',
+                        url: "{{ url('srs/dashboard_osint/detail_event_list') }}",
                         type: 'POST',
                         data: {
                             _token: "{{ csrf_token() }}",
@@ -4217,8 +4294,7 @@
                         },
                         cache: false,
                         timeout: 10000,
-                        beforeSend: function() {
-                        },
+                        beforeSend: function() {},
                         complete: function() {
                             detailGrapBody.find('.loader').remove();
                         },
@@ -4239,9 +4315,82 @@
     }
     // FUNCTION OSINT PLANT //
 
+
+
+    // SOA MONTHLY
+    var SoatraficAll = Highcharts.chart('soa_Setahun', {
+        chart: {
+            type: 'spline',
+            backgroundColor: 'transparent',
+            height: 320,
+        },
+        title: {
+            text: 'Security Operational Analytic',
+            style: {
+                color: '#FFF',
+            }
+        },
+        subtitle: {
+            text: ''
+        },
+        xAxis: {
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            labels: {
+                style: {
+                    color: '#FFF'
+                }
+            }
+        },
+        yAxis: {
+            title: {
+                text: '',
+            },
+            labels: {
+                style: {
+                    color: '#FFF'
+                }
+            },
+            gridLineColor: 'rgba(10, 10, 10, 0.2)'
+        },
+        legend: {
+            itemStyle: {
+                color: '#FFF',
+                fontWeight: 'bold'
+            }
+        },
+        plotOptions: {
+            series: {
+                label: {
+                    connectorAllowed: false
+                },
+                marker: {
+                    fillColor: '#FFFFFF',
+                    lineWidth: 4,
+                    lineColor: null // inherit from series
+                }
+            }
+        },
+        exporting: {
+            enabled: false
+        },
+        series: [{
+            name: 'People',
+            // data: [12, 12, 31, 4, 26, 72, 82, 51, 8, 4, 22, 23],
+            data: [],
+        }, {
+            name: 'Vehicle',
+            data: [],
+        }, {
+            name: 'Document',
+            data: [],
+        }]
+    });
+    // SOA MONTHLY //
+
+
     // FUNCTION SOA MONTHLY
     function SoaFtraficAll(field) {
-        var soaAllMonthId = document.querySelector('#soa_allMonth')
+        // var soaAllMonthId = document.querySelector('#soa_allMonth')
 
         $.ajax({
             url: "{{ url('soa/grapichSetahun') }}",
@@ -4252,17 +4401,19 @@
                 area_fill: areas
             },
             cache: false,
-            timeout: 10000,
+            // timeout: 10000,
             beforeSend: function() {
+                document.getElementById("loaderSoa").style.display = "block";
             },
-            error: function(xhr, textStatus, errorThrown) {
-                if (textStatus == 'timeout') {
-                    soaAllMonthId.parentElement.innerHTML = "Error : Timeout for this call!";
-                }
-            },
+            // error: function(xhr, textStatus, errorThrown) {
+            //     if (textStatus == 'timeout') {
+            //         soaAllMonthId.parentElement.innerHTML = "Error : Timeout for this call!";
+            //     }
+            // },
             complete: function() {
-                soaAllMonthId.parentElement.querySelector('.loader').remove();
-                soaAllMonthId.style.display = 'block';
+                document.getElementById("loaderSoa").style.display = "none";
+                // soaAllMonthId.parentElement.querySelector('.loader').remove();
+                // soaAllMonthId.style.display = 'block';
             },
             success: function(e) {
                 let data = e
@@ -4276,16 +4427,15 @@
                     });
                 }
                 SoatraficAll.redraw();
-
             }
         })
     }
     // FUNCTION SOA MONTHLY //
-    
+
     // FUNCTION SOA PEOPLE //
     function people(field) {
         $.ajax({
-            url: '{{ url('soa/peopleAll') }}',
+            url: "{{ url('soa/peopleAll') }}",
             type: 'POST',
             data: {
                 _token: "{{ csrf_token() }}",
@@ -4303,7 +4453,7 @@
             },
             success: function(res) {
                 // var json = JSON.parse(res)
-                
+                console.log(res[0].total_people)
                 peopleTotal.text(res[0].total_people)
             }
         });
@@ -4313,7 +4463,7 @@
     // FUNCTION SOA VEHICLE
     function vehicle(field) {
         $.ajax({
-            url: '{{ url('soa/vehicleAll') }}',
+            url: "{{ url('soa/vehicleAll') }}",
             type: 'POST',
             data: {
                 _token: "{{ csrf_token() }}",
@@ -4340,7 +4490,7 @@
     // FUNCTION SOA MATERIAL
     function material(field) {
         $.ajax({
-            url: '{{ url('soa/documentAll') }}',
+            url: "{{ url('soa/documentAll') }}",
             type: 'POST',
             data: {
                 _token: "{{ csrf_token() }}",
@@ -4357,7 +4507,6 @@
             },
             success: function(res) {
                 // var json = JSON.parse(res)
-
                 materialTotal.text(res[0].total)
             }
         });
@@ -4365,26 +4514,25 @@
     // FUNCTION SOA MATERIAL //
 
     // DETAIL EVENT
-    $(document).on('click', '.detail-list-event', function (e){
+    $(document).on('click', '.detail-list-event', function(e) {
         var detailGrapSmall2 = $('#detailGrapSmall2');
         var detailGrapSmall2Body = $('#detailGrapSmall2 .modal-body');
         var detailGrapSmall2Label = $('#detailGrapSmall2Label');
         const id = $(this).data('id')
-        
+
         detailGrapSmall2Body.html(animateLoading());
         detailGrapSmall2.modal();
         detailGrapSmall2Label.text('Detail Event');
 
         $.ajax({
-            url: '{{ url('srs/humint_source/detail') }}',
+            url: "{{ url('srs/humint_source/detail ') }}",
             type: 'POST',
             data: {
                 _token: "{{ csrf_token() }}",
                 id: id,
             },
             cache: false,
-            beforeSend: function() {
-            },
+            beforeSend: function() {},
             complete: function() {
                 detailGrapSmall2Body.find('.loader').remove();
             },
@@ -4394,15 +4542,15 @@
                     detailGrapSmall2Body.append("Error : Timeout for this call!");
                 }
             },
-            success : function(data){
-                detailGrapSmall2Body.html(data);//menampilkan data ke dalam modal
+            success: function(data) {
+                detailGrapSmall2Body.html(data); //menampilkan data ke dalam modal
             }
         });
     })
     // DETAIL EVENT //
 
     // DETAIL EVENT OSINT
-    $(document).on('click', '.detail-list-event-osint', function (e){
+    $(document).on('click', '.detail-list-event-osint', function(e) {
         var detailGrapSmall2 = $('#detailGrapSmall2');
         var detailGrapSmall2Body = $('#detailGrapSmall2 .modal-body');
         var detailGrapSmall2Label = $('#detailGrapSmall2Label');
@@ -4414,15 +4562,14 @@
         detailGrapSmall2Label.text('Detail Event');
 
         $.ajax({
-            url: '{{ url('srs/osint/detail') }}',
+            url: "{{ url('srs/osint/detail') }}",
             type: 'POST',
             data: {
                 _token: "{{ csrf_token() }}",
                 id: id,
             },
             cache: false,
-            beforeSend: function() {
-            },
+            beforeSend: function() {},
             complete: function() {
                 // detailGrapSmall2Body.find('#loader').remove();
             },
@@ -4432,14 +4579,14 @@
                     detailGrapSmall2Body.append("Error : Timeout for this call!");
                 }
             },
-            success : function(data){
-                detailGrapSmall2Body.html(data);//menampilkan data ke dalam modal
+            success: function(data) {
+                detailGrapSmall2Body.html(data); //menampilkan data ke dalam modal
             }
         });
     })
     // DETAIL EVENT OSINT //
 
-	// ALL CHART WHEN UPDATE FILTER //
+    // ALL CHART WHEN UPDATE FILTER //
     $("#areaFilter, #yearFilter, #monthFilter").change(function(e) {
         var area = $("#areaFilter").val()
         var year = $("#yearFilter").val()
@@ -4450,24 +4597,24 @@
             years = $("#yearFilter").val(),
             months = $("#monthFilter").val()
         ];
-        
+
         // LOADING
         loadingAllBox();
         // LOADING
-        
+
         // SOI
-		srsSoi(soiChart);
-		lineSoiAvgMonth(soiAvgMonthChart);
+        srsSoi(soiChart);
+        lineSoiAvgMonth(soiAvgMonthChart);
         soiAvgPillar(field)
         // SOI
 
-		srsPerMonthDoughs(srsPerMonthDoughChart, srsPerMonthLineChart)
-		srsPerPlantDoughs(srsPerPlantDoughChart)
+        srsPerMonthDoughs(srsPerMonthDoughChart, srsPerMonthLineChart)
+        srsPerPlantDoughs(srsPerPlantDoughChart)
 
         // HUMINT
-		srsRiskSource(rsoChart)
-		srsTargetAssets(assetChart)
-		srsRisks(riskChart)
+        srsRiskSource(rsoChart)
+        srsTargetAssets(assetChart)
+        srsRisks(riskChart)
         // HUMINT //
 
         // OSINT
@@ -4482,4 +4629,78 @@
         material(field)
         // SOA //
     });
+
+    $('#exportJs').on('click', convertToPDF)
+    // convertToPDF()
+    function convertToPDF() {
+        const {
+            jsPDF
+        } = window.jspdf;
+        const pdf = new jsPDF();
+
+        pdf.setLineWidth(0.1);
+        pdf.rect(8, 8, 40, 15);
+        pdf.addImage("{{ asset('assets/dist/img/daihatsu-sahabatku.png') }}", 'PNG', 13, 11, 30, 0);
+
+        pdf.setLineWidth(0.1);
+        pdf.rect(53, 8, 113, 15);
+        pdf.setFontSize(15);
+        // pdf.text("Executive Summary - Quarter 1 Update", 50, 17);
+        var splitTitle = pdf.splitTextToSize('Executive Summary - Quarter 1 Update', 113);
+        pdf.text(63, 17, splitTitle);
+
+        pdf.setLineWidth(0.1);
+        pdf.rect(172, 8, 30, 15);
+        pdf.setFontSize(10);
+        pdf.setTextColor(246, 23, 23);
+        var splitTitle = pdf.splitTextToSize('Confidential Document', 20);
+        pdf.text(187, 15, splitTitle, 0, 'center');
+
+        pdf.setTextColor(0, 0, 0);
+        pdf.setFontSize(11);
+
+        // pdf.setFillColor(204, 204, 204, 0);
+        // pdf.rect(10, 20, 50, 10, "F");
+        pdf.text("Security Index Point", 16, 35);
+        var canvasIndex = $("canvas#grapSoi").get(0);
+        var dataURL = canvasIndex.toDataURL("image/png", 1.0);
+        pdf.setFillColor(204, 204, 204, 0);
+        pdf.rect(8, 40, 50, 50, "F");
+        pdf.addImage(dataURL, 'PNG', 8, 40, 50, 50);
+
+        pdf.text("Trend Threats and SOI", 100, 35);
+        // pdf.rect(20, 20, 100 - 10, 35 - 10, 'S');
+        $('#trendGrapSoiHelper').show();
+        var canvasTrendSoi = $("canvas#trendGrapSoiHelper").get(0);
+        var dataURL = canvasTrendSoi.toDataURL("image/png", 1.0);
+        pdf.setFillColor(204, 204, 204, 0);
+        pdf.rect(65, 40, 108, 35, "F");
+        pdf.addImage(dataURL, 'PNG', 65, 40, 108, 35);
+        $('#trendGrapSoiHelper').hide();
+
+        pdf.text("The Most Frequent Risk", 12, 105);
+        var canvasRso = $("canvas#riskChart").get(0);
+        var dataURL = canvasRso.toDataURL("image/png", 1.0);
+        pdf.setFillColor(204, 204, 204, 0);
+        pdf.rect(8, 110, 50, 50, "F");
+        pdf.addImage(dataURL, 'PNG', 8, 110, 50, 50);
+
+        pdf.text("The Most Target Asset", 70, 105);
+        var canvasAst = $("canvas#assetChart").get(0);
+        var dataURL = canvasAst.toDataURL("image/png", 1.0);
+        pdf.setFillColor(204, 204, 204, 0);
+        pdf.rect(65, 110, 50, 50, "F");
+        pdf.addImage(dataURL, 'PNG', 65, 110, 50, 50);
+
+        pdf.text("The Most Risk Source", 128, 105);
+        var canvasRsk = $("canvas#rsoChart").get(0);
+        var dataURL = canvasRsk.toDataURL("image/png", 1.0);
+        pdf.setFillColor(204, 204, 204, 0);
+        pdf.rect(122, 110, 50, 50, "F");
+        pdf.addImage(dataURL, 'PNG', 122, 110, 50, 50);
+
+        // pdf.save("report-srs-{{ date('YmdHi') }}.pdf");
+        // pdf.output('dataurlnewwindow');
+        window.open(pdf.output('bloburl'), '_blank');
+    }
 </script>

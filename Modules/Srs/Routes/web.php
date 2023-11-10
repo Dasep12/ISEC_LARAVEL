@@ -35,6 +35,7 @@ Route::prefix('srs')->middleware(['is_login_isec','prevent-back-history'])->grou
     Route::post('/dashboard_humint_v2/grap_detail_risk', 'HumintDashboardV2Controller@grapDetailRisk');
 
     Route::get('/humint_source/srsExportReportPdf', 'HumintController@srsExportReportPdf');
+    Route::get('/humint_source/export_excel', 'HumintController@exportExcel');
     Route::get('/humint_source', 'HumintController@index');
     Route::post('/humint_source/list_table', 'HumintController@listTable');
     Route::post('/humint_source/save', 'HumintController@saveData');
@@ -95,6 +96,9 @@ Route::prefix('srs')->middleware(['is_login_isec','prevent-back-history'])->grou
     Route::post('/osint_source/get_SubissuMedia1', 'OsintController@getSubissuMedia1');
     Route::post('/osint_source/getCategorySub1', 'OsintController@getCategorySub1');
     Route::post('/osint/detail', 'OsintController@detail');
+    
+    Route::post('/osint_profile/search', 'OsintProfileController@search');
+    Route::get('/osint_profile/search_test', 'OsintProfileController@searchTest');
     // OSINT //
     
     // SOI

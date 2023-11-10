@@ -34,7 +34,7 @@ class DashboardModel extends Model
         $year = empty($year) ? date('Y') : $year;
         $month = $req->input('month_fil');
         $user_wilayah = AuthHelper::user_wilayah();
-
+        $area_kode = $req->input("area_fills");
         $whereWil = "";
         if (AuthHelper::is_author('ALLAREA')) {
             $whereWil .= " AND wil_id='$user_wilayah'";
@@ -46,7 +46,16 @@ class DashboardModel extends Model
         b.people_id in (7,8,9)
         INNER JOIN admisecdrep_sub as2 on as2.id  = a.area_id 
         WHERE a.disable=0  and a.status = 1 and b.status = 1  $whereWil";
-        if (!empty($area)) $sql .= " AND a.area_id='$area'";
+
+
+        if (!empty($area)) {
+            $sql .= " AND a.area_id='$area'";
+        } else if ($area_kode != "" || $area_kode != null) {
+            $plantD = DB::connection('srsbi')->select("SELECT area_code as plant_code FROM admiseciso_area_sub WHERE id = '" . $area_kode . "' ");
+            $idArea  = DB::connection('soabi')->select("SELECT id , code_sub  FROM admisecdrep_sub WHERE code_sub = '" . $plantD[0]->plant_code . "' ");
+            $sql .= " AND a.area_id='" . $idArea[0]->id . "' ";
+        }
+
         if (!empty($month)) $sql .= " AND MONTH(a.report_date)='$month'";
         if (!empty($year)) $sql .= " AND YEAR(a.report_date)='$year'";
 
@@ -60,6 +69,7 @@ class DashboardModel extends Model
         $year = $req->input('year_fil');
         $year = empty($year) ? date('Y') : $year;
         $month = $req->input('month_fil');
+        $area_kode = $req->input("area_fills");
         $user_wilayah = AuthHelper::user_wilayah();
 
         $whereWil = "";
@@ -72,7 +82,15 @@ class DashboardModel extends Model
         INNER JOIN soa_bi.dbo.admisecdrep_transaction_vehicle atv ON atv.trans_id=a.id
         INNER JOIN admisecdrep_sub as2 on as2.id  = a.area_id  
         WHERE a.disable=0 and atv.type_id in (1,2,3,1037) and a.status = 1 and atv.status = 1  $whereWil";
-        if (!empty($area)) $sql .= " AND a.area_id='$area'";
+        if (!empty($area)) {
+            $sql .= " AND a.area_id='$area'";
+        } else if ($area_kode != "" || $area_kode != null) {
+            $plantD = DB::connection('srsbi')->select("SELECT area_code as plant_code FROM admiseciso_area_sub WHERE id = '" . $area_kode . "' ");
+            $idArea  = DB::connection('soabi')->select("SELECT id , code_sub  FROM admisecdrep_sub WHERE code_sub = '" . $plantD[0]->plant_code . "' ");
+            $sql .= " AND a.area_id='" . $idArea[0]->id . "' ";
+        }
+
+
         if (!empty($month)) $sql .= " AND MONTH(a.report_date)='$month'";
         if (!empty($year)) $sql .= " AND YEAR(a.report_date)='$year'";
 
@@ -86,6 +104,7 @@ class DashboardModel extends Model
         $year = $req->input('year_fil');
         // $year = empty($year) ? date('Y') : $year;
         $month = $req->input('month_fil');
+        $area_kode = $req->input("area_fills");
         $user_wilayah = AuthHelper::user_wilayah();
 
         $whereWil = "";
@@ -105,7 +124,15 @@ class DashboardModel extends Model
 
         if (!empty($month)) $sql .= " AND MONTH(atr.report_date)='$month'";
         if (!empty($year)) $sql .= " AND YEAR(atr.report_date) = '$year' ";
-        if (!empty($area)) $sql .= " AND atr.area_id='$area'";
+
+        if (!empty($area)) {
+            $sql .= " AND atr.area_id='$area'";
+        } else if ($area_kode != "" || $area_kode != null) {
+            $plantD = DB::connection('srsbi')->select("SELECT area_code as plant_code FROM admiseciso_area_sub WHERE id = '" . $area_kode . "' ");
+            $idArea  = DB::connection('soabi')->select("SELECT id , code_sub  FROM admisecdrep_sub WHERE code_sub = '" . $plantD[0]->plant_code . "' ");
+            $sql .= " AND atr.area_id='" . $idArea[0]->id . "' ";
+        }
+
 
         $res = DB::connection('soabi')->select($sql);
         return $res;
@@ -117,6 +144,7 @@ class DashboardModel extends Model
         $year = $req->input('year_fil');
         // $year = empty($year) ? date('Y') : $year;
         $month = $req->input('month_fil');
+        $area_kode = $req->input("area_fills");
         if ($area != "" || $area != null) {
             $plantID = DB::connection('soabi')->select("SELECT code_sub as id FROM admisecdrep_sub WHERE id='$area'  ");
             $area =  $plantID[0]->id;
@@ -124,7 +152,15 @@ class DashboardModel extends Model
         $sql = "SELECT  COUNT(tp.PKBNo) as total  FROM T_PKB tp 
         WHERE  NULLIF(tp.PKBNo, '') IS NOT NULL  ";
 
-        if (!empty($area)) $sql .= " AND tp.LocationName='$area'";
+        if (!empty($area)) {
+            $sql .= " AND tp.LocationName='$area'";
+        } else if ($area_kode != "" || $area_kode != null) {
+            $plantD = DB::connection('srsbi')->select("SELECT area_code as plant_code FROM admiseciso_area_sub WHERE id = '" . $area_kode . "' ");
+            $idArea  = DB::connection('soabi')->select("SELECT id , code_sub  FROM admisecdrep_sub WHERE code_sub = '" . $plantD[0]->plant_code . "' ");
+            $sql .= " AND tp.LocationName='" . $idArea[0]->code_sub . "' ";
+        }
+
+
         if (!empty($month)) $sql .= " AND MONTH(tp.PKBDate)='$month'";
         if (!empty($year)) $sql .= " AND YEAR(tp.PKBDate)='$year'";
 
@@ -469,11 +505,11 @@ class DashboardModel extends Model
 
         if ($area != "" || $area != null) {
             $wherePlant .= " AND a.area_id='$area'";
+        } else if ($area_kode != "" || $area_kode != null) {
+            $plantD = DB::connection('srsbi')->select("SELECT area_code as plant_code FROM admiseciso_area_sub WHERE id = $area_kode ");
+            $idArea  = DB::connection('soabi')->select("SELECT id , code_sub  FROM admisecdrep_sub WHERE code_sub = '" . $plantD[0]->plant_code . "' ");
+            $wherePlant .= " AND a.area_id='" . $idArea[0]->id . "' ";
         }
-        // else if ($area_kode != "" || $area_kode != null) {
-        //     $idArea  = $this->soadb->get_where("admisecdrep_sub", ['code_sub' => $area_kode])->row();
-        //     $wherePlant .= " AND a.area_id='$idArea->id'";
-        // }
 
         $user_wilayah = AuthHelper::user_wilayah();
         $whereWil = "";
@@ -521,11 +557,11 @@ class DashboardModel extends Model
 
         if ($area != "" || $area != null) {
             $wherePlant .= " AND a.area_id='$area'";
+        } else if ($area_kode != "" || $area_kode != null) {
+            $plantD = DB::connection('srsbi')->select("SELECT area_code as plant_code FROM admiseciso_area_sub WHERE id = $area_kode ");
+            $idArea  = DB::connection('soabi')->select("SELECT id , code_sub  FROM admisecdrep_sub WHERE code_sub = '" . $plantD[0]->plant_code . "' ");
+            $wherePlant .= " AND a.area_id='" . $idArea[0]->id . "' ";
         }
-        // else if ($area_kode != "" || $area_kode != null) {
-        //     $idArea  = $this->soadb->get_where("admisecdrep_sub", ['code_sub' => $area_kode])->row();
-        //     $wherePlant .= " AND a.area_id='$idArea->id'";
-        // }
 
         $user_wilayah = AuthHelper::user_wilayah();
         $whereWil = "";
@@ -568,8 +604,13 @@ class DashboardModel extends Model
         $year = $req->input("year") == null ? date('Y') : $req->input("year");
         $area = $req->input("plant");
         $wherePlant = "";
-        if ($area) {
+        $area_kode = $req->input("area_fill");
+        if ($area != null) {
             $wherePlant .= " AND atr.area_id='$area'";
+        } else if ($area_kode != null) {
+            $plantD = DB::connection('srsbi')->select("SELECT area_code as plant_code FROM admiseciso_area_sub WHERE id = $area_kode ");
+            $idArea  = DB::connection('soabi')->select("SELECT id , code_sub  FROM admisecdrep_sub WHERE code_sub = '" . $plantD[0]->plant_code . "' ");
+            $wherePlant .= " AND atr.area_id='" . $idArea[0]->id . "' ";
         }
         $res = DB::connection('soabi')->select("WITH months(MonthNumber) AS
         (
@@ -605,11 +646,17 @@ class DashboardModel extends Model
     {
         $year = $req->input("year") == null ? date('Y') : $req->input("year");
         $area = $req->input("plant");
+        $area_kode = $req->input("area_fill");
         $wherePlant = "";
 
         if ($area != "" || $area != null) {
             $plantID = DB::connection('soabi')->select("SELECT code_sub as id FROM admisecdrep_sub WHERE id='$area'  ");
             $wherePlant .= " AND tp.LocationName='" . $plantID[0]->id . " '";
+        } else if ($area_kode != "" || $area_kode != null) {
+
+            $plantD = DB::connection('srsbi')->select("SELECT area_code as plant_code FROM admiseciso_area_sub WHERE id = $area_kode ");
+            $idArea  = DB::connection('soabi')->select("SELECT id , code_sub  FROM admisecdrep_sub WHERE code_sub = '" . $plantD[0]->plant_code . "' ");
+            $wherePlant .= " AND tp.LocationName='" . $idArea[0]->code_sub . " '";
         }
         $res = DB::connection('egate')->select("WITH days(DayNum) AS
         (
@@ -823,5 +870,53 @@ class DashboardModel extends Model
         $sql .= "group by tp.UpdateUser order by total desc ";
         $res = DB::connection('egate')->select($sql);
         return $res;
+    }
+
+    public static function scaterBarang($req, $year)
+    {
+
+        // $area = 24;
+        $area = $req->input('area_fil');
+        $years = $req->input('year_fil');
+        $month = $req->input('month_fil');
+        if ($area != "" || $area != null) {
+            $plantID = DB::connection('soabi')->select("SELECT code_sub as id FROM admisecdrep_sub WHERE id='" . $area . "'  ");
+            $area =  $plantID[0]->id;
+        }
+        // $sql = "SELECT tp.LocationName as plant , CAST(tp.Remark AS VARCHAR(1000)) as remarks  , COUNT(CASE
+        // WHEN tp.Remark  IS NOT NULL THEN 1 END)  as totals , (CAST(FORMAT(tp.PKBDate,'MM') as int ) - 1 ) as keys 
+        //     FROM   T_PKB tp 
+        //     WHERE FORMAT(tp.PKBDate,'yyyy')='$years' 
+        //     AND CAST(tp.Remark AS VARCHAR(1000))  != 'NULL'  ";
+
+        $plants = "";
+        $monthss = "";
+        if (!empty($area)) $plants .= "AND tp.LocationName='" . $area . "' ";
+        if (!empty($month)) $monthss .= "AND FORMAT(tp.PKBDate,'MM')='" . $month . "' ";
+
+        // $sql .= "GROUP BY CAST(tp.Remark AS VARCHAR(1000)) ,  tp.LocationName , 
+        //     CAST(FORMAT(tp.PKBDate,'MM') as int)";
+        // $data = DB::connection('egate')->select($sql);
+
+        $data = array();
+
+        $params = DB::connection('egate')->select("SELECT tp.LocationName as plant , CAST(tp.Remark AS VARCHAR(1000)) as remarks  , COUNT(CASE
+        WHEN tp.Remark  IS NOT NULL THEN 1
+          END)  as totals , (CAST(FORMAT(tp.PKBDate,'MM') as int ) - 1 ) as keys 
+        FROM   T_PKB tp 
+        WHERE FORMAT(tp.PKBDate,'yyyy')='$years' 
+        $plants
+        --
+        AND CAST(tp.Remark AS VARCHAR(1000))  != 'NULL'
+        GROUP BY CAST(tp.Remark AS VARCHAR(1000)) ,  tp.LocationName , CAST(FORMAT(tp.PKBDate,'MM') as int) ORDER BY tp.LocationName  DESC ");
+
+        foreach ($params as $par) {
+            $data[] = array(
+                "x" => (int) $par->keys,
+                "y" => (int) $par->totals,
+                "z" => $par->remarks
+            );
+        }
+        return $data;
     }
 }

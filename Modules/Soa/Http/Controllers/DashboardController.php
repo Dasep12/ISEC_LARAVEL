@@ -58,7 +58,7 @@ class DashboardController extends Controller
         for ($i = 0; $i < count($data); $i++) {
             $sum += (int) $data[$i]->total;
         }
-        $result = array(['total' => $sum]);
+        $result = array(['total' => number_format($sum, 0, ",", ",")]);
         return response()->json($result);
     }
 
@@ -308,32 +308,51 @@ class DashboardController extends Controller
 
     public function tester(Request $req)
     {
-        $data = Dashboard::pkbPlantSetahun($req);
-        $item = array();
-        // $num = 1;
+        $data = Dashboard::peopleAll($req);
+        return response()->json($data);
+    }
 
-        $categ = array();
-        $key = 'plantss';
-        $data = array_map(function ($value) {
-            return (array)$value;
-        }, $data);
-        foreach ($data as $val) {
-            if (array_key_exists($key, $val)) {
-                $categ[$val[$key]][] = $val;
-            } else {
-                $categ[""][] = $val;
+
+    // data scatter pkb barang 
+    public function scaterBarang(Request $req)
+    {
+
+        $var = array();
+        $year = 2023;
+        // $year = $req->input('year_fil');
+        $month = empty($req->input('month_fil')) ? date('m') : $req->input('month_fil');
+        // for ($i = 1; $i <= 1; $i++) {
+        //     // $i = $i <= 9 ? '0' . $i : $i;
+        //     $m = $month <= 9 ? '0' . $month : $month;
+        //     $years = $year . '-' . $m;
+        //     $params =  Dashboard::scaterBarang($req, $years);
+        //     foreach ($params as $par) {
+        //         $var[] = array("x" => (int)$par->keys, "y" => (int) $par->totals, "z" => $par->remarks);
+        //     }
+        // }
+
+        $datas = Dashboard::scaterBarang($req, $month);
+
+        $results = array(
+            '0' => [],
+            '1' => [],
+            '2' => [],
+            '3' => [],
+            '4' => [],
+            '5' => [],
+            '6' => [],
+            '7' => [],
+            '8' => [],
+            '9' => [],
+            '10' => [],
+            '11' => []
+        );
+        foreach ($datas as $v => $val) {
+            if (array_key_exists($val['x'], $results)) {
+                $results[$val['x']][] = array('x' => $val['x'], 'y' => $val['y'], 'z' => $val['z']);
             }
         }
-        foreach ($categ as $key => $pcd) {
-            foreach ($pcd as $i => $sva) {
-                $item[$i] = (int) $sva['total'];
-            }
-            $document[] = array(
-                'label' => $key,
-                'data' =>  $item,
-            );
-            // $num++;
-        }
-        return response()->json($document);
+
+        return response()->json($results);
     }
 }
