@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UsersController;
 
 // Route::get('/', function () {
 //     return view('login');
@@ -22,6 +23,7 @@ Route::prefix("auth")->group(function () {
 
 Route::get('/logout', [AuthController::class, "logout"])->name("auth.logout");
 
+Route::get('/maps', [DashboardController::class, "maps"]);
 
 Route::middleware("is_login_isec")->group(function () {
     Route::get('/menu', [MenuController::class, 'index']);
@@ -31,4 +33,11 @@ Route::middleware("is_login_isec")->group(function () {
     Route::post('/menu/srsRiskSource', [MenuController::class, 'srsRiskSource']);
     Route::post('/menu/srsTargetAssets', [MenuController::class, 'srsTargetAssets']);
     Route::post('/menu/srsRisk', [MenuController::class, 'srsRisk']);
+
+
+    Route::get('/Setting/Pengguna/list_user', [UsersController::class, 'index']);
+    Route::get('/Setting/Pengguna/register', [UsersController::class, 'register']);
+    Route::post('/Setting/Pengguna/input', [UsersController::class, 'input']);
+    Route::post('/Setting/Pengguna/getPlants', [UsersController::class, 'getPlants']);
+    Route::post('/Setting/Pengguna/resetPasword', [UsersController::class, 'getPlants']);
 });

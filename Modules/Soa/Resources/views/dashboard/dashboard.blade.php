@@ -44,6 +44,7 @@
 <!-- <script src="https://code.highcharts.com/stock/highstock.js"></script> -->
 <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
 <script src="https://code.highcharts.com/stock/modules/accessibility.js"></script>
+<script src="https://code.highcharts.com/highcharts-more.js"></script>
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
@@ -86,6 +87,7 @@
                                         <?php endfor ?>
                                     </select>
                                 </div>
+
                                 <div class="form-group col-2">
                                     <label for="monthFilter">Month</label>
                                     <select name="monthFilter" id="monthFilter" class="form-control">
@@ -105,15 +107,15 @@
                 </div>
             </div>
 
-            <!-- <div class="col-lg-12">
+            <!-- <div class="col-lg-8">
                 <div class="card " style="">
                     <div class="card-body">
                         <div style="position: absolute;left:50%;top:50%" class="row justify-content-center loader">
-                            <div class="overlay" style="display:block" id="ScaterLoader">
+                            <div class="overlay" style="display:block" id="floatLoader1">
                                 <i class="fas fa-2x fa-sync-alt fa-spin"></i>
                             </div>
                         </div>
-                        <div id="bykategoriBarangScatter"></div>
+                        <div id="bykategoriBarangPlot"></div>
                     </div>
                 </div>
             </div> -->
@@ -326,24 +328,14 @@
 
                     <div class="row">
                         <div class="col-lg-8">
-                            <!-- <div class="card card-hor" style="">
-                                <div class="card-body text-center">
-                                    <div style="position: absolute;left:50%;top:50%" class="row justify-content-center loader">
-                                        <div class="overlay" style="display:block" id="bykategoriBarang">
-                                            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
-                                        </div>
-                                    </div>
-                                    <div id="kategoriBarang"></div>
-                                </div>
-                            </div> -->
-                            <div class="card " style="height:350px">
+                            <div class="card " style="height:350">
                                 <div class="card-body">
                                     <div style="position: absolute;left:50%;top:50%" class="row justify-content-center loader">
-                                        <div class="overlay" style="display:block" id="ScaterLoader">
+                                        <div class="overlay" style="display:block" id="floatLoader1">
                                             <i class="fas fa-2x fa-sync-alt fa-spin"></i>
                                         </div>
                                     </div>
-                                    <div id="bykategoriBarangScatter"></div>
+                                    <div id="bykategoriBarangPlot"></div>
                                 </div>
                             </div>
                         </div>
@@ -1806,101 +1798,90 @@
     }
 
 
-    const getTestData = x => {
-        const off = 0.2 + 0.2 * Math.random();
-        return new Array(200).fill(1).map(() => [
-            x,
-            off + (Math.random() - 0.5) * (Math.random() - 0.5)
-        ]);
-    };
-
-    const colors = Highcharts.getOptions().colors.map(color =>
-        Highcharts.color(color).setOpacity(0.5).get()
-    );
-    // bykategoriBarangScatter
-    var kategoriBarang2 = Highcharts.chart('bykategoriBarangScatter', {
+    var kategoriBarang2 = Highcharts.chart('bykategoriBarangPlot', {
         chart: {
-            type: 'scatter',
-            height: 300,
+            type: 'bubble',
+            plotBorderWidth: 1,
+            zoomType: '',
+            height: 310
         },
 
-        colors,
+        legend: {
+            enabled: false
+        },
 
         title: {
             text: ''
         },
 
-        xAxis: {
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Oct', 'Nov', 'Des']
+        subtitle: {
+            text: ''
         },
 
-        yAxis: {
-            title: {
-                text: ''
+        accessibility: {
+            point: {
+                valueDescriptionFormat: '{index}. {point.name}, fat: {point.x}g, sugar: {point.y}g, obesity: {point.z}%.'
             }
         },
 
-        plotOptions: {
-            scatter: {
-                showInLegend: false,
-                jitter: {
-                    x: 0.24,
-                    y: 0
-                },
-                marker: {
-                    radius: 5,
-                    symbol: 'circle'
-                },
-                tooltip: {
-                    pointFormat: '{point.z}: {point.y}'
-                }
+        xAxis: {
+            gridLineWidth: 1,
+            title: {
+                text: ''
+            },
+            labels: {
+                format: '{value} '
+            },
+            accessibility: {
+                rangeDescription: 'Range: 60 to 100 grams.'
             }
         },
         credits: {
             enabled: false
         },
+        yAxis: {
+            startOnTick: false,
+            endOnTick: false,
+            title: {
+                text: ''
+            },
+            labels: {
+                format: '{value}'
+            },
+            maxPadding: 0.2,
+            accessibility: {
+                rangeDescription: 'Range: 0 to 160 grams.'
+            }
+        },
+
+        tooltip: {
+            useHTML: true,
+            headerFormat: '<table>',
+            pointFormat: '<tr><th colspan="2">{point.title}</th></tr>' +
+                '<tr><th>Total:</th><td>{point.z}</td></tr>',
+            footerFormat: '</table>',
+            followPointer: true
+        },
+
+        plotOptions: {
+            series: {
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.z}'
+                }
+            }
+        },
+
         series: [{
-            name: 'Jan',
-            data: []
-        }, {
-            name: 'Feb',
-            data: []
-        }, {
-            name: 'Mar',
-            data: []
-        }, {
-            name: 'Apr',
-            data: []
-        }, {
-            name: 'Mei',
-            data: []
-        }, {
-            name: 'Jun',
-            data: []
-        }, {
-            name: 'Jul',
-            data: []
-        }, {
-            name: 'Agu',
-            data: []
-        }, {
-            name: 'Sep',
-            data: []
-        }, {
-            name: 'Okt',
-            data: []
-        }, {
-            name: 'Nov',
-            data: []
-        }, {
-            name: 'Des',
-            data: []
+            data: [],
+            colorByPoint: true
         }]
+
     });
 
     function FkategoriBarang2(field) {
         $.ajax({
-            url: 'scaterBarang',
+            url: 'floterBarang',
             type: 'POST',
             data: {
                 area_fil: area,
@@ -1910,18 +1891,23 @@
             },
             cache: false,
             beforeSend: function() {
-                document.getElementById("ScaterLoader").style.display = "block";
+                document.getElementById("floatLoader1").style.display = "block";
             },
             complete: function() {
-                document.getElementById("ScaterLoader").style.display = "none";
+                document.getElementById("floatLoader1").style.display = "none";
             },
             success: function(result) {
                 let res = result;
-                let datas = JSON.stringify(result)
                 console.log(res);
-                for (let i = 0; i < 12; i++) {
-                    kategoriBarang2.series[i].setData(res[i])
-                }
+
+                let data = [{
+                    x: 8,
+                    y: 8,
+                    z: 8,
+                    name: 'BE',
+                    title: 'Belgium'
+                }];
+                kategoriBarang2.series[0].setData(res)
             }
         });
     }

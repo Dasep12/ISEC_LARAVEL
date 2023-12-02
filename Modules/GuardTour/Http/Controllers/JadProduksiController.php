@@ -156,7 +156,7 @@ class JadProduksiController extends Controller
                 foreach ($datajadwal as $prd) {
                     $keyStatus = 3;
                     $var_shift = Shift::where('nama_shift', $prd[1])->first();
-                    $var_zona = Zona::where('zone_name', $prd[0])->first();
+                    $var_zona = Zona::where('zone_name', $prd[0])->where('admisecsgp_mstplant_plant_id', $plant->plant_id)->first();
                     $l = 1;
                     for ($p = 2; $p <= count($datajadwal[7]) - 2; $p += 2) {
 

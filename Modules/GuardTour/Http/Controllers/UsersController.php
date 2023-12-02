@@ -5,6 +5,8 @@ namespace Modules\GuardTour\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
+use Modules\GuardTour\Entities\Company;
 use Modules\GuardTour\Entities\Plants;
 use Modules\GuardTour\Entities\Role;
 use Modules\GuardTour\Entities\Site;
@@ -44,22 +46,31 @@ class UsersController extends Controller
         ], [
             'npk.unique' => 'npk sudah ada',
         ]);
-        Users::create([
-            'npk'                             => $req->npk,
-            'name'                            => $req->name,
-            'email'                           => $req->email,
-            'patrol_group'                    => $req->group,
-            'admisecsgp_mstroleusr_role_id'   => $req->id_role,
-            'admisecsgp_mstsite_site_id'      => $req->id_site,
-            'admisecsgp_mstplant_plant_id'    => $req->id_plant,
-            'admisecsgp_mstcmp_company_id'    => $req->id_comp,
-            'password'                        => $req->password,
-            'created_at'                      => date('Y-m-d H:i:s'),
-            'created_by'                      => $this->session->userdata('id_token'),
-            'status'                          => $req->status,
-            'user_name'                       => $req->user_name
-        ]);
-        return redirect()->route('users.master')->with(['success' => 'Data Berhasil di Simpan']);
+
+        try {
+            $site = Site::find($req->site_id)->first();
+            $cmp = Company::find($site->admisecsgp_mstcmp_company_id)->first();
+            Users::create([
+                'npk'                             => $req->npk,
+                'name'                            => strtoupper($req->nama),
+                'email'                           => $req->email,
+                'patrol_group'                    => $req->group,
+                'admisecsgp_mstroleusr_role_id'   => $req->level,
+                'admisecsgp_mstsite_site_id'      => $req->site_id,
+                'admisecsgp_mstplant_plant_id'    => $req->plant_id,
+                'admisecsgp_mstcmp_company_id'    => $cmp->company_id,
+                'password'                        => md5($req->password),
+                'created_at'                      => date('Y-m-d H:i:s'),
+                'created_by'                      => Session('npk'),
+                'status'                          => $req->status,
+                'user_name'                       => $req->user_name
+            ]);
+
+            DB::commit();
+            return redirect()->route('users.master')->with(['success' => 'Data Berhasil di Simpan']);
+        } catch (\Exception $e) {
+            dd($e);
+        }
     }
 
     public function destroy(Request $request)
@@ -75,25 +86,31 @@ class UsersController extends Controller
         $res = $req->d;
         $id = explode("&", $res);
         $uri =  \Request::segment(2) . '/' . \Request::segment(3);
+        // dd($res);
         return view('guardtour::users/edit_master_users', [
             'uri'       => $uri,
-            'data'      => Users::with('plantDetails')->where('npk', $id[0])->first(),
-            'site'      => Site::all()
+            'data'      => Users::find($res),
+            'site'      => Site::all(),
+            'plant'     => Plants::all(),
+            'role'      => Role::all()
         ]);
     }
 
     public function update(Request $req)
     {
         $id    = $req->npk;
-        $zona = Users::find($id);
-        $zona->zone_name                 = $req->zone_name;
-        $zona->kode_users                 = $req->kode_users;
-        $zona->admisecsgp_mstplant_plant_id = $req->plant_id;
-        $zona->status                     = $req->status;
-        $zona->others                     = $req->others;
-        $zona->updated_at                 = date('Y-m-d H:i:s');
-        $zona->updated_by                 = Session('npk');
-        $zona->save();
+        $users = Users::find($id);
+        $users->name                             = $req->nama;
+        $users->admisecsgp_mstroleusr_role_id    = $req->level;
+        $users->admisecsgp_mstsite_site_id       = $req->site_id;
+        $users->patrol_group                     = $req->group;
+        $users->admisecsgp_mstplant_plant_id     = $req->plant_id;
+        $users->status                           = $req->status;
+        $users->email                            = $req->email;
+        $users->user_name                        = $req->user_name;
+        $users->updated_at                       = date('Y-m-d H:i:s');
+        $users->updated_by                       = Session('npk');
+        $users->save();
         return redirect()->route('users.master')->with(['success' => 'Data Berhasil di Perbarui']);
     }
 

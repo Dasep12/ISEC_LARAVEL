@@ -40,8 +40,9 @@
                         <div class="card-tools">
                         </div>
                     </div>
-                    <form onsubmit="return cek()" action="{{ route('users.insert') }}" method="POST">
+                    <form onsubmit="return cek()" action="{{ route('users.update') }}" method="POST">
                         @csrf
+                        <input type="text" hidden value="{{ $data->npk }}" name="npk" autocomplete="off" id="npk" class="form-control">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-lg-4">
@@ -50,7 +51,7 @@
                                         <select class="form-control" name="site_id" id="site_id">
                                             <option selected value="">Pilih Wilayah</option>
                                             @foreach ($site as $cmp)
-                                            <option value="{{ $cmp->site_id }} ">{{ $cmp->site_name }}</option>
+                                            <option {{ $data->admisecsgp_mstsite_site_id == $cmp->site_id ? 'selected' : '' }} value="{{ $cmp->site_id }} ">{{ $cmp->site_name }}</option>
                                             @endforeach
                                         </select>
                                         <span id="info" style="display: none;" class="text-danger font-italic small">load data plant . . .</span>
@@ -59,13 +60,17 @@
 
                                     <div class="form-group">
                                         <label for="">NPK</label>
-                                        <input type="text" name="npk" autocomplete="off" id="npk" class="form-control">
+                                        <input type="text" disabled value="{{ $data->npk }}" autocomplete="off" id="npk" class="form-control">
                                     </div>
 
                                     <div class="form-group">
                                         <label for="">GROUP PATROLI</label>
                                         <select name="group" class="form-control" id="">
-                                            <option value="">NON GROUP</option>
+                                            <option {{ $data->patrol_group == 'REGU_A' ? 'selected' : '' }}>REGU_A</option>
+                                            <option {{ $data->patrol_group == 'REGU_B' ? 'selected' : '' }}>REGU_B</option>
+                                            <option {{ $data->patrol_group == 'REGU_C' ? 'selected' : '' }}>REGU_C</option>
+                                            <option {{ $data->patrol_group == 'REGU_D' ? 'selected' : '' }}>REGU_D</option>
+                                            <option {{ $data->patrol_group == '' ? 'selected' : '' }} value="">NON GROUP</option>
                                         </select>
                                     </div>
 
@@ -77,20 +82,20 @@
                                         <label for="">PLANT</label>
                                         <select class="form-control" name="plant_id" id="plant_id">
                                             <option selected value="">Pilih Plant</option>
-                                            @foreach ($site as $cmp)
-                                            <option value="{{ $cmp->site_id }} ">{{ $cmp->site_name }}</option>
+                                            @foreach ($plant as $cmp)
+                                            <option {{ $data->admisecsgp_mstplant_plant_id == $cmp->plant_id ? 'selected' : '' }} value="{{ $cmp->plant_id }} ">{{ $cmp->plant_name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="">NAMA LENGKAP</label>
-                                        <input type="text" name="nama" autocomplete="off" id="nama" class="form-control">
+                                        <input type="text" value="{{ $data->name }}" name="nama" autocomplete="off" id="nama" class="form-control">
                                     </div>
 
                                     <div class="form-group">
                                         <label for="email">EMAIL</label>
-                                        <input type="text" name="email" autocomplete="off" id="email" class="form-control">
+                                        <input type="text" value="{{ $data->email }}" name="email" autocomplete="off" id="email" class="form-control">
                                     </div>
 
                                     <div class="form-group">
@@ -104,21 +109,21 @@
                                         <label for="">LEVEL</label>
                                         <select name="level" class="form-control" id="">
                                             @foreach ($role as $rl)
-                                            <option value=""></option>
+                                            <option {{ $data->admisecsgp_mstroleusr_role_id == $rl->role_id ? 'selected' : '' }} value="<?= $rl->role_id ?>"><?= $rl->level ?></option>
                                             @endforeach
                                         </select>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="">USERNAME</label>
-                                        <input type="text" name="user_name" autocomplete="off" id="user_name" class="form-control">
+                                        <input type="text" value="{{ $data->user_name }}" name="user_name" autocomplete="off" id="user_name" class="form-control">
                                     </div>
 
                                     <div class="form-group">
                                         <label for="">STATUS</label>
                                         <select name="status" class="form-control" id="">
-                                            <option value="1">ACTIVE</option>
-                                            <option value="0">INACTIVE</option>
+                                            <option {{ $data->status == 1 ? 'selected' : '' }} value="1">ACTIVE</option>
+                                            <option {{ $data->status == 0 ? 'selected' : '' }} value="0">INACTIVE</option>
                                         </select>
                                     </div>
 

@@ -48,16 +48,16 @@ class UploadController extends Controller
                         'kerugian'      => strval($crm[10]),
                         'modus'         => strval($crm[10]),
                         'kronologi'     => strval($crm[12]),
-                        'kota'          => strval($crm[15]),
-                        'kelurahan'     => strval($crm[13]),
-                        'kec'           => strval($crm[14]),
+                        'kota'          => strval($crm[13]),
+                        'kelurahan'     => strval($crm[14]),
+                        'kec'           => strval($crm[15]),
                         'status'        => 1,
                         'created_at'    => strval(date('Y-m-d H:i:s'))
                     );
                     array_push($params, $data);
                 }
 
-                DB::connection('crime')->table('admisec_Tcrime')->insert($data);
+                DB::connection('crime')->table('admisec_Tcrime')->insert($params);
                 DB::connection('crime')->commit();
                 return back()->with('success', 'Update data success !');
             } catch (\Exception $e) {

@@ -1,3 +1,7 @@
+@extends('template.template_first')
+
+@section('content')
+
 <style>
     .card-horizontal {
         display: flex;
@@ -4704,3 +4708,5 @@
         window.open(pdf.output('bloburl'), '_blank');
     }
 </script>
+
+@endsection

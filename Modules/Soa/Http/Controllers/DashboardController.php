@@ -355,4 +355,10 @@ class DashboardController extends Controller
 
         return response()->json($results);
     }
+
+    public function floterBarang(Request $req)
+    {
+        $data = Dashboard::floterBarang($req);
+        return response()->json($data);
+    }
 }

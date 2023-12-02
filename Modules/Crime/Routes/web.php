@@ -18,10 +18,12 @@ Route::prefix('crime')->group(function () {
     Route::get('/dashboard', 'CrimeController@index_v2');
     Route::get('/dashboard_v2', 'CrimeController@index_v2');
 
-    Route::post('/graphicJakartaSetahun', 'CrimeController@graphicJakartaSetahun');
-    Route::post('/graphicKarawangSetahun', 'CrimeController@graphicKarawangSetahun');
-    Route::post('/graphicKecJakartaSetahun', 'CrimeController@graphicKecamatanJakutSetahun');
-    Route::post('/graphicKecKarawangSetahun', 'CrimeController@graphicKecamatanKarawangSetahun');
+    Route::post('/graphicSetahunKategori', 'CrimeController@graphicSetahunKategori');
+    // Route::post('/graphicKarawangSetahun', 'CrimeController@graphicKarawangSetahun');
+
+    Route::post('/graphicKecamatanSetahun', 'CrimeController@graphicCrimeKecamatanSetahun');
+
+    // Route::post('/graphicKecKarawangSetahun', 'CrimeController@graphicKecamatanKarawangSetahun');
 
     Route::post('/mapingKategoriJakut', 'CrimeController@mapingKategoriJakut');
     Route::post('/mapingKategoriKarawang', 'CrimeController@mapingKategoriKarawang');

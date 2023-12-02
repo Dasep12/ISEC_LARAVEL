@@ -29,8 +29,8 @@ Route::prefix('soa')->group(function () {
     Route::post('/documentCategory', 'DashboardController@documentCategory');
     Route::post('/grapichSetahun', 'DashboardController@grapichSetahun');
 
-    Route::post('/scaterBarang', 'DashboardController@scaterBarang');
-    Route::get('/scaterBarang', 'DashboardController@scaterBarang');
+    Route::post('/floterBarang', 'DashboardController@floterBarang');
+    Route::get('/scaterBarang', 'DashboardController@floterBarang');
 
     Route::post('/pkbAllPlants', 'DashboardController@pkbAllPlants');
     Route::post('/pkbPlantSetahun', 'DashboardController@pkbPlantSetahun');

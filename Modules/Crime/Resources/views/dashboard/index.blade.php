@@ -137,7 +137,16 @@
                     <option value="12">Desember</option>
                 </select>
             </div>
+
+            <div class="col-lg-2">
+                <select name="type" id="type" class="form-control">
+                    <option value="h">Humint</option>
+                    <option value="o">Osint</option>
+                </select>
+            </div>
         </div>
+
+
 
         <div class="row mt-3">
             <div class="col-lg-6">
@@ -167,6 +176,7 @@
                 </div>
             </div>
         </div>
+
 
         <div class="row" style="margin-top:-40px !important">
             <div class="col-lg-6">
@@ -240,19 +250,19 @@
                             <span id="sample"></span>
                             <div class="progress" style="max-width: 100%">
                                 <div class="progress-bar" id="penjaringan_perjudian" style="width:<?= 5 <= 2 ? 5 : 5 + 5 ?>%">
-                                    <?= 5 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-success" id="penjaringan_pencurian" style="width:<?= 5 <= 2 ? 5 : 5 + 5 ?>%">
-                                    <?= 5 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-danger progress-bar-stripped" id="penjaringan_penggelapan" style="width:<?= 5 <= 2 ? 5 : 5 + 5 ?>%">
-                                    <?= 5 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-warning progress-bar-stripped" id="penjaringan_narkoba" style="width:<?= 5 <= 2 ? 5 : 5 + 5 ?>%">
-                                    <?= 5 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-dark progress-bar-stripped" id="penjaringan_kekerasan" style="width:<?= 5 <= 2 ? 5 : 5 + 5 ?>%">
-                                    <?= 5 ?>
+                                    0
                                 </div>
                             </div>
                         </div>
@@ -261,19 +271,19 @@
                             <label for="">Koja</label>
                             <div class="progress" style="max-width: 100%">
                                 <div class="progress-bar" id="koja_perjudian" style="width:<?= 5 <= 2 ? 5 : 5 + 5 ?>%">
-                                    <?= 5 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-success" id="koja_pencurian" style="width:<?= 5 <= 2 ? 5 : 5 + 5 ?>%">
-                                    <?= 5 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-danger progress-bar-stripped" id="koja_penggelapan" style="width:<?= 5 <= 2 ? 5 : 5 + 5 ?>%">
-                                    <?= 5 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-warning progress-bar-stripped" id="koja_narkoba" style="width:<?= 5 <= 2 ? 5 : 5 + 5 ?>%">
-                                    <?= 5 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-dark progress-bar-stripped" id="koja_kekerasan" style="width:<?= 5 <= 2 ? 5 : 5 + 5 ?>%">
-                                    <?= 5 ?>
+                                    0
                                 </div>
                             </div>
                         </div>
@@ -282,19 +292,19 @@
                             <label for="">Tanjung Priok</label>
                             <div class="progress" style="max-width: 100%">
                                 <div class="progress-bar" id="tanjung_priok_perjudian" style="width:<?= 5 <= 2 ? 5 : 5 + 5 ?>%">
-                                    <?= 5 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar  bg-success" id="tanjung_priok_pencurian" style="width:<?= 5 <= 2 ? 5 : 5 + 5 ?>%">
-                                    <?= 5 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-danger progress-bar-stripped" id="tanjung_priok_penggelapan" style="width:<?= 5 <= 2 ? 5 : 5 + 5 ?>%">
-                                    <?= 5 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-warning progress-bar-stripped" id="tanjung_priok_narkoba" style="width:<?= 6 <= 2 ? 5 : 6 + 5 ?>%">
-                                    <?= 6 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-dark progress-bar-stripped" id="tanjung_priok_kekerasan" style="width:<?= 6 <= 2 ? 5 : 6 + 5 ?>%">
-                                    <?= 6 ?>
+                                    0
                                 </div>
                             </div>
                         </div>
@@ -303,19 +313,19 @@
                             <label for="">Pademangan</label>
                             <div class="progress" style="max-width: 100%">
                                 <div class="progress-bar" id="pademangan_perjudian" style="width:<?= 4 <= 2 ? 5 : 4 + 5 ?>%">
-                                    <?= 4 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-success" id="pademangan_pencurian" style="width:<?= 7 <= 2 ? 5 : 7 + 5 ?>%">
-                                    <?= 7 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-danger progress-bar-stripped" id="pademangan_penggelapan" style="width:<?= 4 <= 2 ? 5 : 4 + 5 ?>%">
-                                    <?= 4 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-warning progress-bar-stripped" id="pademangan_narkoba" style="width:<?= 4 <= 2 ? 5 : 4 + 5 ?>%">
-                                    <?= 4 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-dark progress-bar-stripped" id="pademangan_kekerasan" style="width:<?= 8 <= 2 ? 5 : 8 + 5 ?>%">
-                                    <?= 8 ?>
+                                    0
                                 </div>
                             </div>
                         </div>
@@ -324,19 +334,19 @@
                             <label for="">Cilincing</label>
                             <div class="progress" style="max-width: 100%">
                                 <div class="progress-bar" id="cilincing_perjudian" style="width:<?= 3 <= 2 ? 5 : 3 + 5 ?>%">
-                                    <?= 3 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-success" id="cilincing_pencurian" style="width:<?= 6 <= 2 ? 5 : 6 + 5 ?>%">
-                                    <?= 6 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-danger progress-bar-stripped" id="cilincing_penggelapan" style="width:<?= 4 <= 2 ? 5 : 4 + 5 ?>%">
-                                    <?= 4 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-warning progress-bar-stripped" id="cilincing_narkoba" style="width:<?= 6 <= 2 ? 5 : 6 + 5 ?>%">
-                                    <?= 6 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-dark progress-bar-stripped" id="cilincing_kekerasan" style="width:<?= 4 <= 2 ? 5 : 4 + 5 ?>%">
-                                    <?= 4 ?>
+                                    0
                                 </div>
                             </div>
                         </div>
@@ -345,19 +355,19 @@
                             <label for="">Kelapa Gading</label>
                             <div class="progress" style="max-width: 100%">
                                 <div class="progress-bar" id="kelapa_gading_perjudian" style="width:<?= 4 <= 2 ? 5 : 4 + 5 ?>%">
-                                    <?= 4 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-success" id="kelapa_gading_pencurian" style="width:<?= 4 <= 2 ? 5 : 4 + 5 ?>%">
-                                    <?= 4 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-danger progress-bar-stripped" id="kelapa_gading_penggelapan" style="width:<?= 4 <= 2 ? 5 : 4 + 5 ?>%">
-                                    <?= 4 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-warning progress-bar-stripped" id="kelapa_gading_narkoba" style="width:<?= 4 <= 2 ? 5 : 4 + 5 ?>%">
-                                    <?= 4 ?>
+                                    0
                                 </div>
-                                <div class="progress-bar bg-dark progress-bar-stripped" id="kelapa_gading_kekerasan" style="width:<?= 44 <= 2 ? 5 : 44 + 5 ?>%">
-                                    <?= 44 ?>
+                                <div class="progress-bar bg-dark progress-bar-stripped" id="kelapa_gading_kekerasan" style="width:<?= 4 <= 2 ? 5 : 4 + 5 ?>%">
+                                    0
                                 </div>
                             </div>
                         </div>
@@ -366,7 +376,6 @@
                 </div>
             </div>
         </div>
-
 
         <div class="row" style="margin-top:-20px!important">
             <div class="col-lg-4">
@@ -401,19 +410,19 @@
                             <label for="">Teluk Jambe Barat</label>
                             <div class="progress" style="max-width: 100%">
                                 <div class="progress-bar" id="teluk_jambe_barat_perjudian" id="teluk_jambe_barat_perjudian" style="width:<?= 5 <= 2 ? 5 : 5 + 5 ?>%">
-                                    <?= 5 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-success" id="teluk_jambe_barat_pencurian" style="width:<?= 7 <= 2 ? 5 : 7 + 5 ?>%">
-                                    <?= 7 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-danger progress-bar-stripped" id="teluk_jambe_barat_penggelapan" style="width:<?= 5 <= 2 ? 5 : 5 + 5 ?>%">
-                                    <?= 5 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-warning progress-bar-stripped" id="teluk_jambe_barat_narkoba" style="width:<?= 4 <= 2 ? 5 : 4 + 5 ?>%">
-                                    <?= 4 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-dark progress-bar-stripped" id="teluk_jambe_barat_kekerasan" style="width:<?= 6 <= 2 ? 5 : 6 + 5 ?>%">
-                                    <?= 6 ?>
+                                    0
                                 </div>
                             </div>
                         </div>
@@ -422,19 +431,19 @@
                             <label for="">Teluk Jambe Timur</label>
                             <div class="progress" style="max-width: 100%">
                                 <div class="progress-bar" id="teluk_jambe_timur_perjudian" s style="width:<?= 7 <= 2 ? 5 : 7 + 5 ?>%">
-                                    <?= 7 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-success" id="teluk_jambe_timur_pencurian" style="width:<?= 6 <= 2 ? 5 : 6 + 5 ?>%">
-                                    <?= 6 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-danger progress-bar-stripped" id="teluk_jambe_timur_penggelapan" style="width:<?= 5 <= 2 ? 5 : 5 + 5 ?>%">
-                                    <?= 5 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-warning progress-bar-stripped" id="teluk_jambe_timur_narkoba" style="width:<?= 4 <= 2 ? 5 : 4 + 5 ?>%">
-                                    <?= 4 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-dark progress-bar-stripped" id="teluk_jambe_timur_kekerasan" style="width:<?= 7 <= 2 ? 5 : 7 + 5 ?>%">
-                                    <?= 7 ?>
+                                    0
                                 </div>
                             </div>
                         </div>
@@ -443,19 +452,19 @@
                             <label for="">Klari</label>
                             <div class="progress" style="max-width: 100%">
                                 <div class="progress-bar" id="klari_perjudian" style="width:<?= 7 <= 2 ? 5 : 7 + 5 ?>%">
-                                    <?= 7 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-success" id="klari_pencurian" style="width:<?= 5 <= 2 ? 5 : 5 + 5 ?>%">
-                                    <?= 5 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-danger progress-bar-stripped" id="klari_penggelapan" style="width:<?= 4 <= 2 ? 5 : 4 + 5 ?>%">
-                                    <?= 4 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-warning progress-bar-stripped" id="klari_narkoba" style="width:<?= 9 <= 2 ? 5 : 9 + 5 ?>%">
-                                    <?= 9 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-dark progress-bar-stripped" id="klari_kekerasan" style="width:<?= 6 <= 2 ? 5 : 6 + 5 ?>%">
-                                    <?= 6 ?>
+                                    0
                                 </div>
                             </div>
                         </div>
@@ -464,19 +473,19 @@
                             <label for="">Ciampel</label>
                             <div class="progress" style="max-width: 100%">
                                 <div class="progress-bar" id="ciampel_perjudian" style="width:<?= 6 <= 2 ? 5 : 6 + 5 ?>%">
-                                    <?= 6 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-success" id="ciampel_pencurian" style="width:<?= 5 <= 2 ? 5 : 5 + 5 ?>%">
-                                    <?= 5 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-danger progress-bar-stripped" id="ciampel_penggelapan" style="width:<?= 4 <= 2 ? 5 : 4 + 5 ?>%">
-                                    <?= 4 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-warning progress-bar-stripped" id="ciampel_narkoba" style="width:<?= 7 <= 2 ? 5 : 7 + 5 ?>%">
-                                    <?= 7 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-dark progress-bar-stripped" id="ciampel_kekerasan" style="width:<?= 5 <= 2 ? 5 : 5 + 5 ?>%">
-                                    <?= 5 ?>
+                                    0
                                 </div>
                             </div>
                         </div>
@@ -485,19 +494,19 @@
                             <label for="">Majalaya</label>
                             <div class="progress" style="max-width: 100%">
                                 <div class="progress-bar" id="majalaya_perjudian" style="width:<?= 5 <= 2 ? 5 : 5 + 5 ?>%">
-                                    <?= 5 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-success" id="majalaya_pencurian" style="width:<?= 4 <= 2 ? 5 : 4 + 5 ?>%">
-                                    <?= 4 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-danger progress-bar-stripped" id="majalaya_penggelapan" style="width:<?= 6 <= 2 ? 5 : 6 + 5 ?>%">
-                                    <?= 6 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-warning progress-bar-stripped" id="majalaya_narkoba" style="width:<?= 5 <= 2 ? 5 : 5 + 5 ?>%">
-                                    <?= 5 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-dark progress-bar-stripped" id="majalaya_kekerasan" style="width:<?= 6 <= 2 ? 5 : 6 + 5 ?>%">
-                                    <?= 6 ?>
+                                    0
                                 </div>
                             </div>
                         </div>
@@ -506,19 +515,19 @@
                             <label for="">Karawang Barat</label>
                             <div class="progress" style="max-width: 100%">
                                 <div class="progress-bar" id="karawang_barat_perjudian" style="width:<?= 5 <= 2 ? 5 : 5 + 5 ?>%">
-                                    <?= 5 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-success" id="karawang_barat_pencurian" style="width:<?= 5 <= 2 ? 5 : 5 + 5 ?>%">
-                                    <?= 5 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-danger progress-bar-stripped" id="karawang_barat_penggelapan" style="width:<?= 5 <= 2 ? 5 : 5 + 5 ?>%">
-                                    <?= 5 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-warning progress-bar-stripped" id="karawang_barat_narkoba" style="width:<?= 4 <= 2 ? 5 : 4 + 5 ?>%">
-                                    <?= 4 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-dark progress-bar-stripped" id="karawang_barat_kekerasan" style="width:<?= 4 <= 2 ? 5 : 4 + 5 ?>%">
-                                    <?= 4 ?>
+                                    0
                                 </div>
                             </div>
                         </div>
@@ -527,19 +536,19 @@
                             <label for="">Karawang Timur</label>
                             <div class="progress" style="max-width: 100%">
                                 <div class="progress-bar" id="karawang_timur_perjudian" style="width:<?= 5 <= 2 ? 5 : 5 + 5 ?>%">
-                                    <?= 5 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-success" id="karawang_timur_pencurian" style="width:<?= 5 <= 2 ? 5 : 5 + 5 ?>%">
-                                    <?= 5 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-danger progress-bar-stripped" id="karawang_timur_penggelapan" style="width:<?= 5 <= 2 ? 5 : 5 + 5 ?>%">
-                                    <?= 5 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-warning progress-bar-stripped" id="karawang_timur_narkoba" style="width:<?= 7 <= 2 ? 5 : 7 + 5 ?>%">
-                                    <?= 7 ?>
+                                    0
                                 </div>
                                 <div class="progress-bar bg-dark progress-bar-stripped" id="karawang_timur_kekerasan" style="width:<?= 4 <= 2 ? 5 : 4 + 5 ?>%">
-                                    <?= 4 ?>
+                                    0
                                 </div>
                             </div>
                         </div>
@@ -578,6 +587,12 @@
 <script>
     var thn = <?= date('Y') ?>;
     var blan = <?= date('m') ?>;
+    var types = $("#type").val();
+    var field = [
+        year = $("#tahun").val(),
+        month = $("#bulan").val(),
+        type = $("#type").val(),
+    ];
 
     document.getElementById("mapJakut").innerHTML = "<div style='height: 560px' id='map'></div>";
     document.getElementById("mapKarawang").innerHTML = "<div style='height: 620px' id='map2'></div>";
@@ -637,34 +652,36 @@
 
 
     // get color depending on population density value
-    function getColor(d) {
-        // return d > 1000 ? '#800026' :
-        //     d > 500 ? '#BD0026' :
-        //     d > 200 ? '#E31A1C' :
-        //     d > 100 ? '#FC4E2A' :
-        //     d > 50 ? '#FD8D3C' :
-        //     d > 20 ? '#FEB24C' :
-        //     d > 10 ? '#FED976' : '#FFEDA0';
+    function getColor(d, bulan) {
 
-        return d > 60 ? '#800026' :
-            d > 40 ? '#BD0026' :
-            d > 30 ? '#E31A1C' :
-            d > 25 ? '#FC4E2A' :
-            d > 20 ? '#FD8D3C' :
-            d > 10 ? '#FEB24C' :
-            d > 5 ? '#FED976' : '#FFEDA0';
+        if (bulan == "" || bulan == null) {
+            return d > 50 ? '#fa3c45' :
+                d > 30 ? '#fafc60' :
+                // d > 20 ? '#fafc60' :
+                d > 10 ? '#15994a' : '#68f79a';
+        } else {
+            return d > 6 ? '#fa3c45' :
+                d > 4 ? '#fafc60' :
+                // d > 20 ? '#fafc60' :
+                d > 2 ? '#15994a' : '#68f79a';
+        }
     }
+    let bulans = "";
+    $("#bulan").change(function() {
+        bulans = $("#bulan").val();
+    })
 
     function style(feature) {
         return {
-            weight: 2,
+            weight: 1.5,
             opacity: 1,
-            color: '#ccc',
+            color: '#fff',
             dashArray: '1',
             fillOpacity: 10,
-            fillColor: getColor(feature.properties.density)
+            fillColor: getColor(feature.properties.density, bulans)
         };
     }
+
 
     function highlightFeature(e) {
         const layer = e.target;
@@ -694,14 +711,17 @@
         onEachFeature
     }).addTo(map2);
 
+
+
     // 
-    function setMapJakutValues(thn, blan) {
+    function setMapJakutValues(field) {
         $.ajax({
             url: "mapJakut",
             method: "POST",
             data: {
-                tahun: thn,
-                bulan: blan,
+                tahun: year,
+                bulan: month,
+                type: type,
                 "_token": "{{ csrf_token() }}",
             },
             beforeSend: function() {
@@ -718,6 +738,7 @@
                         statesData.features[i].properties.density = data[i].data;
                     }
                 }
+
                 /* Jakut state kecamatan */
                 const geojson = L.geoJson(statesData, {
                     style,
@@ -747,23 +768,22 @@
                         }).addTo(map);
                     }
                 });
-
-
             }
-
         })
     }
-    setMapJakutValues(thn, "");
+    setMapJakutValues(field);
     // 
 
+
     // 
-    function setMapKarawangValues(thn, blan) {
+    function setMapKarawangValues(field) {
         $.ajax({
             url: "mapKarawang",
             method: "POST",
             data: {
-                tahun: thn,
-                bulan: blan,
+                tahun: year,
+                bulan: month,
+                type: type,
                 "_token": "{{ csrf_token() }}",
             },
             beforeSend: function() {
@@ -846,7 +866,7 @@
             }
         })
     }
-    setMapKarawangValues(thn, "");
+    setMapKarawangValues(field);
     // 
 
     function resetHighlight(e) {
@@ -884,48 +904,65 @@
     });
 
     // Jakut
-    legend.onAdd = function(map) {
-        const div = L.DomUtil.create('div', 'info legend');
-        const grades = [0, 5, 15, 30, 50, 80];
-        // const grades = [0, 10, 20, 30, 100, 200, 500, 1000];
-        const labels = [];
-        let from, to;
+    function legendsJakut(bulan) {
 
-        for (let i = 0; i < grades.length; i++) {
-            from = grades[i];
-            to = grades[i + 1];
-            labels.push(`<i style="background:${getColor(from + 1)}"></i> ${from}${to ? `&ndash;${to}` : '+'}`);
-        }
+        legend.onAdd = function(map, varam = bulan) {
+            const div = L.DomUtil.create('div', 'info legend');
+            let grades = [0, 10, 30, 50];
+            if (varam == null || varam == "") {
+                grades = [0, 10, 30, 50];
+            } else {
+                grades = [0, 2, 4, 6];
+            }
+            const labels = [];
+            let from, to;
 
-        div.innerHTML = labels.join('<br>');
-        return div;
-    };
+            for (let i = 0; i < grades.length; i++) {
+                from = grades[i];
+                to = grades[i + 1];
+                labels.push(`<i style="background:${getColor(from + 1,bulan)}"></i> ${from}${to ? `&ndash;${to}` : '+'}`);
+            }
 
-    // Karawang
-    legend2.onAdd = function(map2) {
+            div.innerHTML = labels.join('<br>');
+            return div;
+        };
 
-        const div = L.DomUtil.create('div', 'info legend');
-        const grades = [0, 5, 15, 30, 50, 80];
-        const labels = [];
-        let from, to;
+        // Jakut
+        legend.addTo(map);
+    }
 
-        for (let i = 0; i < grades.length; i++) {
-            from = grades[i];
-            to = grades[i + 1];
-            labels.push(`<i style="background:${getColor(from + 1)}"></i> ${from}${to ? `&ndash;${to}` : '+'}`);
-        }
-
-        div.innerHTML = labels.join('<br>');
-        return div;
-    };
-
-    // Jakut
-    legend.addTo(map);
-    // Karawang
-    legend2.addTo(map2);
+    legendsJakut($("#bulan").val())
 
 
 
+    function legendsKarawang(bulan) {
+        // Karawang
+        legend2.onAdd = function(map2, varam = bulan) {
+
+            const div = L.DomUtil.create('div', 'info legend');
+            let grades = [0, 10, 30, 50];
+            if (varam == null || varam == "") {
+                grades = [0, 10, 30, 50];
+            } else {
+                grades = [0, 2, 4, 6];
+            }
+            const labels = [];
+            let from, to;
+
+            for (let i = 0; i < grades.length; i++) {
+                from = grades[i];
+                to = grades[i + 1];
+                labels.push(`<i style="background:${getColor(from + 1,bulan)}"></i> ${from}${to ? `&ndash;${to}` : '+'}`);
+            }
+
+            div.innerHTML = labels.join('<br>');
+            return div;
+        };
+
+        // Karawang
+        legend2.addTo(map2);
+    }
+    legendsKarawang($("#bulan").val())
 
 
 
@@ -975,129 +1012,11 @@
 
 
     $(document).ready(function() {
-        // karawang setahun
-        var kar = Highcharts.chart({
-            chart: {
-                renderTo: 'karawangSetahun',
-                type: 'column',
-                options3d: {
-                    enabled: true,
-                    alpha: 10,
-                    beta: 25,
-                    depth: 70
-                }
-            },
-            title: {
-                text: 'Crime Index Karawang',
-                align: 'center'
-            },
-            subtitle: {
-                text: 'Periode Tahun ' + <?= date('Y') ?>
-            },
-            xAxis: {
-                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des']
-            },
-            yAxis: {
-                min: 0,
-                title: {
-                    text: 'Total'
-                },
-                stackLabels: {
-                    enabled: true,
-                    style: {
-                        fontWeight: 'bold',
-                        color: ( // theme
-                            Highcharts.defaultOptions.title.style &&
-                            Highcharts.defaultOptions.title.style.color
-                        ) || 'gray',
-                        textOutline: 'none'
-                    }
-                }
-            },
-            legend: {
-                align: 'center',
-                x: -10,
-                verticalAlign: 'top',
-                y: 10,
-                // floating: true,
-                backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || 'white',
-                // borderColor: '#CCC',
-                // borderWidth: 1,
-                shadow: false
-            },
-            tooltip: {
-                headerFormat: '<b>{point.x}</b><br/>',
-                pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
-            },
-            plotOptions: {
-                column: {
-                    stacking: 'normal',
-                    dataLabels: {
-                        enabled: true
-                    }
-                }
-            },
-            exporting: {
-                enabled: false
-            },
-            credits: {
-                enabled: false
-            },
-            series: [{
-                name: 'KEKERASAN',
-                data: []
-            }, {
-                name: 'NARKOBA',
-                data: []
-            }, {
-                name: 'PERJUDIAN',
-                data: []
-            }, {
-                name: 'PENCURIAN',
-                data: []
-            }, {
-                name: 'PENGGELAPAN',
-                data: []
-            }]
-        });
 
-
-        function FkarawangSetahun(year, month) {
-            $.ajax({
-                url: "graphicKarawangSetahun",
-                method: "POST",
-                data: {
-                    year: year,
-                    month: month,
-                    "_token": "{{ csrf_token() }}",
-                },
-                beforeSend: function() {
-                    document.getElementById("LoadkarawangSetahun").style.display = "block";
-                },
-                complete: function() {
-                    document.getElementById("LoadkarawangSetahun").style.display = "none";
-                },
-                success: function(e) {
-                    var karawang = $('#karawangSetahun').highcharts();
-                    let data = e;
-
-                    karawang.subtitle.update({
-                        text: 'Periode Tahun ' + year
-                    });
-                    for (let i = 0; i < data.length; i++) {
-                        karawang.series[i].update({
-                            name: data[i].label,
-                            data: data[i].data
-                        });
-                    }
-                    karawang.redraw();
-                }
-            });
-        }
-        FkarawangSetahun(thn, blan)
 
 
         // jakut setahun kategori
+        // graphic 1 
         var jak = Highcharts.chart({
             chart: {
                 renderTo: 'jakartaUtaraSetahun',
@@ -1184,13 +1103,15 @@
             }]
         });
 
-        function FjakartaSetahuan(year, month) {
+        function FjakartaSetahun(field) {
             $.ajax({
-                url: "graphicJakartaSetahun",
+                url: "graphicSetahunKategori",
                 method: "POST",
                 data: {
                     year: year,
                     month: month,
+                    tipe: type,
+                    kota: "Jakarta Utara",
                     "_token": "{{ csrf_token() }}",
                 },
                 beforeSend: function() {
@@ -1216,10 +1137,134 @@
                 }
             });
         }
-        FjakartaSetahuan(thn, blan)
+        FjakartaSetahun(field)
         // 
 
+        // karawang setahun
+        // graphic 2 
+        var kar = Highcharts.chart({
+            chart: {
+                renderTo: 'karawangSetahun',
+                type: 'column',
+                options3d: {
+                    enabled: true,
+                    alpha: 10,
+                    beta: 25,
+                    depth: 70
+                }
+            },
+            title: {
+                text: 'Crime Index Karawang',
+                align: 'center'
+            },
+            subtitle: {
+                text: 'Periode Tahun ' + <?= date('Y') ?>
+            },
+            xAxis: {
+                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des']
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Total'
+                },
+                stackLabels: {
+                    enabled: true,
+                    style: {
+                        fontWeight: 'bold',
+                        color: ( // theme
+                            Highcharts.defaultOptions.title.style &&
+                            Highcharts.defaultOptions.title.style.color
+                        ) || 'gray',
+                        textOutline: 'none'
+                    }
+                }
+            },
+            legend: {
+                align: 'center',
+                x: -10,
+                verticalAlign: 'top',
+                y: 10,
+                // floating: true,
+                backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || 'white',
+                // borderColor: '#CCC',
+                // borderWidth: 1,
+                shadow: false
+            },
+            tooltip: {
+                headerFormat: '<b>{point.x}</b><br/>',
+                pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+            },
+            plotOptions: {
+                column: {
+                    stacking: 'normal',
+                    dataLabels: {
+                        enabled: true
+                    }
+                }
+            },
+            exporting: {
+                enabled: false
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                name: 'KEKERASAN',
+                data: []
+            }, {
+                name: 'NARKOBA',
+                data: []
+            }, {
+                name: 'PERJUDIAN',
+                data: []
+            }, {
+                name: 'PENCURIAN',
+                data: []
+            }, {
+                name: 'PENGGELAPAN',
+                data: []
+            }]
+        });
 
+        function FkarawangSetahun(field) {
+            $.ajax({
+                url: "graphicSetahunKategori",
+                method: "POST",
+                data: {
+                    year: year,
+                    month: month,
+                    tipe: type,
+                    kota: "KARAWANG",
+                    "_token": "{{ csrf_token() }}",
+                },
+                beforeSend: function() {
+                    document.getElementById("LoadkarawangSetahun").style.display = "block";
+                },
+                complete: function() {
+                    document.getElementById("LoadkarawangSetahun").style.display = "none";
+                },
+                success: function(e) {
+                    var karawang = $('#karawangSetahun').highcharts();
+                    let data = e;
+
+                    karawang.subtitle.update({
+                        text: 'Periode Tahun ' + year
+                    });
+                    for (let i = 0; i < data.length; i++) {
+                        karawang.series[i].update({
+                            name: data[i].label,
+                            data: data[i].data
+                        });
+                    }
+                    karawang.redraw();
+                }
+            });
+        }
+        FkarawangSetahun(field)
+        // 
+
+        // graphic 3 
         var crimeAreaJakut = Highcharts.chart('CrimeperAreaJakut', {
             title: {
                 text: 'Crime Index Per Area Jakarta Utara',
@@ -1306,13 +1351,15 @@
             ]
         });
 
-        function FcrimeAreaJakut(year, month) {
+        function FcrimeAreaJakut(field) {
             $.ajax({
-                url: "graphicKecJakartaSetahun",
+                url: "graphicKecamatanSetahun",
                 method: "POST",
                 data: {
                     year: year,
                     month: month,
+                    type: type,
+                    kota: "Jakarta Utara",
                     "_token": "{{ csrf_token() }}",
                 },
                 beforeSend: function() {
@@ -1339,10 +1386,11 @@
                 }
             });
         }
-        FcrimeAreaJakut(thn, blan)
+        FcrimeAreaJakut(field)
+        // 
 
 
-
+        // graphic 4
         var crimeAreaKarawang = Highcharts.chart('CrimeperAreaKarawang', {
             title: {
                 text: 'Crime Index Per Area Karawang',
@@ -1427,13 +1475,15 @@
             ]
         });
 
-        function FcrimeAreaKarawang(year, month) {
+        function FcrimeAreaKarawang(field) {
             $.ajax({
-                url: "graphicKecKarawangSetahun",
+                url: "graphicKecamatanSetahun",
                 method: "POST",
                 data: {
                     year: year,
                     month: month,
+                    type: type,
+                    kota: "Karawang",
                     "_token": "{{ csrf_token() }}",
                 },
                 beforeSend: function() {
@@ -1460,16 +1510,21 @@
                 }
             });
         }
-        FcrimeAreaKarawang(thn, blan);
+        FcrimeAreaKarawang(field);
+        // 
 
 
-        function FmapingKategoriJakut(year, month) {
+
+        // graphic 5 maps jakut 
+        function FmapingKategoriJakut(field) {
             $.ajax({
                 url: "mapingKategoriJakut",
                 method: "POST",
                 data: {
-                    tahun: year,
+                    tahun: 2023,
                     bulan: month,
+                    type: type,
+                    kota: "Jakarta Utara",
                     "_token": "{{ csrf_token() }}",
                 },
                 beforeSend: function() {
@@ -1498,17 +1553,20 @@
                 }
             });
         }
-        FmapingKategoriJakut(thn, "")
+        FmapingKategoriJakut(field)
+        // 
 
-
+        // graphic 6 maps karawang
         // update kategori mapping karawang 
-        function FmapingKategoriKarawang(year, month) {
+        function FmapingKategoriKarawang(field) {
             $.ajax({
                 url: "mapingKategoriKarawang",
                 method: "POST",
                 data: {
-                    tahun: year,
+                    tahun: 2023,
                     bulan: month,
+                    type: type,
+                    kota: "Karawang",
                     "_token": "{{ csrf_token() }}",
                 },
                 beforeSend: function() {
@@ -1539,37 +1597,54 @@
                 }
             });
         }
-        FmapingKategoriKarawang(thn, "")
+        FmapingKategoriKarawang(field)
+        // 
 
-
-
-        $("#tahun,#bulan").change(function() {
-            var tahun = $("#tahun").val();
+        $("#bulan").change(function() {
             var bulan = $("#bulan").val();
+            legendsJakut(bulan)
+            legendsKarawang(bulan)
+        })
+
+
+        $("#tahun,#bulan,#type").change(function() {
+
+            // var tahun = $("#tahun").val();
+            // var bulan = $("#bulan").val();
+            // var types = $("#type").val();
+
+            var field = [
+                year = $("#tahun").val(),
+                month = $("#bulan").val(),
+                type = $("#type").val(),
+            ];
+
 
             // Jakarta setahun
-            FjakartaSetahuan(tahun, bulan)
+            FjakartaSetahun(field)
 
             // Karawang setahun
-            FkarawangSetahun(tahun, bulan)
+            FkarawangSetahun(field)
 
-            // Kecamatan Jakut Setahun
-            FcrimeAreaJakut(tahun, bulan)
+            // // Kecamatan Jakut Setahun
+            FcrimeAreaJakut(field)
 
-            // Kecamatan Karawang setahun
-            FcrimeAreaKarawang(tahun, bulan)
+            // // Kecamatan Karawang setahun
+            FcrimeAreaKarawang(field)
+
 
             // Maps Jakut
-            setMapJakutValues(tahun, bulan);
+            setMapJakutValues(field);
+
 
             // Maps Karawang
-            setMapKarawangValues(tahun, bulan)
+            setMapKarawangValues(field)
 
             // Kategori Area Jakut
-            FmapingKategoriJakut(tahun, bulan);
+            FmapingKategoriJakut(field);
 
             // Kategori Karawang
-            FmapingKategoriKarawang(tahun, bulan)
+            FmapingKategoriKarawang(field)
 
         });
 

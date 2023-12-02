@@ -65,6 +65,10 @@
                                     <div class="form-group">
                                         <label for="">GROUP PATROLI</label>
                                         <select name="group" class="form-control" id="">
+                                            <option>REGU_A</option>
+                                            <option>REGU_B</option>
+                                            <option>REGU_C</option>
+                                            <option>REGU_D</option>
                                             <option value="">NON GROUP</option>
                                         </select>
                                     </div>

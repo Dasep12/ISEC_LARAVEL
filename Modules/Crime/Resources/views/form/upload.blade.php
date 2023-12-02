@@ -44,7 +44,7 @@
                             </div>
 
                             <div class="form-inline mt-2">
-                                <input type="submit" value="Upload Checkpoint" name="view" class="btn btn-danger btn-sm"></input>
+                                <input type="submit" value="Upload Crime" name="view" class="btn btn-danger btn-sm"></input>
                             </div>
                         </form>
                     </div>
@@ -133,95 +133,6 @@
         }, {
             data: 'kategori'
         }, ],
-        initComplete: function() {
-            var api = this.api();
-
-            function initFilterInput(api, cell, colIdx) {
-                var title = $(cell).text();
-                $(cell).html('<input type="text"  class="form-control form-control-sm" placeholder="' + title + '" />');
-                // On every keypress in this input
-                $(
-                        'input',
-                        $('.filters th').eq($(api.column(colIdx).header()).index())
-                    )
-                    .off('keyup change')
-                    .on('change', function(e) {
-                        // Get the search value
-                        $(this).attr('title', $(this).val());
-                        var regexr = '({search})'; //$(this).parents('th').find('select').val();
-
-                        var cursorPosition = this.selectionStart;
-                        // Search the column for that value
-                        api
-                            .column(colIdx)
-                            .search(
-                                this.value !== '' ?
-                                regexr.replace('{search}', '(((' + this.value + ')))') :
-                                '',
-                                this.value !== '',
-                                this.value === ''
-                            )
-                            .draw();
-                    })
-                    .on('keyup', function(e) {
-                        e.stopPropagation();
-
-                        $(this).trigger('change');
-                        $(this)
-                            .focus()[0]
-                            .setSelectionRange(cursorPosition, cursorPosition);
-                    });
-            }
-
-            function initFilterSelect(api, cell, colIdx) {
-                let select = $('<select class="form-control form-control-sm"><option value=""> -- Filter -- </option></select>')
-                    .on('change', function() {
-                        const val = $.fn.dataTable.util.escapeRegex($(this).val());
-                        api.column(colIdx)
-                            .search(val ? '^' + val + '$' : '', true, false)
-                            .draw();
-                    });
-                $(cell).html(select);
-                api.column(colIdx).data().unique().sort().each(function(d, j) {
-                    let cols = api.column(colIdx).selector.cols
-                    if (cols === 8) {
-                        if (d === 1) {
-                            select.append('<option value="CLOSE">CLOSE</option>')
-                        } else {
-                            select.append('<option value="OPEN">OPEN</option>')
-                        }
-                    } else {
-                        select.append('<option value="' + d + '">' + d + '</option>')
-                    }
-                });
-            }
-
-            // For each column
-            api
-                .columns()
-                .eq(0)
-                .each(function(colIdx) {
-                    // Set the header cell to contain the input element
-                    var cell = $('#tableTemuan .filters th').eq(
-                        $(api.column(colIdx).header()).index()
-                    );
-                    console.log()
-                    let filterType = $(cell).data("filter");
-                    switch (filterType) {
-                        case 'select':
-                            initFilterSelect(api, cell, colIdx)
-                            break;
-
-                        case 'input':
-                            initFilterInput(api, cell, colIdx)
-                            break
-                        default:
-                            console.log(colIdx, 'no filter')
-                            $(cell).html('')
-                            break;
-                    }
-                });
-        }
     });
 </script>
 

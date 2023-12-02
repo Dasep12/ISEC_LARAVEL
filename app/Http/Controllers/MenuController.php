@@ -56,7 +56,7 @@ class MenuController extends Controller
             'select_month_filter' => FormHelper::formDropdown('month_filter', $opt_mon, '', 'id="monthFilter" class="form-control" required'),
         ];
 
-        return view('template/template_first', $data);
+        return view('default', $data);
     }
 
     public function srsSoi(Request $req)

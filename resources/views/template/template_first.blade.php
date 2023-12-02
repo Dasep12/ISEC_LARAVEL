@@ -107,7 +107,7 @@
                         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                         <li class="nav-item ">
-                            <a href="menu" class="nav-link
+                            <a href="/menu" class="nav-link
                             <?php if ($link == 'menu' || $link == '') {
                                 echo 'active';
                             } ?>">
@@ -122,7 +122,7 @@
 
                         <?php if (AuthHelper::is_super_admin() || AuthHelper::is_app('SRS')) { ?>
                             <li class="nav-item">
-                                <a href="srs/dashboard_v2" class="nav-link">
+                                <a href="/srs/dashboard_v2" class="nav-link">
                                     <i class="nav-icon fas fa-chart-pie"></i>
                                     <p>
                                         Security Risk Survey
@@ -132,7 +132,7 @@
                             </li>
 
                             <li class="nav-item">
-                                <a href="soa/dashboard" class="nav-link">
+                                <a href="/soa/dashboard" class="nav-link">
                                     <i class="nav-icon fas fa-chart-pie"></i>
                                     <p>
                                         Security Operation
@@ -153,7 +153,7 @@
                         <?php  } ?>
                         <?php if (AuthHelper::is_super_admin() || AuthHelper::is_app('CRI')) { ?>
                             <li class="nav-item">
-                                <a href="crime/dashboard" class="nav-link">
+                                <a href="/crime/dashboard" class="nav-link">
                                     <i class="nav-icon fas fa-chart-pie"></i>
                                     <p>
                                         Crime Index
@@ -164,7 +164,7 @@
                         <?php } ?>
                         <?php if (AuthHelper::is_super_admin() || AuthHelper::is_app('ALTA')) { ?>
                             <li class="nav-item">
-                                <a href="information/Anggota/dashboard" class="nav-link">
+                                <a href="/information/Anggota/dashboard" class="nav-link">
                                     <i class="nav-icon fas fa-chart-pie"></i>
                                     <p>
                                         Analytic Anggota
@@ -179,7 +179,7 @@
                         <?php if (AuthHelper::is_super_admin() || AuthHelper::is_app('SGT')) { ?>
                             <li class="nav-header">Aplikasi</li>
                             <li class="nav-item">
-                                <a href="guardtour/dashboard" class="nav-link">
+                                <a href="/guardtour/dashboard" class="nav-link">
                                     <i class="nav-icon fas fa-users"></i>
                                     <p>
                                         Security Guard Tour
@@ -206,7 +206,7 @@
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="Setting/Pengguna/list_user" class="nav-link
+                                        <a href="/Setting/Pengguna/list_user" class="nav-link
                                     <?php if (Request::segment(3) == 'list_user' || Request::segment(3) == 'register' || Request::segment(3) == 'edit_pwd' || Request::segment(3) == 'edit') {
                                         echo 'active';
                                     } ?>
@@ -215,7 +215,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="Setting/MasterRole/list_role" class="nav-link 
+                                        <a href="/Setting/MasterRole/list_role" class="nav-link 
                                         <?php if (Request::segment(3) == 'list_role') {
                                             echo 'active';
                                         } ?>">
@@ -225,7 +225,7 @@
                                     </li>
 
                                     <li class="nav-item">
-                                        <a href="Setting/UserRoleApp/list_user_role_app" class="nav-link 
+                                        <a href="/Setting/UserRoleApp/list_user_role_app" class="nav-link 
                                         <?php if (Request::segment(3) == 'list_user_role_app') {
                                             echo 'active';
                                         } ?>">
@@ -235,7 +235,7 @@
                                     </li>
 
                                     <li class="nav-item">
-                                        <a href="Setting/MasterAplikasi/list_app" class="nav-link 
+                                        <a href="/Setting/MasterAplikasi/list_app" class="nav-link 
                                         <?php if (Request::segment(3) == 'list_app') {
                                             echo 'active';
                                         } ?>">
@@ -245,7 +245,7 @@
                                     </li>
 
                                     <li class="nav-item">
-                                        <a href="Setting/MasterModule/list_module" class="nav-link 
+                                        <a href="/Setting/MasterModule/list_module" class="nav-link 
                                         <?php if (Request::segment(3) == 'list_module') {
                                             echo 'active';
                                         } ?>">
@@ -257,7 +257,7 @@
 
 
                                     <li class="nav-item">
-                                        <a href="Setting/MasterRoleApp/list_role_app" class="nav-link 
+                                        <a href="/Setting/MasterRoleApp/list_role_app" class="nav-link 
                                         <?php if (Request::segment(3) == 'list_role_app') {
                                             echo 'active';
                                         } ?>">
@@ -267,7 +267,7 @@
                                     </li>
 
                                     <li class="nav-item">
-                                        <a href="Setting/AksesApp/list_app_user" class="nav-link 
+                                        <a href="/Setting/AksesApp/list_app_user" class="nav-link 
                                         <?php if (Request::segment(3) == 'list_app_user') {
                                             echo 'active';
                                         } ?>">
@@ -291,8 +291,8 @@
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
 
-            @include($contents)
-
+            <!--  -->
+            @yield('content')
             <!-- Main content -->
 
             <!-- /.content -->
@@ -356,7 +356,7 @@
         autoclose: true
     });
 
-    $('#name_apps,#level_name,#module_name,#level_id,#npk').select2();
+    // $('#name_apps,#level_name,#module_name,#level_id,#npk').select2();
 </script>
 
 </html>

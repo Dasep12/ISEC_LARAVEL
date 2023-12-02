@@ -244,25 +244,25 @@
         }
 
         .first::marker {
-            content: url('https://www.securityadm.my.id/isec/assets/img/info/list_icon.png');
+            content: url('{{ asset("assets/img/info/list_icon.png") }}');
             padding-left: 20px;
             position: relative;
         }
 
         .second::marker {
-            content: url('https://www.securityadm.my.id/isec/assets/img/info/list_icon_2.png');
+            content: url('{{ asset("assets/img/info/list_icon_2.png") }}');
         }
 
         .third::marker {
-            content: url('https://www.securityadm.my.id/isec/assets/img/info/list_icon_3.png');
+            content: url('{{ asset("assets/img/info/list_icon_3.png") }}');
         }
 
         .four::marker {
-            content: url('https://www.securityadm.my.id/isec/assets/img/info/list_icon_4.png');
+            content: url('{{ asset("assets/img/info/list_icon_4.png") }}');
         }
 
         .five::marker {
-            content: url('https://www.securityadm.my.id/isec/assets/img/info/list_icon_5.png');
+            content: url('{{ asset("assets/img/info/list_icon_5.png") }}');
         }
 
         .dropbtn {

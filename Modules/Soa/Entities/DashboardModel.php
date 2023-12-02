@@ -919,4 +919,85 @@ class DashboardModel extends Model
         }
         return $data;
     }
+
+    // public static function floterBarang($req)
+    // {
+    //     $area = $req->input('area_fil');
+    //     // $years = 2023;
+    //     $years = $req->input('year_fil');
+    //     // $month = 2;
+    //     $month = $req->input('month_fil');
+    //     $data = array();
+    //     if ($area != "" || $area != null) {
+    //         $plantID = DB::connection('soabi')->select("SELECT code_sub as id FROM admisecdrep_sub WHERE id='" . $area . "'  ");
+    //         $area =  $plantID[0]->id;
+    //     }
+    //     $plants = "";
+    //     $monthss = "";
+    //     if (!empty($area)) $plants .= "AND tp.LocationName='" . $area . "' ";
+    //     if (!empty($month)) $monthss .= "AND MONTH(tp.PKBDate)='" . $month . "' ";
+
+
+    //     $params = DB::connection('egate')->select("SELECT TOP(50) tp.LocationName as plant , CAST(tp.Remark AS VARCHAR(1000)) as remarks  , COUNT(CASE
+    //     WHEN tp.Remark  IS NOT NULL THEN 1
+    //       END)  as totals 
+    //     FROM   T_PKB tp 
+    //     WHERE YEAR(tp.PKBDate)='$years' 
+    //     $monthss
+    //     $plants
+    //     --
+    //     AND CAST(tp.Remark AS VARCHAR(1000))  != 'NULL'
+
+    //     GROUP BY CAST(tp.Remark AS VARCHAR(1000)) ,  tp.LocationName , CAST(FORMAT(tp.PKBDate,'MM') as int)   ORDER BY  COUNT(CASE
+    //     WHEN tp.Remark  IS NOT NULL THEN 1
+    //       END)   DESC    ");
+
+    //     foreach ($params as $par) {
+    //         $data[] = array(
+    //             "x" => (int) $par->totals + rand(7, 17),
+    //             "y" => (int) $par->totals + rand(12, 19),
+    //             "z" => (int) $par->totals,
+    //             "title" => $par->remarks
+    //         );
+    //     }
+    //     return $data;
+    // }
+
+    public static function floterBarang($req)
+    {
+        $years = 2023;
+        // $month = 2;
+        $area = $req->input('area_fil');
+        // $years = $req->input('year_fil');
+        $month = $req->input('month_fil');
+        $data = array();
+        if ($area != "" || $area != null) {
+            $plantID = DB::connection('soabi')->select("SELECT code_sub as id FROM admisecdrep_sub WHERE id='" . $area . "'  ");
+            $area =  $plantID[0]->id;
+        }
+        $plants = "";
+        $monthss = "";
+        if (!empty($area)) $plants .= "AND tp.LocationName='" . $area . "' ";
+        if (!empty($month)) $monthss .= "AND MONTH(tp.PKBDate)='" . $month . "' ";
+
+
+        $params = DB::connection('egate')->select("SELECT tp2.MaterialName as remarks ,  COUNT(tp2.MaterialCode) as totals   FROM T_PKB tp 
+        left join T_PKBDetail tp2 on tp2.PKBNo  = tp.PKBNo 
+        WHERE YEAR(tp.PKBDate)='$years' 
+        $monthss
+        $plants
+
+        GROUP BY tp2.MaterialName 
+        ORDER BY COUNT(tp2.MaterialName)  DESC ");
+
+        foreach ($params as $par) {
+            $data[] = array(
+                "x" => (int) $par->totals + rand(12, 24),
+                "y" => (int) $par->totals + rand(12, 32),
+                "z" => (int) $par->totals,
+                "title" => ucwords(strtolower($par->remarks))
+            );
+        }
+        return $data;
+    }
 }
