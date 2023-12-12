@@ -201,6 +201,7 @@ Route::prefix('guardtour')->group(function () {
     Route::get('/laporan/list_temuan_tindakan_cepat', [TemuanController::class, "list_temuan_tindakan_cepat"])->name('laporan_temuan.temuan_tindakan_cepat');
     Route::get('/laporan/total_temuan', [TemuanController::class, "total_temuan"])->name('laporan_abnormal.total_temuan');
 
+    // Dashboard
 
     Route::get('/dashboard', [DashboardController::class, "index"])->name('dashboard');
     Route::post('/dashboard/trendPatrolBulananPerPlant', [DashboardController::class, "trendPatrolBulananPerPlant"])->name('Dashboard.trendPatrolBulananPerPlant');

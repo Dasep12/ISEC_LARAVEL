@@ -48,9 +48,11 @@ class DashboardModel extends Model
         FROM months m
         LEFT OUTER JOIN dbo.admisec_Tcrime AS t ON MONTH(t.tanggal)=m.MonthNum AND 
         YEAR(t.tanggal)='$year' 
-        WHERE CONVERT(VARCHAR,t.types) = '$type'
+      
         GROUP BY m.MonthNum";
         return DB::connection('crime')->select($q);
+        // WHERE 
+        // CONVERT(VARCHAR,t.types) = '$type'
     }
 
     public static function countCrimeAreaSetahun($kota, $year, $type)

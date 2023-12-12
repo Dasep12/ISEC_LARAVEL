@@ -31,7 +31,7 @@ class AuthPatrolModels extends Model
             ->first();
 
         $result = array(
-            'shift'     => (int)$data->shift,
+            'shift'     => $data->shift,
             'shift_id'  => $data->shift_id,
             'tanggal'   => $date,
             'in'        => $data->in,

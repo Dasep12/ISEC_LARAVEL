@@ -141,7 +141,7 @@
             <div class="col-lg-2">
                 <select name="type" id="type" class="form-control">
                     <option value="h">Humint</option>
-                    <option value="o">Osint</option>
+                    <option value="o" selected>Osint</option>
                 </select>
             </div>
         </div>
@@ -655,15 +655,25 @@
     function getColor(d, bulan) {
 
         if (bulan == "" || bulan == null) {
-            return d > 50 ? '#fa3c45' :
-                d > 30 ? '#fafc60' :
+            return d > 10 * 12 ? '#fa3c45' :
+                d > 5 * 12 ? '#fafc60' :
                 // d > 20 ? '#fafc60' :
-                d > 10 ? '#15994a' : '#68f79a';
+                // d > 5 * 12 ? '#15994a' :
+                '#68f79a';
         } else {
-            return d > 6 ? '#fa3c45' :
-                d > 4 ? '#fafc60' :
-                // d > 20 ? '#fafc60' :
-                d > 2 ? '#15994a' : '#68f79a';
+            // return d > 11 ? '#fa3c45' :
+            //     d > 6 ? '#fafc60' :
+            //     // d > 20 ? '#fafc60' :
+            //     d > 2 ? '#15994a' : '#68f79a';
+            if (d >= 11) {
+                return '#fa3c45'
+            } else if (d <= 10 && d >= 6) {
+                return '#fafc60';
+            } else if (d <= 5) {
+                return '#68f79a';
+            }
+            // return d > 11 ? 'red' :
+            //     d > 5 ? 'green' : 'green';
         }
     }
     let bulans = "";
@@ -906,13 +916,19 @@
     // Jakut
     function legendsJakut(bulan) {
 
+
         legend.onAdd = function(map, varam = bulan) {
+            let months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+            const date = new Date();
+            let month = date.getMonth() + 1;
+            // console.log(months);
+            // console.log(month);
             const div = L.DomUtil.create('div', 'info legend');
-            let grades = [0, 10, 30, 50];
+            let grades = [0, 5 * months[month], 10 * months[month]];
             if (varam == null || varam == "") {
-                grades = [0, 10, 30, 50];
+                grades = [0, 5 * months[month], 10 * months[month]];
             } else {
-                grades = [0, 2, 4, 6];
+                grades = [0, 5, 10];
             }
             const labels = [];
             let from, to;
@@ -920,7 +936,7 @@
             for (let i = 0; i < grades.length; i++) {
                 from = grades[i];
                 to = grades[i + 1];
-                labels.push(`<i style="background:${getColor(from + 1,bulan)}"></i> ${from}${to ? `&ndash;${to}` : '+'}`);
+                labels.push(`<i style="background:${getColor(from + 1,bulan)}"></i> ${ from == 0 ?  from :  from + 1 }${to ? `&ndash;${to}` : '+'}`);
             }
 
             div.innerHTML = labels.join('<br>');
@@ -939,12 +955,15 @@
         // Karawang
         legend2.onAdd = function(map2, varam = bulan) {
 
+            let months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+            const date = new Date();
+            let month = date.getMonth() + 1;
             const div = L.DomUtil.create('div', 'info legend');
-            let grades = [0, 10, 30, 50];
+            let grades = [0, 5 * months[month], 10 * months[month]];
             if (varam == null || varam == "") {
-                grades = [0, 10, 30, 50];
+                grades = [0, 5 * months[month], 10 * months[month]];
             } else {
-                grades = [0, 2, 4, 6];
+                grades = [0, 5, 10];
             }
             const labels = [];
             let from, to;
@@ -952,7 +971,7 @@
             for (let i = 0; i < grades.length; i++) {
                 from = grades[i];
                 to = grades[i + 1];
-                labels.push(`<i style="background:${getColor(from + 1,bulan)}"></i> ${from}${to ? `&ndash;${to}` : '+'}`);
+                labels.push(`<i style="background:${getColor(from + 1,bulan)}"></i> ${ from == 0 ?  from :  from + 1 }${to ? `&ndash;${to}` : '+'}`);
             }
 
             div.innerHTML = labels.join('<br>');
@@ -1124,6 +1143,8 @@
                     var jakut = $('#jakartaUtaraSetahun').highcharts();
                     let data = e;
 
+
+                    // console.log(data);
                     jakut.subtitle.update({
                         text: 'Periode Tahun ' + year
                     });
@@ -1521,7 +1542,7 @@
                 url: "mapingKategoriJakut",
                 method: "POST",
                 data: {
-                    tahun: 2023,
+                    tahun: year,
                     bulan: month,
                     type: type,
                     kota: "Jakarta Utara",

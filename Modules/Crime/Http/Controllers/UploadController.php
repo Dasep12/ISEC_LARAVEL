@@ -51,6 +51,7 @@ class UploadController extends Controller
                         'kota'          => strval($crm[13]),
                         'kelurahan'     => strval($crm[14]),
                         'kec'           => strval($crm[15]),
+                        'types'         => strval($crm[16]),
                         'status'        => 1,
                         'created_at'    => strval(date('Y-m-d H:i:s'))
                     );

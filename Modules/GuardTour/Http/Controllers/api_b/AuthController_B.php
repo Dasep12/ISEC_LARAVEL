@@ -49,11 +49,11 @@ class AuthController_B extends Controller
             $this->shiftCurrent = "1";
         } else if ($accessTime > $shiftTwo_clock && $accessTime < $shiftThree_clock) {
             $this->shiftCurrent = "2";
-        } else  if ($accessTime < $shiftOne_clock && $accessTime > $shiftThree_clock) {
+        } else if ($accessTime < $shiftOne_clock || $accessTime > $shiftThree_clock) {
             $this->shiftCurrent = "3";
         }
 
-        
+        //  if ($accessTime < $shiftOne_clock && $accessTime > $shiftThree_clock)
     }
 
 
@@ -61,6 +61,7 @@ class AuthController_B extends Controller
     {
         $npk        = $req->npk;
         $password   = md5($req->password);
+
 
         // shift_now
         $shift_now = AuthPatrolModels::getShiftPatrol($this->dateNow, $npk);
