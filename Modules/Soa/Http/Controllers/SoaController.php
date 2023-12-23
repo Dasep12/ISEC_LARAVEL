@@ -24,6 +24,7 @@ class SoaController extends Controller
      */
     public function index()
     {
+        // dd(Session('role'));
         $event = new SoaModel();
         return view('soa::form/form', [
             'uri'   => \Request::segment(2),

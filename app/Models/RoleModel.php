@@ -17,7 +17,7 @@ class RoleModel extends Model
 
         $res = DB::connection('sqlsrv')->select("SELECT COUNT(1) total_app
                 FROM isecurity.dbo.admisec_roles_users aru
-                INNER JOIN isecurity.dbo.admisec_modules_roles amr ON amr.roles_id=aru.roles_id
+                INNER JOIN isecurity.dbo.admisec_modules_roles amr ON amr.roles_id=aru.roles_id AND amr.red=1
                 INNER JOIN isecurity.dbo.admisec_modules amo ON amo.id=amr.modules_id 
                 INNER JOIN isecurity.dbo.admisec_apps aap ON aap.id=amo.apps_id
             WHERE aru.npk=? AND aap.code=?", [$npk, $app]);

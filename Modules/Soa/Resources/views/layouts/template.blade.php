@@ -223,7 +223,7 @@
                     <span class="font-italic font-bold">Welcome {{ session('name') }} </span>
                 </li>
                 <li class="nav-item">
-                    <a class=" btn btn-sm btn-info" href="/logout">
+                    <a class=" btn btn-sm btn-info" href="/isecurity_laravel/logout">
                         <i class="fas fa-user"></i> LOGOUT
                     </a>
                 </li>
@@ -271,6 +271,7 @@
                             </a>
                         </li>
 
+
                         <li class="nav-item">
                             <a href="forms" class="nav-link 
                             @if($uri == 'forms')
@@ -282,30 +283,31 @@
                                 </p>
                             </a>
                         </li>
-
-                        <li class="nav-item">
-                            <a href="upload" class="nav-link
+                        <?php if (Session('role') === 'SUPERADMIN') : ?>
+                            <li class="nav-item">
+                                <a href="upload" class="nav-link
                              @if($uri == 'upload')
                                 active  
                             @endif">
-                                <i class="nav-icon fas fa-file-excel"></i>
-                                <p>
-                                    Upload Report
-                                </p>
-                            </a>
-                        </li>
+                                    <i class="nav-icon fas fa-file-excel"></i>
+                                    <p>
+                                        Upload Report
+                                    </p>
+                                </a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a href="uploadEgate" class="nav-link
+                            <li class="nav-item">
+                                <a href="uploadEgate" class="nav-link
                              @if($uri == 'uploadEgate')
                                 active  
                             @endif">
-                                <i class="nav-icon fas fa-file-excel"></i>
-                                <p>
-                                    Upload EGate
-                                </p>
-                            </a>
-                        </li>
+                                    <i class="nav-icon fas fa-file-excel"></i>
+                                    <p>
+                                        Upload EGate
+                                    </p>
+                                </a>
+                            </li>
+                        <?php endif ?>
 
                     </ul>
                 </nav>

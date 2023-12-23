@@ -74,4 +74,40 @@ class UploadController extends Controller
         $data = DB::connection('crime')->select("SELECT * FROM admisec_Tcrime");
         return response()->json($data);
     }
+
+    public function delete(Request $req)
+    {
+        $id = $req->id;
+        DB::connection('crime')->beginTransaction();
+        try {
+            DB::connection('crime')->delete("DELETE FROM admisec_Tcrime WHERE id = '$id'  ");
+            DB::connection('crime')->commit();
+            return back()->with('success', 'Delete data success !');
+        } catch (\Exception $e) {
+            DB::connection('crime')->rollback();
+            return back()->with('failed', 'Delete data failed !');
+            // dd($e);
+        }
+    }
+
+    public function update(Request $req)
+    {
+        $id = $req->idx;
+        DB::connection('crime')->beginTransaction();
+        try {
+            $tanggal = $req->tanggal;
+            $wilayah = $req->wilayah;
+            $kecamatan = $req->kecamatan;
+            $kasus = $req->kasus;
+            $kategori = $req->kategori;
+            DB::connection('crime')->update("UPDATE admisec_Tcrime SET tanggal = '$tanggal', kota = '$wilayah' , kec='$kecamatan' , kategori = '$kategori' , jenis_kasus='$kasus' WHERE id = '$id' ");
+            DB::connection('crime')->commit();
+            return back()->with('success', 'Update data success !');
+        } catch (\Exception $e) {
+            dd($e);
+            DB::connection('crime')->rollback();
+            // return back()->with('failed', 'Update data failed !');
+            // dd($e);
+        }
+    }
 }

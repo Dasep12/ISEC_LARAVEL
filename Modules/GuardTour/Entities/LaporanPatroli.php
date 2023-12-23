@@ -159,7 +159,7 @@ class LaporanPatroli extends Model
 		if ($type == 1) {
 			$whereType .= "AND trs.type_patrol = 1";
 		}
-		$data  = DB::select("SELECT a.date_patroli ,a.admisecsgp_mstusr_npk npk ,usr.name name ,c.nama_shift ,pln.plant_name 
+		$data  = DB::select("SELECT  a.id_jadwal_patroli ,  a.date_patroli ,a.admisecsgp_mstusr_npk npk ,usr.name name ,c.nama_shift ,pln.plant_name 
         ,tzn.total_ckp as  total_ckp  ,COALESCE(trs.total_trans_ckp,0) as   chekpoint_patroli,
         COALESCE((trs.total_trans_ckp * 100 / tzn.total_ckp),0) persentase , 
         COALESCE(sum(trs.objek_totals),0) as total_temuan , trs.start_at , trs.end_at
@@ -198,7 +198,7 @@ class LaporanPatroli extends Model
     	AND a.admisecsgp_mstplant_plant_id='$plantId'
         AND a.admisecsgp_mstshift_shift_id!='ADMSH5652'
 		$whereType
-        GROUP BY a.date_patroli ,a.admisecsgp_mstusr_npk , usr.name  ,c.nama_shift , pln.plant_name 
+        GROUP BY a.id_jadwal_patroli , a.date_patroli ,a.admisecsgp_mstusr_npk , usr.name  ,c.nama_shift , pln.plant_name 
         ,tzn.total_ckp ,trs.total_trans_ckp  ,trs.start_at , trs.end_at 
     ORDER BY a.date_patroli ASC, c.nama_shift ASC ,pln.plant_name ASC");
 		return $data;

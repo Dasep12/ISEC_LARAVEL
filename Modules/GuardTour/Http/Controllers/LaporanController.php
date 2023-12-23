@@ -20,7 +20,10 @@ class LaporanController extends Controller
     {
 
         $uri =  \Request::segment(2) . '/' . \Request::segment(3);
-        $plant =  Session('role') == 'SUPERADMIN' ? Plants::all() : Plants::where('admisecsgp_mstsite_site_id', Session('site_id'))->get();
+        $plant =  Session('role') == 'SUPERADMIN' ? Plants::where('status', 1)->get() : Plants::where([
+            ['admisecsgp_mstsite_site_id', '=', Session('site_id')],
+            ['status', '=', 1],
+        ])->get();
         return view('guardtour::laporan_patroli/form_laporan', [
             'uri'        => $uri,
             'plant'      => $plant

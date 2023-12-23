@@ -17,7 +17,10 @@ class TemuanController extends Controller
      */
     public function master()
     {
-        $plant =  Session('role') == 'SUPERADMIN' ? Plants::all() : Plants::where('admisecsgp_mstsite_site_id', Session('site_id'))->get();
+        $plant =  Session('role') == 'SUPERADMIN' ? Plants::where('status', 1)->get() : Plants::where([
+            ['admisecsgp_mstsite_site_id', '=', Session('site_id')],
+            ['status', '=', 1],
+        ])->get();
         $uri =  \Request::segment(2) . '/' . \Request::segment(3);
         return view('guardtour::laporan_temuan/form_temuan', [
             'uri'        => $uri,

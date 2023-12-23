@@ -413,7 +413,7 @@
                             @endif">
                                 <i class="nav-icon fas fa-file-excel "></i>
                                 <p>
-                                    Upload
+                                    Upload & View
                                 </p>
                             </a>
                         </li>

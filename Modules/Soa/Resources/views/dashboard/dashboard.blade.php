@@ -1898,7 +1898,7 @@
             },
             success: function(result) {
                 let res = result;
-                console.log(res);
+                // console.log(res);
 
                 let data = [{
                     x: 8,

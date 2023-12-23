@@ -23,7 +23,18 @@ class SoaModel extends Model
 
     public static function getPerPlant()
     {
-        $sql = "SELECT id, title FROM admisecdrep_sub WHERE categ_id='9' AND disable=0";
+        $wil = "";
+        // if (Session('role') == 'ADMIN') {
+        //     $wil .= " AND wil_id = '" . Session('wil_id') . "' ";
+        // } else if (Session('role') == 'ADMINSH') {
+        //     $wil .= " AND wil_id in ('" . Session('wil_id') . "','WIL4')  ";
+        // }
+        $npk = Session('npk');
+        $sql = "SELECT id, title FROM admisecdrep_sub tio WHERE categ_id='9' AND disable=0 
+        AND tio.title IN (SELECT am.plant_name  FROM  isecurity.dbo.admisec_area_users aus
+        inner join isecurity.dbo.admisecsgp_mstplant am  on am.admisecsgp_mstsite_site_id = aus.site_id 
+        WHERE aus.npk = $npk)
+        ";
         $res = DB::connection('soabi')->select($sql);
         return $res;
     }
@@ -39,15 +50,22 @@ class SoaModel extends Model
             $where .= 'AND at2.area_id= ' . $area . ' ';
         }
 
+
+
         $dateRange = "";
         if ($start) {
             $dateRange .= "AND FORMAT(at2.report_date,'yyyy-MM-dd') between '" . $start . "' AND '" . $end . "'  ";
         }
 
         $whereArea = "";
-        // if (is_author('ALLAREA')) {
-        //     $whereArea .= " AND wil_id='$this->wil'";
+        // if (Session('role') == 'ADMIN') {
+        //     $whereArea .= " AND as2.wil_id = '" . Session('wil_id') . "' ";
         // }
+
+        // if (Session('role') == 'ADMINSH') {
+        //     $whereArea .= " AND wil_id in ('" . Session('wil_id') . "','WIL4')  ";
+        // }
+        $npk = Session('npk');
         $res =  DB::connection('soabi')->select("SELECT at2.report_date as tanggal , as2.title as area , SUM(X.ttal) as total_people  , 
         SUM(Y.ttal) as total_vehicle , 
         SUM(Z.ttal) as total_document ,
@@ -72,7 +90,10 @@ class SoaModel extends Model
         WHERE at2.status = 1 
         $where 
         $dateRange
-        $whereArea
+        -- $whereArea
+        AND as2.title IN (SELECT am.plant_name  FROM  isecurity.dbo.admisec_area_users aus
+        inner join isecurity.dbo.admisecsgp_mstplant am  on am.admisecsgp_mstsite_site_id = aus.site_id 
+        WHERE aus.npk = $npk)
         group by at2.report_date , as2.title ,at2.area_id
         order by at2.report_date  asc");
         return $res;

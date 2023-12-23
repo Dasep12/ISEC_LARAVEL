@@ -91,18 +91,11 @@
             <div class="col-md-6">
                 <div class="card card3">
                     <div class="card-body">
-
                         <div style="position: absolute;left:50%;top:50%" class="row justify-content-center loader">
                             <div class="overlay" style="display:none" id="chartTrendPatrolPerPlant_overlay">
                                 <i class="fas fa-2x fa-sync-alt fa-spin"></i>
                             </div>
                         </div>
-                        <!-- <div class="row">
-							<input type="hidden" value="<?= date('Y') ?>" id="valDatepickerYearTrendPatroli">
-							<span style="cursor:pointer" id="datepickerYearTrendPatroli" class="commentsToggle text-primary">
-								<i class="fa fa-ellipsis-v"></i>
-							</span>
-						</div> -->
                         <div class="justify-content-center">
                             <div class="col-lg-12">
                                 <div class="chart">
@@ -121,11 +114,6 @@
                                 <i class="fas fa-2x fa-sync-alt fa-spin"></i>
                             </div>
                         </div>
-                        <!-- <div class="row">
-							<span style="cursor:pointer" class="commentsToggle text-primary">
-								<i class="fa fa-ellipsis-v"></i>
-							</span>
-						</div> -->
 
                         <div class="justify-content-center">
                             <div class="chart">
@@ -144,12 +132,6 @@
                                 <i class="fas fa-2x fa-sync-alt fa-spin"></i>
                             </div>
                         </div>
-                        <!-- <div class="row">
-							<input type="hidden" value="<?= date('m') <= 9 ? date('m') : '0' .  date('m') ?>" id="valDatepickerMonthTrendPatroli">
-							<span style="cursor:pointer" id="datepickerMonthTrendPatroli" class="text-primary commentsToggle">
-								<i class="fa fa-ellipsis-v"></i>
-							</span>
-						</div> -->
                         <div class="chart">
                             <div id="patroliHarian" style="height: 300px;"></div>
                         </div>
@@ -168,12 +150,6 @@
                                 <i class="fas fa-2x fa-sync-alt fa-spin"></i>
                             </div>
                         </div>
-                        <!-- <div class="row">
-							<input type="hidden" value="<?= date('Y') ?>" id="valDatepickerYearPerformPatroli">
-							<span style="cursor:pointer" id="datepickerYearPerformPatroli" class=" text-primary commentsToggle">
-								<i class="fa fa-ellipsis-v"></i>
-							</span>
-						</div> -->
                         <div class="justify-content-center">
                             <div class="col-lg-12">
                                 <div class="chart">
@@ -193,12 +169,6 @@
                                 <i class="fas fa-2x fa-sync-alt fa-spin"></i>
                             </div>
                         </div>
-                        <!-- <div class="row">
-							<input type="hidden" value="<?= date('m') <= 9 ? date('m') : '0' .  date('m') ?>" id="valDatepickerMonthPerformPatroli">
-							<span style="cursor:pointer" id="datepickerMonthPerformPatroli" class="text-primary commentsToggle">
-								<i class="fa fa-ellipsis-v"></i>
-							</span>
-						</div> -->
                         <div class="chart">
                             <div id="PerformancePatrolHarian" style="height: 380px;"></div>
                         </div>
@@ -210,15 +180,10 @@
                 <div class="card card3">
                     <div class="card-body">
                         <div style="position: absolute;left:50%;top:50%" class="row justify-content-center loader">
-                            <div class="overlay" style="display:block" id="chartPerformancePerPlant_overlay">
+                            <div class="overlay" style="display:none" id="chartPerformancePerPlant_overlay">
                                 <i class="fas fa-2x fa-sync-alt fa-spin"></i>
                             </div>
                         </div>
-                        <!-- <div class="row ">
-							<span style="cursor:pointer" class="text-primary commentsToggle">
-								<i class="fa fa-ellipsis-v"></i>
-							</span>
-						</div> -->
                         <div class="justify-content-center">
                             <div class="chart">
                                 <div id="chartPerformanceAllBar" style="height: 380px;"></div>
@@ -263,72 +228,6 @@
             </div>
         </div>
 
-        <!-- <div class="row">
-			<div class="col-md-6">
-				<div class="card">
-					<div class="card-body">
-						<div style="position: absolute;left:50%;top:50%" class="row justify-content-center loader">
-							<div class="overlay" style="display:block" id="chartTemuanByUser_overlay">
-								<i class="fas fa-2x fa-sync-alt fa-spin"></i>
-							</div>
-						</div>
-						<div class="col-lg-12">
-							<div class="form-inline justify-content-center">
-								<select style="border-radius: 0px;" name="tahun_patrol" class="form-control boderSelect" id="tahun_patrol">
-									<option value="2022">PLANT 1</option>
-									<option value="2023">PLANT 2</option>
-									<option value="2024">PLANT 3</option>
-									<option value="2025">PLANT 4 LINE 1</option>
-								</select>
-								<select style="border-radius: 0px;" name="tahun_patrol" class="form-control boderSelect" id="tahun_patrol">
-									<option value="2022">2022</option>
-									<option value="2023">2023</option>
-									<option value="2024">2024</option>
-									<option value="2025">2025</option>
-								</select>
-								<button style="border-radius: 0px;padding: 7px;margin-top:0.3px;height:38px" class="btn btn-outline btn-sm btn-primary" type="button">Filter</button>
-							</div>
-						</div>
-
-						<div class="chart">
-							<div id="chartCloseTemuan" style="height: 300px;"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-6">
-				<div class="card">
-					<div class="card-body">
-						<div style="position: absolute;left:50%;top:50%" class="row justify-content-center loader">
-							<div class="overlay" style="display:block" id="chartTemuanByUser_overlay">
-								<i class="fas fa-2x fa-sync-alt fa-spin"></i>
-							</div>
-						</div>
-						<div class="col-lg-12">
-							<div class="form-inline justify-content-center">
-								<select style="border-radius: 0px;" name="tahun_patrol" class="form-control boderSelect" id="tahun_patrol">
-									<option value="2022">JANUARI</option>
-									<option value="2023">FEBRUARI</option>
-									<option value="2024">MARET</option>
-									<option value="2025">APRIL</option>
-								</select>
-								<select style="border-radius: 0px;" name="tahun_patrol" class="form-control boderSelect" id="tahun_patrol">
-									<option value="2022">2022</option>
-									<option value="2023">2023</option>
-									<option value="2024">2024</option>
-									<option value="2025">2025</option>
-								</select>
-								<button style="border-radius: 0px;padding: 7px;margin-top:0.3px;height:38px" class="btn btn-outline btn-sm btn-primary" type="button">Filter</button>
-							</div>
-						</div>
-
-						<div class="chart">
-							<div id="chartCloseTemuan2" style="height: 300px;"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div> -->
     </div>
 
 
@@ -415,7 +314,7 @@
         'Dec'
     ];
 
-
+    // Graphic 1
     var commonOptionsPerformanceADM = {
         colors: ['#f68936', '#70ba47', '#33b5e6', '#fd8f40', '#e7ca60', '#40abaf', '#f6f7f8', '#e9e9eb'],
         chart: {
@@ -583,7 +482,6 @@
 
     });
 
-
     function charTrendPatrolPerPlant(tahun) {
         // var tahun = dp.datepicker('getDate').getFullYear();
         // var tahun = $("#tahun_trend_patrol_Perplant").val();
@@ -603,7 +501,8 @@
             },
             success: function(e) {
                 var chartPatrolAll = $('#chartLinePatrolAllPerPlant').highcharts();
-                var data = JSON.parse(e);
+                var data = e;
+                // console.log(data);
                 chartPatrolAll.series[0].update({
                     name: data[0].name,
                     data: data[0].data,
@@ -617,8 +516,8 @@
     }
     charTrendPatrolPerPlant($("#yearFilter").val());
 
-    var charTotalPatrolAllBar;
-    charTotalPatrolAllBar = new Highcharts.chart({
+    // Graphic 2
+    var charTotalPatrolAllBar = new Highcharts.chart({
         chart: {
             renderTo: 'chartTrenPatrolAllPlant',
             type: 'column',
@@ -770,7 +669,9 @@
         })
     }
     charTrendPatrolAllD($("#yearFilter").val(), 0);
-    // tren harian
+
+    // // tren harian
+    // Graphic 3
     Highcharts.chart({
         chart: {
             renderTo: 'patroliHarian',
@@ -903,8 +804,8 @@
             success: function(e) {
                 var chartTrendPatrolHarian = $('#patroliHarian').highcharts();
                 var bln = $("select[name=yearMonth] option:selected").text();
-
-                var data = JSON.parse(e);
+                // console.log(e)
+                var data = e;
                 var seriesLength = chartTrendPatrolHarian.series.length;
                 for (var i = seriesLength - 1; i > -1; i--) {
                     chartTrendPatrolHarian.series[i].remove();
@@ -947,8 +848,8 @@
 
     // start performance
     // performance patroli
-    var charPerformancePatroliLine;
-    charPerformancePatroliLine = new Highcharts.chart({
+    // Graphic 4 
+    var charPerformancePatroliLine = new Highcharts.chart({
         chart: {
             renderTo: 'chartPerformanceAllLine',
             type: 'area',
@@ -1066,7 +967,7 @@
             success: function(e) {
                 var chartPatrolAll = $('#chartPerformanceAllLine').highcharts();
                 // console.log(e)
-                var data = JSON.parse(e);
+                var data = e;
                 chartPatrolAll.series[0].update({
                     name: data[0].name,
                     data: data[0].data,
@@ -1084,8 +985,165 @@
     }
     charPerformancePatrolAllADM($("#yearFilter").val());
 
-    var charPerformancePatrolAllBar;
-    charPerformancePatrolAllBar = new Highcharts.chart({
+
+
+    // GRAPHIC 5
+    Highcharts.chart({
+        chart: {
+            type: 'line',
+            renderTo: 'PerformancePatrolHarian',
+            backgroundColor: 'transparent'
+        },
+        title: {
+            text: 'Performance Patroli Harian',
+            style: {
+                // color: '#FFF',
+                font: 'bold 18px "Trebuchet MS", Verdana, sans-serif'
+            }
+        },
+        legend: {
+            // enabled: false,
+            itemStyle: {
+                fontSize: '10px',
+                font: '10pt Trebuchet MS, Verdana, sans-serif',
+                // color: '#FFF'
+            },
+        },
+        subtitle: {
+            text: 'Periode ' + <?= date('Y') ?>,
+            style: {
+                // color: '#FFF',
+                font: 'bold 14px "Trebuchet MS", Verdana, sans-serif'
+            }
+        },
+        xAxis: {
+            // categories: tanggal(28)
+        },
+        yAxis: {
+            min: 0,
+            max: 100,
+            // tickInterval: 0.25,
+            labels: {
+                formatter: function() {
+                    return this.value + '%'
+                },
+                style: {
+                    // color: '#FFF',
+                    font: '11px Trebuchet MS, Verdana, sans-serif'
+                }
+            },
+            title: {
+                text: 'TOTAL'
+            },
+            // gridLineDashStyle: 'dash',
+        },
+        tooltip: {
+            formatter: function() {
+                var tooltip = '<span style="font-size:10px">Tanggal ' + `${this.x + 1}` + '</span><table><tbody>';
+                $.each(this.points, function(i, point) {
+                    tooltip += '<tr><td style="color:' + point.series.color + ';padding:0">' + point.series.name + ': </td><td style="padding:0"><b>' + point.y + '%</b></td></tr>'
+                })
+                tooltip += '</tbody></table>';
+                return tooltip
+            },
+            shared: true,
+            useHTML: true,
+            valueSuffix: '%',
+            backgroundColor: '#5f5f5f',
+            style: {
+                padding: 10,
+                color: '#fefefe',
+            }
+        },
+        plotOptions: {
+            series: {
+                events: {
+                    legendItemClick: function() {
+                        return false; // <== returning false will cancel the default action
+                    }
+                },
+            },
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0,
+                // stacking: 'percent'
+            }
+        },
+        exporting: {
+            buttons: {
+                contextButton: {
+                    enabled: false
+                },
+            }
+        },
+        series: []
+
+    });
+
+    function performanceHarian(tahun, bulan, plant) {
+        $.ajax({
+            url: "{{ route('Dashboard.perFormancePatrolHarian') }}",
+            method: "POST",
+            data: {
+                tahun: tahun,
+                bulan: bulan,
+                plant_id: plant,
+                "_token": "{{ csrf_token() }}",
+            },
+            beforeSend: function() {
+                document.getElementById("tahunPerformance_overlay").style.display = "block";
+            },
+            complete: function() {
+                document.getElementById("tahunPerformance_overlay").style.display = "none";
+            },
+            success: function(e) {
+                var chartPatrolAll = $('#PerformancePatrolHarian').highcharts();
+                const data = e;
+                // console.log(data);
+                var seriesLength = chartPatrolAll.series.length;
+                for (var i = seriesLength - 1; i > -1; i--) {
+                    chartPatrolAll.series[i].remove();
+                }
+                let series = [];
+                for (let i = 0; i < data.length; i++) {
+                    let dataR = [{
+                        name: "",
+                        data: []
+                    }]
+                    chartPatrolAll.addSeries({
+                        data: dataR
+                    });
+                }
+
+                for (let i = 0; i < data.length; i++) {
+                    chartPatrolAll.series[i].update({
+                        name: data[i].name,
+                        data: data[i].data
+                    });
+                }
+                chartPatrolAll.setTitle(null, {
+                    text: 'Periode ' + tahun
+                })
+                chartPatrolAll.xAxis[0].update({
+                    labels: {
+                        enabled: false
+                    },
+                    title: {
+                        text: null
+                    }
+                });
+                chartPatrolAll.setTitle(null, {
+                    text: 'Periode ' + convertMonth(bulan) + ' ' + tahun
+                })
+                chartPatrolAll.redraw();
+            }
+        })
+    }
+    performanceHarian($("#yearFilter").val(), $("#monthFilter").val(), 0);
+    // 
+
+    // GRAPHIC 6
+    var charPerformancePatrolAllBar = new Highcharts.chart({
         chart: {
             renderTo: 'chartPerformanceAllBar',
             type: 'line',
@@ -1198,7 +1256,7 @@
             success: function(e) {
                 var chartPatrolAll = $('#chartPerformanceAllBar').highcharts();
                 // console.log(e)
-                var data = JSON.parse(e);
+                var data = e;
                 var seriesLength = chartPatrolAll.series.length;
                 for (var i = seriesLength - 1; i > -1; i--) {
                     chartPatrolAll.series[i].remove();
@@ -1228,158 +1286,6 @@
     }
     charPerformancePatrolAllD($("#yearFilter").val(), 0);
 
-
-    function performanceHarian(tahun, bulan, plant) {
-        $.ajax({
-            url: "{{ route('Dashboard.perFormancePatrolHarian') }}",
-            method: "POST",
-            data: {
-                tahun: tahun,
-                bulan: bulan,
-                plant_id: plant,
-                "_token": "{{ csrf_token() }}",
-            },
-            beforeSend: function() {
-                document.getElementById("tahunPerformance_overlay").style.display = "block";
-            },
-            complete: function() {
-                document.getElementById("tahunPerformance_overlay").style.display = "none";
-            },
-            success: function(e) {
-                var chartPatrolAll = $('#PerformancePatrolHarian').highcharts();
-                // console.log(e)
-                var data = JSON.parse(e);
-                var seriesLength = chartPatrolAll.series.length;
-                for (var i = seriesLength - 1; i > -1; i--) {
-                    chartPatrolAll.series[i].remove();
-                }
-                let series = [];
-                for (let i = 0; i < data.length; i++) {
-                    let dataR = [{
-                        name: "",
-                        data: []
-                    }]
-                    chartPatrolAll.addSeries({
-                        data: dataR
-                    });
-                }
-
-                for (let i = 0; i < data.length; i++) {
-                    chartPatrolAll.series[i].update({
-                        name: data[i].name,
-                        data: data[i].data
-                    });
-                }
-                chartPatrolAll.setTitle(null, {
-                    text: 'Periode ' + tahun
-                })
-                chartPatrolAll.xAxis[0].update({
-                    labels: {
-                        enabled: false
-                    },
-                    title: {
-                        text: null
-                    }
-                });
-                chartPatrolAll.setTitle(null, {
-                    text: 'Periode ' + convertMonth(bulan) + ' ' + tahun
-                })
-                chartPatrolAll.redraw();
-            }
-        })
-    }
-    performanceHarian($("#yearFilter").val(), $("#monthFilter").val(), 0);
-    Highcharts.chart({
-        chart: {
-            type: 'line',
-            renderTo: 'PerformancePatrolHarian',
-            backgroundColor: 'transparent'
-        },
-        title: {
-            text: 'Performance Patroli Harian',
-            style: {
-                // color: '#FFF',
-                font: 'bold 18px "Trebuchet MS", Verdana, sans-serif'
-            }
-        },
-        legend: {
-            // enabled: false,
-            itemStyle: {
-                fontSize: '10px',
-                font: '10pt Trebuchet MS, Verdana, sans-serif',
-                // color: '#FFF'
-            },
-        },
-        subtitle: {
-            text: 'Periode ' + <?= date('Y') ?>,
-            style: {
-                // color: '#FFF',
-                font: 'bold 14px "Trebuchet MS", Verdana, sans-serif'
-            }
-        },
-        xAxis: {
-            // categories: tanggal(28)
-        },
-        yAxis: {
-            min: 0,
-            max: 100,
-            // tickInterval: 0.25,
-            labels: {
-                formatter: function() {
-                    return this.value + '%'
-                },
-                style: {
-                    // color: '#FFF',
-                    font: '11px Trebuchet MS, Verdana, sans-serif'
-                }
-            },
-            title: {
-                text: 'TOTAL'
-            },
-            // gridLineDashStyle: 'dash',
-        },
-        tooltip: {
-            formatter: function() {
-                var tooltip = '<span style="font-size:10px">Tanggal ' + `${this.x + 1}` + '</span><table><tbody>';
-                $.each(this.points, function(i, point) {
-                    tooltip += '<tr><td style="color:' + point.series.color + ';padding:0">' + point.series.name + ': </td><td style="padding:0"><b>' + point.y + '%</b></td></tr>'
-                })
-                tooltip += '</tbody></table>';
-                return tooltip
-            },
-            shared: true,
-            useHTML: true,
-            valueSuffix: '%',
-            backgroundColor: '#5f5f5f',
-            style: {
-                padding: 10,
-                color: '#fefefe',
-            }
-        },
-        plotOptions: {
-            series: {
-                events: {
-                    legendItemClick: function() {
-                        return false; // <== returning false will cancel the default action
-                    }
-                },
-            },
-            column: {
-                pointPadding: 0.2,
-                borderWidth: 0,
-                // stacking: 'percent'
-            }
-        },
-        exporting: {
-            buttons: {
-                contextButton: {
-                    enabled: false
-                },
-            }
-        },
-        series: []
-
-    });
     // end performance
 
 
@@ -1402,7 +1308,7 @@
             },
             success: function(e) {
                 var chartPatrolAll = $('#chartTemuanADM').highcharts();
-                var data = JSON.parse(e);
+                var data = e;
                 chartPatrolAll.series[0].update({
                     name: 'Total',
                     data: data
@@ -1505,7 +1411,9 @@
         },
         series: [{
             name: 'Total',
-            data: []
+            data: [
+                ['REGU_A', 12]
+            ]
         }]
     });
 
@@ -1527,12 +1435,13 @@
             },
             success: function(e) {
                 var chartPatrolAll = $('#chartTemuanRegu').highcharts();
-                var data = JSON.parse(e);
+                var data = e;
+                console.log(data);
                 let regu = ['REGU A', 'REGU B', 'REGU C', 'REGU D'];
                 for (let i = 0; i < data[0].length; i++) {
                     chartPatrolAll.series[i].update({
                         name: regu[i],
-                        data: data[0][i]
+                        data: data[i][0]
                     });
                 }
                 chartPatrolAll.setTitle(null, {
@@ -1566,6 +1475,11 @@
                 // color: '#FFF',
                 font: 'bold 18px "Trebuchet MS", Verdana, sans-serif'
             }
+        },
+        legend: {
+            align: 'right',
+            verticalAlign: 'middle',
+            layout: 'vertical'
         },
         subtitle: {
             text: "Periode " + <?= date('Y') ?>,
@@ -1634,17 +1548,17 @@
             }
         },
         series: [{
-            name: 'GROUP A',
-            data: []
+            name: 'REGU A',
+            data: [1, 2, 3, 4, 4, 2, 4, 4, 5]
         }, {
-            name: 'GROUP B',
-            data: []
+            name: 'REGU B',
+            data: [5, 4, 2, 7, 2, 4, 5, 3, 2]
         }, {
-            name: 'GROUP C',
-            data: []
+            name: 'REGU C',
+            data: [3, 2, 6, 3, 3, 5, 2, 5, 3]
         }, {
-            name: 'GROUP D',
-            data: []
+            name: 'REGU D',
+            data: [7, 49, 3, 2, 6, 3, 3, 5, 3]
         }]
     });
     // end temuan

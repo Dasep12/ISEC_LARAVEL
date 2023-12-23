@@ -110,6 +110,17 @@ class AuthHelper
         }
     }
 
+    public static function is_building_manager($area='')
+    {
+        $npk = self::user_npk();
+
+        if(strtoupper(self::user_role()) == 'BUILDINGMANAGER') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public static function user_npk()
     {
         return session('npk');

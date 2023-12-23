@@ -2,6 +2,7 @@
 
 namespace Modules\Soa\Http\Controllers;
 
+use App\Models\RoleModel;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
@@ -25,7 +26,7 @@ class DashboardController extends Controller
         for ($i = 1; $i <= 12; $i++) {
             $opt_mon[$i] = date("F", mktime(0, 0, 0, $i, 10));
         }
-
+        // dd(Session('wil_id'));
         $event = new Dashboard();
         return view('soa::dashboard/dashboard', [
             'uri'   => \Request::segment(2),

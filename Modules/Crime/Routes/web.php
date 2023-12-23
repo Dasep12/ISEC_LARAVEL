@@ -33,6 +33,8 @@ Route::prefix('crime')->group(function () {
 
 
     Route::get('/upload', 'UploadController@index');
+    Route::get('/delete', 'UploadController@delete');
+    Route::post('/update', 'UploadController@update');
     Route::post('/upload_data', 'UploadController@upload_data');
     Route::get('/getList_crime', 'UploadController@getList_crime');
 });

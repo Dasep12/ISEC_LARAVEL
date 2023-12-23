@@ -1,7 +1,3 @@
-@extends('template.template_first')
-
-@section('content')
-
 <style>
     .card-horizontal {
         display: flex;
@@ -198,6 +194,7 @@
             </div>
         </div>
 
+        @if (AuthHelper::is_super_admin() || AuthHelper::is_module('SRSSOI'))
         <div class="row">
             <div class="col-12">
                 <div class="card cardIn2">
@@ -282,7 +279,9 @@
                 </div>
             </div>
         </div>
+        @endif
 
+        @if (AuthHelper::is_super_admin() || AuthHelper::is_module('SOA'))
         <div class="row">
             <div class="col-sm-9 col-lg-9">
                 <div class="card">
@@ -345,6 +344,7 @@
                 </div>
             </div>
         </div>
+        @endif
 
     </div>
 </section>
@@ -503,11 +503,14 @@
     // LOADING //
 
     $(document).ready(function() {
-        // SOI
         srsSoi(soiChart);
+        
+        // SOI
+        @if (AuthHelper::is_super_admin() || AuthHelper::is_module('SRSSOI')) 
         trendSoiHelper(field)
         lineSoiAvgMonth(soiAvgMonthChart);
         soiAvgPillar(field)
+        @endif
         // SOI
 
         srsPerMonthDoughs(srsPerMonthDoughChart, srsPerMonthLineChart)
@@ -520,14 +523,16 @@
         // HUMINT //
 
         // OSINT
-        updatePlantMonthCtx(osintLinePlantChart)
+        updatePlantMonthCtx(field)
         // OSINT //
 
         // SOA
+        @if (AuthHelper::is_super_admin() || AuthHelper::is_module('SOA')) 
         SoaFtraficAll(field)
         people(field);
         vehicle(field);
         material(field);
+        @endif
         // SOA //
     });
 
@@ -778,6 +783,7 @@
     });
 
     // SOI AVERAGE MONTH LINE
+    @if (AuthHelper::is_super_admin() || AuthHelper::is_module('SRSSOI')) 
     var lineSoiAvgMonthCtx = document.getElementById("lineSoiAvgMonth").getContext('2d');
     var soiAvgMonthChart = new Chart(lineSoiAvgMonthCtx, {
         type: 'line',
@@ -848,6 +854,7 @@
             },
         },
     });
+    @endif
     // SOI AVERAGE MONTH LINE //
 
     // DOUGHNAT PERMONTH TOTAL //
@@ -1201,7 +1208,7 @@
                     id_fil: id,
                 },
                 cache: false,
-                timeout: 10000,
+                timeout: 50000,
                 beforeSend: function() {},
                 error: function(xhr, textStatus, errorThrown) {
                     if (textStatus == 'timeout') {
@@ -1329,7 +1336,7 @@
                             $('#topIndexSmallLabel').text(category + ' - ' + label);
 
                             $.ajax({
-                                url: "{{ url('srs / dashboard_v2 / detail_event_list ') }}",
+                                url: "{{ url('srs/dashboard_v2/detail_event_list ') }}",
                                 type: "POST",
                                 data: {
                                     _token: "{{ csrf_token() }}",
@@ -1339,7 +1346,7 @@
                                     risksource_id: id,
                                 },
                                 cache: false,
-                                timeout: 10000,
+                                timeout: 50000,
                                 beforeSend: function() {},
                                 complete: function() {
                                     topIndexSmallBody.find('.loader').remove();
@@ -1520,7 +1527,7 @@
                                             $('#topIndexSmallLabel').text(category + ' - ' + label);
 
                                             $.ajax({
-                                                url: "{{ url('srs/dashboard_v2/ detail_event_list') }}",
+                                                url: "{{ url('srs/dashboard_v2/detail_event_list') }}",
                                                 type: 'POST',
                                                 data: {
                                                     _token: "{{ csrf_token() }}",
@@ -1530,7 +1537,7 @@
                                                     risksource_sub1_id: id,
                                                 },
                                                 cache: false,
-                                                timeout: 10000,
+                                                timeout: 50000,
                                                 beforeSend: function() {},
                                                 complete: function() {
                                                     topIndexSmallBody.find('.loader').remove();
@@ -1566,7 +1573,7 @@
                                         $('#riSoSub2Month').parent().append(animateLoading('loader-full'))
 
                                         $.ajax({
-                                            url: "{{ url('srs/dashboard_v2/ grap_detail_risk_source') }}",
+                                            url: "{{ url('srs/dashboard_v2/grap_detail_risk_source') }}",
                                             type: 'POST',
                                             data: {
                                                 _token: "{{ csrf_token() }}",
@@ -1602,7 +1609,7 @@
                                                         $('#topIndexSmallLabel').text(category + ' - ' + label);
 
                                                         $.ajax({
-                                                            url: "{{ url('srs/dashboard_v2 / detail_event_list') }}",
+                                                            url: "{{ url('srs/dashboard_v2/detail_event_list') }}",
                                                             type: 'POST',
                                                             data: {
                                                                 _token: "{{ csrf_token() }}",
@@ -1612,7 +1619,7 @@
                                                                 risksource_sub2_id: id,
                                                             },
                                                             cache: false,
-                                                            timeout: 10000,
+                                                            timeout: 50000,
                                                             beforeSend: function() {},
                                                             complete: function() {
                                                                 topIndexSmallBody.find('.loader').remove();
@@ -2427,7 +2434,7 @@
                 month_fil: months,
             },
             cache: false,
-            timeout: 10000,
+            timeout: 50000,
             beforeSend: function() {},
             error: function(xhr, textStatus, errorThrown) {
                 if (textStatus == 'timeout') {
@@ -2468,7 +2475,7 @@
                 month_fil: months,
             },
             cache: false,
-            timeout: 10000,
+            timeout: 50000,
             beforeSend: function() {},
             error: function(xhr, textStatus, errorThrown) {
                 if (textStatus == 'timeout') {
@@ -2505,7 +2512,7 @@
                 month_fil: months,
             },
             cache: false,
-            timeout: 10000,
+            timeout: 50000,
             beforeSend: function() {},
             error: function(xhr, textStatus, errorThrown) {
                 if (textStatus == 'timeout') {
@@ -2759,7 +2766,7 @@
                 month_filter: months,
             },
             cache: false,
-            timeout: 10000,
+            timeout: 50000,
             beforeSend: function() {},
             error: function(xhr, textStatus, errorThrown) {
                 if (textStatus == 'timeout') {
@@ -2792,7 +2799,7 @@
                 month_filter: months,
             },
             cache: false,
-            timeout: 10000,
+            timeout: 50000,
             beforeSend: function() {},
             error: function(xhr, textStatus, errorThrown) {
                 if (textStatus == 'timeout') {
@@ -2832,7 +2839,7 @@
                 month_fil: months,
             },
             cache: false,
-            timeout: 10000,
+            timeout: 50000,
             beforeSend: function() {},
             error: function(xhr, textStatus, errorThrown) {
                 if (textStatus == 'timeout') {
@@ -2885,7 +2892,7 @@
                 month_fil: months,
             },
             cache: false,
-            timeout: 10000,
+            timeout: 50000,
             beforeSend: function() {},
             error: function(xhr, textStatus, errorThrown) {
                 if (textStatus == 'timeout') {
@@ -3155,7 +3162,7 @@
                                         $('#topIndexSmallLabel').text(category + ' - ' + label);
 
                                         $.ajax({
-                                            url: "{{ url('srs/dashboard_v2/detail_event_list ') }}",
+                                            url: "{{ url('srs/dashboard_v2/detail_event_list') }}",
                                             type: 'POST',
                                             data: {
                                                 _token: "{{ csrf_token() }}",
@@ -3165,7 +3172,7 @@
                                                 asset_id: id,
                                             },
                                             cache: false,
-                                            timeout: 10000,
+                                            timeout: 50000,
                                             beforeSend: function() {},
                                             complete: function() {
                                                 topIndexSmallBody.find('.loader').remove();
@@ -3254,7 +3261,7 @@
                                                     $('#topIndexSmallLabel').text(category + ' - ' + label);
 
                                                     $.ajax({
-                                                        url: "{{ url('srs/dashboard_v2/ detail_event_list') }}",
+                                                        url: "{{ url('srs/dashboard_v2/detail_event_list') }}",
                                                         type: 'POST',
                                                         data: {
                                                             _token: "{{ csrf_token() }}",
@@ -3264,7 +3271,7 @@
                                                             asset_sub1_id: id,
                                                         },
                                                         cache: false,
-                                                        timeout: 10000,
+                                                        timeout: 50000,
                                                         beforeSend: function() {},
                                                         complete: function() {
                                                             topIndexSmallBody.find('.loader').remove();
@@ -3349,7 +3356,7 @@
                                                                         asset_sub2_id: id,
                                                                     },
                                                                     cache: false,
-                                                                    timeout: 10000,
+                                                                    timeout: 50000,
                                                                     beforeSend: function() {},
                                                                     complete: function() {
                                                                         topIndexSmallBody.find('.loader').remove();
@@ -3544,7 +3551,7 @@
                 month_fil: months,
             },
             cache: false,
-            timeout: 10000,
+            timeout: 50000,
             beforeSend: function() {},
             error: function(xhr, textStatus, errorThrown) {
                 if (textStatus == 'timeout') {
@@ -3817,7 +3824,7 @@
                                                 risk_id: id,
                                             },
                                             cache: false,
-                                            timeout: 10000,
+                                            timeout: 50000,
                                             beforeSend: function() {},
                                             complete: function() {
                                                 topIndexSmallBody.find('.loader').remove();
@@ -3911,7 +3918,7 @@
                                                         $('#topIndexSmallLabel').text(category + ' - ' + label);
 
                                                         $.ajax({
-                                                            url: "{{ url('srs/dashboard_v2/ detail_event_list') }}",
+                                                            url: "{{ url('srs/dashboard_v2/detail_event_list') }}",
                                                             type: 'POST',
                                                             data: {
                                                                 _token: "{{ csrf_token() }}",
@@ -3921,7 +3928,7 @@
                                                                 risk_sub1_id: id,
                                                             },
                                                             cache: false,
-                                                            timeout: 10000,
+                                                            timeout: 50000,
                                                             beforeSend: function() {},
                                                             complete: function() {
                                                                 topIndexSmallBody.find('.loader').remove();
@@ -3959,7 +3966,7 @@
                                                         $('#riskSub2Month').parent().append(animateLoading('loader-full'))
 
                                                         $.ajax({
-                                                            url: "{{ url('srs/dashboard_v2/ grap_detail_risk') }}",
+                                                            url: "{{ url('srs/dashboard_v2/grap_detail_risk') }}",
                                                             type: 'POST',
                                                             data: {
                                                                 _token: "{{ csrf_token() }}",
@@ -3995,7 +4002,7 @@
                                                                         $('#topIndexSmallLabel').text(category + ' - ' + label);
 
                                                                         $.ajax({
-                                                                            url: "{{ url('srs/dashboard_v2/detail_event_list ') }}",
+                                                                            url: "{{ url('srs/dashboard_v2/detail_event_list') }}",
                                                                             type: 'POST',
                                                                             data: {
                                                                                 _token: "{{ csrf_token() }}",
@@ -4005,7 +4012,7 @@
                                                                                 risk_sub2_id: id,
                                                                             },
                                                                             cache: false,
-                                                                            timeout: 10000,
+                                                                            timeout: 50000,
                                                                             beforeSend: function() {},
                                                                             complete: function() {
                                                                                 topIndexSmallBody.find('.loader').remove();
@@ -4185,7 +4192,7 @@
                 month: months
             },
             cache: false,
-            timeout: 10000,
+            timeout: 50000,
             beforeSend: function() {},
             error: function(xhr, textStatus, errorThrown) {
                 if (textStatus == 'timeout') {
@@ -4243,7 +4250,7 @@
                 month: months
             },
             cache: false,
-            timeout: 10000,
+            timeout: 50000,
             beforeSend: function() {},
             error: function(xhr, textStatus, errorThrown) {
                 if (textStatus == 'timeout') {
@@ -4297,7 +4304,7 @@
                             month: months,
                         },
                         cache: false,
-                        timeout: 10000,
+                        timeout: 50000,
                         beforeSend: function() {},
                         complete: function() {
                             detailGrapBody.find('.loader').remove();
@@ -4322,6 +4329,7 @@
 
 
     // SOA MONTHLY
+    @if (AuthHelper::is_super_admin() || AuthHelper::is_module('SOA')) 
     var SoatraficAll = Highcharts.chart('soa_Setahun', {
         chart: {
             type: 'spline',
@@ -4389,6 +4397,7 @@
             data: [],
         }]
     });
+    @endif
     // SOA MONTHLY //
 
 
@@ -4405,7 +4414,7 @@
                 area_fill: areas
             },
             cache: false,
-            // timeout: 10000,
+            // timeout: 50000,
             beforeSend: function() {
                 document.getElementById("loaderSoa").style.display = "block";
             },
@@ -4457,7 +4466,7 @@
             },
             success: function(res) {
                 // var json = JSON.parse(res)
-                console.log(res[0].total_people)
+
                 peopleTotal.text(res[0].total_people)
             }
         });
@@ -4511,6 +4520,7 @@
             },
             success: function(res) {
                 // var json = JSON.parse(res)
+                console.log(res[0].total);
                 materialTotal.text(res[0].total)
             }
         });
@@ -4608,8 +4618,10 @@
 
         // SOI
         srsSoi(soiChart);
+        @if (AuthHelper::is_super_admin() || AuthHelper::is_module('SRSSOI')) 
         lineSoiAvgMonth(soiAvgMonthChart);
-        soiAvgPillar(field)
+        soiAvgPillar(field) 
+        @endif
         // SOI
 
         srsPerMonthDoughs(srsPerMonthDoughChart, srsPerMonthLineChart)
@@ -4622,15 +4634,17 @@
         // HUMINT //
 
         // OSINT
-        updatePlantMonthCtx(osintLinePlantChart)
+        updatePlantMonthCtx(field)
         updatePlantPieChart(field)
         // OSINT //
 
         // SOA
+        @if (AuthHelper::is_super_admin() || AuthHelper::is_module('SOA')) 
         SoaFtraficAll(field)
         people(field)
         vehicle(field)
         material(field)
+        @endif
         // SOA //
     });
 
@@ -4708,5 +4722,3 @@
         window.open(pdf.output('bloburl'), '_blank');
     }
 </script>
-
-@endsection

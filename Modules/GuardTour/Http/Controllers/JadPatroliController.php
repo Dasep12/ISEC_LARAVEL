@@ -39,7 +39,10 @@ class JadPatroliController extends Controller
             // dd($headerJadwal);
         }
 
-        $pl = Session('role') == 'SUPERADMIN' ? Plants::all() : Plants::where('admisecsgp_mstsite_site_id', Session('site_id'))->get();
+        $pl =   Session('role') == 'SUPERADMIN' ? Plants::where('status', 1)->get() : Plants::where([
+            ['admisecsgp_mstsite_site_id', '=', Session('site_id')],
+            ['status', '=', 1],
+        ])->get();
 
         $uri =  \Request::segment(2) . '/' . \Request::segment(3);
         return view('guardtour::jadwal_patroli/master_jadwal_patroli', [
@@ -93,7 +96,10 @@ class JadPatroliController extends Controller
     public function form_upload()
     {
 
-        $plant =  Session('role') == 'SUPERADMIN' ? Plants::all() : Plants::where('admisecsgp_mstsite_site_id', Session('site_id'))->get();
+        $plant =  Session('role') == 'SUPERADMIN' ? Plants::where('status', 1)->get() : Plants::where([
+            ['admisecsgp_mstsite_site_id', '=', Session('site_id')],
+            ['status', '=', 1],
+        ])->get();
         $uri =  \Request::segment(2) . '/' . \Request::segment(3);
         return view('guardtour::jadwal_patroli/form_upload_jadwal_patroli', [
             'uri'        => $uri,

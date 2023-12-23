@@ -99,4 +99,21 @@ class UsersController extends Controller
             // dd($e);
         }
     }
+
+
+    public function delete(Request $req)
+    {
+        $npk = $req->input("npk");
+        DB::beginTransaction();
+        try {
+            DB::delete("DELETE FROM admisecsgp_mstusr WHERE npk = '$npk' ");
+            DB::commit();
+            // return "01";
+            return back()->with(["success" => 'Berhasil menambah data']);
+        } catch (\Exception $e) {
+            DB::rollback();
+            // return "00";
+            return back()->with(["failed" => 'Gagal menambah data']);
+        }
+    }
 }

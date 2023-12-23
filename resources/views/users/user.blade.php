@@ -74,7 +74,7 @@ use Illuminate\Support\Facades\DB;
                                         <td>{{ $us->status == 1 ? 'ACTIVE' : 'INACTIVE' }}</td>
                                         <td>
 
-                                            <a href="" onclick="return confirm('Yakin Hapus ?')" class='text-danger' title="hapus data"><i class="fa fa-trash"></i></a>
+                                            <a href="/Setting/Pengguna/delete?npk=<?= $us->npk ?>" onclick="return confirm('Yakin Hapus ?')" class='text-danger' title="hapus data"><i class="fa fa-trash"></i></a>
 
                                             <a href='' data-toggle="modal" data-target="#edit-data" class="text-primary ml-2 " title="lihat data" data-backdrop="static" data-keyboard="false" data-level="<?= $us->level ?>" data-npk="<?= $us->npk ?>" data-email="<?= $us->email ?>" data-grup="<?= $us->patrol_group ?>" data-status="<?= $us->status ?>" data-plant="<?= strtoupper($us->plant_name)  ?>" data-site="<?= strtoupper($us->site_name) ?>" data-nama="<?= strtoupper($us->name) ?>"><i class="fa fa-eye"></i></a>
 

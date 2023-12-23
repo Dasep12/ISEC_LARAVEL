@@ -6,6 +6,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\GuardTour\Entities\Dashboard;
+use Modules\GuardTour\Entities\DashboardModels;
 use Modules\GuardTour\Entities\Plants;
 
 class DashboardController extends Controller
@@ -26,7 +27,10 @@ class DashboardController extends Controller
             $ttlHari[] = $h;
         }
 
-        $pl = Session('role') == 'SUPERADMIN' ? Plants::all() : Plants::where('admisecsgp_mstsite_site_id', Session('site_id'))->get();
+        $pl =  Session('role') == 'SUPERADMIN' ? Plants::where('status', 1)->orderBy('plant_name', 'ASC')->get() : Plants::where([
+            ['admisecsgp_mstsite_site_id', '=', Session('site_id')],
+            ['status', '=', 1],
+        ])->orderBy('plant_name', 'ASC')->get();
 
         $tar_arr = array();
         foreach ($pl as $key => $tar) {
@@ -43,9 +47,9 @@ class DashboardController extends Controller
 
 
         return view('guardtour::dashboard/index', [
-            'uri'   => \Request::segment(2),
-            'bulan' => $month,
-            'plant' => $pl,
+            'uri'          => \Request::segment(2),
+            'bulan'       => $month,
+            'plant'       => $pl,
             'jmlHari'     => json_encode($ttlHari, true),
             'ttlHari'     => $totalHari,
             'plants'      => json_encode($tar_arr, true),
@@ -63,16 +67,19 @@ class DashboardController extends Controller
         $par = array();
 
         if ($pl == 0) {
-            // $plant = Dashboard::getPlant();
-            $plant =  Session('role') == 'SUPERADMIN' ? Plants::all() : Plants::where('admisecsgp_mstsite_site_id', Session('site_id'))->get();
+            // $plant = DashboardModels::getPlant();
+            $plant =  Session('role') == 'SUPERADMIN' ? Plants::where('status', 1)->get() : Plants::where([
+                ['admisecsgp_mstsite_site_id', '=', Session('site_id')],
+                ['status', '=', 1],
+            ])->orderBy('plant_name', 'ASC')->get();
         } else {
-            $plant = Dashboard::getPerPlant($pl);
+            $plant = DashboardModels::getPerPlant($pl);
         }
         foreach ($plant as $pl) {
             $data =
                 array(
                     'plant' => $pl->plant_name,
-                    'data'  => Dashboard::trenPatroliBulanan($year,  $pl->plant_name)
+                    'data'  => DashboardModels::trenPatroliBulanan($year,  $pl->plant_name)
                 );
             array_push($par, $data);
         }
@@ -81,13 +88,15 @@ class DashboardController extends Controller
 
     public function trendPatrolBulananPerPlant(Request $req)
     {
+
         $plant = $req->plant_id;
         $year = $req->tahun;
         $data = array([
             'name'      => 'Total',
-            'data'      => Dashboard::trenPatroliBulanan($year,  $plant)
+            'data'      => DashboardModels::trenPatroliBulanan($year,  $plant)
         ]);
-        echo json_encode($data, true);
+        // echo json_encode($data, true);
+        return response()->json($data);
     }
 
     public function trendPatrolHarian(Request $req)
@@ -96,21 +105,21 @@ class DashboardController extends Controller
         $month = $req->bulan;
         $pl   = $req->plant_id;
         if ($pl == 0) {
-            // $plant = Dashboard::getPlant();
+            // $plant = DashboardModels::getPlant();
             $plant =  Session('role') == 'SUPERADMIN' ? Plants::all() : Plants::where('admisecsgp_mstsite_site_id', Session('site_id'))->get();
         } else {
-            $plant = Dashboard::getPerPlant($pl);
+            $plant = DashboardModels::getPerPlant($pl);
         }
         $par = array();
         foreach ($plant as $pl) {
             $data = array(
                 'name'      => $pl->plant_name,
-                'data'      => Dashboard::getTrendPatroliHarian($year, $month, $pl->plant_name)
+                'data'      => DashboardModels::getTrendPatroliHarian($year, $month, $pl->plant_name)
             );
             array_push($par, $data);
         }
-
-        echo json_encode($par, true);
+        return response()->json($par);
+        // echo json_encode($par, true);
     }
 
 
@@ -122,20 +131,20 @@ class DashboardController extends Controller
         $par = array();
         $pl   = $req->plant_id;
         if ($pl == 0) {
-            // $plant = Dashboard::getPlant();
             $plant =  Session('role') == 'SUPERADMIN' ? Plants::all() : Plants::where('admisecsgp_mstsite_site_id', Session('site_id'))->get();
         } else {
-            $plant = Dashboard::getPerPlant($pl);
+            $plant = DashboardModels::getPerPlant($pl);
         }
         foreach ($plant as $pl) {
             $data =
                 array(
                     'plant' => $pl->plant_name,
-                    'data'  => Dashboard::performancePatroliPerPlant($year,  $pl->plant_name)
+                    'data'  => DashboardModels::performancePatroliPerPlant($year,  $pl->plant_name)
                 );
             array_push($par, $data);
         }
-        echo json_encode($par, true);
+        // echo json_encode($par, true);
+        return response()->json($par);
     }
 
     public function perforamancePatrolBulananPerPlant(Request $req)
@@ -146,15 +155,16 @@ class DashboardController extends Controller
         if ($plant == "") {
             $data = array([
                 'name'      => 'Performance',
-                'data'      => Dashboard::performancePatroliAllPlant($year, $plant)
+                'data'      => DashboardModels::performancePatroliAllPlant($year, $plant)
             ]);
         } else {
             $data = array([
                 'name'      => 'Performance',
-                'data'      => Dashboard::performancePatroliPerPlant($year, $plant)
+                'data'      => DashboardModels::performancePatroliPerPlant($year, $plant)
             ]);
         }
-        echo json_encode($data, true);
+        // echo json_encode($data, true);
+        return response()->json($data);
     }
 
     public function perFormancePatrolHarian(Request $req)
@@ -165,20 +175,20 @@ class DashboardController extends Controller
         $par = array();
 
         if ($pl == 0) {
-            // $plant = Dashboard::getPlant();
+            // $plant = DashboardModels::getPlant();
             $plant =  Session('role') == 'SUPERADMIN' ? Plants::all() : Plants::where('admisecsgp_mstsite_site_id', Session('site_id'))->get();
         } else {
-            $plant = Dashboard::getPerPlant($pl);
+            $plant = DashboardModels::getPerPlant($pl);
         }
         foreach ($plant as $pl) {
             $data = array(
                 'name'      => $pl->plant_name,
-                'data'      => Dashboard::getPerformancePatroliHarianAllPlant($year, $month, $pl->plant_name)
+                'data'      => DashboardModels::getPerformancePatroliHarianAllPlant($year, $month, $pl->plant_name)
             );
             array_push($par, $data);
         }
 
-        echo json_encode($par, true);
+        return response()->json($par);
     }
 
 
@@ -186,8 +196,8 @@ class DashboardController extends Controller
     public function temuanPatrolAllPlant(Request $req)
     {
         $year = $req->tahun;
-        $res = Dashboard::getTemuanPatroliAll($year);
-        echo json_encode($res, true);
+        $res = DashboardModels::getTemuanPatroliAll($year);
+        return response()->json($res);
     }
 
 
@@ -196,24 +206,17 @@ class DashboardController extends Controller
     {
         $year = $req->tahun;
         $month = $req->bulan;
-        $res = Dashboard::queryTemuanRegu($year, $month, "REGU_A");
-        $plant = array();
-        foreach ($res as $q) {
-            $plant[] = $q->plant_name;
+        $plant = Session('role') == 'SUPERADMIN' ? Plants::where('status', 1)->orderBy('plant_name', 'ASC')->get() : Plants::where([
+            ['admisecsgp_mstsite_site_id', '=', Session('site_id')],
+            ['status', '=', 1],
+        ])->orderBy('plant_name', 'ASC')->get();
+
+        $data = array();
+        $regu = ['REGU_A', 'REGU_B', 'REGU_C', 'REGU_D'];
+        for ($r = 0; $r < count($regu); $r++) {
+            $counting = DashboardModels::getTemuanPerRegu($year, $month, $regu[$r]);
+            $data[] = [$counting];
         }
-        $data = array(
-            array(
-                Dashboard::getTemuanPerRegu($year, $month, 'REGU_A'),
-                Dashboard::getTemuanPerRegu($year, $month, 'REGU_B'),
-                Dashboard::getTemuanPerRegu($year, $month, 'REGU_C'),
-                Dashboard::getTemuanPerRegu($year, $month, 'REGU_D'),
-            ),
-            array(
-                $plant
-            )
-        );
-        echo json_encode($data, true);
-        // echo "<pre>";
-        // var_dump($query);
+        return response()->json($data);
     }
 }
