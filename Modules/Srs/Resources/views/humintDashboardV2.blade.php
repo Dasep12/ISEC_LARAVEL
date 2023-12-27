@@ -85,6 +85,8 @@
                                             <div class="col-sm-4 col-md-4 mb-5 mb-md-0">
                                                 <canvas id="grapSoi" style="width:350px; height:350px"></canvas>
                                             </div>
+                                            
+                                            <canvas id="trendGrapSoiHelper" class="d-none" style="width:350px; height:350px"></canvas>
 
                                             <div class="col-sm-4 col-md-4 px-3 mt-1 mt-md-0 mx-auto-OFF py-4-OFF px-5-OFF text-center" style="min-height: 350px;">
                                                 <h5>Index Resiko ADM</h5>
@@ -106,6 +108,10 @@
                                                             <dd class="col-sm-11">Serangan Ransomware - Internal</dd>
                                                         </dl>
                                                     </div>
+                                                </div>
+
+                                                <div class="mt-2">
+                                                    <button id="exportJs" class="btn px-4 bg-white float-right">Export</button>
                                                 </div>
                                             </div>
 
@@ -242,6 +248,8 @@
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 <script src="{{ asset('assets/vendor/chartjs/dist/chartjs-plugin-labels.min.js'); }}"></script>
 
+<script src="{{ asset('assets/vendor/jspdf/dist/jspdf.umd.min.js') }}"></script>
+
 <script type="text/javascript">
     var field = [
         areaFilter = $("#areaFilter").val(),
@@ -332,13 +340,13 @@
 
     $(document).ready(function() {
         soiIndexResiko(soiChart)
+        trendSoiHelper(trendSoiHelperChart)
         daughnutMonhtly(dougnutChartAll)
         daughnutPlant(dougnutChartPlant)
         riskTransSource(rsoChart)
 		srsTargetAssets(assetChart)
 		srsRisks(riskChart)
     });
-
 
     const ctxSoi = document.getElementById("grapSoi");
     ctxSoi.width = 350;
@@ -465,11 +473,6 @@
     });
 
     // RISK SOURCE //
-    // var dataRiskSource = ;
-    // var setsRiskSource = [{
-    //     label: dataRiskSource.map(function(v){return v.label}),
-    //     data: dataRiskSource.map(function(v){return v.data})
-    // }];
     var ctxRso = document.getElementById("rsoChart");
     ctxRso.height = 250;
     var ict_unit = [];
@@ -481,12 +484,7 @@
         var b = Math.floor(Math.random() * 255);
         return "rgb(" + r + "," + g + "," + b + ")";
     };
-    // var data = setsRiskSource[0].label
-    // for (var i in data) {
-    //     ict_unit.push("ICT Unit " + data[i].ict_unit);
-    //     efficiency.push(data[i].efficiency);
-    //     coloR.push(dynamicColors());
-    // }
+    
     var rsoChart = new Chart(ctxRso, {
         type: 'bar',
         data: {
@@ -503,7 +501,6 @@
                 borderWidth: 1
             }]
         },
-
         options: {
             indexAxis: 'y',
             scales: {
@@ -606,12 +603,6 @@
         var b = Math.floor(Math.random() * 255);
         return "rgb(" + r + "," + g + "," + b + ")";
     };
-    // var data = setRisk[0].data;
-    // for (var i in data) {
-    //     ict_unit.push("ICT Unit " + data[i].ict_unit);
-    //     efficiency.push(data[i].efficiency);
-    //     coloR.push(dynamicColors());
-    // }
     var riskChart = new Chart(ctxRis, {
         type: 'bar',
         data: {
@@ -685,7 +676,6 @@
                 pointRadius: 8,
                 label: '',
                 data: [],
-                // backgroundColor: coloR,
                 fill: true,
                 backgroundColor: [
                     'rgba(255, 99, 132, 1)',
@@ -700,7 +690,6 @@
                 tension: 0.1,
                 segment: {
                     borderColor: 'red',
-                    // backgroundColor: bgGradient,
                     backgroundColor: 'rgba(201, 90, 80, 0.3)',
                 },
                 borderWidth: 1,
@@ -952,6 +941,191 @@
     })
     // PLANT DOUGHNUT //
 
+    // TREND SOI YEAR HELPER //
+    var trendSoiHelperId = document.getElementById("trendGrapSoiHelper").getContext('2d');
+    var monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des']
+    
+    const trendSoiHelperChart = new Chart(trendSoiHelperId, {
+        type: 'line',
+        data: {
+            labels: monthList,
+            datasets: [{
+                    pointStyle: 'circle',
+                    pointRadius: 4,
+                    label: 'SOI',
+                    borderColor: 'rgba(99, 131, 255, 1)',
+                    backgroundColor: 'rgba(99, 131, 255, 0.8)',
+                    borderWidth: 1,
+                },
+                {
+                    pointStyle: 'circle',
+                    pointRadius: 4,
+                    label: 'Threat',
+                    borderColor: 'rgba(255, 165, 0, 1)',
+                    backgroundColor: 'rgb(255 165 0)',
+                    borderWidth: 1,
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    ticks: {
+                        font: {
+                            size: 13,
+                        },
+                        color: '#FFF'
+                    },
+                },
+                y: {
+                    grid: {
+                        display: true
+                    },
+                    ticks: {
+                        precision: 0,
+                        color: '#FFF'
+                    },
+                    min: 0,
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true
+                },
+                datalabels: {
+                    color: '#FFF'
+                },
+                annotation: {
+                    annotations: {
+                        line1: {
+                            type: 'line',
+                            yMin: 2.00,
+                            yMax: 2.00,
+                            borderColor: 'rgb(255 202 104)',
+                            borderWidth: 2,
+                        },
+                        line2: {
+                            type: 'line',
+                            yMin: 4.00,
+                            yMax: 4.00,
+                            borderColor: 'rgb(145 162 227)',
+                            borderWidth: 2,
+                        }
+                    }
+                }
+            },
+        }
+    })
+
+    function trendSoiHelper(trendSoiHelperChart) {
+        console.log(trendSoiHelperChart)
+        $.ajax({
+            url: "{{ url('srs/dashboard_humint_v2/grap_trend_soi') }}",
+            type: 'POST',
+            data: {
+                _token: "{{ csrf_token() }}",
+                area_fil: areaFilter,
+                year_fil: yearFilter,
+                month_fil: monthFilter,
+            },
+            cache: false,
+            beforeSend: function() {
+                // document.getElementById("loader").style.display = "block";
+            },
+            complete: function() {
+                // document.getElementById("loader").style.display = "none";
+            },
+            success: function(res) {
+                var json = JSON.parse(res)
+
+                var dataSoi = json.data_soi;
+                var dataThreats = json.data_index;
+
+                trendSoiHelperChart.data.datasets[0].data = dataSoi;
+                trendSoiHelperChart.data.datasets[1].data = dataThreats;
+                trendSoiHelperChart.update();
+            }
+        });
+    }
+
+    $('#exportJs').on('click', convertToPDF)
+
+    // convertToPDF()
+    function convertToPDF() {
+        const {
+            jsPDF
+        } = window.jspdf;
+        const pdf = new jsPDF();
+
+        pdf.setLineWidth(0.1);
+        pdf.rect(8, 8, 40, 15);
+        pdf.addImage("{{ asset('assets/dist/img/daihatsu-sahabatku.png') }}", 'PNG', 13, 11, 30, 0);
+
+        pdf.setLineWidth(0.1);
+        pdf.rect(53, 8, 113, 15);
+        pdf.setFontSize(15);
+        // pdf.text("Executive Summary - Quarter 1 Update", 50, 17);
+        var splitTitle = pdf.splitTextToSize('Executive Summary - Quarter 1 Update', 113);
+        pdf.text(63, 17, splitTitle);
+
+        pdf.setLineWidth(0.1);
+        pdf.rect(172, 8, 30, 15);
+        pdf.setFontSize(10);
+        pdf.setTextColor(246, 23, 23);
+        var splitTitle = pdf.splitTextToSize('Confidential Document', 20);
+        pdf.text(187, 15, splitTitle, 0, 'center');
+
+        pdf.setTextColor(0, 0, 0);
+        pdf.setFontSize(11);
+
+        // pdf.setFillColor(204, 204, 204, 0);
+        // pdf.rect(10, 20, 50, 10, "F");
+        pdf.text("Security Index Point", 16, 35);
+        var canvasIndex = $("canvas#grapSoi").get(0);
+        var dataURL = canvasIndex.toDataURL("image/png", 1.0);
+        pdf.setFillColor(204, 204, 204, 0);
+        pdf.rect(8, 40, 50, 50, "F");
+        pdf.addImage(dataURL, 'PNG', 8, 40, 50, 50);
+
+        pdf.text("Trend Threats and SOI", 100, 35);
+        // pdf.rect(20, 20, 100 - 10, 35 - 10, 'S');
+        $('#trendGrapSoiHelper').show();
+        var canvasTrendSoi = $("canvas#trendGrapSoiHelper").get(0);
+        var dataURL = canvasTrendSoi.toDataURL("image/png", 1.0);
+        pdf.setFillColor(204, 204, 204, 0);
+        pdf.rect(65, 40, 108, 35, "F");
+        pdf.addImage(dataURL, 'PNG', 65, 40, 108, 35);
+        $('#trendGrapSoiHelper').hide();
+
+        pdf.text("The Most Frequent Risk", 12, 105);
+        var canvasRso = $("canvas#riskChart").get(0);
+        var dataURL = canvasRso.toDataURL("image/png", 1.0);
+        pdf.setFillColor(204, 204, 204, 0);
+        pdf.rect(8, 110, 50, 50, "F");
+        pdf.addImage(dataURL, 'PNG', 8, 110, 50, 50);
+
+        pdf.text("The Most Target Asset", 70, 105);
+        var canvasAst = $("canvas#assetChart").get(0);
+        var dataURL = canvasAst.toDataURL("image/png", 1.0);
+        pdf.setFillColor(204, 204, 204, 0);
+        pdf.rect(65, 110, 50, 50, "F");
+        pdf.addImage(dataURL, 'PNG', 65, 110, 50, 50);
+
+        pdf.text("The Most Risk Source", 128, 105);
+        var canvasRsk = $("canvas#rsoChart").get(0);
+        var dataURL = canvasRsk.toDataURL("image/png", 1.0);
+        pdf.setFillColor(204, 204, 204, 0);
+        pdf.rect(122, 110, 50, 50, "F");
+        pdf.addImage(dataURL, 'PNG', 122, 110, 50, 50);
+
+        // pdf.save("report-srs-{{ date('YmdHi') }}.pdf");
+        // pdf.output('dataurlnewwindow');
+        window.open(pdf.output('bloburl'), '_blank');
+    }
+    // TREND SOI YEAR HELPER //
+
     // SOI DETAIL //
     document.getElementById("grapSoi").onclick = function(evt) {
         var grapSoiId = document.querySelector('#grapSoi');
@@ -989,8 +1163,8 @@
                     }
                 },
                 complete: function() {
-                    grapSoiId.parentElement.querySelector('.loader').remove();
-                    grapSoiId.style.display = 'block';
+                    // grapSoiId.parentElement.querySelector('.loader').remove();
+                    grapSoiId.style.display = 'block';      
                 },
                 success: function(res) {
                     var dataJson = JSON.parse(res)
@@ -1116,12 +1290,12 @@
 
                                 if (firstPoint.datasetIndex == 1) {
                                     $.ajax({
-                                        url: '{{ url('srs/dashboard_humint/grap_top_index') }}',
+                                        url: '{{ url('srs/dashboard_humint_v2/grap_top_index') }}',
                                         type: 'POST',
                                         data: {
                                             _token: "{{ csrf_token() }}",
-                                            area_fil: areas,
-                                            year_fil: years,
+                                            area_fil: area,
+                                            year_fil: year,
                                             month_fil: label,
                                         },
                                         cache: false,
@@ -1322,7 +1496,6 @@
             },
             success: function(res) {
                 var json = JSON.parse(res)
-                console.log(json)
 
                 dataRiskSource = json;
                 setRiskSource = [{
@@ -3307,142 +3480,12 @@
         // LOADING
         
         soiIndexResiko(soiChart)
+        trendSoiHelper(trendSoiHelperChart)
         daughnutMonhtly(dougnutChartAll)
         daughnutPlant(dougnutChartPlant)
         riskTransSource(rsoChart)
 		srsTargetAssets(assetChart)
 		srsRisks(riskChart)
-        
-        // var area = $("#areaFilter").val()
-        // var year = $("#yearFilter").val()
-        // var month = $("#monthFilter").val()
-
-        // // SOI Deskripsi
-        // if(year == '2022' && month.length == 0)
-        // {
-        //     $('#isoDesc').show()
-        // }
-        // else
-        // {
-        //     $('#isoDesc').hide()
-        // }
-
-        // $.ajax({
-        //     url: "{{ url('srs/dashboard_humint_v2/grap_srs') }}",
-        //     type: 'POST',
-        //     data: {
-        //         _token: "{{ csrf_token() }}",
-        //         area_fil: area,
-        //         year_fil: year,
-        //         month_fil: month,
-        //     },
-        //     cache: false,
-        //     beforeSend: function() {
-        //         // $(".lds-ring").show();
-        //         document.getElementById("loader").style.display = "block";
-        //     },
-        //     complete: function() {
-        //         document.getElementById("loader").style.display = "none";
-        //     },
-        //     success: function(res) {
-        //         var json = JSON.parse(res)
-        //         console.log(json)
-                
-        //         // SOI //
-        //         var dataSrs = [{
-        //             r: 8,
-        //             x: parseFloat(json.data_soi[0].avg_soi),
-        //             y: parseFloat(json.data_index[0].max_iso)
-        //         }];
-        //         soiChart.data.datasets[0].data = dataSrs;
-        //         soiChart.update();
-
-        //         // INDEX BG SOI //
-        //         const dataX = json.data_soi[0].avg_soi;
-        //         const dataY = json.data_index[0].max_iso;
-
-        //         if((dataX <= 4 && dataY <= 2) || (dataX >= 4 && dataY >= 2))
-        //         {
-        //             $('#indexSoi').attr('style','background-color: rgb(233 233 9 / 69%)') // yellow
-        //         }
-                
-        //         if(dataX >= 4 && dataY <= 2)
-        //         {
-        //             $('#indexSoi').attr('style','background-color: rgb(0 128 9 / 69%)') // green
-        //         }
-                
-        //         if(dataX <= 4 && dataY >= 2)
-        //         {
-        //             $('#indexSoi').attr('style','background-color: rgb(255 0 9 / 69%)') // red
-        //         }
-        //         // INDEX BG SOI //
-
-        //         // SOI AVG PILAR //
-        //         $('#avgPeople, #avgSystem, #avgDevice, #avgNetwork').text('')
-        //         $('#avgPeople').text(json.grap_soi_avgpilar[0].avg_people)
-        //         $('#avgSystem').text(json.grap_soi_avgpilar[0].avg_system)
-        //         $('#avgDevice').text(json.grap_soi_avgpilar[0].avg_device)
-        //         $('#avgNetwork').text(json.grap_soi_avgpilar[0].avg_network)
-        //         // SOI AVG PILAR //
-        //         // SOI //
-
-        //         // RISK SOURCE //
-        //         dataRiskSource = json.data_risk_source;
-        //         setRiskSource = [{
-        //             label: dataRiskSource.map(function(v){return v.label}),
-        //             data: dataRiskSource.map(function(v){return v.data})
-        //         }];
-        //         rsoChart.data.datasets[0].data = setRiskSource[0].data;
-        //         rsoChart.data.labels = setRiskSource[0].label
-        //         rsoChart.update();
-        //         // RISK SOURCE //
-
-        //         // RISK //
-        //         dataRisk = json.data_risk;
-        //         setRisk = [{
-        //             label: dataRisk.map(function(v){return v.label}),
-        //             data: dataRisk.map(function(v){return v.data})
-        //         }];
-        //         riskChart.data.labels = setRisk[0].label
-        //         riskChart.data.datasets[0].data = setRisk[0].data
-        //         riskChart.update();
-        //         // RISK //
-
-        //         // TARGET ASSETS //
-        //         dataAssets = json.data_target_assets;
-        //         datasetsAssets = [{
-        //             label: dataAssets.map(function(v){return v.label}),
-        //             data: dataAssets.map(function(v){return v.data})
-        //         }];
-        //         assetChart.data.datasets[0].data = datasetsAssets[0].data;
-        //         assetChart.data.labels =  datasetsAssets[0].label
-        //         assetChart.update();
-        //         // TARGET ASSETS //
-
-        //         // GRAFIS ALL PLANT //
-        //         resAreaPolar = json.data_trans_area;
-        //         dataAreaPolar = [{
-        //             label: resAreaPolar.map(function(v){return v.label}),
-        //             data: resAreaPolar.map(function(v){return v.total})
-        //         }];
-        //         dougnutChartPlant.data.labels = dataAreaPolar[0].label;
-        //         dougnutChartPlant.data.datasets[0].data = dataAreaPolar[0].data;
-        //         dougnutChartPlant.update();
-        //         // dougnutChartPlant.data.datasets[0].data = json.data_trans_area;
-        //         // dougnutChartPlant.update();
-        //         // GRAFIS ALL PLANT //
-
-        //         // GRAFIS LINE ALL MONTH //
-        //         lineChart.data.datasets[0].data = json.data_trans_month;
-        //         lineChart.update();
-        //         // GRAFIS LINE ALL MONTH //
-
-        //         // GRAFIS DOUGHNUT PER MONTH //
-        //         dougnutChartAll.data.datasets[0].dataDUmmy = json.data_trans_month;
-        //         dougnutChartAll.update();
-        //         // GRAFIS DOUGHNUT PER MONTH //
-        //     }
-        // });
     })
 </script>
 @endsection

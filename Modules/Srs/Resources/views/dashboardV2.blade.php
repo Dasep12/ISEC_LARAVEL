@@ -188,6 +188,7 @@
             </div>
         </div>
 		
+        @if (AuthHelper::is_super_admin() || AuthHelper::is_module('SRSSOI'))
 		<div class="row">
 			<div class="col-12">
 				<div class="card cardIn2">
@@ -272,6 +273,8 @@
 				</div>
 			</div>
 		</div>
+        @endif
+
 	</div>
 </section>
 
@@ -427,10 +430,13 @@
     // LOADING //
 	
     $(document).ready(function() {
+        srsSoi(soiChart);
+
         // SOI
-		srsSoi(soiChart);
+        @if (AuthHelper::is_super_admin() || AuthHelper::is_module('SRSSOI')) 
 		lineSoiAvgMonth(soiAvgMonthChart);
         soiAvgPillar(field)
+        @endif
         // SOI
 
 		srsPerMonthDoughs(srsPerMonthDoughChart, srsPerMonthLineChart)
@@ -589,6 +595,7 @@
     });
 	
 	// SOI AVERAGE MONTH LINE
+    @if (AuthHelper::is_super_admin() || AuthHelper::is_module('SRSSOI')) 
 	var lineSoiAvgMonthCtx = document.getElementById("lineSoiAvgMonth").getContext('2d');
 	var soiAvgMonthChart = new Chart(lineSoiAvgMonthCtx, {
 		type: 'line',
@@ -659,6 +666,7 @@
 			},
 		},
 	});
+    @endif
 	// SOI AVERAGE MONTH LINE //
 
 	// DOUGHNAT PERMONTH TOTAL //
@@ -4215,10 +4223,13 @@
         loadingAllBox();
         // LOADING
         
-        // SOI
 		srsSoi(soiChart);
+
+        // SOI
+        @if (AuthHelper::is_super_admin() || AuthHelper::is_module('SRSSOI')) 
 		lineSoiAvgMonth(soiAvgMonthChart);
         soiAvgPillar(field)
+        @endif
         // SOI
 
 		srsPerMonthDoughs(srsPerMonthDoughChart, srsPerMonthLineChart)

@@ -197,7 +197,7 @@
                         <?php if (AuthHelper::is_super_admin()) { ?>
                             <li class="nav-header">Settings</li>
                             <li class="nav-item
-                        <?php if (Request::segment(3) == 'register' || Request::segment(3) == 'list_app' || Request::segment(3) == 'list_user' || Request::segment(3) == 'list_app_user' || Request::segment(3) == 'edit_pwd' || Request::segment(3) == 'edit' || Request::segment(3) == 'list_module' || Request::segment(3) == 'list_role' || Request::segment(3) == 'list_role_app' || Request::segment(3) == 'user_role_app' || Request::segment(2) == 'user_area' || Request::segment(2) == 'role_module') {
+                        <?php if (Request::segment(3) == 'register' || Request::segment(3) == 'list_app' || Request::segment(3) == 'list_user' || Request::segment(3) == 'list_app_user' || Request::segment(3) == 'edit_pwd' || Request::segment(3) == 'edit' || Request::segment(3) == 'list_module' || Request::segment(3) == 'list_role' || Request::segment(3) == 'list_role_app' || Request::segment(3) == 'user_role_app' || Request::segment(2) == 'user_area' || Request::segment(2) == 'role_module' || Request::segment(2) == 'users' || Request::segment(2) == 'add_users') {
                                 echo 'menu-open active';
                             } ?>
                          ">
@@ -211,15 +211,15 @@
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="#Setting/Pengguna/list_user" class="nav-link
-                                    <?php if (Request::segment(3) == 'list_user' || Request::segment(3) == 'register' || Request::segment(3) == 'edit_pwd' || Request::segment(3) == 'edit') {
+                                        <a href="/setting/users" class="nav-link
+                                    <?php if (Request::segment(2) == 'users' || Request::segment(3) == 'register' || Request::segment(3) == 'edit_pwd' || Request::segment(3) == 'edit' || Request::segment(2) == 'add_users') {
                                         echo 'active';
                                     } ?>
                                     "><i class="fas fa-minus-circle nav-icon"></i>
                                             <p>User</p>
                                         </a>
                                     </li>
-                                    
+
                                     <li class="nav-item">
                                         <a href="{{ url('setting/user_area') }}" class="nav-link 
                                         <?php if (Request::segment(2) == 'user_area') {
@@ -342,7 +342,7 @@
     <script src="{{ asset('assets/dist/js/responsive.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('assets/dist/js/dataTables.buttons.min.js') }}"></script>
     <script src="{{ asset('assets/dist/js/buttons.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('assets/dist/select2/js/select2.min.js') }}"></script>
+    <!-- <script src="{{ asset('assets/dist/select2/js/select2.min.js') }}"></script> -->
     <!-- date-range-picker -->
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 </body>
@@ -370,7 +370,7 @@
         autoclose: true
     });
 
-    $('#name_apps,#level_name,#module_name,#level_id,#npk').select2();
+    // $('#name_apps,#level_name,#module_name,#level_id,#npk').select2();
 </script>
 
 </html>

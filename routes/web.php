@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\setting\UserRoleAppController;
 use App\Http\Controllers\setting\UserAreaController;
 use App\Http\Controllers\setting\RoleModuleController;
+use App\Http\Controllers\Setting\UserControllers;
 
 // Route::get('/', function () {
 //     return view('login');
@@ -34,6 +35,14 @@ Route::middleware("is_login_isec")->group(function () {
     Route::post('/menu/srsRiskSource', [MenuController::class, 'srsRiskSource']);
     Route::post('/menu/srsTargetAssets', [MenuController::class, 'srsTargetAssets']);
     Route::post('/menu/srsRisk', [MenuController::class, 'srsRisk']);
+
+    Route::get('/setting/users', [UserControllers::class, 'index']);
+    Route::get('/setting/add_users', [UserControllers::class, 'form_add']);
+    Route::post('/setting/insert', [UserControllers::class, 'insert']);
+    Route::post('/setting/update', [UserControllers::class, 'update']);
+    Route::get('/setting/form_edit', [UserControllers::class, 'form_edit']);
+    Route::get('/setting/delete', [UserControllers::class, 'delete']);
+
 
     Route::get('/setting/user_role_app/user_role_app', [UserRoleAppController::class, 'index']);
     Route::post('/setting/user_role_app/list_user_role_app', [UserRoleAppController::class, 'listTable']);

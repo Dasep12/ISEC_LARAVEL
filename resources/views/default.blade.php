@@ -105,9 +105,9 @@
                                                 </div>
                                             </div>
 
-                                            <div class="mt-2">
+                                            <!-- <div class="mt-2">
                                                 <button id="exportJs" class="btn px-4 bg-white float-right">Export</button>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
 
@@ -504,10 +504,10 @@
 
     $(document).ready(function() {
         srsSoi(soiChart);
+        // trendSoiHelper(field)
         
         // SOI
         @if (AuthHelper::is_super_admin() || AuthHelper::is_module('SRSSOI')) 
-        trendSoiHelper(field)
         lineSoiAvgMonth(soiAvgMonthChart);
         soiAvgPillar(field)
         @endif
@@ -536,8 +536,95 @@
         // SOA //
     });
 
+    // TREND SOI YEAR HELPER //
+    var trendSoiHelperId = document.getElementById("trendGrapSoiHelper").getContext('2d');
+    var monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des']
+    
+    var trendSoiHelperChart = new Chart(trendSoiHelperId, {
+        type: 'line',
+        data: {
+            labels: monthList,
+            datasets: [{
+                    pointStyle: 'circle',
+                    pointRadius: 4,
+                    label: 'SOI',
+                    // data: dataJson.data_soi,
+                    // fill: true,
+                    // tension: 0.1,
+                    // segment: {
+                    borderColor: 'rgba(99, 131, 255, 1)',
+                    backgroundColor: 'rgba(99, 131, 255, 0.8)',
+                    // },
+                    borderWidth: 1,
+                },
+                {
+                    pointStyle: 'circle',
+                    pointRadius: 4,
+                    label: 'Threat',
+                    // data: dataJson.data_index,
+                    // fill: true,
+                    // tension: 0.1,
+                    // segment: {
+                    borderColor: 'rgba(255, 165, 0, 1)',
+                    backgroundColor: 'rgb(255 165 0)',
+                    // },
+                    borderWidth: 1,
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    ticks: {
+                        font: {
+                            size: 13,
+                        },
+                        color: '#FFF'
+                    },
+                },
+                y: {
+                    grid: {
+                        display: true
+                    },
+                    ticks: {
+                        precision: 0,
+                        color: '#FFF'
+                    },
+                    min: 0,
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true
+                },
+                datalabels: {
+                    color: '#FFF'
+                },
+                annotation: {
+                    annotations: {
+                        line1: {
+                            type: 'line',
+                            yMin: 2.00,
+                            yMax: 2.00,
+                            borderColor: 'rgb(255 202 104)',
+                            borderWidth: 2,
+                        },
+                        line2: {
+                            type: 'line',
+                            yMin: 4.00,
+                            yMax: 4.00,
+                            borderColor: 'rgb(145 162 227)',
+                            borderWidth: 2,
+                        }
+                    }
+                }
+            },
+        }
+    })
+
     function trendSoiHelper(field) {
-        // TREND SOI YEAR HELPER //
         $.ajax({
             url: "{{ url('srs/dashboard_humint_v2/grap_trend_soi') }}",
             type: 'POST',
@@ -555,97 +642,24 @@
                 // document.getElementById("loader").style.display = "none";
             },
             success: function(res) {
-                var dataJson = JSON.parse(res)
+                var json = JSON.parse(res)
 
-                var trendSoi = document.getElementById("trendGrapSoiHelper").getContext('2d');
-                var monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des']
-                var trendSoiChart = new Chart(trendSoi, {
-                    type: 'line',
-                    data: {
-                        labels: monthList,
-                        datasets: [{
-                                pointStyle: 'circle',
-                                pointRadius: 4,
-                                label: 'SOI',
-                                data: dataJson.data_soi,
-                                // fill: true,
-                                // tension: 0.1,
-                                // segment: {
-                                borderColor: 'rgba(99, 131, 255, 1)',
-                                backgroundColor: 'rgba(99, 131, 255, 0.8)',
-                                // },
-                                borderWidth: 1,
-                            },
-                            {
-                                pointStyle: 'circle',
-                                pointRadius: 4,
-                                label: 'Threat',
-                                data: dataJson.data_index,
-                                // fill: true,
-                                // tension: 0.1,
-                                // segment: {
-                                borderColor: 'rgba(255, 165, 0, 1)',
-                                backgroundColor: 'rgb(255 165 0)',
-                                // },
-                                borderWidth: 1,
-                            }
-                        ]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            x: {
-                                ticks: {
-                                    font: {
-                                        size: 13,
-                                    },
-                                    color: '#FFF'
-                                },
-                            },
-                            y: {
-                                grid: {
-                                    display: true
-                                },
-                                ticks: {
-                                    precision: 0,
-                                    color: '#FFF'
-                                },
-                                min: 0,
-                            }
-                        },
-                        plugins: {
-                            legend: {
-                                display: true
-                            },
-                            datalabels: {
-                                color: '#FFF'
-                            },
-                            annotation: {
-                                annotations: {
-                                    line1: {
-                                        type: 'line',
-                                        yMin: 2.00,
-                                        yMax: 2.00,
-                                        borderColor: 'rgb(255 202 104)',
-                                        borderWidth: 2,
-                                    },
-                                    line2: {
-                                        type: 'line',
-                                        yMin: 4.00,
-                                        yMax: 4.00,
-                                        borderColor: 'rgb(145 162 227)',
-                                        borderWidth: 2,
-                                    }
-                                }
-                            }
-                        },
-                    }
-                })
+                var dataX = json.data_soi;
+                var dataY = json.data_index;
+
+                var dataTrend = [{
+                    r: 8,
+                    x: dataX,
+                    y: dataY
+                }];
+
+                trendSoiHelperChart.data.datasets[0].data = dataTrend;
+                trendSoiHelperChart.update();
+                
             }
         });
-        // TREND SOI YEAR //
     }
+    // TREND SOI YEAR HELPER //
 
     function getColorRand(length) {
         let randomColors = [];
@@ -3310,7 +3324,7 @@
                                                 $('#assetsSub2Month').parent().append(animateLoading('loader-full'))
 
                                                 $.ajax({
-                                                    url: "{{ url('srs/dashboard_v2/ grap_detail_assets ') }}",
+                                                    url: "{{ url('srs/dashboard_v2/grap_detail_assets ') }}",
                                                     type: 'POST',
                                                     data: {
                                                         _token: "{{ csrf_token() }}",
@@ -4618,6 +4632,7 @@
 
         // SOI
         srsSoi(soiChart);
+        // trendSoiHelper(field)
         @if (AuthHelper::is_super_admin() || AuthHelper::is_module('SRSSOI')) 
         lineSoiAvgMonth(soiAvgMonthChart);
         soiAvgPillar(field) 

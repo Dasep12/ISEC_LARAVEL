@@ -2,14 +2,14 @@
 
 Route::prefix('srs')->middleware(['is_login_isec','prevent-back-history'])->group(function() {
     // DASHBOARD SRS
-    Route::get('/dashboard', 'DashboardController@index'); //->middleware('is_login_isec');
-    Route::post('/dashboard/grap_srs', 'DashboardController@grap_srs');
-    Route::post('/dashboard/grap_detail_risk_source', 'DashboardController@grapDetailRiskSource');
-    Route::post('/dashboard/grap_detail_assets', 'DashboardController@grapDetailAssets');
-    Route::post('/dashboard/grap_detail_risk', 'DashboardController@grapDetailRisk');
-    Route::post('/dashboard/grap_trend_soi', 'DashboardController@grapTrendSoi');
-    Route::post('/dashboard/grap_top_index', 'DashboardController@grapTopIndex');
-    Route::post('/dashboard/grap_risksource_soi', 'DashboardController@grapRiskSourceSoi');
+    Route::get('/dashboard', 'DashboardV2Controller@index'); //->middleware('is_login_isec');
+    Route::post('/dashboard/grap_srs', 'DashboardV2Controller@grap_srs');
+    Route::post('/dashboard/grap_detail_risk_source', 'DashboardV2Controller@grapDetailRiskSource');
+    Route::post('/dashboard/grap_detail_assets', 'DashboardV2Controller@grapDetailAssets');
+    Route::post('/dashboard/grap_detail_risk', 'DashboardV2Controller@grapDetailRisk');
+    Route::post('/dashboard/grap_trend_soi', 'DashboardV2Controller@grapTrendSoi');
+    Route::post('/dashboard/grap_top_index', 'DashboardV2Controller@grapTopIndex');
+    Route::post('/dashboard/grap_risksource_soi', 'DashboardV2Controller@grapRiskSourceSoi');
     
     Route::get('/dashboard_v2', 'DashboardV2Controller@index');
     Route::post('/dashboard_v2/grap_srs', 'DashboardV2Controller@grap_srs');
@@ -23,6 +23,17 @@ Route::prefix('srs')->middleware(['is_login_isec','prevent-back-history'])->grou
     // DASHBOARD SRS //
     
     // HUMINT
+    Route::get('/dashboard_humint', 'HumintDashboardV2Controller@index');
+    Route::post('/dashboard_humint/soiIndexResiko', 'HumintDashboardV2Controller@soiIndexResiko'); 
+    Route::post('/dashboard_humint/humintTransPlant', 'HumintDashboardV2Controller@humintTransPlant');
+    Route::post('/dashboard_humint/riskTransSource', 'HumintDashboardV2Controller@riskTransSource');
+    Route::post('/dashboard_humint/grap_srs', 'HumintDashboardV2Controller@grapReload');
+    Route::post('/dashboard_humint/grap_trend_soi', 'HumintDashboardV2Controller@grapTrendSoi');
+    Route::post('/dashboard_humint/grap_top_index', 'HumintDashboardV2Controller@grapTopIndex');
+    Route::post('/dashboard_humint/grap_detail_risk_source', 'HumintDashboardV2Controller@grapDetailRiskSource');
+    Route::post('/dashboard_humint/grap_detail_assets', 'HumintDashboardV2Controller@grapDetailAssets');
+    Route::post('/dashboard_humint/grap_detail_risk', 'HumintDashboardV2Controller@grapDetailRisk');
+
     Route::get('/dashboard_humint_v2', 'HumintDashboardV2Controller@index');
     Route::post('/dashboard_humint_v2/soiIndexResiko', 'HumintDashboardV2Controller@soiIndexResiko'); 
     Route::post('/dashboard_humint_v2/humintTransPlant', 'HumintDashboardV2Controller@humintTransPlant');

@@ -6,6 +6,7 @@ use Illuminate\Contracts\Session\Session;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Modules\GuardTour\Entities\LaporanPatroli;
 use Modules\GuardTour\Entities\Plants;
 
@@ -41,6 +42,24 @@ class TemuanController extends Controller
         return view('guardtour::laporan_temuan/form_abnormality', [
             'uri'        => $uri,
         ]);
+    }
+
+    public function updateAbnormality(Request $req)
+    {
+        $idx = $req->idDetailTrans;
+        $catatan = $req->catatan_tindakan;
+        $updated = date('Y-m-d H:i:s');
+        $sess = Session('npk');
+
+        DB::beginTransaction();
+        try {
+            DB::update("UPDATE admisecsgp_trans_details SET status = 1 , updated_at = '$updated' , updated_by='$sess' , deskripsi_tindakan='$catatan' WHERE trans_detail_id = '$idx' ");
+            DB::commit();
+            return redirect()->back()->with(['success' => 'Data Berhasil di Update']);
+        } catch (\Exeption $e) {
+            DB::rollback();
+            return redirect()->back()->with(['success' => 'Data Gagal di Update']);
+        }
     }
 
 

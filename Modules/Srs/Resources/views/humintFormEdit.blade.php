@@ -241,10 +241,13 @@
                                                     <?php 
                                                         foreach ($data_edit_all as $key => $fle) {
                                                             if(!empty($fle->file_name))
-                                                            echo '<li class="list-group-item attached-files d-flex justify-content-between">
-                                                                <a href="'.url('uploads/srsbi/humint/'.$fle->file_name).'" target="_blank">'.$fle->file_name.'</a>
-                                                                <input type="text" name="attached['.$fle->file_id.']" value="'.$fle->file_name.'" hidden>
-                                                                <button type="button" class="btn remove-attached text-danger" data-field-file="'.$fle->file_id.'"  data-file-name="'.$fle->file_name.'"  data-toggle="modal" data-target="#deleteModal"><i class="fa fa-trash"></i></button>
+                                                            echo '<li class="list-group-item attached-files p-0 mb-2">
+                                                                <div class="d-flex justify-content-between">
+                                                                    <a href="'.url('uploads/srsbi/humint/'.$fle->file_name).'" target="_blank">'.$fle->file_name.'</a>
+                                                                    <input type="text" name="attached['.$fle->file_id.']" value="'.$fle->file_name.'" hidden>
+                                                                    <button type="button" class="btn remove-attached text-danger" data-field-file="'.$fle->file_id.'"  data-file-name="'.$fle->file_name.'"  data-toggle="modal" data-target="#deleteModal"><i class="fa fa-trash"></i>
+                                                                    </button>
+                                                                </div>
                                                                 </li>';
                                                         }
                                                     ?>
@@ -376,9 +379,12 @@
         var maxField = (5 - attached);
         var addButton = $('.add-button');
         var wrapper = $('.field-wrapper');
-        var fieldHTML = `<div class="d-flex flex-row justify-content-between mb-1">
-            <input class="" type="file" accept="image/*,.pdf,.xls,.xlsx,.doc,.docx,.mp4" id="attach" name="attach[]">
-            <a class="remove-attach text-danger" href="javascript:void(0);"><i class="fa fa-trash"></i></a>
+        var fieldHTML = `<div class="parent-delete mb-2">
+                <div class="d-flex flex-row justify-content-between">
+                    <input class="" type="file" accept="image/*,.pdf,.xls,.xlsx,.doc,.docx,.mp4" id="attach" name="attach[]">
+                    <button class="btn remove-attach" type="button"><i class="fa fa-trash"></i></button>
+                </div>
+                <span class="d-block text-warning">* Max. Image & Video 20MB</span>
             </div>`;
         var x = 1;
         
@@ -387,8 +393,6 @@
             var attached = $('.attached-files').length;
             var maxField = (5 - attached);
 
-            console.log(x)
-            console.log(maxField)
             //Check maximum number of input fields
             if(x <= maxField){ 
                 x++; //Increment field counter
@@ -400,7 +404,7 @@
         // REMOVE INPUT FILE MULTIPLE //
         $(wrapper).on('click', '.remove-attach', function(e){
             e.preventDefault();
-            $(this).parent('div').remove();
+            $(this).parents('.parent-delete').remove();
             x--;
         });
         // REMOVE INPUT FILE MULTIPLE //
@@ -721,9 +725,12 @@
             const risk = $('#risk')
             const subRisk = $('#subRisk')
             const subRisk2 = $('#subRisk2')
+            const riskLevelId = val.split(":")[1]
 
             $('#riskLevel').val(val.split(":")[1])
             // $('#riskLevel').val(val.split(":")[1])
+            
+            riskLevelBg(riskLevelId)
 
             subRisk.parents('.form-group').remove()
             subRisk2.parents('.form-group').remove()
@@ -784,7 +791,32 @@
             // console.log(Math.max.apply(Math,arr))
             $('#impactLevel').val(Math.max.apply(Math,arr));
         })
+        
+        var riskLevelId = $('#risk').find("option:selected").val().split(":")[1]
+        riskLevelBg(riskLevelId)
 
+        function riskLevelBg(riskLevelId) {
+            switch (riskLevelId) {
+                case '1':
+                    $('#riskLevel').attr('style', 'background-color: #06a506 !important; color: #000;');
+                    break;
+                case '2':
+                    $('#riskLevel').attr('style', 'background-color: #f3ec03 !important; color: #000;');
+                    break;
+                case '3':
+                    $('#riskLevel').attr('style', 'background-color: #f7a91a !important; color: #000;');
+                    break;
+                case '4':
+                    $('#riskLevel').attr('style', 'background-color: #ff1818 !important; color: #000;');
+                    break;
+                case '5':
+                    $('#riskLevel').attr('style', 'background-color: #c30505 !important; color: #000;');
+                    break;
+                default:
+                    $('#riskLevel').removeAttr('style')
+                    break;
+            }
+        }
     });
     
     // TinyMCE //

@@ -25,6 +25,7 @@ class OsintDashboardModel extends Model
         $area = $req->input('area');
         $year = $req->input('year');
         $year = empty($year) ? date('Y') : $year;
+        $npk = AuthHelper::user_npk();
 
         $q = "DECLARE @date DATE = GETDATE()
             ;WITH MonthsCTE AS (
@@ -38,7 +39,16 @@ class OsintDashboardModel extends Model
             (select count(at2.id) from admisecosint_transaction at2 
             where at2.status=1 AND MONTH(at2.date) = Month ";
 
+        // if(AuthHelper::is_building_manager()) 
+        // {
+            $q .= " AND at2.plant_id in (select aas.id
+                from isecurity.dbo.admisec_area_users aau 
+                inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+            where npk=$npk)";
+        // }
         if(!empty($year)) $q .= " AND year(at2.date)=$year ";
+        if(!empty($area)) $q .= " AND at2.plant_id=$area ";
 
         $q .= " 
             ) as total
@@ -51,18 +61,27 @@ class OsintDashboardModel extends Model
 
     public static function getArea($req)
     {
+        $area = $req->input('area');
         $year = $req->input('year');
+        $npk = AuthHelper::user_npk();
 
         $q = "
             SELECT shd.id ,shd.title ,(select count(at2.media_id) from admisecosint_transaction at2 
                 where at2.plant_id = shd.id ";
-
-                if(!empty($year)) $q .= " AND year(at2.date)= $year ";
-
+            if(!empty($year)) $q .= " AND year(at2.date)= $year ";
+            if(!empty($area)) $q .= " AND at2.plant_id=$area ";
             $q .= " ) as total 
             FROM admiseciso_area_sub shd
             WHERE shd.area_categ_id = 1 and shd.status=1
         ";
+        // if(AuthHelper::is_building_manager()) 
+        // {
+            $q .= " AND shd.id in (select aas.id
+                from isecurity.dbo.admisec_area_users aau 
+                inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+            where npk=$npk)";
+        // }
 
         $res = DB::connection('srsbi')->select($q);
 
@@ -208,6 +227,7 @@ class OsintDashboardModel extends Model
         $year = $req->input('year');
         $year = empty($year) ? date('Y') : $year;
         $id = $req->input('id', true);
+        $npk = AuthHelper::user_npk();
 
         $q = "
             WITH months(MonthNum) AS
@@ -226,6 +246,14 @@ class OsintDashboardModel extends Model
                     group by str.id ,str.{$sub_name} ,str.[date] ,str.plant_id ,str.status
                 ) AS t ON MONTH(t.[date])=m.MonthNum AND t.status=1";
 
+                // if(AuthHelper::is_building_manager()) 
+                // {
+                    $q .= " AND str.plant_id in (select aas.id
+                        from isecurity.dbo.admisec_area_users aau 
+                        inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                        inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                    where npk=$npk)";
+                // }
                 if(!empty($id)) $q .= ' AND ';
                 if(!empty($id)) $q .= " t.{$sub_name}={$id} ";
 
@@ -251,6 +279,14 @@ class OsintDashboardModel extends Model
         (select count(at2.sub_risk_source) from admisecosint_transaction at2 
         where at2.sub_risk_source  = shd.id ";
 
+            // if(AuthHelper::is_building_manager()) 
+            // {
+                $q .= " AND at2.plant_id in (select aas.id
+                    from isecurity.dbo.admisec_area_users aau 
+                    inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                    inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                where npk=$npk)";
+            // }
             if(!empty($area) || !empty($year) || !empty($month)) $q .= ' AND ';
             if(!empty($area)) $q .= " at2.area_id=$area ";
             if(!empty($area) && !empty($year)) $q .= ' AND ';
@@ -363,11 +399,20 @@ class OsintDashboardModel extends Model
         $month = $req->input('month');
         $year = $req->input('year');
         $year = empty($year) ? date('Y') : $year;
+        $npk = AuthHelper::user_npk();
 
         $q = "SELECT shd.sub_id id ,shd.name  ,
             (select count(1) from admisecosint_transaction at2 
             where at2.hatespeech_type_id = shd.sub_id ";
 
+                // if(AuthHelper::is_building_manager()) 
+                // {
+                    $q .= " AND at2.plant_id in (select aas.id
+                        from isecurity.dbo.admisec_area_users aau 
+                        inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                        inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                    where npk=$npk)";
+                // }
                 if(!empty($area) || !empty($year) || !empty($month)) $q .= ' AND ';
                 if(!empty($area)) $q .= " at2.area_id=$area ";
                 if(!empty($area) && !empty($year)) $q .= ' AND ';

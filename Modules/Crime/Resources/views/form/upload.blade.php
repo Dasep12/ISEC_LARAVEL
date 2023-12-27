@@ -34,7 +34,7 @@
                 @endif
 
                 @if(Session('role') == 'SUPERADMIN')
-                <a href="{{ asset('assets/format_upload/upload_checkpoint.xlsx') }}" class="ml-2 btn btn-primary btn-sm"> <i class="fas fa-download"></i> Download Format Upload</a>
+                <a href="{{ asset('assets/format_upload/format_uploads_crimes_laravel.xlsx') }}" class="ml-2 btn btn-primary btn-sm"> <i class="fas fa-download"></i> Download Format Upload</a>
                 <div class="card mt-2">
                     <div class="card-body">
                         <form method="post" action="upload_data" onsubmit="return cekExe()" enctype="multipart/form-data">

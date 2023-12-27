@@ -29,18 +29,18 @@ class SoiDashboardModel extends Model
                     FROM admiseciso_area_sub 
                 WHERE area_categ_id='1' AND status=1";
         
-        if(AuthHelper::is_author('ALLAREA'))
-        {
-            $q .= " AND wil_id='$user_wilayah'";
-        }
+        // if(AuthHelper::is_author('ALLAREA'))
+        // {
+        //     $q .= " AND wil_id='$user_wilayah'";
+        // }
         
-        if(AuthHelper::is_section_head())
-        {
+        // if(AuthHelper::is_section_head() || AuthHelper::is_building_manager())
+        // {
             $q .= " AND id IN (select aas.id from isecurity.dbo.admisec_area_users aau 
             INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
             INNER JOIN admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
             WHERE aau.npk=$user_npk)";
-        }
+        // }
 
         $q .= " ORDER BY title ASC";
         
@@ -50,6 +50,8 @@ class SoiDashboardModel extends Model
 
     public static function soiAvgPilar($req)
     {
+        $npk = AuthHelper::user_npk();
+
         if($req->isMethod('post'))
         {
             $area = $req->input('area_filter', true);
@@ -61,6 +63,11 @@ class SoiDashboardModel extends Model
                     ,FORMAT(ISNULL(AVG(stis.[device]), 0), 'N2') avg_device, FORMAT(ISNULL(AVG(stis.[network]), 0), 'N2') avg_network
                     FROM admisecsoi_transaction stis 
                 WHERE stis.disable=0 AND stis.status=1";
+
+                $q .= " AND stis.area_id IN (select aas.id from isecurity.dbo.admisec_area_users aau 
+                INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                INNER JOIN admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                WHERE aau.npk=$npk)";
 
                 if(!empty($area) || !empty($year) || !empty($month)) $q .= ' AND ';
                 if(!empty($area)) $q .= " stis.area_id=$area ";
@@ -79,6 +86,10 @@ class SoiDashboardModel extends Model
                     FROM admisecsoi_transaction stis 
                 WHERE stis.disable=0 AND stis.status=1 and stis.[year]='$year_now'
             ";
+            $q .= " AND stis.area_id IN (select aas.id from isecurity.dbo.admisec_area_users aau 
+            INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+            INNER JOIN admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+            WHERE aau.npk=$npk)";
         }
 
         $res = DB::connection('srsbi')->select($q);
@@ -91,6 +102,7 @@ class SoiDashboardModel extends Model
         $year = $req->input('year_filter', true);
         $year = empty($year) ? date('Y') : $year;
         $month = $req->input('month_filter', true);
+        $npk = AuthHelper::user_npk();
 
         $q = "
             SELECT s.avg_soi ,i.max_iso
@@ -101,6 +113,11 @@ class SoiDashboardModel extends Model
                     FROM dbo.admisecsoi_transaction soi
                 WHERE soi.disable=0 and soi.status=1
             ";
+
+                $q .= " AND soi.area_id IN (select aas.id from isecurity.dbo.admisec_area_users aau 
+                INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                INNER JOIN admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                WHERE aau.npk=$npk)";
 
                 if(!empty($area) || !empty($year) || !empty($month)) $q .= ' AND ';
                 if(!empty($area)) $q .= " soi.area_id=$area ";
@@ -121,6 +138,11 @@ class SoiDashboardModel extends Model
                         group by siml.area_id, siml.impact_level ,siml.status ,siml.disable ,siml.event_date
                     ) iml on iml.area_id=tio.area_id and iml.status=tio.status AND iml.disable=tio.disable AND iml.event_date=tio.event_date 
                 WHERE tio.disable=0 AND tio.status=1 ";
+
+                $q .= " AND tio.area_id IN (select aas.id from isecurity.dbo.admisec_area_users aau 
+                INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                INNER JOIN admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                WHERE aau.npk=$npk)";
 
                 if(!empty($area) || !empty($year) || !empty($month)) $q .= ' AND ';
                 if(!empty($area)) $q .= " tio.area_id=$area ";
@@ -143,6 +165,7 @@ class SoiDashboardModel extends Model
         $year = empty($year) ? date('Y') : $year;
         $month = $req->input('month_filter', true);
         $label = $req->input('label_fil', true);
+        $npk = AuthHelper::user_npk();
 
         $q = "
             WITH months(MonthNum) AS
@@ -161,9 +184,15 @@ class SoiDashboardModel extends Model
                     select str.[month] ,str.[year] ,str.area_id ,AVG(str.system) avg_system ,AVG(str.people) avg_people
                             ,AVG(str.device) avg_device ,AVG(str.network) avg_network
                         FROM admisecsoi_transaction str
-                        where str.disable=0 and str.status=1
-                    group by str.[month] ,str.[year] ,str.area_id
+                        where str.disable=0 and str.status=1 
+                        group by str.[month] ,str.[year] ,str.area_id
                 ) AS tra ON tra.[month]=m.MonthNum";
+                
+                $q .= " AND tra.area_id IN (select aas.id from isecurity.dbo.admisec_area_users aau 
+                INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                INNER JOIN admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                WHERE aau.npk=$npk)";
+
                 if(!empty($area) || !empty($year)) $q .= ' AND ';
                 if(!empty($area)) $q .= " tra.area_id=$area ";
                 if(!empty($area) && !empty($year)) $q .= ' AND ';
@@ -181,6 +210,7 @@ class SoiDashboardModel extends Model
         $year = $req->input('year_filter', true);
         $year = empty($year) ? date('Y') : $year;
         $month = $req->input('month_filter', true);
+        $npk = AuthHelper::user_npk();
 
         $q = "
             WITH months(MonthsNum) AS
@@ -195,12 +225,18 @@ class SoiDashboardModel extends Model
                     ,FORMAT(COALESCE(( AVG(people) + AVG(device) + AVG([system]) +
                             + AVG(network) ) / 4 , 0),'N2') avgsoi
                 FROM months m
-                INNER JOIN admiseciso_area_sub area on area.area_categ_id=1 and area.id != 29
-                LEFT OUTER JOIN (
+                INNER JOIN admiseciso_area_sub area on area.area_categ_id=1 and (area.id != 29";
+
+                $q .= " AND area.id IN (select aas.id from isecurity.dbo.admisec_area_users aau 
+                    INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                    INNER JOIN admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                    WHERE aau.npk=$npk))";
+
+                $q .= "LEFT OUTER JOIN (
                     select soi.[year] ,soi.[month] ,soi.area_id ,soi.people ,soi.device ,soi.[system] ,soi.network
                         from admisecsoi_transaction soi
                         where soi.disable=0 AND soi.status=1
-                    group by soi.[year] ,soi.[month] ,soi.area_id ,soi.people ,soi.device ,soi.[system] ,soi.network
+                        group by soi.[year] ,soi.[month] ,soi.area_id ,soi.people ,soi.device ,soi.[system] ,soi.network
                 ) AS s ON s.area_id=area.id AND s.[month]=MonthsNum 
             ";
 
@@ -222,6 +258,7 @@ class SoiDashboardModel extends Model
         $year = $req->input('year_filter', true);
         $year = empty($year) ? date('Y') : $year;
         $month = $req->input('month_filter', true);
+        $npk = AuthHelper::user_npk();
 
         $q = "
                 SELECT area.title area
@@ -238,8 +275,12 @@ class SoiDashboardModel extends Model
                     ) AS s ON s.area_id=area.id 
                 WHERE s.[year]=$year AND area.area_categ_id=1 AND area.id != 29
                 --  AND s.[month]=MonthsNum
-                
             ";
+
+                $q .= " AND area.id IN (select aas.id from isecurity.dbo.admisec_area_users aau 
+                    INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                    INNER JOIN admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                    WHERE aau.npk=$npk)";
 
                 if(!empty($area) || !empty($year)) $q .= ' AND ';
                 if(!empty($year)) $q .= " s.[year]=$year ";

@@ -566,61 +566,67 @@ class DashboardV2Controller extends Controller
     public function grapTopIndex(Request $req)
     {
         $grap_risk_source = DashboardV2Model::grapTopIndex($req);
-
-        $grap_risk_source = $grap_risk_source;
+        $grap_risk_source = json_decode(json_encode($grap_risk_source), true);
 
         $rsoIArr = array();
         $rsoEArr = array();
         $rsoElArr = array();
         $rsoEcArr = array();
         foreach ($grap_risk_source as $rse) {
-            if($rse->type_source == 1)
+            if($rse['type_source'] == 1)
             {
                 $rsoIArr[] = array(
-                    'id' => $rse->id,
-                    'label' => $rse->title,
-                    'data' => $rse->total
+                    'id' => $rse['id'],
+                    'label' => $rse['title'],
+                    'data' => $rse['total']
                 );   
             }
-            if($rse->id == 7)
-            {
-                $rsoElArr[] = array(
-                    'label' => $rse->title,
-                    'data' => $rse->total
-                );
-            }
-            if($rse->id == 4)
-            {
-                $rsoEcArr[] = array(
-                    'label' => $rse->title,
-                    'data' => $rse->total
-                );
-            }
-            if($rse->type_source == 2 && $rse->id !== 4 && $rse->id !== 7)
+
+            // EXTERNAL
+            if($rse['type_source'] == '2' && $rse['id'] !== '4' && $rse['id'] !== '7')
             {
                 $rsoEArr[] = array(
-                    'label' => $rse->title,
-                    'data' => $rse->total
+                    // 'id' => $rse['id'],
+                    // 'type_source' => $rse['type_source'],
+                    'label' => $rse['title'],
+                    'data' => (int) $rse['total']
+                );
+            }
+            // NGO LSM 
+            if($rse['id'] == 7)
+            {
+                $rsoElArr[] = array(
+                    'label' => $rse['title'],
+                    'data' => $rse['total']
+                );
+            }
+            // COMMUNITY 
+            if($rse['id'] == 4)
+            {
+                $rsoEcArr[] = array(
+                    'label' => $rse['title'],
+                    'data' => $rse['total']
                 );
             }
         }
 
-        $joinExt = array(
-            'label' => $rsoElArr[0]['label'].', '.$rsoEcArr[0]['label'],
-            'data' => ($rsoElArr[0]['data'] + $rsoEcArr[0]['data'])
-        );
+        // dd($grap_risk_source);
 
+        // INTERNAL
         $grap_internal = array_reduce($rsoIArr, function($carry, $item){ 
             if(!isset($carry[$item['label']])){ 
-                $carry[$item['label']] = ['id' => $item['id'],'label'=>$item['label'],'data'=>$item['data']]; 
+                $carry[$item['label']] = ['id'=>$item['id'],'label'=>$item['label'],'data'=>$item['data']]; 
             } else { 
                 $carry[$item['label']]['data'] += $item['data']; 
             } 
             return $carry; 
         });
 
-        // echo '<pre>';
-        // print_r($grap_internal);die();
+        // JOIN COMUNITY & NGO 
+        $joinExt = array(
+            'label' => $rsoElArr[0]['label'].', '.$rsoEcArr[0]['label'],
+            'data' => ($rsoElArr[0]['data']+$rsoEcArr[0]['data'])
+        );
 
         $grap_external = array_merge($rsoEArr, array($joinExt));
         rsort($grap_external);

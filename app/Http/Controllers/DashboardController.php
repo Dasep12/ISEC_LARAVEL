@@ -12,9 +12,5 @@ class DashboardController extends Controller
     {
         return view('welcome');
     }
-
-    public function maps()
-    {
-        return view('maps');
-    }
+    
 }

@@ -200,6 +200,7 @@ Route::prefix('guardtour')->group(function () {
     Route::get('/laporan/abnormality', [TemuanController::class, "abnormality"])->name('laporan_temuan.abnormality');
     Route::get('/laporan/list_temuan_tindakan_cepat', [TemuanController::class, "list_temuan_tindakan_cepat"])->name('laporan_temuan.temuan_tindakan_cepat');
     Route::get('/laporan/total_temuan', [TemuanController::class, "total_temuan"])->name('laporan_abnormal.total_temuan');
+    Route::post('/laporan/update', [TemuanController::class, "updateAbnormality"]);
 
     // Dashboard
 

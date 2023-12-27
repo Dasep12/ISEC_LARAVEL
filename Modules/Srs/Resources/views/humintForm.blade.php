@@ -46,18 +46,18 @@
             <div class="col-md-12">
                 <nav>
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                        <?php if(AuthHelper::is_author() || AuthHelper::is_super_admin()) { ?>
-                        <button class="nav-link <?= AuthHelper::is_author() ? 'active' : ''; ?>" id="nav-home-tab" data-toggle="tab" data-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Input Data</button>
+                        <?php if(AuthHelper::is_access_privilege($isModuleCode, 'crt') || AuthHelper::is_super_admin()) { ?>
+                        <button class="nav-link <?= AuthHelper::is_author() || AuthHelper::is_access_privilege($isModuleCode, 'crt') ? 'active' : ''; ?>" id="nav-home-tab" data-toggle="tab" data-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Input Data</button>
                         <?php } ?>
 
-                        <button class="nav-link <?= !AuthHelper::is_author() ? 'active' : ''; ?>" id="nav-profile-tab" data-toggle="tab" data-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">View Data</button>
+                        <button class="nav-link <?= AuthHelper::is_access_privilege($isModuleCode, 'crt') == false ? 'active' : ''; ?>" id="nav-profile-tab" data-toggle="tab" data-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">View Data</button>
 
                         <button class="nav-link " id="nav-searchdata-tab" data-toggle="tab" data-target="#nav-searchdata" type="button" role="tab" aria-controls="nav-searchdata" aria-selected="false">Search Data</button>
                     </div>
                 </nav>
 
                 <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade <?=AuthHelper::is_author() ? 'show active' : ''; ?>" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                    <div class="tab-pane fade <?= AuthHelper::is_access_privilege($isModuleCode, 'crt') ? 'show active' : ''; ?>" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                         <div class="card">
 
                             <form action="humint_source/save" method="post" enctype="multipart/form-data">
@@ -173,9 +173,10 @@
                                                     color: #fff;
                                                 }
                                             </style>
-                                            <div class="field-wrapper">
-                                                <div class="mb-1">
+                                            <div class="field-wrapper mb-2">
+                                                <div class="mb-2">
                                                     <input class="" type="file" accept="image/*,.pdf,.xls,.xlsx,.doc,.docx,.mp4" id="attach" name="attach[]">
+                                                    <span class="d-inline-block text-warning">* Max. Image & Video 20MB</span>
                                                 </div>
                                             </div>
                                             
@@ -193,7 +194,7 @@
                         </div>
                     </div>
 
-                    <div class="tab-pane fade <?= !AuthHelper::is_author() ? 'show active' : ''; ?>" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                    <div class="tab-pane fade <?= !AuthHelper::is_access_privilege($isModuleCode, 'crt') ? 'show active' : ''; ?>" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                        <div class="card">
                             <div class="card-body px-lg-4">
                                 <div class="row">
@@ -251,6 +252,7 @@
                                                     <th>Risk Source</th>
                                                     <th>Risk</th>
                                                     <th>Impact Level</th>
+                                                    <th>Status</th>
                                                     <th style="width:200px">Action</th>
                                                 </tr>
                                               </thead>
@@ -406,9 +408,12 @@
         var maxField = 5;
         var addButton = $('.add-button');
         var wrapper = $('.field-wrapper');
-        var fieldHTML = `<div class="d-flex flex-row justify-content-between mb-1">
-            <input class="" type="file" accept="image/*,.pdf,.xls,.xlsx,.doc,.docx,.mp4" id="attach" name="attach[]">
-            <a class="remove-attach text-danger" href="javascript:void(0);"><i class="fa fa-trash"></i></a>
+        var fieldHTML = `<div class="parent-delete mb-2">
+                <div class="d-flex flex-row justify-content-between">
+                    <input type="file" accept="image/*,.pdf,.xls,.xlsx,.doc,.docx,.mp4" id="attach" name="attach[]">
+                    <a class="remove-attach" href="javascript:void(0);"><i class="fa fa-trash"></i></a>
+                </div>
+                <span class="d-block text-warning">* Max. Image & Video 20MB</span>
             </div>`;
         var x = 1;
         
@@ -424,7 +429,7 @@
         //Once remove button is clicked
         $(wrapper).on('click', '.remove-attach', function(e){
             e.preventDefault();
-            $(this).parent('div').remove();
+            $(this).parents('.parent-delete').remove();
             x--;
         });
 
@@ -449,7 +454,7 @@
             },
             "columnDefs": [
                 {
-                    "targets": [0, 8],
+                    "targets": [0, 9],
                     "orderable": false
                 }
             ],
@@ -881,9 +886,12 @@
             const risk = $('#risk')
             const subRisk = $('#subRisk')
             const subRisk2 = $('#subRisk2')
+            const riskLevelId = val.split(":")[1]
 
             $('#riskLevel').val(val.split(":")[1])
             // $('#riskLevel').find(":selected").text(val.split(":")[1])
+
+            riskLevelBg(riskLevelId)
 
             subRisk.parents('.form-group').remove()
             subRisk2.parents('.form-group').remove()
@@ -922,10 +930,6 @@
                                 subRisk.parents('.form-group').after(data);
                                 const subLabel = $('#subRisk2').parents().children('label')
                                 subLabel.append(valTxt);
-                            }
-                            else
-                            {
-                                // subRisk2.parents('.form-group').remove()
                             }
                         });
                     })
@@ -990,9 +994,10 @@
                     },
                     cache: false,
                     beforeSend: function() {
-                    $(".lds-ring").show();
+                        $('#formSearch input').parents('.col-8').after(animateLoading());
                     },
                     success : function(data){
+                        $('#loadingProgress').remove();
                         $(".lds-ring").hide();
                         $('#searchResult').remove();
                         $('#formSearch input').parents('.col-8').after(data);
@@ -1001,6 +1006,57 @@
             }
 
         })
+
+        function riskLevelBg(riskLevelId) {
+            switch (riskLevelId) {
+                case '1':
+                    $('#riskLevel').attr('style', 'background-color: #06a506 !important; color: #000;');
+                    break;
+                case '2':
+                    $('#riskLevel').attr('style', 'background-color: #f3ec03 !important; color: #000;');
+                    break;
+                case '3':
+                    $('#riskLevel').attr('style', 'background-color: #f7a91a !important; color: #000;');
+                    break;
+                case '4':
+                    $('#riskLevel').attr('style', 'background-color: #ff1818 !important; color: #000;');
+                    break;
+                case '5':
+                    $('#riskLevel').attr('style', 'background-color: #c30505 !important; color: #000;');
+                    break;
+                default:
+                    $('#riskLevel').removeAttr('style')
+                    break;
+            }
+        }
+
+        function animateLoading(mode='') {
+            return `
+                <div id="loadingProgress" class="loader d-flex w-100 justify-content-center py-3 `+mode+`">
+                    <div class="spinner-grow text-primary " role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <div class="spinner-grow text-secondary ml-1" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <div class="spinner-grow text-success ml-1 " role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <div class="spinner-grow text-danger ml-1" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <div class="spinner-grow text-warning ml-1" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <div class="spinner-grow text-info ml-1" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <div class="spinner-grow text-dark ml-1" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            `;
+        }
     });
     
     // TinyMCE //

@@ -40,7 +40,16 @@ class OsintModel extends Model
 
     public static function getPlant()
     {
-        return DB::connection('srsbi')->select("SELECT ars.id , ars.title as plant FROM admiseciso_area_sub ars WHERE area_categ_id = 1 AND status=1");
+        $user_npk = AuthHelper::user_npk();
+
+        $q = "SELECT ars.id , ars.title as plant FROM admiseciso_area_sub ars WHERE area_categ_id = 1 AND status=1";
+
+        $q .= " AND ars.id IN (select aas.id from isecurity.dbo.admisec_area_users aau 
+        INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+        INNER JOIN dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+        WHERE aau.npk=$user_npk)";
+        
+        return DB::connection('srsbi')->select($q);
     }
 
     public static function levelVurne($id)
@@ -71,6 +80,12 @@ class OsintModel extends Model
         $q->leftJoin('admisecosint_sub1_header_data as ashd2', 'ashd2.id', '=', 't.sub_media_id');
         $q->leftJoin('admisecosint_sub_header_data as ashd3', 'ashd3.sub_id', '=', 't.risk_id');
         $q->leftJoin('admisecosint_sub_header_data as sng', 'sng.sub_id', '=', 't.hatespeech_type_id');
+
+        $q->whereRaw('t.plant_id IN (SELECT aas.id
+                FROM isecurity.dbo.admisec_area_users aau 
+                INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                INNER JOIN dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+            WHERE aau.npk='.$npk.')');
 
         // if(AuthHelper::is_section_head())
         // {
@@ -166,7 +181,7 @@ class OsintModel extends Model
                 $row[] = $field->sentiment;
                 $row[] = date('d F Y ', strtotime($field->event_date));
                 $row[] = $field->total_level;
-                $edt_btn = AuthHelper::is_super_admin() ? '<a class="btn btn-sm btn-info"href="'. url('srs/osint_source/edit?id='. $field->id) . '">
+                $edt_btn = AuthHelper::is_super_admin() || (isset($access_modul->edt) && $access_modul->edt == 1) ? '<a class="btn btn-sm btn-info"href="'. url('srs/osint_source/edit?id='. $field->id) . '">
                             <i class="fa fa-edit"></i>
                         </a> ': '';
                 $del_btn = AuthHelper::is_super_admin() || (isset($access_modul->dlt) && $access_modul->dlt == 1) ? '<button data-id="'. $field->id . '"data-title="'. $field->act . '"class="btn btn-sm btn-danger"data-toggle="modal"data-target="#deleteModal">
@@ -654,12 +669,18 @@ class OsintModel extends Model
     {
         $keyword = $req->input('keyword');
         $key_array = explode(" ", $keyword);
+        $userNpk = AuthHelper::user_npk();
 
         // SUBSTRING(chronology, 1, 200) 
         $q = "SELECT top 10 id, activity_name event_name ,[date] event_date ,SUBSTRING(description, 1, 300) chronology
                 from admisecosint_transaction at2 
-            where 
-            ";
+            where ";
+        $q .= " at2.area_id IN (SELECT aas.id
+                FROM isecurity.dbo.admisec_area_users aau 
+                INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                INNER JOIN dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+            WHERE aau.npk='.$userNpk.') AND ";
+            
         foreach ($key_array as $key => $val) {
             if($key > 0) $q .= ' or ';
             $q .= "activity_name like '%$val%' ";

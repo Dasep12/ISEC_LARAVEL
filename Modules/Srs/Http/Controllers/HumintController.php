@@ -15,7 +15,8 @@ use TCPDF;
 
 class HumintController extends Controller
 {
-    public $isModule = 'SRSISO';
+    private $isModule = 'SRSISO';
+    public static $isModuleCode = 'SRSISO';
     /**
      * Display a listing of the resource.
      * @return Renderable
@@ -53,7 +54,7 @@ class HumintController extends Controller
         }
 
         // STATUS
-        $opt_status = array(''=>'All','0'=>'Not Approve','1'=>'Approved');
+        $opt_status = array(''=>'All','0'=>'Pending','1'=>'Approved','2'=>'Rejected');
 
         $opt_subarea = array('' => '-- Choose --');
         foreach ($data_subarea as $key => $sare) {
@@ -70,7 +71,7 @@ class HumintController extends Controller
             $opt_rso[$rso->id] = $rso->title;
         }
 
-        $opt_ris = array();
+        $opt_ris = array('' => '-- Choose --');
         foreach ($data_ris as $key => $ris) {
             $opt_ris[$ris->id.':'.$ris->level] = $ris->title;
         }
@@ -110,6 +111,7 @@ class HumintController extends Controller
             'sub_link' => empty(request()->segments()[2]) ? '' : request()->segments()[2],
             'no_urut' => $no[0]->no_urut,
             'no_ref' => $no[0]->no_urut,
+            'isModuleCode' => $this->isModule,
             'select_area' => FormHelper::formDropdown('area[]',$opt_are,'','id="area" class="form-control area js-select2" multiple required'),
             'select_area_filter' => FormHelper::formDropdown('area_fil',$opt_are_fil,'','id="areaFilter" class="form-control" required'),
             'select_year_filter' => FormHelper::formDropdown('year_filter', $opt_year, '','id="yearFilter" class="form-control" required'),
@@ -353,7 +355,7 @@ class HumintController extends Controller
             {
                 $opt = '<div class="form-group col-3">
                             <label for="subRiskSource">'.$res_sub[0]->title_cat.'</label>
-                            <select id="subRiskSource" class="form-control" name="subRiskSource1" required>';
+                            <select id="subRiskSource" class="form-control" name="sub_risksource1" required>';
                 $opt .= '<option value="">-- Choose --</option>';
                 foreach ($res_sub as $key => $sub) {
                     $opt .=  '<option value="'.$sub->id.'">'.$sub->title.'</option>';
@@ -611,7 +613,7 @@ class HumintController extends Controller
                 // RISK SOURCE //
 
                 // RISK //
-                $opt_ris = array();
+                $opt_ris = array('' => '-- Choose --');
                 foreach ($data_ris as $key => $ris) {
                     $opt_ris[$ris->id.':'.$ris->level] = $ris->title;
                     if($data_edit->risk_id == $ris->id)
@@ -694,7 +696,7 @@ class HumintController extends Controller
 
                     'select_ass' => FormHelper::formDropdown('assets', $opt_ass, $data_edit->assets_id,'id="assets" class="form-control assets" required'),
                     'select_subass1' => count($opt_sas1) <= 1 ? '' : FormHelper::formDropdown('sub_assets1', $opt_sas1, $data_edit->assets_sub1_id,'id="subAssets" class="form-control" required'),
-                    'select_subass2' => count($opt_sas2) <= 1 ? '' : FormHelper::formDropdown('select_subass2', $opt_sas2, $data_edit->assets_sub2_id,'id="subAssets2" class="form-control" required'),
+                    'select_subass2' => count($opt_sas2) <= 1 ? '' : FormHelper::formDropdown('sub_assets2', $opt_sas2, $data_edit->assets_sub2_id,'id="subAssets2" class="form-control" required'),
 
                     'select_rso' => FormHelper::formDropdown('risk_source', $opt_rso, $data_edit->risk_source_id,'id="riskSource" class="form-control" required'),
                     'select_rso1' => count($opt_rso1) <= 1 ? '' : FormHelper::formDropdown('sub_risksource1', $opt_rso1, $data_edit->risksource_sub1_id,'id="subRiskSource" class="form-control" required'),
@@ -716,7 +718,7 @@ class HumintController extends Controller
                     'isModule' => $this->isModule,
                 ];
 
-                // dd($data_edit->risksource_sub1_id);
+                // dd($data_edit->risk_sub1_id);
 
                 // $this->template->load("template/analityc/template_srs", "srs/form_iso_edit_v", $data);
                 return view('srs::humintFormEdit', $data);
@@ -902,17 +904,26 @@ class HumintController extends Controller
     public function search(Request $req)
     {
         $res = HumintModel::search($req);
-
-        $data = '<div id="searchResult" class="col-12 mt-5"><div class="row">';
-        foreach ($res as $key => $val) {
-            $data .= '<div class="col-12 p-3">
-                        <a href="#" target="_blank" data-id="'.$val->id.'" data-toggle="modal" data-target="#detailSearchModal" class="text-white">
-                        <h5>'.$val->event_name.'</h5>
-                        <small>'.date('Y-m-d H:i',strtotime($val->event_date)).'</small>
-                        <p>'.html_entity_decode($val->chronology).'...</p></a>
-                    </div>';
+        
+        $data = '<div id="searchResult" class="col-12 mt-5">';
+        if(empty($res))
+        {
+            $data .= '<p class="text-center h4">No results found.</p>';
         }
-        $data .= '</div><div>';
+        else
+        {
+            $data .= '<div class="row">';
+            foreach ($res as $key => $val) {
+                $data .= '<div class="col-12 p-3">
+                            <a href="#" target="_blank" data-id="'.$val->id.'" data-toggle="modal" data-target="#detailSearchModal" class="text-white">
+                            <h5>'.$val->event_name.'</h5>
+                            <small>'.date('Y-m-d H:i',strtotime($val->event_date)).'</small>
+                            <p>'.html_entity_decode($val->chronology).'...</p></a>
+                        </div>';
+            }
+            $data .= '</div>';
+        }
+        $data .= '<div>';
 
         echo $data;
     }
@@ -1056,7 +1067,7 @@ class HumintController extends Controller
             }
             else
             {
-                return redirect('srs/humint_source')->with('success', '<i class="icon fas fa-exclamation-triangle"></i> Gagal menyimpan data');
+                return redirect('srs/humint_source')->with('error', '<i class="icon fas fa-exclamation-triangle"></i> Gagal menyimpan data');
             }
 
         }
@@ -1080,7 +1091,7 @@ class HumintController extends Controller
         else
         {
             $res = HumintModel::updateData($req);
-
+            
             if($res == '00')
             {
                 return redirect('srs/humint_source')->with('success', '<i class="icon fas fa-check"></i> Berhasil menyimpan data');

@@ -29,6 +29,15 @@
         <div class="row">
             <!-- Left col -->
             <div class="col-md-12">
+                @if ($message = Session::get('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fas fa-check"></i>
+                    {{ $message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                @endif
                 <!-- TABLE: LATEST ORDERS -->
                 <div class="card card4">
                     <div class="card-header border-transparent">
@@ -210,27 +219,30 @@
                         if (row.status_temuan === 1) {
                             return '';
                         }
-                        const actionURL = "";
-                        let img = '<a href="' + row.image_1 + '"  data-lightbox="' + row.object_id + '" data-title="' + row.nama_objek + '">';
+                        const actionURL = "/guardtour/laporan/update";
+                        var link = "{{ url('/') }}" + "/";
 
+                        let img = '<a href="' + link + row.image_1 + '"  data-lightbox="' + row.object_id + '" data-title="' + row.nama_objek + '">';
 
                         if (row.image_1 !== null) {
-                            img = img + '<img src="' + row.image_1 + '" class="img-thumbnail" data-lightbox="' + row.object_id + '" data-title="' + row.nama_objek + '" width="50px" alt="' + row.nama_objek + '">';
+                            img = img + '<img src="' + link + row.image_1 + '" class="img-thumbnail" data-lightbox="' + row.object_id + '" data-title="' + row.nama_objek + '" width="50px" alt="' + row.nama_objek + '">';
                         }
                         if (row.image_2 !== null) {
-                            img = img + '<img src="' + row.image_2 + '" class="img-thumbnail" data-lightbox="' + row.object_id + '" data-title="' + row.nama_objek + '" width="50px" alt="' + row.nama_objek + '">';
+                            img = img + '<img src="' + link + row.image_2 + '" class="img-thumbnail" data-lightbox="' + row.object_id + '" data-title="' + row.nama_objek + '" width="50px" alt="' + row.nama_objek + '">';
 
                         }
                         if (row.image_3 !== null) {
-                            img = img + '<img src="' + row.image_3 + '" class="img-thumbnail" data-lightbox="' + row.object_id + '" data-title="' + row.nama_objek + '" width="50px" alt="' + row.nama_objek + '">';
+                            img = img + '<img src="' + link + row.image_3 + '" class="img-thumbnail" data-lightbox="' + row.object_id + '" data-title="' + row.nama_objek + '" width="50px" alt="' + row.nama_objek + '">';
                         }
                         img = img + '</a>';
                         return `
 							<button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal_` + row.trans_detail_id + `">Tindakan</button>
 							<div class="modal fade" id="modal_` + row.trans_detail_id + `" tabindex="-1" role="dialog" aria-labelledby="modal_` + row.trans_detail_id + `Label" aria-hidden="true">
 								<div class="modal-dialog modal-lg" role="document">
-									<div class="modal-content">
-										<form method="post" action="` + actionURL + `">
+                                <div class="modal-content">
+                                <form method="post" action="` + actionURL + `">
+                                @csrf
+                                <input hidden name="idDetailTrans" value="` + row.trans_detail_id + `">
 										<div class="modal-header">
 											<h5 class="modal-title">Tindakan Temuan</h5>
 										<button type="button" class="close" data-dismiss="modal" aria-label="Close">

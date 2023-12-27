@@ -10,8 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 use Modules\Srs\Entities\OsintModel;
 
-use AuthHelper;
-use FormHelper;
+use AuthHelper,FormHelper;
 
 class OsintController extends Controller
 {
@@ -20,6 +19,7 @@ class OsintController extends Controller
     public function __construct()
     {
         $this->middleware('is_login_isec');
+        $this->middleware('roleauth:SRSOSI');
     }
     
     public function index()
@@ -396,7 +396,7 @@ class OsintController extends Controller
             {
                 $data = $result;
                 $name = DB::connection('sqlsrv')->table("admisecsgp_mstusr")->where(['npk' => $data->created_by])->first();
-                $lampiran = DB::connection('srsbi')->table("admisecosint_transaction_file")->where(['trans_id' => $data->id])->get();
+                $lampiran = DB::connection('srsbi')->table("admisecosint_transaction_file")->where(['trans_id' => $data->id, 'status' => 1])->get();
                 
                 $opt = '<div class="table-responsive">';
                 $opt .= '<table class="table table-borderless mb-3">

@@ -5,6 +5,14 @@
     .datepicker {
         top: 260px !important;
     }
+
+    .text-expand {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
 </style>
 
 <section class="content-header">
@@ -57,7 +65,10 @@
                         <?php } ?>
                         <button class="nav-link active" id="nav-profile-tab" data-toggle="tab" data-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">View Data</button>
                         <button class="nav-link " id="nav-searchdata-tab" data-toggle="tab" data-target="#nav-searchdata" type="button" role="tab" aria-controls="nav-searchdata" aria-selected="false">Search Data</button>
+                        
+                        @if (AuthHelper::is_super_admin())
                         <button class="nav-link" id="nav-searchprofile-tab" data-toggle="tab" data-target="#nav-searchprofile" type="button" role="tab" aria-controls="nav-searchprofile" aria-selected="false">Search Profile</button>
+                        @endif
                     </div>
                 </nav>
 
@@ -432,6 +443,7 @@
                     <!-- SEARCH DATA -->
 
                     <!-- SEARCH PROFILE -->
+                    @if (AuthHelper::is_super_admin())
                     <div class="tab-pane fade" id="nav-searchprofile" role="tabpanel" aria-labelledby="nav-profile-tab">
                        <div class="card">
                             <div class="card-body px-lg-4 py-5">
@@ -441,7 +453,7 @@
                                             <h1 class="text-white">SEARCH PROFILE</h1>
                                         </div>
                                         <div class="col-8 mx-auto">
-                                            <div class="dropdown mb-2">
+                                            <!-- <div class="dropdown mb-2">
                                                 <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><span class="dropdown-text"> Select Target</span>
                                                 <span class="caret"></span></button>
                                                 <ul class="dropdown-menu">
@@ -451,12 +463,12 @@
                                                     <li><a href="#"><label><input name='options[]' type="checkbox" class="option justone" value='Option 2 '/> Facebook</label></a></li>
                                                     <li><a href="#"><label><input name='options[]' type="checkbox" class="option justone" value='Option 3 '/> Tiktok</label></a></li>
                                                 </ul>
-                                            </div>
+                                            </div> -->
 
                                             <!-- <input class="form-control" type="text" name="" placeholder="Type something..."> -->
                                             <div class="input-group">
                                                 <input type="search" class="form-control rounded" name="keyword_profile" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
-                                                <button type="submit" class="btn btn-primary">search</button>
+                                                <button type="submit" class="btn btn-primary ml-1">search</button>
                                             </div>
                                         </div>
                                     </div>
@@ -464,6 +476,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                     <!-- SEARCH PROFILE -->
                 </div>
             </div>
@@ -872,7 +885,10 @@
                         _token: "{{ csrf_token() }}"
                     },
                     cache: false,
-                    
+                    headers: {
+                        'cross-origin-resource-policy': 'cross-origin'
+                    },
+                    xhrFields: { withCredentials: true },
                     beforeSend: function() {
                         $('.search-result-profile').remove();
                         $('#searchResultProfile').remove();
@@ -881,6 +897,25 @@
                     success : function(data){
                         $('#loadingProgress').remove();
                         $('#formSearchProfile input').parents('#formSearchProfile').append(data);
+
+                        var buttons = document.querySelectorAll('.read-more');
+
+                        for (var i = 0; i < buttons.length; i++) {
+                            buttons[i].addEventListener('click', function(event) {
+                                var span = event.target.previousElementSibling;
+                                console.log(span);
+                                // .querySelector('span');
+                                // span.classList.add('fade-in');
+                                if(span.classList.contains('text-expand'))
+                                {
+                                    span.classList.remove('text-expand');
+                                }
+                                else
+                                {
+                                    span.classList.add('text-expand');
+                                }
+                            });
+                        }
                     },
                     error: function(){
                         $('#loadingProgress').remove();
@@ -1506,5 +1541,6 @@
             }
         });
     })
+
 </script>
 @endsection

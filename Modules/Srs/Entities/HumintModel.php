@@ -35,18 +35,18 @@ class HumintModel extends Model
 
         $tes = AuthHelper::is_author('ALLAREA');
 
-        if(AuthHelper::is_author('ALLAREA'))
-        {
-            $q .= " AND wil_id='$user_wilayah'";
-        }
+        // if(AuthHelper::is_author('ALLAREA'))
+        // {
+        //     $q .= " AND wil_id='$user_wilayah'";
+        // }
 
-        if(AuthHelper::is_section_head())
-        {
+        // if(AuthHelper::is_section_head() || AuthHelper::is_building_manager())
+        // {
             $q .= " AND id IN (select aas.id from isecurity.dbo.admisec_area_users aau 
             INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
             INNER JOIN dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
             WHERE aau.npk=$user_npk)";
-        }
+        // }
 
         $q .= " ORDER BY title ASC";
 
@@ -160,12 +160,10 @@ class HumintModel extends Model
             $id = $categ_id;
         }
 
-        $q = "
-        SELECT a.id, a.title, b.title title_cat
+        $q = "SELECT a.id, a.title, b.title title_cat
             FROM admiseciso_risksource_sub a
             INNER JOIN admiseciso_risksource_categ b ON b.id=a.risksource_categ_id
-        WHERE a.risksource_categ_id=(select risksource_categtarget_id from admiseciso_risksource_sub where id='$id') AND a.status=1 ORDER BY a.title ASC
-            ";
+        WHERE a.risksource_categ_id=(select risksource_categtarget_id from admiseciso_risksource_sub where id='$id') AND a.status=1 ORDER BY a.title ASC";
 
         $res = DB::connection('srsbi')->select($q);
 
@@ -235,7 +233,7 @@ class HumintModel extends Model
     }
     
     private static $t_trans_iso = 'admiseciso_transaction';
-    private static $columnOrder = array(null, 'a.event_name', 'a.event_date', 'asu.title', 'ass.title', 'rss.title', 'ris.title', 'a.impact_level', null);
+    private static $columnOrder = array(null, 'a.event_name', 'a.event_date', 'asu.title', 'ass.title', 'rss.title', 'ris.title', 'a.status', 'a.impact_level', null);
     private static $columnSearch = array('a.event_name', 'asu.title', 'ass.title', 'rss.title', 'ris.title');
     private static $order = array('a.event_date' => 'desc');
 
@@ -258,18 +256,18 @@ class HumintModel extends Model
         $q->join('dbo.admiseciso_risk_sub AS ris', 'ris.id', '=', 'a.risk_id');
         $q->where('a.disable','=',0);
         
-        if(AuthHelper::is_section_head())
-        {
+        // if(AuthHelper::is_section_head() || AuthHelper::is_building_manager())
+        // {
             $q->whereRaw('a.area_id IN (SELECT aas.id
                 FROM isecurity.dbo.admisec_area_users aau 
                 INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
                 INNER JOIN dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
             WHERE aau.npk='.$npk.')');
-        }
-        if(AuthHelper::is_author())
-        {
-            $q->where('a.created_by', $npk);
-        }
+        // }
+        // if(AuthHelper::is_author())
+        // {
+        //     $q->where('a.created_by', $npk);
+        // }
         // AREA
         if($areaFilter) $q->where('a.area_id','=',$areaFilter);
         // YEAR
@@ -298,6 +296,13 @@ class HumintModel extends Model
             //     $q->orderBy($val,$dir_val);
             // }
         }
+        // else
+        // {
+        //     foreach (self::$order as $key => $val) {
+        //         // $q1->orderBy($order_val,$dir_val);
+        //         $q->orderBy($key,$val);
+        //     }
+        // }
 
         return $q;
     }
@@ -323,19 +328,27 @@ class HumintModel extends Model
         if($order = $req->input('order.0.column'))
         {
             $order_val = $columnsList[$order];
-            $qd->orderBy($order_val,$dir);
-        }
-        else
-        {
+            $qd->orderBy($order_val, $dir);
+
             foreach(self::$order as $ordKey => $ord) {
-                $qd->orderBy($ordKey, $ord);
+                if($ordKey !== $columnsList[$order])
+                {
+                    $qd->orderBy($ordKey, $ord);
+                }
             }
         }
+        // else
+        // {
+        //     foreach(self::$order as $ordKey => $ord) {
+        //         $qd->orderBy($ordKey, $ord);
+        //     }
+        // }
         $resultData = $qd->get();
 
         $totalFilteredRecord = $totalDataRecord;
          
         $data_val = array();
+        
         if(!empty($resultData))
         {
             $access_modul = RoleModel::access_modul($npk, 'SRSISO')[0];
@@ -355,14 +368,33 @@ class HumintModel extends Model
                 $row[] = $item->risk;
                 $row[] = $item->impact_level;
 
-                $edtBtn = AuthHelper::is_super_admin() ? '<a class="btn btn-sm btn-info" href="'.url('srs/humint_source/edit/'.$item->id).'">
+                switch ($item->status) {
+                    case '1':
+                        $status = '<span class="badge badge-success">Approved</span>';
+                        break;
+                    case '2':
+                        $status = '<span class="badge badge-danger">Rejected</span>';
+                        break;
+                    
+                    default:
+                        $status = '<span class="badge badge-warning">Pending</span>';
+                        break;
+                }
+                $row[] = $status;
+
+                $edtBtn = AuthHelper::is_super_admin() && ($item->status == '0' || $item->status == '2') && (isset($access_modul->apr) && $access_modul->edt == 1) ? '<a class="btn btn-sm btn-info" href="'.url('srs/humint_source/edit/'.$item->id).'">
                         <i class="fa fa-edit"></i>
                 </a> ' : '';
-                $apprBtn = AuthHelper::is_super_admin() || (isset($access_modul->apr) && $access_modul->apr == 1) ? $item->status == 1 ? '<button class="btn btn-sm btn-success" title="Approved">
-                        <i class="fa fa-check"></i>
-                    </button> ' : '<button data-id="'.$item->id.'" data-title="'.$item->event_name.'" class="btn btn-sm btn-success" data-toggle="modal" data-target="#approveModal">
+
+                // $apprBtn = AuthHelper::is_super_admin() || (isset($access_modul->apr) && $access_modul->apr == 1) ? $item->status == 1 ? '<button class="btn btn-sm btn-success" title="Approved">
+                //         <i class="fa fa-check"></i>
+                //     </button> ' : '<button data-id="'.$item->id.'" data-title="'.$item->event_name.'" class="btn btn-sm btn-success" data-toggle="modal" data-target="#approveModal">
+                //         Approve
+                //     </button> ' : '';
+                $apprBtn = AuthHelper::is_super_admin() || (isset($access_modul->apr) && $access_modul->apr == 1) ? $item->status == 1 ? '' : '<button data-id="'.$item->id.'" data-title="'.$item->event_name.'" class="btn btn-sm btn-success" data-toggle="modal" data-target="#approveModal">
                         Approve
                     </button> ' : '';
+                    
                 $delBtn = AuthHelper::is_super_admin() || (isset($access_modul->dlt) && $access_modul->dlt == 1) ? '<button data-id="'.$item->id.'" class="btn btn-sm btn-danger " data-toggle="modal" data-target="#deleteModal"> <i class="fa fa-trash"></i></button> ' : '';
                 $row[] = $apprBtn.$edtBtn.'<button data-id="'.$item->id.'" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#detailModal">
                         Detail
@@ -528,42 +560,44 @@ class HumintModel extends Model
     
     public static function updateData($req)
     {
-        $id = $req->input('id', true);
-        $tanggal = $req->input('tanggal', true);
-        $tanggal_lama = $req->input('old_date', true);
+        $id = $req->input('id');
+        $tanggal = $req->input('tanggal');
+        $tanggal_lama = $req->input('old_date');
         $no_urut = $req->input('no_urut', true);
-        $event_name = $req->input('event_name', true);
+        $event_name = $req->input('event_name');
 
-        $area = $req->input('area', true);
-        $sub_area1 = $req->input('sub_area1', true);
-        $sub_area2 = $req->input('sub_area2', true);
-        $sub_area3 = $req->input('sub_area3', true);
+        $area = $req->input('area');
+        $sub_area1 = $req->input('sub_area1');
+        $sub_area2 = $req->input('sub_area2');
+        $sub_area3 = $req->input('sub_area3');
 
-        $assets = $req->input('assets', true);
-        $sub_assets1 = $req->input('sub_assets1', true);
-        $sub_assets2 = $req->input('sub_assets2', true);
+        $assets = $req->input('assets');
+        $sub_assets1 = $req->input('sub_assets1');
+        $sub_assets2 = $req->input('sub_assets2');
 
-        $risk_source = $req->input('risk_source', true);
-        $sub_risksource1 = $req->input('sub_risksource1', true);
-        $sub_risksource2 = $req->input('sub_risksource2', true);
+        $risk_source = $req->input('risk_source');
+        $sub_risksource1 = $req->input('sub_risksource1');
+        $sub_risksource2 = $req->input('sub_risksource2');
 
-        $risk = explode(':', $req->input('risk', true))[0];
-        $sub_risk1 = $req->input('sub_risk1', true);
-        $sub_risk2 = $req->input('sub_risk2', true);
-        $risk_level = $req->input('risk_level', true);
+        $risk = explode(':', $req->input('risk'))[0];
+        $sub_risk1 = $req->input('sub_risk1');
+        $sub_risk2 = $req->input('sub_risk2');
+        $risk_level = $req->input('risk_level');
 
-        $financial = $req->input('financial', true);
-        $sdm = $req->input('sdm', true);
-        $operational = $req->input('operational', true);
-        $reputation = $req->input('reputation', true);
+        $financial = $req->input('financial');
+        $sdm = $req->input('sdm');
+        $operational = $req->input('operational');
+        $reputation = $req->input('reputation');
         $find_impact = array(explode(':', $financial)[0], explode(':', $sdm)[0], explode(':', $operational)[0], explode(':', $reputation)[0]);
         $impact = max($find_impact);
-        $chronology = htmlentities(addslashes($req->input('chronology', true)));
+        $chronology = htmlentities(addslashes($req->input('chronology')));
         $chronology = preg_replace("/'/", "\&#39;", $chronology);
-        $reporter = $req->input('reporter', true);
+        $reporter = $req->input('reporter');
         $sess_npk = AuthHelper::user_npk('npk');
-        $attached = $req->input('attached');
+        $attached = $req->file('attach');
         $curr_date = date('Y-m-d H:i:s');
+
+        // dd($sub_risksource1);
         
         // Jika tanggal event diubah maka buat baru
         if(date('Ymd', strtotime($tanggal)) !== date('Ymd', strtotime($tanggal_lama)))
@@ -722,8 +756,7 @@ class HumintModel extends Model
     {
         $id = $req->input('id');
 
-        $q = "
-            SELECT a.id, a.event_name, a.event_date, a.no_urut, a.no_reference, a.reporter, a.chronology, vfi.level financial_level, vop.level operational_level, vre.level reputation_level, sdm.level sdm_level, a.impact_level, a.attach_file_1, a.attach_file_2, a.attach_file_3, a.attach_file_4, a.attach_file_5, asu.title area, asu1.title area_sub1, asu2.title area_sub2, asu3.title area_sub3, ass.title assets, ass1.title assets_sub1, ass2.title assets_sub2, rss.title risksource, rss1.title risksource1, rss2.title risksource2, ris.title risk, ris1.title risk1, ris2.title risk2, rle.level risk_level, tat.file_name
+        $q = "SELECT a.id, a.event_name, a.event_date, a.no_urut, a.no_reference, a.reporter, a.chronology, vfi.level financial_level, vop.level operational_level, vre.level reputation_level, sdm.level sdm_level, a.impact_level, a.attach_file_1, a.attach_file_2, a.attach_file_3, a.attach_file_4, a.attach_file_5, asu.title area, asu1.title area_sub1, asu2.title area_sub2, asu3.title area_sub3, ass.title assets, ass1.title assets_sub1, ass2.title assets_sub2, rss.title risksource, rss1.title risksource1, rss2.title risksource2, ris.title risk, ris1.title risk1, ris2.title risk2, rle.level risk_level, tat.file_name
                 , musr.name author, a.created_by author_npk, husr.name section_head, husr.npk section_head_npk
                 FROM admiseciso_transaction a
                 INNER JOIN admiseciso_area_sub asu ON asu.id=a.area_id
@@ -837,18 +870,27 @@ class HumintModel extends Model
 
     public static function search($req)
     {
-        $keyword = $req->input('keyword',true);
+        $keyword = strtolower($req->input('keyword',true));
         $key_array = explode(" ", $keyword);
+        $userNpk = AuthHelper::user_npk();
 
         $q = "SELECT top 10 id, event_name ,event_date ,SUBSTRING(chronology, 1, 300) chronology
-                from admiseciso_transaction at2 
-            where 
-            ";
+                from admiseciso_transaction 
+            where disable=0 and status=1";
+
+        $q .= " AND area_id IN (SELECT aas.id
+            FROM isecurity.dbo.admisec_area_users aau 
+            INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+            INNER JOIN dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+        WHERE aau.npk=$userNpk) AND ";
+        
         foreach ($key_array as $key => $val) {
-            if($key > 0) $q .= ' or ';
-            $q .= "event_name like '%$val%' ";
+            if($key > 0) $q .= ' and ';
+            $q .= '(';
+            $q .= "lower(replace(event_name, ' ', '')) like lower(replace('%$val%', ' ', '')) ";
             $q .= ' or ';
-            $q .= " chronology like '%$val%'";
+            $q .= " lower(chronology) like lower('%$val%')";   
+            $q .= ')'; 
         }
 
         $res = DB::connection('srsbi')->select($q);
@@ -860,7 +902,7 @@ class HumintModel extends Model
     {
         if($files == null) return '01';
 
-        $allowedfileExtension = ['pdf','jpg','jpeg','mp4','png','docx','xlsx'];
+        $allowedfileExtension = ['pdf','jpg','jpeg','mp4','png','docx','doc','xlsx','xls'];
         $path = 'uploads/srsbi/humint';
 
         if(!is_dir($path))

@@ -107,7 +107,7 @@
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <li class="nav-item ">
-                            <a href="{{ url('srs/dashboard_v2') }}" class="nav-link
+                            <a href="{{ url('srs/dashboard') }}" class="nav-link
                             <?php if ($link == 'dashboard') {
                                 echo 'active';
                             } ?>">
@@ -119,14 +119,14 @@
                         </li>
 
                         <?php if (AuthHelper::is_module('SRSISO')) { ?>
-                            <li class="nav-item {{ ($link !== '' && $link == 'dashboard_humint_v2' || $link == 'humint_source') ? 'menu-open' : ''; }}">
+                            <li class="nav-item {{ ($link !== '' && $link == 'dashboard_humint' || $link == 'humint_source') ? 'menu-open' : ''; }}">
                                 <a href="#" class="nav-link ">
                                     <i class="nav-icon fas fa-share-alt-square"></i>
                                     <p>HUMINT Source</p>
                                 </a>
                                <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="dashboard_humint_v2" class="nav-link {{ ($link !== '' && $link == 'dashboard_humint_v2') ? 'active' : '' }}">
+                                        <a href="{{ url('srs/dashboard_humint') }}" class="nav-link {{ ($link !== '' && $link == 'dashboard_humint') ? 'active' : '' }}">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Dashboard</p>
                                         </a>
@@ -142,9 +142,9 @@
                             </li>
                         <?php } ?>
 
-                        <?php if (AuthHelper::is_module('SRSESO') || AuthHelper::is_super_admin()) { ?>
+                        <?php if (AuthHelper::is_super_admin() || AuthHelper::is_module('SRSOSI')) { ?>
                         <li class="nav-item {{ ($link !== '' && $link == 'dashboard_osint' || $link == 'osint_source') ? 'menu-open' : '' }}">
-                            <a href="osint" class="nav-link">
+                            <a href="{{ url('srs/osint') }}" class="nav-link">
                                 <i class="nav-icon fas fa-copy"></i>
                                 <p>
                                     <!-- External Source -->
@@ -176,7 +176,7 @@
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="dashboard_soi" class="nav-link {{ ($link !== '' && $link == 'dashboard_soi') ? 'active' : ''; }}">
+                                        <a href="{{ url('srs/dashboard_soi') }}" class="nav-link {{ ($link !== '' && $link == 'dashboard_soi') ? 'active' : ''; }}">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Dashboard</p>
                                         </a>

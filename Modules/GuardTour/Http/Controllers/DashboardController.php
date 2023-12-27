@@ -131,7 +131,10 @@ class DashboardController extends Controller
         $par = array();
         $pl   = $req->plant_id;
         if ($pl == 0) {
-            $plant =  Session('role') == 'SUPERADMIN' ? Plants::all() : Plants::where('admisecsgp_mstsite_site_id', Session('site_id'))->get();
+            $plant =  Session('role') == 'SUPERADMIN' ? Plants::where('status', 1)->get() : Plants::where([
+                ['admisecsgp_mstsite_site_id', '=', Session('site_id')],
+                ['status', '=', 1],
+            ])->get();
         } else {
             $plant = DashboardModels::getPerPlant($pl);
         }

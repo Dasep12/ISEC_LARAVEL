@@ -654,6 +654,7 @@
 
                     maxValue.push(Math.max.apply(null, data[i].data));
                 }
+
                 chartPatrolAll.setTitle(null, {
                     text: 'Periode ' + tahun
                 })
@@ -1418,43 +1419,7 @@
     });
 
 
-    function ajaxTemuanReguAdm(tahun, bulan) {
-        $.ajax({
-            url: "{{ route('Dashboard.temuanPerReguPlant') }}",
-            method: "POST",
-            data: {
-                tahun: tahun,
-                bulan: bulan,
-                "_token": "{{ csrf_token() }}",
-            },
-            beforeSend: function() {
-                document.getElementById("chartTemuanRegu_overlay").style.display = "block";
-            },
-            complete: function() {
-                document.getElementById("chartTemuanRegu_overlay").style.display = "none";
-            },
-            success: function(e) {
-                var chartPatrolAll = $('#chartTemuanRegu').highcharts();
-                var data = e;
-                console.log(data);
-                let regu = ['REGU A', 'REGU B', 'REGU C', 'REGU D'];
-                for (let i = 0; i < data[0].length; i++) {
-                    chartPatrolAll.series[i].update({
-                        name: regu[i],
-                        data: data[i][0]
-                    });
-                }
-                chartPatrolAll.setTitle(null, {
-                    text: 'Periode ' + convertMonth(bulan) + ' ' + tahun
-                })
-                chartPatrolAll.xAxis[0].update({
-                    categories: data[1][0]
-                });
-                chartPatrolAll.redraw();
-            }
-        })
-    }
-    ajaxTemuanReguAdm($("#yearFilter").val(), $("#monthFilter").val());
+
     Highcharts.chart('chartTemuanRegu', {
         chart: {
             type: 'column',
@@ -1549,18 +1514,81 @@
         },
         series: [{
             name: 'REGU A',
-            data: [1, 2, 3, 4, 4, 2, 4, 4, 5]
+            data: [2]
         }, {
             name: 'REGU B',
-            data: [5, 4, 2, 7, 2, 4, 5, 3, 2]
+            data: [2]
         }, {
             name: 'REGU C',
-            data: [3, 2, 6, 3, 3, 5, 2, 5, 3]
+            data: [2]
         }, {
             name: 'REGU D',
-            data: [7, 49, 3, 2, 6, 3, 3, 5, 3]
+            data: [2]
         }]
     });
+
+    function ajaxTemuanReguAdm(tahun, bulan) {
+        $.ajax({
+            url: "{{ route('Dashboard.temuanPerReguPlant') }}",
+            method: "POST",
+            data: {
+                tahun: tahun,
+                bulan: bulan,
+                "_token": "{{ csrf_token() }}",
+            },
+            beforeSend: function() {
+                document.getElementById("chartTemuanRegu_overlay").style.display = "block";
+            },
+            complete: function() {
+                document.getElementById("chartTemuanRegu_overlay").style.display = "none";
+            },
+            success: function(e) {
+                var chartPatrolAll = $('#chartTemuanRegu').highcharts();
+                var data = e;
+                console.log(data);
+                let regu = ['REGU A', 'REGU B', 'REGU C', 'REGU D'];
+                // for (let i = 0; i < data[0].length; i++) {
+                // chartPatrolAll.series[0].update({
+                //     name: regu[0],
+                //     data: data[0][0]
+                // });
+                // }
+                var seriesLength = chartPatrolAll.series.length;
+                for (var i = seriesLength - 1; i > -1; i--) {
+                    chartPatrolAll.series[i].remove();
+                }
+
+                let series = [];
+                for (let i = 0; i < data.length; i++) {
+                    let dataR = [{
+                        name: "",
+                        data: []
+                    }]
+                    chartPatrolAll.addSeries({
+                        data: dataR
+                    });
+                }
+
+                for (let i = 0; i < data.length; i++) {
+                    chartPatrolAll.series[i].update({
+                        name: regu[i],
+                        data: data[i][0]
+                        // color: "#" + Math.floor(Math.random() * 16777215).toString(16)
+                    });
+
+                }
+
+                chartPatrolAll.setTitle(null, {
+                    text: 'Periode ' + convertMonth(bulan) + ' ' + tahun
+                })
+                chartPatrolAll.xAxis[0].update({
+                    categories: <?= $plants ?>
+                });
+                chartPatrolAll.redraw();
+            }
+        })
+    }
+    ajaxTemuanReguAdm($("#yearFilter").val(), $("#monthFilter").val());
     // end temuan
 
 
