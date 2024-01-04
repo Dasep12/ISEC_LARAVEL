@@ -4,9 +4,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Setting\AplikasiControllers;
+use App\Http\Controllers\Setting\ModulesControllers;
 use App\Http\Controllers\setting\UserRoleAppController;
 use App\Http\Controllers\setting\UserAreaController;
 use App\Http\Controllers\setting\RoleModuleController;
+use App\Http\Controllers\Setting\RoleUsersControllers;
 use App\Http\Controllers\Setting\UserControllers;
 
 // Route::get('/', function () {
@@ -43,6 +46,17 @@ Route::middleware("is_login_isec")->group(function () {
     Route::get('/setting/form_edit', [UserControllers::class, 'form_edit']);
     Route::get('/setting/delete', [UserControllers::class, 'delete']);
 
+    Route::get('/setting/masterApp', [AplikasiControllers::class, 'index']);
+    Route::post('/setting/masterApp/insert', [AplikasiControllers::class, 'insert']);
+    Route::post('/setting/masterApp/update', [AplikasiControllers::class, 'update']);
+    Route::get('/setting/masterApp/delete', [AplikasiControllers::class, 'delete']);
+
+    Route::get('/setting/roleUser', [RoleUsersControllers::class, 'index']);
+    Route::post('/setting/roleUser/update', [RoleUsersControllers::class, 'update']);
+    Route::post('/setting/roleUser/insert', [RoleUsersControllers::class, 'insert']);
+    Route::get('/setting/roleUser/delete', [RoleUsersControllers::class, 'delete']);
+
+    Route::get('/setting/modules', [ModulesControllers::class, 'index']);
 
     Route::get('/setting/user_role_app/user_role_app', [UserRoleAppController::class, 'index']);
     Route::post('/setting/user_role_app/list_user_role_app', [UserRoleAppController::class, 'listTable']);

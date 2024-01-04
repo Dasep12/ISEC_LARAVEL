@@ -161,7 +161,7 @@ class DashboardHumintController extends Controller
             'sub_link' => empty(request()->segments()[2]) ? '' : request()->segments()[2],
             'select_area_filter' => FormHelper::formDropdown('area_fil', $opt_are_fil, '','id="areaFilter" class="form-control" required'),
             'select_year_filter' => FormHelper::formDropdown('year_filter', $opt_year, $current_year,'id="yearFilter" class="form-control" required'),
-            'select_month_filter' => FormHelper::formDropdown('month_filter', $opt_mon, '','id="monthFilter" class="form-control" required'),
+            'select_month_filter' => FormHelper::formDropdown('area_fil', $opt_mon, '','id="monthFilter" class="form-control" required'),
             'legend_area' => json_encode($legend_area, true),
             'grap_risk' => json_encode($risTotalArr, true),
             'grap_risk_source' => json_encode($rsouArr, true),

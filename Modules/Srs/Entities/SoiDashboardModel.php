@@ -36,10 +36,15 @@ class SoiDashboardModel extends Model
         
         // if(AuthHelper::is_section_head() || AuthHelper::is_building_manager())
         // {
-            $q .= " AND id IN (select aas.id from isecurity.dbo.admisec_area_users aau 
-            INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-            INNER JOIN admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-            WHERE aau.npk=$user_npk)";
+            // $q .= " AND id IN (select aas.id from isecurity.dbo.admisec_area_users aau 
+            // INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+            // INNER JOIN admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+            // WHERE aau.npk=$user_npk)";
+
+            $q .= " AND id IN (
+                SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                    INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                WHERE aau.npk=$npk)";
         // }
 
         $q .= " ORDER BY title ASC";
@@ -64,10 +69,15 @@ class SoiDashboardModel extends Model
                     FROM admisecsoi_transaction stis 
                 WHERE stis.disable=0 AND stis.status=1";
 
-                $q .= " AND stis.area_id IN (select aas.id from isecurity.dbo.admisec_area_users aau 
-                INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                INNER JOIN admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-                WHERE aau.npk=$npk)";
+                // $q .= " AND stis.area_id IN (select aas.id from isecurity.dbo.admisec_area_users aau 
+                // INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                // INNER JOIN admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                // WHERE aau.npk=$npk)";
+                
+                $q .= " AND stis.area_id IN (
+                    SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                        INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                    WHERE aau.npk=$npk)";
 
                 if(!empty($area) || !empty($year) || !empty($month)) $q .= ' AND ';
                 if(!empty($area)) $q .= " stis.area_id=$area ";
@@ -86,10 +96,16 @@ class SoiDashboardModel extends Model
                     FROM admisecsoi_transaction stis 
                 WHERE stis.disable=0 AND stis.status=1 and stis.[year]='$year_now'
             ";
-            $q .= " AND stis.area_id IN (select aas.id from isecurity.dbo.admisec_area_users aau 
-            INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-            INNER JOIN admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-            WHERE aau.npk=$npk)";
+
+            // $q .= " AND stis.area_id IN (select aas.id from isecurity.dbo.admisec_area_users aau 
+            // INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+            // INNER JOIN admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+            // WHERE aau.npk=$npk)";
+                
+            $q .= " AND stis.area_id IN (
+                SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                    INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                WHERE aau.npk=$npk)";
         }
 
         $res = DB::connection('srsbi')->select($q);
@@ -114,10 +130,15 @@ class SoiDashboardModel extends Model
                 WHERE soi.disable=0 and soi.status=1
             ";
 
-                $q .= " AND soi.area_id IN (select aas.id from isecurity.dbo.admisec_area_users aau 
-                INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                INNER JOIN admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-                WHERE aau.npk=$npk)";
+                // $q .= " AND soi.area_id IN (select aas.id from isecurity.dbo.admisec_area_users aau 
+                // INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                // INNER JOIN admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                // WHERE aau.npk=$npk)";
+                
+                $q .= " AND soi.area_id IN (
+                    SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                        INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                    WHERE aau.npk=$npk)";
 
                 if(!empty($area) || !empty($year) || !empty($month)) $q .= ' AND ';
                 if(!empty($area)) $q .= " soi.area_id=$area ";
@@ -139,10 +160,15 @@ class SoiDashboardModel extends Model
                     ) iml on iml.area_id=tio.area_id and iml.status=tio.status AND iml.disable=tio.disable AND iml.event_date=tio.event_date 
                 WHERE tio.disable=0 AND tio.status=1 ";
 
-                $q .= " AND tio.area_id IN (select aas.id from isecurity.dbo.admisec_area_users aau 
-                INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                INNER JOIN admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-                WHERE aau.npk=$npk)";
+                // $q .= " AND tio.area_id IN (select aas.id from isecurity.dbo.admisec_area_users aau 
+                // INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                // INNER JOIN admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                // WHERE aau.npk=$npk)";
+
+                $q .= " AND tio.area_id IN (
+                    SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                        INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                    WHERE aau.npk=$npk)";
 
                 if(!empty($area) || !empty($year) || !empty($month)) $q .= ' AND ';
                 if(!empty($area)) $q .= " tio.area_id=$area ";
@@ -188,10 +214,16 @@ class SoiDashboardModel extends Model
                         group by str.[month] ,str.[year] ,str.area_id
                 ) AS tra ON tra.[month]=m.MonthNum";
                 
-                $q .= " AND tra.area_id IN (select aas.id from isecurity.dbo.admisec_area_users aau 
-                INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                INNER JOIN admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-                WHERE aau.npk=$npk)";
+                // $q .= " AND tra.area_id IN (select aas.id from isecurity.dbo.admisec_area_users aau 
+                // INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                // INNER JOIN admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                // WHERE aau.npk=$npk)";
+
+                $q .= " AND tra.area_id IN (
+                    SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                        INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                    WHERE aau.npk=$npk)";
+
 
                 if(!empty($area) || !empty($year)) $q .= ' AND ';
                 if(!empty($area)) $q .= " tra.area_id=$area ";
@@ -227,9 +259,14 @@ class SoiDashboardModel extends Model
                 FROM months m
                 INNER JOIN admiseciso_area_sub area on area.area_categ_id=1 and (area.id != 29";
 
-                $q .= " AND area.id IN (select aas.id from isecurity.dbo.admisec_area_users aau 
-                    INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                    INNER JOIN admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                // $q .= " AND area.id IN (select aas.id from isecurity.dbo.admisec_area_users aau 
+                //     INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                //     INNER JOIN admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                //     WHERE aau.npk=$npk))";
+
+                $q .= " AND area.id IN (
+                    SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                        INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
                     WHERE aau.npk=$npk))";
 
                 $q .= "LEFT OUTER JOIN (

@@ -265,7 +265,7 @@ class OsintProfileController extends Controller
         // }
         // echo json_encode($media,true); 
 
-        $tk = (new OsintTiktokController)->userInfo($keyword);
+        // $tk = (new OsintTiktokController)->userInfo($keyword);
         // $tkVideo = (new OsintTiktokController)->userVideo($keyword);
         
         echo json_encode($tk, true);

@@ -38,10 +38,14 @@ class DashboardV2Model extends Model
 
         // if(AuthHelper::is_section_head() || AuthHelper::is_building_manager())
         // {
-            $q .= " AND id IN (select aas.id from isecurity.dbo.admisec_area_users aau 
-            INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-            INNER JOIN dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-            WHERE aau.npk=$user_npk)";
+            // $q .= " AND id IN (select aas.id from isecurity.dbo.admisec_area_users aau 
+            // INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+            // INNER JOIN dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+            // WHERE aau.npk=$user_npk)";
+            $q .= " AND id IN (
+                SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                    INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                WHERE aau.npk=$user_npk)";
         // }
 
         $q .= " ORDER BY title ASC";
@@ -95,11 +99,15 @@ class DashboardV2Model extends Model
                     LEFT JOIN ( 
                         select count(1) total, stis.risk_id
                             from dbo.admiseciso_transaction stis where stis.status=1 and stis.disable=0";
-                            $q .= " AND stis.area_id in (select aas.id
-                                    from isecurity.dbo.admisec_area_users aau 
-                                    inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                                    inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-                                where npk=$npk)";
+                            // $q .= " AND stis.area_id in (select aas.id
+                            //         from isecurity.dbo.admisec_area_users aau 
+                            //         inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                            //         inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                            //     where npk=$npk)";
+                            $q .= " AND stis.area_id IN (
+                                SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                                    INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                                WHERE aau.npk=$npk)";
                             if(AuthHelper::is_building_manager()) {
                                 $q .= " AND stis.assets_id=5";
                             } 
@@ -127,11 +135,15 @@ class DashboardV2Model extends Model
                         select count(1) total, stis.risk_id
                             from dbo.admiseciso_transaction stis 
                         WHERE year(stis.event_date)='$year_now' and stis.status=1 and stis.disable=0";
-                        $q .= " AND stis.area_id in (select aas.id
-                                    from isecurity.dbo.admisec_area_users aau 
-                                    inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                                    inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-                                where npk=$npk)";
+                        // $q .= " AND stis.area_id in (select aas.id
+                        //             from isecurity.dbo.admisec_area_users aau 
+                        //             inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                        //             inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                        //         where npk=$npk)";
+                        $q .= " AND stis.area_id IN (
+                            SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                                INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                            WHERE aau.npk=$npk)";
                         if(AuthHelper::is_building_manager()) 
                         {
                             $q .= " AND stis.assets_id=5";
@@ -175,11 +187,15 @@ class DashboardV2Model extends Model
                         select str.id ,str.event_date ,str.area_id
                             from dbo.admiseciso_transaction str
                             where str.".$sub_name."=(select id from dbo.admiseciso_risk_sub where  id=$id) and str.disable=0 and str.status=1";
-                            $q .= " AND str.area_id in (select aas.id
-                                    from isecurity.dbo.admisec_area_users aau 
-                                    inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                                    inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-                                where npk=$npk)";
+                            // $q .= " AND str.area_id in (select aas.id
+                            //         from isecurity.dbo.admisec_area_users aau 
+                            //         inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                            //         inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                            //     where npk=$npk)";
+                            $q .= " AND str.area_id IN (
+                                SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                                    INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                                WHERE aau.npk=$npk)";
                             if(AuthHelper::is_building_manager()) {
                                 $q .= " AND str.assets_id=5";
                             }
@@ -214,11 +230,15 @@ class DashboardV2Model extends Model
                     SELECT count(1) total ,atr.".$sub_name."
                         from dbo.admiseciso_transaction atr 
                         where atr.disable=? AND atr.status=?";
-                        $q .= " AND atr.area_id in (select aas.id
-                                from isecurity.dbo.admisec_area_users aau 
-                                inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                                inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-                            where npk=$npk)";
+                        // $q .= " AND atr.area_id in (select aas.id
+                        //         from isecurity.dbo.admisec_area_users aau 
+                        //         inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                        //         inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                        //     where npk=$npk)";
+                        $q .= " AND atr.area_id IN (
+                            SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                                INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                            WHERE aau.npk=$npk)";
                         if(AuthHelper::is_building_manager()) {
                             $q .= " AND atr.assets_id=5";
                         }
@@ -256,11 +276,17 @@ class DashboardV2Model extends Model
                     left join ( 
                         select count(1) total, stis.risk_source_id
                             from dbo.admiseciso_transaction stis WHERE stis.status=1 and stis.disable=0";
-                            $q .= " AND stis.area_id in (select aas.id
-                                    from isecurity.dbo.admisec_area_users aau 
-                                    inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                                    inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-                                where npk=$npk)";
+                            // $q .= " AND stis.area_id in (select aas.id
+                            //         from isecurity.dbo.admisec_area_users aau 
+                            //         inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                            //         inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                            //     where npk=$npk)";
+                            
+                            $q .= " AND stis.area_id IN (
+                                SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                                    INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                                WHERE aau.npk=$npk)";
+
                             if(AuthHelper::is_building_manager()) 
                             {
                                 $q .= " AND stis.assets_id=5";
@@ -287,11 +313,17 @@ class DashboardV2Model extends Model
                         select count(1) total, stis.risk_source_id
                             from dbo.admiseciso_transaction stis
                             where year(stis.event_date)='$year_now' AND stis.status=1 and stis.disable=0";
-                            $q .= " AND stis.area_id in (select aas.id
-                                    from isecurity.dbo.admisec_area_users aau 
-                                    inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                                    inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-                                where npk=$npk)";
+                            // $q .= " AND stis.area_id in (select aas.id
+                            //         from isecurity.dbo.admisec_area_users aau 
+                            //         inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                            //         inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                            //     where npk=$npk)";
+                            
+                            $q .= " AND stis.area_id IN (
+                                SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                                    INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                                WHERE aau.npk=$npk)";
+                                
                             if(AuthHelper::is_building_manager())
                             {
                                 $q .= " AND stis.assets_id=5";
@@ -341,11 +373,15 @@ class DashboardV2Model extends Model
                 ) AS t ON MONTH(t.event_date)=m.MonthNum AND t.disable=0 AND t.status=1 ";
                 // if(AuthHelper::is_building_manager()) 
                 // {
-                    $q .= " AND t.area_id in (select aas.id
-                        from isecurity.dbo.admisec_area_users aau 
-                        inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                        inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-                    where npk=$npk)";
+                    // $q .= " AND t.area_id in (select aas.id
+                    //     from isecurity.dbo.admisec_area_users aau 
+                    //     inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                    //     inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                    // where npk=$npk)";
+                    $q .= " AND t.area_id IN (
+                        SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                            INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                        WHERE aau.npk=$npk)";
                 // }
                 if(!empty($area) || !empty($year)) $q .= ' AND ';
                 if(!empty($area)) $q .= " t.area_id=$area ";
@@ -374,11 +410,17 @@ class DashboardV2Model extends Model
                     SELECT count(1) total ,atr.".$sub_name."
                         from dbo.admiseciso_transaction atr 
                         where atr.disable=0 AND atr.status=1";
-                        $q .= " AND atr.area_id in (select aas.id
-                                from isecurity.dbo.admisec_area_users aau 
-                                inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                                inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-                            where npk=$npk)";
+                        // $q .= " AND atr.area_id in (select aas.id
+                        //         from isecurity.dbo.admisec_area_users aau 
+                        //         inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                        //         inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                        //     where npk=$npk)";
+
+                        $q .= " AND atr.area_id IN (
+                            SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                                INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                            WHERE aau.npk=$npk)";
+
                         if(AuthHelper::is_building_manager()) 
                         {
                             $q .= " AND atr.assets_id=5";
@@ -422,11 +464,17 @@ class DashboardV2Model extends Model
                 SELECT m.MonthNum month_num, count(t.id) total
                     FROM months m
                     LEFT OUTER JOIN dbo.admiseciso_transaction AS t ON MONTH(t.event_date)=m.MonthNum AND t.disable=0 AND t.status=1";
-                    $q .= " AND t.area_id in (select aas.id
-                            from isecurity.dbo.admisec_area_users aau 
-                            inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                            inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-                        where npk=$npk)";
+                    // $q .= " AND t.area_id in (select aas.id
+                    //         from isecurity.dbo.admisec_area_users aau 
+                    //         inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                    //         inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                    //     where npk=$npk)";
+                    
+                    $q .= " AND t.area_id IN (
+                        SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                            INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                        WHERE aau.npk=$npk)";
+
                     if(AuthHelper::is_building_manager())
                     {
                         $q .= " AND t.assets_id=5";
@@ -452,11 +500,17 @@ class DashboardV2Model extends Model
                 SELECT m.MonthNum month_num, count(t.id) total
                     FROM months m
                 LEFT OUTER JOIN dbo.admiseciso_transaction AS t ON MONTH(t.event_date)=m.MonthNum AND YEAR(t.event_date)='$year_now' AND t.disable=0 AND t.status=1";
-                $q .= " AND t.area_id in (select aas.id
-                        from isecurity.dbo.admisec_area_users aau 
-                        inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                        inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-                    where npk=$npk)";
+                // $q .= " AND t.area_id in (select aas.id
+                //         from isecurity.dbo.admisec_area_users aau 
+                //         inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                //         inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                //     where npk=$npk)";
+                    
+                $q .= " AND t.area_id IN (
+                    SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                        INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                    WHERE aau.npk=$npk)";
+
                 if(AuthHelper::is_building_manager())
                 {
                     $q .= " AND t.assets_id=5";
@@ -500,11 +554,16 @@ class DashboardV2Model extends Model
             
                 // if(AuthHelper::is_building_manager()) 
                 // {
-                    $q .= " AND aar.id in (select aas.id
-                            from isecurity.dbo.admisec_area_users aau 
-                            inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                            inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-                        where npk=$npk)";
+                    // $q .= " AND aar.id in (select aas.id
+                    //         from isecurity.dbo.admisec_area_users aau 
+                    //         inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                    //         inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                    //     where npk=$npk)";
+                    
+                    $q .= " AND aar.id IN (
+                        SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                            INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                        WHERE aau.npk=$npk)";
                 // }
                 if(!empty($area)) $q .= ' AND ';
                 if(!empty($area)) $q .= " aar.id=$area ";
@@ -527,11 +586,17 @@ class DashboardV2Model extends Model
                     $q .= " group by stis.area_id
                 ) tis ON tis.area_id=aar.id 
              WHERE aar.area_categ_id=1";
-             $q .= " AND aar.id in (select aas.id
-                     from isecurity.dbo.admisec_area_users aau 
-                     inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                     inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-                 where npk=$npk)";
+            // $q .= " AND aar.id in (select aas.id
+            //         from isecurity.dbo.admisec_area_users aau 
+            //         inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+            //         inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+            //     where npk=$npk)";
+                    
+            $q .= " AND aar.id IN (
+                SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                    INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                WHERE aau.npk=$npk)";
+                
             $q .= " ORDER BY aar.title ASC";
         }
 
@@ -553,11 +618,17 @@ class DashboardV2Model extends Model
             $q = "
                 SELECT count(1) total
                     FROM dbo.admiseciso_transaction tis WHERE tis.disable=0 AND tis.status=1";
-                    $q .= " AND tis.area_id in (select aas.id
-                            from isecurity.dbo.admisec_area_users aau 
-                            inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                            inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-                        where npk=$npk)";
+                    // $q .= " AND tis.area_id in (select aas.id
+                    //         from isecurity.dbo.admisec_area_users aau 
+                    //         inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                    //         inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                    //     where npk=$npk)";
+                    
+                    $q .= " AND tis.area_id IN (
+                        SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                            INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                        WHERE aau.npk=$npk)";
+
                 if(AuthHelper::is_building_manager())
                 {
                     $q .= " AND tis.assets_id=5 ";
@@ -579,11 +650,17 @@ class DashboardV2Model extends Model
                     FROM dbo.admiseciso_transaction tis
                 WHERE year(tis.event_date)='$year_now' AND tis.status=1
             ";
-            $q .= " AND tis.area_id in (select aas.id
-                from isecurity.dbo.admisec_area_users aau 
-                inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-            where npk=$npk)";
+            // $q .= " AND tis.area_id in (select aas.id
+            //     from isecurity.dbo.admisec_area_users aau 
+            //     inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+            //     inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+            // where npk=$npk)";
+                    
+            $q .= " AND tis.area_id IN (
+                SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                    INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                WHERE aau.npk=$npk)";
+
             if(AuthHelper::is_building_manager()) 
             {
                 $q .= " AND tis.assets_id=5";
@@ -613,11 +690,17 @@ class DashboardV2Model extends Model
                             from dbo.admiseciso_transaction stis where stis.disable=0 and stis.status=1";
                             // if(AuthHelper::is_building_manager())
                             // {
-                                $q .= " AND stis.area_id in (select aas.id
-                                            from isecurity.dbo.admisec_area_users aau 
-                                            inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                                            inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-                                        where npk=$npk)";
+                                // $q .= " AND stis.area_id in (select aas.id
+                                //             from isecurity.dbo.admisec_area_users aau 
+                                //             inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                                //             inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                                //         where npk=$npk)";
+
+                                $q .= " AND stis.area_id IN (
+                                    SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                                        INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                                    WHERE aau.npk=$npk)";
+                                    
                             // }
                             if(!empty($area) || !empty($year) || !empty($month)) $q .= ' AND ';
                             if(!empty($area)) $q .= " stis.area_id=$area ";
@@ -648,11 +731,17 @@ class DashboardV2Model extends Model
                         select count(1) total, stis.assets_id
                             from dbo.admiseciso_transaction stis
                             where year(stis.event_date)='$year_now' and stis.disable=0 and stis.status=1";
-                            $q .= " AND stis.area_id in (select aas.id
-                                            from isecurity.dbo.admisec_area_users aau 
-                                            inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                                            inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-                                        where npk=$npk)";
+                            // $q .= " AND stis.area_id in (select aas.id
+                            //                 from isecurity.dbo.admisec_area_users aau 
+                            //                 inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                            //                 inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                            //             where npk=$npk)";
+                            
+                            $q .= " AND stis.area_id IN (
+                                SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                                    INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                                WHERE aau.npk=$npk)";
+
                         $q .= " group by stis.assets_id 
                     ) tis on tis.assets_id=ass.id 
                 WHERE ass.assets_categ_id=1";
@@ -694,11 +783,17 @@ class DashboardV2Model extends Model
                     select str.id ,str.event_date ,str.area_id
                         from dbo.admiseciso_transaction str
                         where str.".$sub_name."=( select top 1 id from dbo.admiseciso_assets_sub where id=$id ) and str.disable=? and str.status=?";
-                        $q .= " AND str.area_id in (select aas.id
-                                from isecurity.dbo.admisec_area_users aau 
-                                inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                                inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-                            where npk=$npk)";
+                        // $q .= " AND str.area_id in (select aas.id
+                        //         from isecurity.dbo.admisec_area_users aau 
+                        //         inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                        //         inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                        //     where npk=$npk)";
+                            
+                        $q .= " AND str.area_id IN (
+                            SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                                INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                            WHERE aau.npk=$npk)";
+                            
                         if(AuthHelper::is_building_manager()) 
                         {
                             $q .= " AND str.assets_id=5";
@@ -734,11 +829,17 @@ class DashboardV2Model extends Model
                     SELECT count(1) total ,atr.".$sub_name."
                         from dbo.admiseciso_transaction atr 
                         where atr.disable=? AND atr.status=?";
-                        $q .= " AND atr.area_id in (select aas.id
-                            from isecurity.dbo.admisec_area_users aau 
-                            inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                            inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-                        where npk=$npk)";
+                        // $q .= " AND atr.area_id in (select aas.id
+                        //     from isecurity.dbo.admisec_area_users aau 
+                        //     inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                        //     inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                        // where npk=$npk)";
+                        
+                        $q .= " AND atr.area_id IN (
+                            SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                                INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                            WHERE aau.npk=$npk)";
+                            
                         if(AuthHelper::is_building_manager()) 
                         {
                             $q .= " AND atr.assets_id=5";
@@ -781,11 +882,17 @@ class DashboardV2Model extends Model
                 ) iml on iml.area_id=tio.area_id and iml.status=tio.status AND iml.disable=tio.disable AND iml.event_date=tio.event_date 
             WHERE tio.disable=0 AND tio.status=1
             ";
-        $q .= " AND tio.area_id in (select aas.id
-                    from isecurity.dbo.admisec_area_users aau 
-                    inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                    inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-                where npk=$npk)";
+        // $q .= " AND tio.area_id in (select aas.id
+        //             from isecurity.dbo.admisec_area_users aau 
+        //             inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+        //             inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+        //         where npk=$npk)";
+                        
+        $q .= " AND tio.area_id IN (
+            SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+            WHERE aau.npk=$npk)";
+            
         if(AuthHelper::is_building_manager()) { 
             $q .= " AND tio.assets_id=5";
         }
@@ -814,11 +921,17 @@ class DashboardV2Model extends Model
                 FROM dbo.admisecsoi_transaction soi
             WHERE soi.disable=0 and soi.status=1";
         // if(AuthHelper::is_building_manager()) {
-            $q .= " AND soi.area_id in (select aas.id
-                        from isecurity.dbo.admisec_area_users aau 
-                        inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                        inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-                    where npk=$npk)";
+            // $q .= " AND soi.area_id in (select aas.id
+            //             from isecurity.dbo.admisec_area_users aau 
+            //             inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+            //             inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+            //         where npk=$npk)";
+
+            $q .= " AND soi.area_id IN (
+                SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                    INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                WHERE aau.npk=$npk)";
+                
         // }
         if(!empty($area) || !empty($year) || !empty($month)) $q .= ' AND ';
         if(!empty($area)) $q .= " soi.area_id=$area ";
@@ -1031,11 +1144,16 @@ class DashboardV2Model extends Model
                         ) iml on iml.status=tio.status AND iml.disable=tio.disable 
                         AND iml.event_date=tio.event_date
                     WHERE tio.disable=0 AND tio.status=1 ";
-                        $q .= " AND tio.area_id in (select aas.id
-                            from isecurity.dbo.admisec_area_users aau 
-                            inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                            inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-                        where npk=$npk)";
+                        // $q .= " AND tio.area_id in (select aas.id
+                        //     from isecurity.dbo.admisec_area_users aau 
+                        //     inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                        //     inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                        // where npk=$npk)";
+
+                        $q .= " AND tio.area_id IN (
+                            SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                                INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                            WHERE aau.npk=$npk)";
                         
                         if(AuthHelper::is_building_manager()) 
                         {
@@ -1055,11 +1173,17 @@ class DashboardV2Model extends Model
 
                         // if(AuthHelper::is_building_manager()) 
                         // {
-                            $q .= " AND soi.area_id in (select aas.id
-                                    from isecurity.dbo.admisec_area_users aau 
-                                    inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                                    inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-                                where npk=$npk)";
+                            // $q .= " AND soi.area_id in (select aas.id
+                            //         from isecurity.dbo.admisec_area_users aau 
+                            //         inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                            //         inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                            //     where npk=$npk)";
+
+                            $q .= " AND soi.area_id IN (
+                                SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                                    INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                                WHERE aau.npk=$npk)";
+
                         // }
                         if(!empty($area) || !empty($year)) $q .= ' AND ';
                         if(!empty($area)) $q .= " soi.area_id=$area ";
@@ -1097,11 +1221,17 @@ class DashboardV2Model extends Model
                 left join ( 
                     select count(1) total, stis.risk_source_id ,stis.risksource_sub1_id
                         from dbo.admiseciso_transaction stis WHERE stis.status=1 and stis.disable=0 ";
-                        $q .= " AND stis.area_id in (select aas.id
-                                from isecurity.dbo.admisec_area_users aau 
-                                inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                                inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-                            where npk=$npk)";
+                        // $q .= " AND stis.area_id in (select aas.id
+                        //         from isecurity.dbo.admisec_area_users aau 
+                        //         inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                        //         inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                        //     where npk=$npk)";
+
+                        $q .= " AND stis.area_id IN (
+                            SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                                INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                            WHERE aau.npk=$npk)";
+
                         if(AuthHelper::is_building_manager()) 
                         {
                             $q .= " AND stis.assets_id=5";
@@ -1138,11 +1268,17 @@ class DashboardV2Model extends Model
                 left join ( 
                     select count(1) total, stis.risk_source_id
                         from admiseciso_transaction stis WHERE stis.status=1 and stis.disable=0";
-                        $q .= " AND stis.area_id in (select aas.id
-                                from isecurity.dbo.admisec_area_users aau 
-                                inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                                inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-                            where npk=$npk)";
+                        // $q .= " AND stis.area_id in (select aas.id
+                        //         from isecurity.dbo.admisec_area_users aau 
+                        //         inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                        //         inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                        //     where npk=$npk)";
+
+                        $q .= " AND stis.area_id IN (
+                            SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                                INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                            WHERE aau.npk=$npk)";
+                            
                         if(AuthHelper::is_building_manager()) 
                         {
                             $q .= " AND stis.assets_id=5";
@@ -1183,11 +1319,18 @@ class DashboardV2Model extends Model
         $q = "SELECT trs.id ,trs.event_name ,trs.event_date ,trs.chronology
                 FROM dbo.admiseciso_transaction trs
             WHERE trs.status=1 and trs.disable=0";
-                $q .= " AND trs.area_id in (select aas.id
-                        from isecurity.dbo.admisec_area_users aau 
-                        inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                        inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-                    where npk=$npk)";
+
+                // $q .= " AND trs.area_id in (select aas.id
+                //         from isecurity.dbo.admisec_area_users aau 
+                //         inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                //         inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                //     where npk=$npk)";
+
+                $q .= " AND trs.area_id IN (
+                    SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                        INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                    WHERE aau.npk=$npk)";
+
                 if(AuthHelper::is_building_manager()) {
                     $q .= " AND trs.assets_id=5";
                 }

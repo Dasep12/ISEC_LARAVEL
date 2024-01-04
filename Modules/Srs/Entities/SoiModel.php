@@ -32,18 +32,18 @@ class SoiModel extends Model
 
         $tes = AuthHelper::is_author('ALLAREA');
 
-        if(AuthHelper::is_author('ALLAREA'))
-        {
-            $q .= " AND wil_id='$user_wilayah'";
-        }
+        // if(AuthHelper::is_author('ALLAREA'))
+        // {
+        //     $q .= " AND wil_id='$user_wilayah'";
+        // }
 
-        if(AuthHelper::is_section_head())
-        {
+        // if(AuthHelper::is_section_head() || AuthHelper::is_building_manager())
+        // {
             $q .= " AND id IN (select aas.id from isecurity.dbo.admisec_area_users aau 
             INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
             INNER JOIN dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
             WHERE aau.npk=$user_npk)";
-        }
+        // }
 
         $q .= " ORDER BY title ASC";
 
@@ -70,6 +70,12 @@ class SoiModel extends Model
         $q = DB::connection('srsbi')->table(self::$tableName.' AS a')->select('a.id', 'asu.title as area', 'a.year', 'a.month', 'a.people', 'a.system', 'a.device', 'a.network', 'a.status');
         $q->join('admiseciso_area_sub as asu', 'asu.id', '=', 'a.area_id');
         $q->where('a.disable',0);
+        
+        $q->whereRaw('asu.id IN (SELECT aas.id
+                FROM isecurity.dbo.admisec_area_users aau 
+                INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                INNER JOIN dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+            WHERE aau.npk='.$npk.')');
 
         // if(AuthHelper::is_section_head())
         // {
@@ -169,7 +175,7 @@ class SoiModel extends Model
                 $row[] = $field->system;
                 $row[] = $field->device;
                 $row[] = $field->network;
-                $edt_btn = AuthHelper::is_super_admin() ? '<a class="btn btn-sm btn-info"href="'. url('srs/soi/edit/'.$field->id) . '">
+                $edt_btn = AuthHelper::is_super_admin() || (isset($access_modul->edt) && $access_modul->edt == 1) ? '<a class="btn btn-sm btn-info"href="'. url('srs/soi/edit/'.$field->id) . '">
                             <i class="fa fa-edit"></i>
                         </a> ': '';
                 $del_btn = AuthHelper::is_super_admin() || (isset($access_modul->dlt) && $access_modul->dlt == 1) ? '<button data-id="'. $field->id . '"data-title="'. $field->area . '"class="btn btn-sm btn-danger"data-toggle="modal"data-target="#deleteModal">

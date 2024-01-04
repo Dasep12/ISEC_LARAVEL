@@ -41,11 +41,17 @@ class OsintDashboardModel extends Model
 
         // if(AuthHelper::is_building_manager()) 
         // {
-            $q .= " AND at2.plant_id in (select aas.id
-                from isecurity.dbo.admisec_area_users aau 
-                inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-            where npk=$npk)";
+            // $q .= " AND at2.plant_id in (select aas.id
+            //     from isecurity.dbo.admisec_area_users aau 
+            //     inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+            //     inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+            // where npk=$npk)";
+                    
+            $q .= " AND at2.plant_id IN (
+                SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                    INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                WHERE aau.npk=$npk)";
+
         // }
         if(!empty($year)) $q .= " AND year(at2.date)=$year ";
         if(!empty($area)) $q .= " AND at2.plant_id=$area ";
@@ -76,11 +82,17 @@ class OsintDashboardModel extends Model
         ";
         // if(AuthHelper::is_building_manager()) 
         // {
-            $q .= " AND shd.id in (select aas.id
-                from isecurity.dbo.admisec_area_users aau 
-                inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-            where npk=$npk)";
+            // $q .= " AND shd.id in (select aas.id
+            //     from isecurity.dbo.admisec_area_users aau 
+            //     inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+            //     inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+            // where npk=$npk)";
+                    
+            $q .= " AND shd.id IN (
+                SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                    INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                WHERE aau.npk=$npk)";
+        
         // }
 
         $res = DB::connection('srsbi')->select($q);
@@ -248,11 +260,16 @@ class OsintDashboardModel extends Model
 
                 // if(AuthHelper::is_building_manager()) 
                 // {
-                    $q .= " AND str.plant_id in (select aas.id
-                        from isecurity.dbo.admisec_area_users aau 
-                        inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                        inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-                    where npk=$npk)";
+                    // $q .= " AND str.plant_id in (select aas.id
+                    //     from isecurity.dbo.admisec_area_users aau 
+                    //     inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                    //     inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                    // where npk=$npk)";
+                    
+                    $q .= " AND str.plant_id IN (
+                        SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                            INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                        WHERE aau.npk=$npk)";
                 // }
                 if(!empty($id)) $q .= ' AND ';
                 if(!empty($id)) $q .= " t.{$sub_name}={$id} ";
@@ -281,11 +298,16 @@ class OsintDashboardModel extends Model
 
             // if(AuthHelper::is_building_manager()) 
             // {
-                $q .= " AND at2.plant_id in (select aas.id
-                    from isecurity.dbo.admisec_area_users aau 
-                    inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                    inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-                where npk=$npk)";
+                // $q .= " AND at2.plant_id in (select aas.id
+                //     from isecurity.dbo.admisec_area_users aau 
+                //     inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                //     inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                // where npk=$npk)";
+                    
+                $q .= " AND at2.plant_id IN (
+                    SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                        INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                    WHERE aau.npk=$npk)";
             // }
             if(!empty($area) || !empty($year) || !empty($month)) $q .= ' AND ';
             if(!empty($area)) $q .= " at2.area_id=$area ";
@@ -407,11 +429,16 @@ class OsintDashboardModel extends Model
 
                 // if(AuthHelper::is_building_manager()) 
                 // {
-                    $q .= " AND at2.plant_id in (select aas.id
-                        from isecurity.dbo.admisec_area_users aau 
-                        inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                        inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-                    where npk=$npk)";
+                    // $q .= " AND at2.plant_id in (select aas.id
+                    //     from isecurity.dbo.admisec_area_users aau 
+                    //     inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+                    //     inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+                    // where npk=$npk)";
+                    
+                    $q .= " AND at2.plant_id IN (
+                        SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                            INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                        WHERE aau.npk=$npk)";
                 // }
                 if(!empty($area) || !empty($year) || !empty($month)) $q .= ' AND ';
                 if(!empty($area)) $q .= " at2.area_id=$area ";

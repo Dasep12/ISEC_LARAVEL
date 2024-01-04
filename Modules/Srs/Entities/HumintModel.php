@@ -26,7 +26,7 @@ class HumintModel extends Model
 
     public static function area()
     {
-        $user_npk = AuthHelper::user_npk();
+        $npk = AuthHelper::user_npk();
         $user_wilayah = AuthHelper::user_wilayah();
 
         $q = "SELECT id, title 
@@ -42,10 +42,14 @@ class HumintModel extends Model
 
         // if(AuthHelper::is_section_head() || AuthHelper::is_building_manager())
         // {
-            $q .= " AND id IN (select aas.id from isecurity.dbo.admisec_area_users aau 
-            INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-            INNER JOIN dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-            WHERE aau.npk=$user_npk)";
+            // $q .= " AND id IN (select aas.id from isecurity.dbo.admisec_area_users aau 
+            // INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+            // INNER JOIN dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+            // WHERE aau.npk=$npk)";
+
+            $q .= " AND id IN (SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                    INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                WHERE aau.npk=$npk)";
         // }
 
         $q .= " ORDER BY title ASC";
@@ -153,7 +157,7 @@ class HumintModel extends Model
     {
         if($req->isMethod('post')) 
         {
-            $id = $req->input('idcateg', true);
+            $id = $req->input('idcateg');
         }
         else
         {
@@ -189,7 +193,7 @@ class HumintModel extends Model
     {
         if($req->isMethod('post')) 
         {
-            $id = $req->input('idcateg', true);
+            $id = $req->input('idcateg');
         }
         else
         {
@@ -258,11 +262,15 @@ class HumintModel extends Model
         
         // if(AuthHelper::is_section_head() || AuthHelper::is_building_manager())
         // {
-            $q->whereRaw('a.area_id IN (SELECT aas.id
-                FROM isecurity.dbo.admisec_area_users aau 
-                INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-                INNER JOIN dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-            WHERE aau.npk='.$npk.')');
+            // $q->whereRaw('a.area_id IN (SELECT aas.id
+            //     FROM isecurity.dbo.admisec_area_users aau 
+            //     INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+            //     INNER JOIN dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+            // WHERE aau.npk='.$npk.')');
+           
+            $q->whereRaw('a.area_id IN (SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                    INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                WHERE aau.npk='.$npk.')');
         // }
         // if(AuthHelper::is_author())
         // {
@@ -284,11 +292,16 @@ class HumintModel extends Model
 
         if($searchFilter)
         {
-            $searchColumn = '';
+            $q->whereRaw('a.area_id IN (SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                    INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                WHERE aau.npk='.$npk.')');
+                
+            $searchColumn = '(';
             foreach (self::$columnSearch as $key => $val) {
                 if($key > 0) $searchColumn .= ' or ';
                 $searchColumn .= "{$val} like '%$searchFilter%' ";
             }
+            $searchColumn .= ')';
             $q->whereRaw($searchColumn);
             
             // foreach (self::$columnSearch as $key => $val) {
@@ -370,19 +383,22 @@ class HumintModel extends Model
 
                 switch ($item->status) {
                     case '1':
-                        $status = '<span class="badge badge-success">Approved</span>';
+                        $status = '<span data-id="'.$item->id.'" class="btn badge badge-success action-status">Approved</span>';
                         break;
                     case '2':
-                        $status = '<span class="badge badge-danger">Rejected</span>';
+                        $status = '<span data-id="'.$item->id.'" class="btn badge badge-danger action-status">Rejected</span>';
+                        break;
+                    case '3':
+                        $status = '<span data-id="'.$item->id.'" class="btn badge badge-warning action-status">Review</span>';
                         break;
                     
                     default:
-                        $status = '<span class="badge badge-warning">Pending</span>';
+                        $status = '<span data-id="'.$item->id.'" class="btn badge badge-warning action-status">Pending</span>';
                         break;
                 }
                 $row[] = $status;
 
-                $edtBtn = AuthHelper::is_super_admin() && ($item->status == '0' || $item->status == '2') && (isset($access_modul->apr) && $access_modul->edt == 1) ? '<a class="btn btn-sm btn-info" href="'.url('srs/humint_source/edit/'.$item->id).'">
+                $edtBtn = AuthHelper::is_super_admin() || ($item->status == '0' || $item->status == '2') && (isset($access_modul->apr) && $access_modul->edt == 1) ? '<a class="btn btn-sm btn-info" href="'.url('srs/humint_source/edit/'.$item->id).'">
                         <i class="fa fa-edit"></i>
                 </a> ' : '';
 
@@ -391,7 +407,7 @@ class HumintModel extends Model
                 //     </button> ' : '<button data-id="'.$item->id.'" data-title="'.$item->event_name.'" class="btn btn-sm btn-success" data-toggle="modal" data-target="#approveModal">
                 //         Approve
                 //     </button> ' : '';
-                $apprBtn = AuthHelper::is_super_admin() || (isset($access_modul->apr) && $access_modul->apr == 1) ? $item->status == 1 ? '' : '<button data-id="'.$item->id.'" data-title="'.$item->event_name.'" class="btn btn-sm btn-success" data-toggle="modal" data-target="#approveModal">
+                $apprBtn = AuthHelper::is_super_admin() || (isset($access_modul->apr) && $access_modul->apr == 1) ? ($item->status == 1 || $item->status == 2) ? '' : '<button data-id="'.$item->id.'" data-title="'.$item->event_name.'" class="btn btn-sm btn-success" data-toggle="modal" data-target="#approveModal">
                         Approve
                     </button> ' : '';
                     
@@ -416,38 +432,39 @@ class HumintModel extends Model
 
     public static function saveData($req)
     {
-        $tanggal = $req->input('tanggal', true);
-        $event_name = $req->input('event_name', true);
+        $tanggal = $req->input('tanggal');
+        $event_name = $req->input('event_name');
 
-        $area = $req->input('area', true);
-        $sub_area1 = $req->input('sub_area1', true);
-        $sub_area2 = $req->input('sub_area2', true);
-        $sub_area3 = $req->input('sub_area3', true);
+        $area = $req->input('area');
+        $sub_area1 = $req->input('sub_area1');
+        $sub_area2 = $req->input('sub_area2');
+        $sub_area3 = $req->input('sub_area3');
 
-        $assets = $req->input('assets', true);
-        $sub_assets1 = $req->input('sub_assets1', true);
-        $sub_assets2 = $req->input('sub_assets2', true);
+        $assets = $req->input('assets');
+        $sub_assets1 = $req->input('sub_assets1');
+        $sub_assets2 = $req->input('sub_assets2');
 
-        $risk_source = $req->input('risk_source', true);
-        $sub_risksource1 = $req->input('sub_risksource1', true);
-        $sub_risksource2 = $req->input('sub_risksource2', true);
+        $risk_source = $req->input('risk_source');
+        $sub_risksource1 = $req->input('sub_risksource1');
+        $sub_risksource2 = $req->input('sub_risksource2');
 
-        $risk = explode(':', $req->input('risk', true))[0];
-        $sub_risk1 = $req->input('sub_risk1', true);
-        $sub_risk2 = $req->input('sub_risk2', true);
-        $risk_level = $req->input('risk_level', true);
+        $risk = explode(':', $req->input('risk'))[0];
+        $sub_risk1 = $req->input('sub_risk1');
+        $sub_risk2 = $req->input('sub_risk2');
+        $risk_level = $req->input('risk_level');
 
-        $financial = $req->input('financial', true);
-        $sdm = $req->input('sdm', true);
-        $operational = $req->input('operational', true);
-        $reputation = $req->input('reputation', true);
+        $financial = $req->input('financial');
+        $sdm = $req->input('sdm');
+        $operational = $req->input('operational');
+        $reputation = $req->input('reputation');
         $find_impact = array(explode(':', $financial)[0], explode(':', $sdm)[0], explode(':', $operational)[0], explode(':', $reputation)[0]);
         $impact = max($find_impact);
-        $chronology = addslashes($req->input('chronology', true));
+        $chronology = addslashes($req->input('chronology'));
         $chronology = preg_replace("/'/", "\&#39;", $chronology);
-        $reporter = $req->input('reporter', true);
+        $reporter = $req->input('reporter');
         $sess_npk = AuthHelper::user_npk();
         $curr_date = date('Y-m-d H:i:s');
+        $actionStatus = '0';
         
         $q_no_urut = "
             SELECT FORMAT(ISNULL(max(no_urut), 0) + 1, '000') no_urut
@@ -471,6 +488,8 @@ class HumintModel extends Model
 
         $column = "INSERT INTO admiseciso_transaction(no_reference, no_urut, event_name, event_date, area_id, area_sub1_id, area_sub2_id, area_sub3_id, assets_id, assets_sub1_id, assets_sub2_id, risk_source_id, risksource_sub1_id, risksource_sub2_id, risk_id, risk_sub1_id, risk_sub2_id, risk_level_id, financial_level, sdm_level, operational_level, reputation_level, impact_level, chronology, created_by, reporter";
         $column .= ") VALUES";
+        
+        // dd($column.$q_implode);
 
         DB::connection('srsbi')->beginTransaction();
 
@@ -519,6 +538,16 @@ class HumintModel extends Model
 
                     if($resFile)
                     {
+                        // LOG //
+                        DB::connection('srsbi')->table('admiseciso_transaction_log')->insert([
+                            'trans_id' => $transId,
+                            'status' => $actionStatus,
+                            'description' => "Insert data",
+                            'created_on' => "$curr_date",
+                            'created_by' => "$sess_npk"
+                        ]);
+                        // LOG //
+                        
                         DB::connection('srsbi')->commit();
                         return '00';
                     }
@@ -530,6 +559,16 @@ class HumintModel extends Model
                 }
                 else
                 {
+                    // LOG //
+                    DB::connection('srsbi')->table('admiseciso_transaction_log')->insert([
+                        'trans_id' => $transId,
+                        'status' => $actionStatus,
+                        'description' => "Insert data",
+                        'created_on' => "$curr_date",
+                        'created_by' => "$sess_npk"
+                    ]);
+                    // LOG //
+
                     DB::connection('srsbi')->commit();
                     return '00';
                 }
@@ -547,7 +586,7 @@ class HumintModel extends Model
     public static function edit($id)
     {
         $q = "
-                SELECT a.*, tat.id file_id, tat.trans_id, tat.file_name, tat.status
+                SELECT a.*, tat.id file_id, tat.trans_id, tat.file_name
                     FROM admiseciso_transaction a
                     LEFT JOIN admiseciso_trans_attach tat ON tat.trans_id=a.id AND tat.status=1
                 WHERE a.id=? AND a.disable=?
@@ -563,7 +602,7 @@ class HumintModel extends Model
         $id = $req->input('id');
         $tanggal = $req->input('tanggal');
         $tanggal_lama = $req->input('old_date');
-        $no_urut = $req->input('no_urut', true);
+        $no_urut = $req->input('no_urut');
         $event_name = $req->input('event_name');
 
         $area = $req->input('area');
@@ -596,8 +635,10 @@ class HumintModel extends Model
         $sess_npk = AuthHelper::user_npk('npk');
         $attached = $req->file('attach');
         $curr_date = date('Y-m-d H:i:s');
+        $actionStatus = $req->input('action_status');
+        $actionStatus = $actionStatus == '2' ? '3' : $actionStatus;
 
-        // dd($sub_risksource1);
+        // dd($actionStatus);
         
         // Jika tanggal event diubah maka buat baru
         if(date('Ymd', strtotime($tanggal)) !== date('Ymd', strtotime($tanggal_lama)))
@@ -620,10 +661,12 @@ class HumintModel extends Model
 
         $q = array();
         foreach ($area as $key => $are) {
-            $q[$are] = "no_reference='$no_ref',no_urut='$no_urut',event_name='$event_name', event_date='$tanggal', area_id='$are', area_sub1_id=NULLIF('$sub_area1', ''), area_sub2_id=NULLIF('$sub_area2', ''), area_sub3_id=NULLIF('$sub_area3', ''), assets_id='$assets', assets_sub1_id=NULLIF('$sub_assets1', ''), assets_sub2_id=NULLIF('$sub_assets2', ''), risk_source_id='$risk_source', risksource_sub1_id=NULLIF('$sub_risksource1', ''), risksource_sub2_id=NULLIF('$sub_risksource2', ''), risk_id='$risk', risk_sub1_id=NULLIF('$sub_risk1', ''), risk_sub2_id=NULLIF('$sub_risk2', ''), risk_level_id='$risk_level', financial_level='".explode(':', $financial)[1]."', sdm_level='".explode(':', $sdm)[1]."', operational_level='".explode(':', $operational)[1]."', reputation_level='".explode(':', $reputation)[1]."', impact_level='$impact', chronology='$chronology', updated_by='$sess_npk', reporter='$reporter', updated_on='".date('Y-m-d H:i:s')."'";
+            $q[$are] = "no_reference='$no_ref',no_urut='$no_urut',event_name='$event_name', event_date='$tanggal', area_id='$are', area_sub1_id=NULLIF('$sub_area1', ''), area_sub2_id=NULLIF('$sub_area2', ''), area_sub3_id=NULLIF('$sub_area3', ''), assets_id='$assets', assets_sub1_id=NULLIF('$sub_assets1', ''), assets_sub2_id=NULLIF('$sub_assets2', ''), risk_source_id='$risk_source', risksource_sub1_id=NULLIF('$sub_risksource1', ''), risksource_sub2_id=NULLIF('$sub_risksource2', ''), risk_id='$risk', risk_sub1_id=NULLIF('$sub_risk1', ''), risk_sub2_id=NULLIF('$sub_risk2', ''), risk_level_id='$risk_level', financial_level='".explode(':', $financial)[1]."', sdm_level='".explode(':', $sdm)[1]."', operational_level='".explode(':', $operational)[1]."', reputation_level='".explode(':', $reputation)[1]."', impact_level='$impact', chronology='$chronology', updated_by='$sess_npk', reporter='$reporter', updated_on='".date('Y-m-d H:i:s')."', status=NULLIF('$actionStatus', '')";
         }
 
         $q_upd_implode = implode (", ", $q);
+
+        // dd($q_upd_implode);
         
         DB::connection('srsbi')->beginTransaction();
 
@@ -680,6 +723,16 @@ class HumintModel extends Model
 
                     if($qTransFile)
                     {
+                        // LOG //
+                        DB::connection('srsbi')->table('admiseciso_transaction_log')->insert([
+                            'trans_id' => $id,
+                            'status' => $actionStatus,
+                            'description' => "Update data",
+                            'created_on' => "$curr_date",
+                            'created_by' => "$sess_npk"
+                        ]);
+                        // LOG //
+
                         DB::connection('srsbi')->commit();
                         return '00';
                     }
@@ -691,6 +744,16 @@ class HumintModel extends Model
                 }
                 else
                 {
+                    // LOG //
+                    DB::connection('srsbi')->table('admiseciso_transaction_log')->insert([
+                        'trans_id' => $id,
+                        'status' => $actionStatus,
+                        'description' => "Update data",
+                        'created_on' => "$curr_date",
+                        'created_by' => "$sess_npk"
+                    ]);
+                    // LOG //
+                    
                     DB::connection('srsbi')->commit();
                     return '00';
                 }
@@ -779,14 +842,15 @@ class HumintModel extends Model
                 LEFT JOIN admiseciso_risk_sub ris2 ON ris2.id=a.risk_sub2_id
                 LEFT JOIN admiseciso_trans_attach tat ON tat.trans_id=a.id AND tat.status=1
                 INNER JOIN isecurity.dbo.admisecsgp_mstusr musr ON musr.npk=a.created_by
-                INNER JOIN (
-                    select aas.id, amu.name, amu.npk 
-                    from isecurity.dbo.admisec_area_users aau 
-                    inner join isecurity.dbo.admisecsgp_mstusr amu ON amu.npk=aau.npk 
-                    inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id
-                    inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah
-                    group by aas.id, amu.name, amu.npk
-                ) husr ON husr.id=a.area_id
+                -- INNER JOIN (
+                --     select aas.id, amu.name, amu.npk 
+                --     from isecurity.dbo.admisec_area_users aau 
+                --     inner join isecurity.dbo.admisecsgp_mstusr amu ON amu.npk=aau.npk 
+                --     inner join isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id
+                --     inner join dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah
+                --     group by aas.id, amu.name, amu.npk
+                -- ) husr ON husr.id=a.area_id
+                INNER JOIN isecurity.dbo.admisecsgp_mstusr husr ON husr.npk=a.approved_by
             WHERE a.id=?
         ";
         
@@ -800,10 +864,29 @@ class HumintModel extends Model
         $userNpk = AuthHelper::user_npk();
         $id = $req->input('id');
         $currDate = date('Y-m-d H:i:s');
+        $action = $req->input('action');
+        $rejectDesc = htmlentities($req->input('reject_desc'));
 
-        $q = "UPDATE admiseciso_transaction SET status=?, approved_on=?, approved_by='$userNpk' WHERE id=?";
+        $q = "UPDATE admiseciso_transaction SET status=?, approved_on=?, approved_by=?";
+        if($action == '2')
+        {
+            $q .= " ,reject_description='$rejectDesc' ,rejected_by=$userNpk ,rejected_on='$currDate' ";
+        }
+        $q .= " WHERE id=?";
+
+        // dd($q);
         
-        $res = DB::connection('srsbi')->update($q, [1, "{$currDate}", $id]);
+        $res = DB::connection('srsbi')->update($q, [$action, "{$currDate}", "$userNpk", $id]);
+        
+        // LOG //
+        DB::connection('srsbi')->table('admiseciso_transaction_log')->insert([
+            'trans_id' => $id,
+            'status' => $action,
+            'description' => "$rejectDesc",
+            'created_on' => "{$currDate}",
+            'created_by' => "$userNpk"
+        ]);
+        // LOG //
 
         if($res)
         {
@@ -841,8 +924,8 @@ class HumintModel extends Model
 
         if(AuthHelper::is_super_admin())
         {
-            $id = $req->input('fileId', true);
-            $fileName = $req->input('fileName', true);
+            $id = $req->input('fileId');
+            $fileName = $req->input('fileName');
             $filePath = $path.$fileName;
             
             $q = "UPDATE admiseciso_trans_attach SET status=2 WHERE id=?";
@@ -878,11 +961,15 @@ class HumintModel extends Model
                 from admiseciso_transaction 
             where disable=0 and status=1";
 
-        $q .= " AND area_id IN (SELECT aas.id
-            FROM isecurity.dbo.admisec_area_users aau 
-            INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
-            INNER JOIN dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
-        WHERE aau.npk=$userNpk) AND ";
+        // $q .= " AND area_id IN (SELECT aas.id
+        //     FROM isecurity.dbo.admisec_area_users aau 
+        //     INNER JOIN isecurity.dbo.admisecsgp_mstsite ams ON ams.site_id=aau.site_id 
+        //     INNER JOIN dbo.admiseciso_area_sub aas ON aas.wil_id=ams.id_wilayah 
+        // WHERE aau.npk=$userNpk) AND ";
+        
+        $q .= " AND area_id IN (SELECT ajp.area_id from isecurity.dbo.admisec_area_users aau
+                    INNER JOIN dbo.admisec_area_join_plant ajp ON aau.plant_id=ajp.plant_id 
+                WHERE aau.npk=$userNpk) AND ";
         
         foreach ($key_array as $key => $val) {
             if($key > 0) $q .= ' and ';

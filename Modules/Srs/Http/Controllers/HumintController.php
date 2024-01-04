@@ -5,6 +5,7 @@ namespace Modules\Srs\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 use AuthHelper, FormHelper;
@@ -498,7 +499,7 @@ class HumintController extends Controller
                 // return redirect('srs/humint_source')->with('success', '<i class="icon fas fa-check"></i> Berhasil menyetujui data');
                 $result = array(
                     'code' => '00',
-                    'msg' => 'Berhasil menyetujui data.'
+                    'msg' => 'Berhasil mengirim data.'
                 );
             }
             else
@@ -506,7 +507,7 @@ class HumintController extends Controller
                 // return redirect('srs/humint_source')->with('error', '<i class="icon fas fa-exclamation-triangle"></i> Gagal menyetujui data');
                 $result = array(
                     'code' => '01',
-                    'msg' => 'Gagal menyetujui data.'
+                    'msg' => 'Gagal mengirim data.'
                 );
             }
         }
@@ -524,8 +525,8 @@ class HumintController extends Controller
         else
         {
             $get_edit = HumintModel::edit($id);
-
-            if($get_edit !== NULL)
+            // dd($get_edit);
+            if(count((array)$get_edit))
             {
                 $data_edit = $get_edit[0];
                 // echo '<pre>';
@@ -824,6 +825,10 @@ class HumintController extends Controller
                                     </table>
                                 </td>
                             </tr>
+                            <tr>
+                                <th>Chronology</th>
+                                <td colspan="4" class="font-weight-bold">'.html_entity_decode($res[0]->chronology).'</td>
+                            </tr>
                         </tbody>
                     </table>';
 
@@ -1099,6 +1104,66 @@ class HumintController extends Controller
             else
             {
                 return redirect('srs/humint_source')->with('error', '<i class="icon fas fa-exclamation-triangle"></i> Gagal menyimpan data');
+            }
+        }
+    }
+
+    public function getRejectedDesc(Request $req) 
+    {
+        $validator = Validator::make($req->all(), [
+            'id' => 'required',
+        ]);
+ 
+        if ($validator->fails())
+        {
+            echo null;
+        }
+        else
+        {
+            $id = $req->input('id');
+
+            $res = DB::connection('srsbi')
+            ->table('admiseciso_transaction as a')
+            ->select('a.event_name','a.reject_description','a.status','apr.name as aprroved_name','rjt.name as rejected_name')
+            ->leftJoin('isecurity.dbo.admisecsgp_mstusr as apr','apr.npk','=','a.approved_by')
+            ->leftJoin('isecurity.dbo.admisecsgp_mstusr as rjt','rjt.npk','=','a.rejected_by')
+            ->where('a.id', $id)
+            ->first();
+
+            if($res && $res->event_name !== null)
+            {
+                switch ($res->status) {
+                    case '1':
+                        $status = '<span class="badge badge-success">Approved</span> By '.$res->aprroved_name;
+                        break;
+                    case '2':
+                        $status = '<span class="badge badge-danger">Rejected</span> By '.$res->rejected_name;
+                        break;
+                    case '3':
+                        $status = '<span class="badge badge-warning">Review</span>';
+                        break;
+                    
+                    default:
+                        $status = '<span class="badge badge-warning">Pending</span>';
+                        break;
+                }
+                $html = '<ul class="list-unstyled">
+                    <li class="media">
+                        <div class="media-body">
+                            <h5  class="mt-0 mb-1">'.$res->event_name.'</h5>
+                            <p class="mt-2 mb-2">'.$res->reject_description.'</p>
+                            <div class="d-flex justify-content-start">
+                                <span>'.$status.'</span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>';
+
+                echo $html;
+            }
+            else
+            {
+                echo null;
             }
         }
     }

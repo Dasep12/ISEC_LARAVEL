@@ -197,7 +197,7 @@
                         <?php if (AuthHelper::is_super_admin()) { ?>
                             <li class="nav-header">Settings</li>
                             <li class="nav-item
-                        <?php if (Request::segment(3) == 'register' || Request::segment(3) == 'list_app' || Request::segment(3) == 'list_user' || Request::segment(3) == 'list_app_user' || Request::segment(3) == 'edit_pwd' || Request::segment(3) == 'edit' || Request::segment(3) == 'list_module' || Request::segment(3) == 'list_role' || Request::segment(3) == 'list_role_app' || Request::segment(3) == 'user_role_app' || Request::segment(2) == 'user_area' || Request::segment(2) == 'role_module' || Request::segment(2) == 'users' || Request::segment(2) == 'add_users') {
+                        <?php if (Request::segment(3) == 'register' || Request::segment(3) == 'list_app' || Request::segment(3) == 'list_user' || Request::segment(3) == 'list_app_user' || Request::segment(3) == 'edit_pwd' || Request::segment(3) == 'edit' || Request::segment(3) == 'list_module' || Request::segment(3) == 'list_role' || Request::segment(3) == 'list_role_app' || Request::segment(3) == 'user_role_app' || Request::segment(2) == 'user_area' || Request::segment(2) == 'role_module' || Request::segment(2) == 'users' || Request::segment(2) == 'add_users' || Request::segment(2) == 'masterApp' || Request::segment(2) == 'roleUser' || Request::segment(2) == 'modules') {
                                 echo 'menu-open active';
                             } ?>
                          ">
@@ -231,8 +231,8 @@
                                     </li>
 
                                     <li class="nav-item">
-                                        <a href="#Setting/MasterRole/list_role" class="nav-link 
-                                        <?php if (Request::segment(3) == 'list_role') {
+                                        <a href="/setting/roleUser" class="nav-link 
+                                        <?php if (Request::segment(2) == 'roleUser') {
                                             echo 'active';
                                         } ?>">
                                             <i class="fas fa-minus-circle nav-icon"></i>
@@ -241,8 +241,8 @@
                                     </li>
 
                                     <li class="nav-item">
-                                        <a href="{{ url('setting/user_role_app/user_role_app') }}" class="nav-link 
-                                        <?php if (Request::segment(3) == 'user_role_app') {
+                                        <a href="/setting/user_role_app/user_role_app" class="nav-link 
+                                        <?php if (Request::segment(2) == 'user_role_app') {
                                             echo 'active';
                                         } ?>">
                                             <i class="fas fa-minus-circle nav-icon"></i>
@@ -251,18 +251,18 @@
                                     </li>
 
                                     <li class="nav-item">
-                                        <a href="#Setting/MasterAplikasi/list_app" class="nav-link 
-                                        <?php if (Request::segment(3) == 'list_app') {
+                                        <a href="/setting/masterApp" class="nav-link 
+                                        <?php if (Request::segment(2) == 'masterApp') {
                                             echo 'active';
                                         } ?>">
                                             <i class="fas fa-minus-circle nav-icon"></i>
-                                            <p>Master Aplikasi</p>
+                                            <p>Master Aplikasi </p>
                                         </a>
                                     </li>
 
                                     <li class="nav-item">
-                                        <a href="#Setting/MasterModule/list_module" class="nav-link 
-                                        <?php if (Request::segment(3) == 'list_module') {
+                                        <a href="/setting/modules" class="nav-link 
+                                        <?php if (Request::segment(2) == 'modules') {
                                             echo 'active';
                                         } ?>">
                                             <i class="fas fa-minus-circle nav-icon"></i>

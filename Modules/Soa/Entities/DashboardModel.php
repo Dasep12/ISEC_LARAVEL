@@ -27,11 +27,38 @@ class DashboardModel extends Model
         $npk = Session('npk');
         $sql = "SELECT id, title FROM admisecdrep_sub tio WHERE categ_id='9' AND disable=0 
         AND tio.title IN (SELECT am.plant_name  FROM  isecurity.dbo.admisec_area_users aus
-        inner join isecurity.dbo.admisecsgp_mstplant am  on am.admisecsgp_mstsite_site_id = aus.site_id 
+        inner join isecurity.dbo.admisecsgp_mstplant am  on am.plant_id = aus.plant_id 
         WHERE aus.npk = $npk)
         ";
         $res = DB::connection('soabi')->select($sql);
         return $res;
+    }
+
+    public static function wherePlants()
+    {
+        $data = "SELECT as2.code_sub  FROM  isecurity.dbo.admisec_area_users aus  
+        inner join isecurity.dbo.admisecsgp_mstplant am  on am.plant_id = aus.plant_id
+        inner join soa_bi.dbo.admisecdrep_sub as2 on as2.code_sub  = am.plant_code  
+        WHERE aus.npk = '" . Session('npk') . "' ";
+        return $data;
+    }
+
+    public static function wherePlants2()
+    {
+        $npk = Session('npk');
+        $data = "SELECT am.plant_name  FROM  isecurity.dbo.admisec_area_users aus
+        inner join isecurity.dbo.admisecsgp_mstplant am  on am.plant_id = aus.plant_id 
+        WHERE aus.npk = $npk";
+        return $data;
+    }
+
+    public static function wherePlants3()
+    {
+        $npk = Session('npk');
+        $data = "SELECT am.plant_code  FROM  isecurity.dbo.admisec_area_users aus
+        inner join isecurity.dbo.admisecsgp_mstplant am  on am.plant_id = aus.plant_id 
+        WHERE aus.npk = $npk";
+        return $data;
     }
 
     public static function peopleAll($req)
@@ -40,25 +67,16 @@ class DashboardModel extends Model
         $year = $req->input('year_fil');
         $year = empty($year) ? date('Y') : $year;
         $month = $req->input('month_fil');
-        $user_wilayah = AuthHelper::user_wilayah();
         $area_kode = $req->input("area_fills");
-        $whereWil = "";
-
-        // if (AuthHelper::is_author('ALLAREA')) {
-        //     $whereWil .= " AND wil_id='$user_wilayah'";
-        // }
 
 
-        $npk = Session('npk');
 
         $sql = "SELECT FORMAT(COALESCE(SUM(b.attendance),0), 'N0') AS total_people
         FROM soa_bi.dbo.admisecdrep_transaction as a
         INNER JOIN soa_bi.dbo.admisecdrep_transaction_people b ON b.trans_id=a.id and 
         b.people_id in (7,8,9)
         INNER JOIN soa_bi.dbo.admisecdrep_sub as2 on as2.id  = a.area_id 
-        WHERE a.disable=0  and a.status = 1 and b.status = 1 AND as2.title IN (SELECT am.plant_name  FROM  isecurity.dbo.admisec_area_users aus
-        inner join isecurity.dbo.admisecsgp_mstplant am  on am.admisecsgp_mstsite_site_id = aus.site_id 
-        WHERE aus.npk = $npk) ";
+        WHERE a.disable=0  and a.status = 1 and b.status = 1 AND as2.title IN (" . self::wherePlants2() . ") ";
 
 
         if (!empty($area)) {
@@ -95,9 +113,7 @@ class DashboardModel extends Model
         FROM soa_bi.dbo.admisecdrep_transaction as a
         INNER JOIN soa_bi.dbo.admisecdrep_transaction_vehicle atv ON atv.trans_id=a.id
         INNER JOIN admisecdrep_sub as2 on as2.id  = a.area_id  
-        WHERE a.disable=0 and atv.type_id in (1,2,3,1037) and a.status = 1 and atv.status = 1  AND as2.title in (SELECT am.plant_name  FROM  isecurity.dbo.admisec_area_users aus
-        inner join isecurity.dbo.admisecsgp_mstplant am  on am.admisecsgp_mstsite_site_id = aus.site_id 
-        WHERE aus.npk = '" . Session('npk') . "' ) ";
+        WHERE a.disable=0 and atv.type_id in (1,2,3,1037) and a.status = 1 and atv.status = 1  AND as2.title in (" . self::wherePlants2() . ") ";
         if (!empty($area)) {
             $sql .= " AND a.area_id='$area'";
         } else if ($area_kode != "" || $area_kode != null) {
@@ -134,9 +150,7 @@ class DashboardModel extends Model
         FROM soa_bi.dbo.admisecdrep_transaction atr
         INNER JOIN soa_bi.dbo.admisecdrep_transaction_material atm ON atm.trans_id=atr.id
         INNER JOIN soa_bi.dbo.admisecdrep_sub as2 on as2.id  = atr.area_id 
-        WHERE atr.disable=0 and atm.category_id in (1035,1036) and atr.status = 1 and atm.status = 1  AND as2.title in (SELECT am.plant_name  FROM  isecurity.dbo.admisec_area_users aus
-        inner join isecurity.dbo.admisecsgp_mstplant am  on am.admisecsgp_mstsite_site_id = aus.site_id 
-        WHERE aus.npk = '" . Session('npk') . "' ) ";
+        WHERE atr.disable=0 and atm.category_id in (1035,1036) and atr.status = 1 and atm.status = 1  AND as2.title in (" . self::wherePlants2() . ") ";
 
         // $sql  = "SELECT FORMAT(COALESCE(COUNT(PKBNo),0), 'N0') AS total
         // FROM T_PKB trx WHERE NULLIF(PKBNo, '') IS NOT NULL ";
@@ -233,8 +247,7 @@ class DashboardModel extends Model
                 ) AS trx ON DAY(trx.report_date)=m.DayNum AND trx.people_id=tas.id AND YEAR(trx.report_date)='$year' 
                     AND MONTH(trx.report_date)='$month'
                     $whereArea
-                    AND trx.plt in (SELECT am.plant_name  FROM  isecurity.dbo.admisec_area_users aus inner join isecurity.dbo.admisecsgp_mstplant am  on am.admisecsgp_mstsite_site_id = aus.site_id 
-                WHERE aus.npk = $npk)
+                    AND trx.plt in (" . self::wherePlants2() . ")
             WHERE tas.disable=0 
             
             GROUP BY m.DayNum, tas.id ,tas.title
@@ -287,8 +300,7 @@ class DashboardModel extends Model
             ) AS trx ON DAY(trx.report_date)=m.DayNum AND trx.type_id=tas.id AND YEAR(trx.report_date)='$year' 
                 AND MONTH(trx.report_date)='$month'
                 $whereArea
-                AND trx.plt IN (SELECT am.plant_name  FROM  isecurity.dbo.admisec_area_users aus inner join isecurity.dbo.admisecsgp_mstplant am  on am.admisecsgp_mstsite_site_id = aus.site_id 
-                WHERE aus.npk = $npk) 
+                AND trx.plt IN (" . self::wherePlants2() . ") 
         WHERE tas.disable=0 
         GROUP BY m.DayNum, tas.id ,tas.title
         ORDER BY tas.id ASC";
@@ -339,8 +351,7 @@ class DashboardModel extends Model
             ) AS trx ON DAY(trx.report_date)=m.DayNum AND trx.category_id=tas.id AND YEAR(trx.report_date)='$year' 
                 AND MONTH(trx.report_date)='$month'
                 $whereArea
-                AND trx.plt IN (SELECT am.plant_name  FROM  isecurity.dbo.admisec_area_users aus inner join isecurity.dbo.admisecsgp_mstplant am  on am.admisecsgp_mstsite_site_id = aus.site_id 
-                WHERE aus.npk = $npk) 
+                AND trx.plt IN (" . self::wherePlants2() . ") 
         WHERE tas.disable=0 
         GROUP BY m.DayNum, tas.id ,tas.title
         ORDER BY tas.id ASC";
@@ -408,8 +419,7 @@ class DashboardModel extends Model
                 INNER JOIN soa_bi.dbo.admisecdrep_transaction_vehicle atv ON atv.trans_id=a.id 
                 INNER JOIN soa_bi.dbo.admisecdrep_sub as2 ON as2.id  = a.area_id 
                 WHERE a.disable=0 and atv.type_id = '$id' and atv.status = 1  
-                AND as2.title in (SELECT am.plant_name FROM  isecurity.dbo.admisec_area_users aus  inner join isecurity.dbo.admisecsgp_mstplant am  on am.admisecsgp_mstsite_site_id = aus.site_id 
-                WHERE aus.npk = '" . Session('npk') . "' )";
+                AND as2.title in (" . self::wherePlants2() . ")";
 
         if (!empty($area)) $sql .= " AND a.area_id='$area'";
         if (!empty($month)) $sql .= " AND MONTH(a.report_date)='$month'";
@@ -445,8 +455,7 @@ class DashboardModel extends Model
                         INNER JOIN soa_bi.dbo.admisecdrep_transaction_people atp ON atp.trans_id=atr.id 
                         INNER JOIN soa_bi.dbo.admisecdrep_sub as2 ON as2.id  = atr.area_id 
                         WHERE atr.disable=0 and atp.status = 1 and atr.status = 1 
-                        AND as2.title in (SELECT am.plant_name FROM  isecurity.dbo.admisec_area_users aus  inner join isecurity.dbo.admisecsgp_mstplant am  on am.admisecsgp_mstsite_site_id = aus.site_id 
-                WHERE aus.npk = '" . Session('npk') . "' ) ";
+                        AND as2.title in (" . self::wherePlants2() . ") ";
 
         if (!empty($area)) $sql .= " AND atr.area_id='$area'";
         if (!empty($month)) $sql .= " AND MONTH(atr.report_date)='$month'";
@@ -483,8 +492,7 @@ class DashboardModel extends Model
                 FROM soa_bi.dbo.admisecdrep_transaction atr
                 INNER JOIN soa_bi.dbo.admisecdrep_transaction_material atp ON atp.trans_id=atr.id 
                 INNER JOIN soa_bi.dbo.admisecdrep_sub as2 ON as2.id  = atr.area_id 
-                WHERE atr.disable=0 and atr.status = 1 and atp.status = 1 AND as2.title in (SELECT am.plant_name FROM  isecurity.dbo.admisec_area_users aus  inner join isecurity.dbo.admisecsgp_mstplant am  on am.admisecsgp_mstsite_site_id = aus.site_id 
-                WHERE aus.npk = '" . Session('npk') . "' )  ";
+                WHERE atr.disable=0 and atr.status = 1 and atp.status = 1 AND as2.title in (" . self::wherePlants2() . ")  ";
 
         if (!empty($area)) $sql .= " AND atr.area_id='$area'";
         if (!empty($month)) $sql .= " AND MONTH(atr.report_date)='$month'";
@@ -514,11 +522,7 @@ class DashboardModel extends Model
 
 
         $sql = "SELECT  1 as id ,'PKB' as title  , COUNT(tp.PKBNo) as total  FROM T_PKB tp 
-        WHERE  NULLIF(tp.PKBNo, '') IS NOT NULL  AND tp.LocationName in (SELECT as2.code_sub  FROM  isecurity.dbo.admisec_area_users aus  
-        inner join isecurity.dbo.admisecsgp_mstplant am  on am.admisecsgp_mstsite_site_id = aus.site_id
-        inner join soa_bi.dbo.admisecdrep_sub as2 on as2.code_sub  = am.plant_code  
-        WHERE aus.npk = '" . Session('npk') . "'
-        )";
+        WHERE  NULLIF(tp.PKBNo, '') IS NOT NULL  AND tp.LocationName in (" . self::wherePlants() . ")";
 
 
         // if (!empty($area)) $sql .= " AND tp.LocationName='$area'";
@@ -579,8 +583,7 @@ class DashboardModel extends Model
                 AND YEAR(a.report_date)='$year'
                 AND a.status = 1
                 $wherePlant
-                AND as2.title IN (SELECT am.plant_name  FROM  isecurity.dbo.admisec_area_users aus inner join isecurity.dbo.admisecsgp_mstplant am  on am.admisecsgp_mstsite_site_id = aus.site_id 
-                WHERE aus.npk = $npk) 
+                AND as2.title IN (" . self::wherePlants2() . ") 
         )as total 
         from months ");
         $data = array();
@@ -631,8 +634,7 @@ class DashboardModel extends Model
                 AND a.status = 1
                 AND YEAR(a.report_date)='$year'
                 $wherePlant
-                AND as2.title IN (SELECT am.plant_name  FROM  isecurity.dbo.admisec_area_users aus inner join isecurity.dbo.admisecsgp_mstplant am  on am.admisecsgp_mstsite_site_id = aus.site_id 
-                WHERE aus.npk = $npk) 
+                AND as2.title IN (" . self::wherePlants2() . ") 
         )as total 
         from months ");
         $data = array();
@@ -675,8 +677,7 @@ class DashboardModel extends Model
                 AND MONTH(atr.report_date)= MonthNumber
                 AND atr.status = 1
                 AND YEAR(atr.report_date)='$year'
-                AND as2.title IN (SELECT am.plant_name  FROM  isecurity.dbo.admisec_area_users aus inner join isecurity.dbo.admisecsgp_mstplant am  on am.admisecsgp_mstsite_site_id = aus.site_id 
-                WHERE aus.npk = $npk) 
+                AND as2.title IN (" . self::wherePlants2() . ") 
                 $wherePlant 
         )as total 
         from months");
@@ -719,9 +720,7 @@ class DashboardModel extends Model
             WHERE 
             YEAR(tp.PKBDate) = '$year' 
             and MONTH(tp.PKBDate) = m.DayNum 
-           AND  tp.LocationName in (SELECT am.plant_code FROM  isecurity.dbo.admisec_area_users aus 
-        inner join isecurity.dbo.admisecsgp_mstplant am  on am.admisecsgp_mstsite_site_id = aus.site_id 
-                 WHERE aus.npk = '" . Session('npk') . "')
+           AND  tp.LocationName in (" . self::wherePlants2() . ")
         ) total
         FROM days m");
 
@@ -768,9 +767,7 @@ class DashboardModel extends Model
         $sql .= "GROUP BY tp.PKBDate , tp.LocationName
             )X on X.plt = pl.DummiesPlant
         ";
-        $sql .= "WHERE pl.DummiesPlant in (SELECT am. plant_code FROM  isecurity.dbo.admisec_area_users aus 
-        inner join isecurity.dbo.admisecsgp_mstplant am  on am.admisecsgp_mstsite_site_id = aus.site_id 
-                 WHERE aus.npk = '" . Session('npk') . "')";
+        $sql .= "WHERE pl.DummiesPlant in (" . self::wherePlants3() . ")";
         if (!empty($area)) $sql .= " AND pl.DummiesPlant='$area'";
         $sql .= "GROUP BY pl.DummiesPlant";
         $res = DB::connection('egate')->select($sql);
@@ -779,19 +776,16 @@ class DashboardModel extends Model
 
     public static function pkbPlantSetahun($req)
     {
-        // $area = $req->input('area_fil');
+        $area = $req->input('area_fil');
         $year = $req->input('year_fil');
         $year = empty($year) ? date('Y') : $year;
-        // $month = $req->input('month_fil');
-        $user_wilayah = AuthHelper::user_wilayah();
-        $whereWil = "";
-        if (AuthHelper::is_author('ALLAREA')) {
-            $whereWil .= " AND wil_id='$user_wilayah'";
-        }
-        // $wild = "";
+
         $wild = "('P1'),('P2'),('P3'),('P4'),('P5'),('HO'),('PC')";
 
-
+        if ($area != "" || $area != null) {
+            $plantID = DB::connection('soabi')->select("SELECT code_sub as id FROM admisecdrep_sub WHERE id='$area'  ");
+            $area =  $plantID[0]->id;
+        }
 
         $sql = "WITH days(DayNum) AS
             (
@@ -812,11 +806,10 @@ class DashboardModel extends Model
                 SELECT count(tp.PKBNo) as counting , tp.LocationName as plants , tp.PKBDate as tgl FROM T_PKB tp 
                 GROUP BY tp.LocationName , tp.PKBDate 
             )X on MONTH(X.tgl) = m.DayNum  AND YEAR(x.tgl)='$year'  AND  X.plants = Mplants.DummiesPlant 
-        WHERE Mplants.DummiesPlant in (SELECT am. plant_code FROM  isecurity.dbo.admisec_area_users aus 
-        inner join isecurity.dbo.admisecsgp_mstplant am  on am.admisecsgp_mstsite_site_id = aus.site_id 
-                 WHERE aus.npk = '" . Session('npk') . "')
-        GROUP BY m.DayNum , Mplants.DummiesPlant
-        ORDER BY m.DayNum   ASC";
+        WHERE Mplants.DummiesPlant in (" . self::wherePlants3() . ") ";
+        if (!empty($area)) $sql .= " AND Mplants.DummiesPlant='$area'";
+
+        $sql .= "GROUP BY m.DayNum , Mplants.DummiesPlant ORDER BY m.DayNum   ASC";
         $res = DB::connection('egate')->select($sql);
         return $res;
     }
@@ -837,9 +830,7 @@ class DashboardModel extends Model
         from T_PKB tp WHERE YEAR(tp.PKBDate)='$year'  ";
         }
 
-        $sql .= "AND tp.LocationName in (SELECT am. plant_code FROM  isecurity.dbo.admisec_area_users aus 
-        inner join isecurity.dbo.admisecsgp_mstplant am  on am.admisecsgp_mstsite_site_id = aus.site_id 
-                 WHERE aus.npk = '" . Session('npk') . "')";
+        $sql .= "AND tp.LocationName in (" . self::wherePlants3() . ")";
 
         if ($area != "" || $area != null) {
             $plantID = DB::connection('soabi')->select("SELECT code_sub as id FROM admisecdrep_sub WHERE id='$area'  ");
@@ -875,9 +866,7 @@ class DashboardModel extends Model
         from T_PKB tp WHERE YEAR(tp.PKBDate)='$year' ";
         }
 
-        $sql .= "AND tp.LocationName in (SELECT am. plant_code FROM  isecurity.dbo.admisec_area_users aus 
-        inner join isecurity.dbo.admisecsgp_mstplant am  on am.admisecsgp_mstsite_site_id = aus.site_id 
-                 WHERE aus.npk = '" . Session('npk') . "')";
+        $sql .= "AND tp.LocationName in (" . self::wherePlants3() . ")";
 
         // if (!empty($wild)) $sql .= "AND tp.LocationName in ($wild)";
         if (!empty($area)) $sql .= "AND tp.LocationName='$area'";
@@ -901,8 +890,7 @@ class DashboardModel extends Model
         }
 
         $sql = "SELECT  tp.CategoryCode , count(tp.CategoryCode) as total 
-        from T_PKB tp WHERE YEAR(tp.PKBDate)='$year' AND tp.LocationName in (SELECT am. plant_code FROM  isecurity.dbo.admisec_area_users aus 
-        inner join isecurity.dbo.admisecsgp_mstplant am  on am.admisecsgp_mstsite_site_id = aus.site_id  WHERE aus.npk = '" . Session('npk') . "')";
+        from T_PKB tp WHERE YEAR(tp.PKBDate)='$year' AND tp.LocationName in (" . self::wherePlants3() . ")";
 
 
 
@@ -931,8 +919,7 @@ class DashboardModel extends Model
 
 
         $sql = "SELECT  tp.UpdateUser , count(tp.UpdateUser) as total 
-        from T_PKB tp WHERE tp.UpdateUser in ('Scan Out','Deactivated','Cancel by User') AND YEAR(tp.PKBDate)='$year'  AND tp.LocationName in (SELECT am. plant_code FROM  isecurity.dbo.admisec_area_users aus 
-        inner join isecurity.dbo.admisecsgp_mstplant am  on am.admisecsgp_mstsite_site_id = aus.site_id  WHERE aus.npk = '" . Session('npk') . "')";
+        from T_PKB tp WHERE tp.UpdateUser in ('Scan Out','Deactivated','Cancel by User') AND YEAR(tp.PKBDate)='$year'  AND tp.LocationName in (" . self::wherePlants3() . ")";
 
         // if (!empty($wild))  $sql .= "AND tp.LocationName in ($wild) ";
         if (!empty($area))  $sql .= "AND tp.LocationName='$area'";
@@ -1057,8 +1044,7 @@ class DashboardModel extends Model
         $params = DB::connection('egate')->select("SELECT TOP 50 tp2.MaterialName as remarks ,  COUNT(tp2.MaterialCode) as totals   FROM T_PKB tp 
         left join T_PKBDetail tp2 on tp2.PKBNo  = tp.PKBNo 
         WHERE YEAR(tp.PKBDate)='$years' 
-        AND tp.LocationName in (SELECT am. plant_code FROM  isecurity.dbo.admisec_area_users aus 
-        inner join isecurity.dbo.admisecsgp_mstplant am  on am.admisecsgp_mstsite_site_id = aus.site_id  WHERE aus.npk = '" . Session('npk') . "')
+        AND tp.LocationName in (" . self::wherePlants3() . ")
         $monthss
         $plants
         GROUP BY tp2.MaterialName 
